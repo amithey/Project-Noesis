@@ -21,6 +21,8 @@ from noesis.lif import LIFNetwork, LIFParams
 from noesis.mushroom_body import (
     DopamineGatedPlasticity,
     GradedAPL,
+    compartmentalize_mbons,
+    mbon_input_compartments,
     populations,
     with_weak_pathway_edges,
 )
@@ -54,6 +56,8 @@ def main() -> None:
     ap.add_argument("--glomeruli", type=int, default=5, help="glomeruli (receptor types) per odour")
     ap.add_argument("--odor-hz", type=float, default=80.0)
     ap.add_argument("--adapt", type=float, default=1.0)
+    ap.add_argument("--mbon-axonal-weight", type=float, default=-1.0,
+                    help="weight of synapses onto MBON axons (outside the MB); <0 = point neurons")
     ap.add_argument("--apl-gain", type=float, default=0.0, help="0 = spiking APL; >0 = graded APL")
     ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()
@@ -62,6 +66,10 @@ def main() -> None:
     pairs = load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons)
     pops = populations(cn.neurons)
     W = with_weak_pathway_edges(cn, pairs, pops)
+    if a.mbon_axonal_weight >= 0:
+        comp = mbon_input_compartments(a.data / "raw", a.data / "processed", cn.neurons, pops.mbon)
+        W = compartmentalize_mbons(W, comp, cn.neurons, a.mbon_axonal_weight)
+        print(f"MBON inputs: dendritic (MB) x1, axonal x{a.mbon_axonal_weight:g}")
     print(f"ORN {len(pops.orn)}  PN {len(pops.pn)}  KC {len(pops.kc)}  MBON {len(pops.mbon)}  "
           f"DAN {len(pops.dan)} | edges {cn.W.nnz} -> {W.nnz} (+{W.nnz - cn.W.nnz} weak olfactory/MB)")
 

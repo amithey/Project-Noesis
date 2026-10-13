@@ -117,7 +117,8 @@ class DopamineGatedPlasticity:
     @property
     def mean_weight_fraction(self) -> float:
         """Mean current / connectome weight of the plastic synapses (1.0 = untouched)."""
-        return float(np.mean(self.net.data[self.pos] / self.w0)) if len(self.pos) else 1.0
+        live = self.w0 != 0  # zero-weight entries (e.g. purely axonal pairs) carry no information
+        return float(np.mean(self.net.data[self.pos][live] / self.w0[live])) if live.any() else 1.0
 
 
 class GradedAPL:
@@ -158,3 +159,55 @@ class GradedAPL:
         self.level += (drive - self.level) * (1 - np.exp(-window_ms / self.tau))
         mv_per_ms = -self.gain * self.net.p.w_syn * self.w_out * self.level * 1e-3
         return {"current_idx": self.pops.kc, "current_mv_per_ms": mv_per_ms}
+
+
+def mbon_input_compartments(raw_dir, cache_dir, neurons: pd.DataFrame, mbon: np.ndarray) -> pd.DataFrame:
+    """Synapses onto each MBON split by location: ``dend`` inside the mushroom body (MB_* neuropils,
+    where MBON dendrites are) and ``axon`` elsewhere. Columns: pre, post (matrix indices), dend, axon."""
+    from pathlib import Path
+
+    cache = Path(cache_dir) / "mbon_input_compartments.parquet"
+    if cache.exists():
+        return pd.read_parquet(cache)
+    rid = neurons["root_id"].to_numpy()
+    index = pd.Series(np.arange(len(neurons)), index=rid)
+    conn = pd.read_csv(Path(raw_dir) / "connections_princeton.csv",
+                       usecols=["pre_root_id", "post_root_id", "neuropil", "syn_count"])
+    conn = conn[conn["post_root_id"].isin(set(rid[mbon]))]
+    inside = conn["neuropil"].astype(str).str.startswith("MB_")
+    conn = conn.assign(dend=np.where(inside, conn["syn_count"], 0), axon=np.where(inside, 0, conn["syn_count"]))
+    out = conn.groupby(["pre_root_id", "post_root_id"], as_index=False)[["dend", "axon"]].sum()
+    out = pd.DataFrame({"pre": index.reindex(out["pre_root_id"]).to_numpy(),
+                        "post": index.reindex(out["post_root_id"]).to_numpy(),
+                        "dend": out["dend"].to_numpy(np.float32), "axon": out["axon"].to_numpy(np.float32)})
+    Path(cache_dir).mkdir(parents=True, exist_ok=True)
+    out.to_parquet(cache)
+    return out
+
+
+def compartmentalize_mbons(W: sparse.csr_matrix, comp: pd.DataFrame, neurons: pd.DataFrame,
+                           axonal_weight: float) -> sparse.csr_matrix:
+    """Re-weight every existing synapse onto an MBON as ``sign * (dend + axonal_weight * axon)``.
+
+    A point neuron cannot tell where a synapse lands; MBONs receive 80% of their synapses outside the
+    mushroom body (on their axons in CRE/SMP/LAL), which a point model would weigh like dendritic
+    input. ``axonal_weight`` < 1 approximates their small effect on spike initiation (an assumption).
+    The connectivity pattern is unchanged; only existing entries are re-weighted.
+    """
+    from noesis.connectome import presynaptic_signs
+
+    n = W.shape[0]
+    coo = W.tocoo()
+    key = coo.row.astype(np.int64) * n + coo.col
+    ckey = comp["pre"].to_numpy(np.int64) * n + comp["post"].to_numpy(np.int64)
+    order = np.argsort(ckey)
+    ckey = ckey[order]
+    eff = (comp["dend"].to_numpy() + axonal_weight * comp["axon"].to_numpy())[order]
+    pos = np.searchsorted(ckey, key)
+    hit = (pos < len(ckey)) & (ckey[np.minimum(pos, len(ckey) - 1)] == key)
+    sign = presynaptic_signs(neurons)
+    data = coo.data.copy()
+    data[hit] = sign[coo.row[hit]] * eff[pos[hit]]
+    out = sparse.csr_matrix((data, (coo.row, coo.col)), shape=W.shape)
+    out.sort_indices()
+    return out
