@@ -18,7 +18,7 @@ import numpy as np
 
 from noesis.balance import BalanceMap
 from noesis.body import BodyParams, CollisionGuard, MuscleModel, make_fly
-from noesis.connectome import load_all_pairs, load_cached, neuropil_scale_factors
+from noesis.connectome import corrected_scale, load_all_pairs, load_cached
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_muscle_matrices
 from noesis.mushroom_body import (
@@ -58,7 +58,8 @@ def main() -> None:
     ap.add_argument("--bg-weight", type=float, default=None,
                     help="synapse-equivalents per event (default 90 raw, 60 with --scaled)")
     ap.add_argument("--scaled", action="store_true",
-                    help="BANC synapses corrected to FAFB counts per brain region (needs data/fafb)")
+                    help="BANC synapses corrected per region: brain to FAFB, nerve cord to MANC counts")
+    ap.add_argument("--brain-only", action="store_true", help="with --scaled, leave the nerve cord as detected")
     ap.add_argument("--adapt", type=float, default=1.0, help="spike-frequency adaptation, mV/spike")
     ap.add_argument("--dt-ms", type=float, default=0.5, help="LIF time step")
     ap.add_argument("--seed", type=int, default=0)
@@ -85,10 +86,10 @@ def main() -> None:
         a.bg_weight = 60.0 if a.scaled else 90.0
     kw = {}
     if a.scaled:
-        kw["region_scale"] = neuropil_scale_factors(a.data / "raw" / "connections_princeton.csv",
-                                                    a.data / "fafb" / "connections_princeton.csv.gz")
+        kw["region_scale"] = corrected_scale(a.data, nerve_cord=not a.brain_only)
     cn = load_cached(a.data / "raw", a.data / "processed", **kw)
-    print("brain:", "BANC scaled to FAFB counts" if a.scaled else "BANC as detected",
+    print("brain:", ("BANC corrected (brain FAFB" + ("" if a.brain_only else " + nerve cord MANC") + ")")
+          if a.scaled else "BANC as detected",
           f"| background {a.bg_hz:g} Hz x {a.bg_weight:g}", flush=True)
     W, pops = cn.W, populations(cn.neurons)
     if a.plasticity:  # the learning substrate is made of sub-threshold (1-4 synapse) pairs

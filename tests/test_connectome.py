@@ -62,3 +62,16 @@ def test_region_scale_multiplies_synapses_by_region_before_the_threshold(tmp_pat
     W = build_connectome(tmp_path / "n.csv", tmp_path / "c.csv", region_scale=factors).W.toarray()
     assert W[0, 1] == 2 * 20.0 + 1  # MB rows scaled, the unmatched nerve-cord row kept at 1x
     assert build_connectome(tmp_path / "n.csv", tmp_path / "c.csv").W.nnz == 0  # 3 synapses < 5 unscaled
+
+
+def test_nerve_cord_factors_pool_regions_named_differently_in_banc_and_manc(tmp_path):
+    from noesis.connectome import nerve_cord_scale_factors
+
+    pd.DataFrame({"pre_root_id": [1, 1, 1], "post_root_id": [2, 2, 2],
+                  "neuropil": ["VNC_T1_ProNm_L", "VNC_T1_ProNm_R", "VNC_AMNp_L"], "syn_count": [5, 5, 4],
+                  "nt_type": [None] * 3}).to_csv(tmp_path / "banc.csv", index=False)
+    pd.DataFrame({"pre_root_id": [9, 9], "post_root_id": [8, 8], "neuropil": ["LegNp_T1_L", "Ov_R"],
+                  "syn_count": [40, 16], "nt_type": [None] * 2}).to_csv(tmp_path / "manc.csv", index=False)
+    f = nerve_cord_scale_factors(tmp_path / "banc.csv", tmp_path / "manc.csv")
+    assert f["VNC_T1_ProNm"] == 4.0 and f["LegNp_T1"] == 4.0  # 40 / (5 + 5), both BANC names covered
+    assert f["VNC_AMNp"] == 4.0                                 # AMNp matched to MANC's ovoid

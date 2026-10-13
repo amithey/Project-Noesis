@@ -76,6 +76,55 @@ def neuropil_scale_factors(banc_connections: Path, reference_connections: Path,
     return {str(k): float(v) for k, v in ratio.items()}
 
 
+# Nerve-cord regions in BANC vs MANC (Male Adult Nerve Cord), which name them differently. Grouped by
+# anatomy; tectulum sub-regions are pooled because the two datasets split them differently. AMNp (BANC's
+# accessory mesothoracic neuropil) is taken to be MANC's ovoid (Ov) -- an anatomical judgement.
+VNC_GROUPS: dict[str, tuple[tuple[str, ...], tuple[str, ...]]] = {
+    "front-leg neuromere": (("VNC_T1_ProNm", "LegNp_T1"), ("LegNp_T1",)),
+    "middle-leg neuromere": (("VNC_T2_MesoNm", "LegNp_T2"), ("LegNp_T2",)),
+    "hind-leg neuromere": (("VNC_T3_MetaNm", "LegNp_T3"), ("LegNp_T3",)),
+    "abdominal neuromeres": (("ABDNM", "ANm"), ("ANm",)),
+    "intermediate tectulum": (("IntTct",), ("IntTct",)),
+    "lower tectulum": (("LTct",), ("LTct",)),
+    "wing tectulum": (("VNC_WTct", "WTct_UTct_T2"), ("WTct_UTct_T2",)),
+    "haltere tectulum": (("VNC_HTct", "HTct_UTct_T3"), ("HTct_UTct_T3",)),
+    "neck tectulum": (("VNC_NTct", "NTct_UTct_T1"), ("NTct_UTct_T1",)),
+    "ovoid / AMNp": (("VNC_AMNp",), ("Ov",)),
+    "mVAC": (("VNC_T2_mVAC",), ("mVAC_T1", "mVAC_T2", "mVAC_T3")),
+}
+
+
+def nerve_cord_scale_factors(banc_connections: Path, manc_connections: Path,
+                             clip: tuple[float, float] = (1.0, 20.0)) -> dict[str, float]:
+    """MANC / BANC synapse ratio per nerve-cord region group, keyed by BANC region names (sides pooled)."""
+    b = pd.read_csv(banc_connections, usecols=["neuropil", "syn_count"])
+    m = pd.read_csv(manc_connections, usecols=["neuropil", "syn_count"])
+    tb = b.groupby(_region(b["neuropil"]))["syn_count"].sum()
+    tm = m.groupby(_region(m["neuropil"]))["syn_count"].sum()
+    out = {}
+    for banc_names, manc_names in VNC_GROUPS.values():
+        nb, nm = tb.reindex(list(banc_names)).sum(), tm.reindex(list(manc_names)).sum()
+        if nb > 0 and nm > 0:
+            factor = float(np.clip(nm / nb, *clip))
+            out.update({name: factor for name in banc_names})
+    return out
+
+
+def corrected_scale(data: Path, nerve_cord: bool = True) -> dict[str, float]:
+    """Full synapse-count correction for BANC: brain regions from FAFB, nerve-cord regions from MANC.
+
+    FAFB is expected at ``data/fafb``; MANC at ``data/manc`` or ``<data>/../MANC``. Without MANC only the
+    brain is corrected."""
+    raw = data / "raw" / "connections_princeton.csv"
+    out = neuropil_scale_factors(raw, data / "fafb" / "connections_princeton.csv.gz")
+    if nerve_cord:
+        for cand in (data / "manc" / "connections_princeton.csv", data.parent / "MANC" / "connections_princeton.csv"):
+            if cand.exists():
+                out.update(nerve_cord_scale_factors(raw, cand))
+                break
+    return out
+
+
 def build_connectome(
     neurons_csv: Path,
     connections_csv: Path,
@@ -118,19 +167,33 @@ def load_cached(raw_dir: Path, cache_dir: Path, **kwargs) -> Connectome:
 
     With ``region_scale`` the weights are cached separately (``..._scaled.npz``)."""
     nfile = cache_dir / "neurons.parquet"
-    suffix = "_scaled" if kwargs.get("region_scale") else ""
+    scale = kwargs.get("region_scale")
+    suffix = ""
+    if scale:  # cache key names the exact factors, so a different correction never loads stale weights
+        import hashlib
+        import json
+
+        digest = hashlib.md5(json.dumps(sorted(scale.items())).encode()).hexdigest()[:8]
+        suffix = f"_scaled_{digest}"
     wfile = cache_dir / f"W_min{kwargs.get('min_syn', 5)}{suffix}.npz"
-    if nfile.exists() and wfile.exists():
-        neurons, W = pd.read_parquet(nfile), sparse.load_npz(wfile).tocsr()
-        sign = presynaptic_signs(neurons)  # re-sign cached rows (the cache predates overrides)
+    nt_sign = kwargs.pop("nt_sign", None)
+    unknown_sign = kwargs.pop("unknown_sign", UNKNOWN_NT_SIGN)
+
+    def signed(cn: Connectome) -> Connectome:
+        """Apply signs on load: the cache keeps |w| semantics, so any sign map can reuse it."""
+        sign = presynaptic_signs(cn.neurons, nt_sign, unknown_sign)
+        W = cn.W.copy()
         rows = np.repeat(np.arange(W.shape[0]), np.diff(W.indptr))
         W.data = np.abs(W.data) * sign[rows]
-        return Connectome(neurons, W)
+        return Connectome(cn.neurons, W)
+
+    if nfile.exists() and wfile.exists():
+        return signed(Connectome(pd.read_parquet(nfile), sparse.load_npz(wfile).tocsr()))
     cn = build_connectome(raw_dir / "neurons.csv", raw_dir / "connections_princeton.csv", **kwargs)
     cache_dir.mkdir(parents=True, exist_ok=True)
     cn.neurons.to_parquet(nfile)
     sparse.save_npz(wfile, cn.W)
-    return cn
+    return signed(cn)
 
 
 def load_all_pairs(raw_dir: Path, cache_dir: Path, neurons: pd.DataFrame) -> pd.DataFrame:

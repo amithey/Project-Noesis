@@ -21,7 +21,7 @@ from pathlib import Path
 
 import numpy as np
 
-from noesis.connectome import load_cached, neuropil_scale_factors
+from noesis.connectome import DEFAULT_NT_SIGN, corrected_scale, load_cached
 from noesis.lif import LIFNetwork, LIFParams
 
 
@@ -106,12 +106,20 @@ def main() -> None:
     ap.add_argument("--data", type=Path, default=Path("data"))
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--out", type=Path, default=Path("outputs/response_battery.json"))
+    ap.add_argument("--brains", default="raw,corrected",
+                    help="comma list of: raw, corrected (brain FAFB + nerve cord MANC), "
+                         "corrected-silent-monoamines (DA/5-HT/OA/TA neither excite nor inhibit)")
     a = ap.parse_args()
     raw, cache = a.data / "raw", a.data / "processed"
-    factors = neuropil_scale_factors(raw / "connections_princeton.csv", a.data / "fafb" / "connections_princeton.csv.gz")
+    factors = corrected_scale(a.data)
+    silent = dict(DEFAULT_NT_SIGN, DA=0, SER=0, OCT=0, TYR=0)
+    options = {"raw": ("raw BANC", {}),
+               "corrected": ("corrected BANC", {"region_scale": factors}),
+               "corrected-silent-monoamines": ("corrected BANC, monoamines silent",
+                                               {"region_scale": factors, "nt_sign": silent})}
     seeds = list(range(a.seeds))
     report = {}
-    for label, kw in (("raw BANC", {}), ("corrected BANC", {"region_scale": factors})):
+    for label, kw in (options[b] for b in a.brains.split(",")):
         print(f"=== {label}", flush=True)
         r = run_brain(load_cached(raw, cache, **kw), seeds)
         verdicts = judge(r)

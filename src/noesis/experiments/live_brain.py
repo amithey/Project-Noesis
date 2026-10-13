@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
-from noesis.connectome import load_cached, neuropil_scale_factors
+from noesis.connectome import corrected_scale, load_cached
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker
 from noesis.viz.brain_map import write_activity
@@ -26,7 +26,6 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("--data", type=Path, default=Path("data"))
     ap.add_argument("--scaled", action="store_true", help="BANC synapses corrected to FAFB counts")
-    ap.add_argument("--reference", type=Path, help="FAFB connections (default data/fafb/...)")
     ap.add_argument("--seconds", type=float, default=60.0)
     ap.add_argument("--period", type=float, default=2.0, help="seconds of sugar off, then on")
     ap.add_argument("--sugar-hz", type=float, default=100.0)
@@ -37,15 +36,14 @@ def main() -> None:
     raw, cache = a.data / "raw", a.data / "processed"
     kw = {}
     if a.scaled:
-        ref = a.reference or a.data / "fafb" / "connections_princeton.csv.gz"
-        kw["region_scale"] = neuropil_scale_factors(raw / "connections_princeton.csv", ref)
+        kw["region_scale"] = corrected_scale(a.data)
     cn = load_cached(raw, cache, **kw)
     n = cn.neurons
     ctype = n["Primary Cell Type"].fillna("")
     sugar = np.flatnonzero(n["Function"].fillna("").str.contains("sugar").to_numpy())
     mn9 = np.flatnonzero(ctype.eq("MN9").to_numpy())
     pam = np.flatnonzero(ctype.str.startswith("PAM").to_numpy())
-    brain = "BANC scaled to FAFB counts" if a.scaled else "BANC as detected"
+    brain = "BANC corrected (FAFB + MANC)" if a.scaled else "BANC as detected"
     print(f"{brain}: {cn.n:,} neurons, {cn.W.nnz:,} pairs; writing {a.brain_map}", flush=True)
 
     net = LIFNetwork(cn.W, LIFParams(dt=0.5, da=1.0))
