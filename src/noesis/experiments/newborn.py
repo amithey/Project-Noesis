@@ -21,6 +21,13 @@ from noesis.connectome import load_cached
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_motor_matrix
 from noesis.sensory import LEGS, LegState, SensoryMap
+from noesis.world import (
+    CONTACT_SOLREF,
+    FLOOR_COLLISIONS,
+    GRAVITY,
+    configure_floor_contacts,
+    floor_arena,
+)
 
 
 def main() -> None:
@@ -38,6 +45,7 @@ def main() -> None:
     ap.add_argument("--dt-ms", type=float, default=0.5, help="LIF time step")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--no-senses", action="store_true", help="no leg sensory feedback")
+    ap.add_argument("--leg-kinds", help="comma list of leg organ classes to keep (claw,hook,club,hairplate,campaniform,bristle)")
     ap.add_argument("--no-balance", action="store_true",
                     help="no gravity (Johnston) / rotation (haltere) senses")
     ap.add_argument("--viewer", action="store_true", help="live MuJoCo window")
@@ -57,19 +65,24 @@ def main() -> None:
 
     # contact sensors on every leg segment (default is tarsi only, which do not touch down)
     fly = Fly(init_pose="stretch", control="position", enable_adhesion=True,
+              floor_collisions=FLOOR_COLLISIONS,
+              contact_solref=CONTACT_SOLREF,
               spawn_pos=(0.0, 0.0, 0.5),
               contact_sensor_placements=preprogrammed.get_collision_geometries("legs"))
     cam = None
     if a.video:
         cam = Camera(attachment_point=fly.model.worldbody, camera_name="camera_left",
                      targeted_fly_names=fly.name, play_speed=0.1, fps=30)
-    sim = SingleFlySimulation(fly=fly, cameras=[cam] if cam else [], timestep=1e-4)
+    sim = SingleFlySimulation(fly=fly, cameras=[cam] if cam else [], timestep=1e-4,
+                              arena=floor_arena(), gravity=GRAVITY)
+    configure_floor_contacts(sim)
     obs, _ = sim.reset()
     rest = obs["joints"][0].copy()
     G = build_motor_matrix(cn.neurons, list(fly.actuated_joints))
     print(f"{G.nnz} motor neurons mapped onto {G.shape[0]} joints")
     rates = RateTracker(cn.n, tau_ms=50.0)
-    senses = None if a.no_senses else SensoryMap(cn.neurons)
+    kinds = frozenset(a.leg_kinds.split(",")) if a.leg_kinds else None
+    senses = None if a.no_senses else SensoryMap(cn.neurons, kinds=kinds)
     names = list(fly.actuated_joints)
     j = {(leg, d): names.index(f"joint_{leg}{d}") for leg in LEGS for d in ("Coxa", "Femur", "Tibia")}
     sensors = [n.split("/")[-1][:2] for n in fly.contact_sensor_placements]

@@ -32,3 +32,8 @@ def test_flexion_drives_claw_extension_drives_hook_and_touch_drives_bristle():
     state["LF"] = LegState(tibia=-1.0)
     r = dict(zip(m.idx, m.drive(state), strict=True))
     assert r[1] > r[0]
+
+
+def test_kinds_filter_ablates_organ_classes():
+    m = SensoryMap(_neurons(), kinds=frozenset({"claw"}))
+    assert [k for k, _, _ in m.groups] == ["claw"] and list(m.idx) == [0]
