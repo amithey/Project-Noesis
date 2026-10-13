@@ -368,3 +368,44 @@ Predictions fixed before running (Shiu et al. 2024; fly taste/olfaction biology)
 - Weak spots behind two passes: PPL1 fires 60-80 Hz to *every* stimulus (odour 82, water 71) and PAM responds
   more to odour (3 Hz) and bitter (2.3 Hz) than to sugar (1 Hz) -- the dopamine responses are not yet specific.
   In 2 of 3 seeds bitter also drove antennal-lobe projection neurons (~110 Hz), part of the same global state.
+
+## 2026-10-13 — nerve cord corrected to MANC; are monoamines holding the "lock"?
+
+MANC (male adult nerve cord) has 30.9M synapses vs 7.6M in BANC's nerve cord: factors 3.3-4.4 for the leg
+neuromeres, 5.0 abdominal, 2.4-8.4 tectulum (`nerve_cord_scale_factors`, region names mapped by anatomy;
+AMNp taken as MANC's ovoid). Brain (FAFB) + nerve cord (MANC) corrected, 3 s background, no stimulus:
+
+| | brain corrected only | brain + nerve cord corrected |
+|---|---|---|
+| nerve cord mean rate | 2.0 Hz | 9.8 Hz |
+| leg motor neurons | 5.4 Hz (74 > 5 Hz) | 22.9 Hz (186 > 5 Hz) |
+| muscle-drive variation (movement) | 0.16 | 0.28 |
+
+- The awake brain is **bistable**: background 2, 3 or 5 Hz x 60 all give the same ~8 Hz state; 5 Hz x 40 gives
+  silence. Drive only ignites the network, which then holds itself. The fly is "locked" because its awake
+  state *is* this self-sustained attractor. In it, descending commands are contradictory: DNa02 (steering)
+  at 313 Hz, MDN (backward walking) 62 Hz, DNa01 40 Hz all at once.
+- 10,047 neurons keep firing at ~50 Hz after a stimulus ends; 1,850 of them are monoaminergic (1,358 predicted
+  dopaminergic) and are modelled as fast excitatory synapses.
+
+Response battery, brain + nerve cord corrected, 3 seeds:
+
+| | monoamines excitatory | monoamines silent (DA/5-HT/OA/TA sign 0) |
+|---|---|---|
+| P1 sugar -> MN9 | PASS 11.0 Hz | PASS **42.3 Hz** |
+| P2 water -> MN9 | PASS 5.2 | PASS 24.8 |
+| P3 bitter << sugar at MN9 | PASS 0.2 | PASS 0.3 |
+| P4 bitter suppresses sugar | PASS 7.7 vs 11.0 | PASS 25.7 vs 42.3 |
+| P5 sugar -> PAM | PASS 1.4 Hz | **FAIL 0 Hz** |
+| P6 bitter -> PPL1 > sugar | FAIL 80.3 vs 80.6 | FAIL 0 vs 0 |
+| P7 odour specificity | PASS | PASS |
+| P8 return to rest | FAIL (24,473 still active) | FAIL (13,866 still active) |
+
+- Silencing monoamines **halves the lock but does not remove it**, and makes the feeding pathway much stronger
+  and cleaner. So monoamines-as-fast-excitation are part of the problem, not all of it.
+- With monoamines silent, sugar no longer reaches PAM at all: the sugar -> reward-dopamine route in this model
+  runs through monoaminergic neurons (consistent with the octopamine-mediated sweet reward reported in the
+  literature, not verified here). Silencing them is therefore not a fix; they need a slow, modulatory model.
+- The remaining lock must come from recurrence among fast ACh/GABA/Glu neurons. Mechanisms the model lacks and
+  that terminate reverberation in real circuits: short-term synaptic depression, and neuron-type-specific
+  excitability. These are the next tests.
