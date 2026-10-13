@@ -337,3 +337,27 @@ Per-synapse neuropil labels in `connections_princeton.csv` (BANC, all pairs incl
   2.8 onto MBONs; an MBON receives ~121 KC synapses. These look very low for Kenyon cells, which suggests
   under-detected synapses in the dense mushroom-body lobes of BANC. `compare_mb_coverage` reports the same
   numbers for any other dataset (e.g. FAFB) to settle this.
+
+## 2026-10-13 — BANC vs FAFB: Kenyon-cell synapses are missing from BANC
+
+`compare_mb_coverage` on the BANC tables used by the model and on two FAFB v783 exports from
+codex.flywire.ai (same "princeton" table format; Buhmann = a different synapse detector, no threshold):
+
+| | BANC (model) | FAFB princeton | FAFB Buhmann |
+|---|---|---|---|
+| Kenyon cells / MBONs | 4,554 / 104 | 5,177 / 96 | 5,177 / 96 |
+| output synapses per KC | **9.6** | 129.5 | 190.2 |
+| KC -> MBON synapses per KC | **2.8** | 43.8 | 49.6 |
+| KC -> MBON synapses per MBON | **121** | 2,364 | 2,674 |
+| MBON input inside the mushroom body | 20% | 59% | 61% |
+| KC share of MBON input inside the MB | 71% | 84% | 88% |
+| KC share of all MBON input | 23% | 63% | 67% |
+
+- Two FAFB detectors agree with each other and both find **~15-20x more Kenyon-cell synapses** than BANC.
+  The BANC tables under-count KC output (most likely in the dense mushroom-body lobes). This, not the
+  learning rule, is why MBONs ignore Kenyon cells in the model (the earlier estimate: >30x short of threshold).
+- In FAFB, Kenyon cells are the dominant MBON input (63% of all, 84% inside the MB), as expected.
+- Consequence: learning in the mushroom body cannot work on BANC connectivity alone. Options: rescale BANC
+  KC synapses per (KC type -> target type) to FAFB totals, or take the mushroom-body circuit from FAFB.
+- The FAFB download (folder `FABA/`) also contains `coordinates.csv.gz` (positions of FAFB neurons; different
+  neuron IDs from BANC) and several 0-byte files whose download failed; none of those were needed here.
