@@ -111,3 +111,103 @@ noise, not the senses, makes the motor output asymmetric.
 sensory drive changes the trajectory. A single run per condition cannot separate causation from
 chaotic divergence; multiple seeds are required. Also note that the resting "claw/hook" transfer
 function puts those neurons at the sigmoid midpoint (~76 Hz) by construction.
+
+## 2026-10-13 — dataset identity
+
+`neurons.csv` / `connections_princeton.csv` are **BANC v888** (female adult brain + nerve cord, codex.flywire.ai):
+158,262 neurons and 3,037,361 neuron-pair connections (our pair count after summing per-neuropil rows
+is exactly 3,037,361). Brain-only FAFB v783 (139,255 neurons) is a subset, male MANC (VNC only) and MCNS
+(male CNS, 166,700 neurons) are other specimens. No further download is needed for the body; MANC is
+useful later to cross-check the leg motor-neuron -> muscle annotation.
+
+## 2026-10-13 — body physics (`body.py`, `body_check.py`, `newborn_muscles.py`)
+
+Goal: the body only supplies physics (skeleton, joint limits, muscles, tissue); the brain decides.
+
+**Findings that changed the body**
+- The `stretch` start posture lies outside the real stepping range of the joints (13/21 joints on the
+  front/middle/hind left legs, 24/42 with a margin): tibia 0 rad vs 1.2-2.2 rad in real steps. A body in
+  that pose lies on its belly (height 0.70 mm). The step-cycle **mean of the real stepping kinematics**
+  makes the fly stand (1.06-1.13 mm, upright, all six legs loaded), so that is now the standing posture.
+- Joints had **no range limits** (`jnt_range` 0,0). They now use the observed step range widened by
+  0.25 x span + 0.35 rad (assumption: true ROM exceeds what walking uses).
+- **Direct torque control is infeasible for this body.** Leg-segment inertia is ~6.5e-8 while torques that
+  bear body weight are ~O(1): soft joint limits (stiffness scales with the tiny inertia) are overpowered
+  (overshoot 1-7 rad) and strong torques blow up the integrator (`mjWARN_BADQACC`) for every
+  strength/stiffness/damping/integrator combination tried (about 20 configurations).
+- Chosen model: **equilibrium-point muscles**. Each joint has an agonist and an antagonist pool (from the
+  FlyWire muscle annotations); activation = r / (r + 25 Hz) with a 30 ms time constant; the pair sets the
+  joint's equilibrium angle between the standing posture and 90% of the way to a limit; tissue servo
+  (kp 45, damping 1.0) supplies stiffness. No joint-target gain or slew limit remains.
+
+**Acceptance checks** (`python -m noesis.experiments.body_check`, no brain)
+- Stance, muscles relaxed: height 1.08 mm, upright +1.00, joint error 0.08 rad -> PASS.
+- Floor: deepest penetration 20-50 um in every run (inside the 50 um contact skin of `world.py`).
+- One leg at a time at the extreme of its range (damping 1.0, legs LF/LH): joints reach the extreme (7/7)
+  and 3 of 4 cases overshoot the true limit by 0.000 rad; the loaded hind leg at full antagonist activation
+  overshoots by **0.10 rad** (tolerance 0.05 -> FAIL, known limitation: body weight overpowers the soft stop).
+  Damping 3.0 reduces it to 0.057 rad but makes the joint too slow (67 ms time constant).
+- All 42 joints at their extremes at once (information only): overshoot 0.07-0.09 rad.
+
+**Brain + muscle body** (`newborn_muscles`, 3 s, birth at 0.4 s, da=1, one run each)
+
+| condition | mean joint offset | height (mm) | uprightness mean / min |
+|---|---|---|---|
+| blind | 0.12 rad | 0.89 | +0.96 / +0.85 |
+| leg + balance senses | 0.16 rad | 0.80 | +0.99 / +0.93 |
+
+The fly now stays upright (before: +0.71 / +0.29 with the old position-target mapping). After the brain
+wakes it settles into a low crouch; it does not walk. Single runs: not statistically established.
+
+## 2026-10-13 — leg through the body (the "leg in the eye" problem)
+
+FlyGym collides legs only with other legs; the head, eyes, thorax and abdomen are not in the self-collision
+set, so a leg passes through them.
+
+- Measured (10 random extreme poses of both front legs, reached over 100 ms): **worst leg-to-body overlap
+  520 um** (a front femur inside the eye/thorax ellipsoid). Same 3 poses: 464 um unguarded.
+- **Dynamic solid-body contacts do not work here.** Collision pairs leg x (ellipsoid proxy of each body part)
+  slowed the physics 24x (mesh bodies; 2x with proxies) and then **crashed the simulation in plain standing**
+  (`BADQACC`) at two drop heights, while the same body without them stands (z 1.12 mm). Making the contacts
+  stiffer (absolute spring/damper), softer or giving them a 0.2 mm skin did not reduce the overlap
+  (350-600 um) and 5 of 8 poses blew up with the skin. Cause: the tissue servo (force up to 65) overpowers any
+  contact, whose strength scales with the ~1e-8 segment inertia.
+- **Shipped instead: `CollisionGuard`.** Massless ellipsoid proxies (sized from each mesh's bounding box,
+  0.9x) exist only for exact distance queries (`mj_geomDistance`); the commanded equilibrium pose is shortened
+  to the last pose that keeps a 0.1 mm clearance (or no closer than now). Result: **464 -> 271 um** on the
+  same 3 poses. **This reduces, but does not eliminate, the overlap**: the leg can still enter the eye by up to
+  ~0.27 mm in adversarial poses (the proxies already overlap the legs by ~80 um in the standing pose).
+- A bug found on the way: the proxy geoms initially had default density and **added mass to the body**, which
+  silently changed the whole physics (crouch at 0.6 mm instead of standing at 1.1 mm); they are massless now.
+
+## 2026-10-13 — intrinsic learning in the mushroom body (`mushroom_body.py`, `mb_conditioning.py`)
+
+Population in the BANC table: 4,139 Kenyon cells, 104 MBONs, 318 dopaminergic neurons, 3,007 olfactory
+receptor neurons (56 glomerulus types), 699 antennal-lobe projection neurons. **Finding:** the global
+`min_syn=5` filter keeps only 778 KC->MBON pairs; most are 1-4 synapses, so the learning substrate was
+mostly deleted. `with_weak_pathway_edges` restores the sub-threshold pairs inside the olfactory/MB pathway
+(+13,855 edges, 3,109 plastic KC->MBON synapses).
+
+Rule (assumption): dopamine-paired depression of KC->MBON, `dw = -eta * trace(KC) * gate * w`, where the
+gate is the brain's own DAN rate above its slow baseline plus 5 Hz; recovery toward the connectome value.
+Nothing outside the brain supplies a reward.
+
+Assay (brain only; odour = ORNs of 5 glomeruli, A and B disjoint; MBON response before/after, plasticity
+frozen during tests):
+
+| reward | DAN rate in training | plastic weights | MBON response A | MBON response B |
+|---|---|---|---|---|
+| direct DAN stimulation (60 Hz) | 73 Hz | 0.54 | -56% | -48% |
+| none (control) | 1.2 Hz | 1.00 (untouched) | -15% | +0% |
+| sugar-taste neurons (200 Hz) | 1.2 Hz | 1.00 (untouched) | -18% | -1% |
+
+- The mechanism is dopamine-gated (control untouched). A first version was **not**: the dopamine baseline
+  started at 0, so 1 Hz of DAN noise looked like reward and all three conditions gave the same ~-65%.
+- **No odour specificity**: 77% of the Kenyon cells fire for either odour (overlap 95-97% of the union).
+  The connectome network does not produce the sparse Kenyon-cell code that specific learning needs.
+- **The natural reward path is broken**: sugar-taste neurons at 200 Hz leave the DANs at 1.2 Hz, so nothing in
+  the world currently drives dopamine through the connectome. The -15% / -18% change for odour A with
+  untouched weights is a repeated-exposure effect of the dynamics, not learning.
+- So the fly cannot yet "learn by itself" from the world: the plasticity exists and is validated against
+  its controls, but its two prerequisites (sparse odour code, world -> dopamine pathway) do not hold in this
+  LIF model.

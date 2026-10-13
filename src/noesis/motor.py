@@ -67,6 +67,36 @@ def build_motor_matrix(neurons: pd.DataFrame, joint_names: list[str]) -> sparse.
     return sparse.csr_matrix((vals, (rows, cols)), shape=(len(joint_names), len(neurons)))
 
 
+def build_muscle_matrices(
+    neurons: pd.DataFrame, joint_names: list[str]
+) -> tuple[sparse.csr_matrix, sparse.csr_matrix]:
+    """Agonist and antagonist pools per joint: each (n_joints x n_neurons), rows are pool means.
+
+    ``Gpos @ rates`` is the mean firing rate of the neurons that pull a joint in the positive
+    direction, ``Gneg @ rates`` of those that pull it negative; a joint with only one pool has an
+    all-zero row in the other matrix.
+    """
+    col = {name: k for k, name in enumerate(joint_names)}
+    table = leg_motor_table(neurons)
+    pools: dict[tuple[int, int], list[int]] = {}
+    for r in table.itertuples():
+        for dof, sign in MUSCLE_JOINT.get(r.muscle, ()):
+            j = col.get(f"joint_{r.leg}{dof}")
+            if j is not None:
+                pools.setdefault((j, sign), []).append(r.idx)
+    n = len(neurons)
+    mats = {}
+    for sign in (+1, -1):
+        rows, cols, vals = [], [], []
+        for (j, sg), idx in pools.items():
+            if sg == sign:
+                rows += [j] * len(idx)
+                cols += idx
+                vals += [1.0 / len(idx)] * len(idx)
+        mats[sign] = sparse.csr_matrix((vals, (rows, cols)), shape=(len(joint_names), n))
+    return mats[+1], mats[-1]
+
+
 class RateTracker:
     """Exponentially smoothed per-neuron firing rate (Hz) over a chosen set of neurons."""
 

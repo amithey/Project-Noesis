@@ -78,3 +78,26 @@ def load_cached(raw_dir: Path, cache_dir: Path, **kwargs) -> Connectome:
     cn.neurons.to_parquet(nfile)
     sparse.save_npz(wfile, cn.W)
     return cn
+
+
+def load_all_pairs(raw_dir: Path, cache_dir: Path, neurons: pd.DataFrame) -> pd.DataFrame:
+    """Every neuron pair with >= 1 synapse as (pre, post, syn) matrix indices, cached as Parquet.
+
+    ``build_connectome`` drops pairs below ``min_syn`` for reliability; the olfactory/mushroom-body
+    pathway is made of many 1-4 synapse pairs, so it needs this unfiltered table.
+    """
+    cache = cache_dir / "pairs_all.parquet"
+    if cache.exists():
+        return pd.read_parquet(cache)
+    index = pd.Series(np.arange(len(neurons), dtype=np.int64), index=neurons["root_id"])
+    conn = pd.read_csv(raw_dir / "connections_princeton.csv",
+                       usecols=["pre_root_id", "post_root_id", "syn_count"])
+    pairs = conn.groupby(["pre_root_id", "post_root_id"], as_index=False)["syn_count"].sum()
+    out = pd.DataFrame({
+        "pre": index.reindex(pairs["pre_root_id"]).to_numpy(),
+        "post": index.reindex(pairs["post_root_id"]).to_numpy(),
+        "syn": pairs["syn_count"].to_numpy(np.int32),
+    })
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    out.to_parquet(cache)
+    return out
