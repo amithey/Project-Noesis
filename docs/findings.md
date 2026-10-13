@@ -111,3 +111,50 @@ noise, not the senses, makes the motor output asymmetric.
 sensory drive changes the trajectory. A single run per condition cannot separate causation from
 chaotic divergence; multiple seeds are required. Also note that the resting "claw/hook" transfer
 function puts those neurons at the sigmoid midpoint (~76 Hz) by construction.
+
+## 2026-10-13 — dataset identity
+
+`neurons.csv` / `connections_princeton.csv` are **BANC v888** (female adult brain + nerve cord, codex.flywire.ai):
+158,262 neurons and 3,037,361 neuron-pair connections (our pair count after summing per-neuropil rows
+is exactly 3,037,361). Brain-only FAFB v783 (139,255 neurons) is a subset, male MANC (VNC only) and MCNS
+(male CNS, 166,700 neurons) are other specimens. No further download is needed for the body; MANC is
+useful later to cross-check the leg motor-neuron -> muscle annotation.
+
+## 2026-10-13 — body physics (`body.py`, `body_check.py`, `newborn_muscles.py`)
+
+Goal: the body only supplies physics (skeleton, joint limits, muscles, tissue); the brain decides.
+
+**Findings that changed the body**
+- The `stretch` start posture lies outside the real stepping range of the joints (13/21 joints on the
+  front/middle/hind left legs, 24/42 with a margin): tibia 0 rad vs 1.2-2.2 rad in real steps. A body in
+  that pose lies on its belly (height 0.70 mm). The step-cycle **mean of the real stepping kinematics**
+  makes the fly stand (1.06-1.13 mm, upright, all six legs loaded), so that is now the standing posture.
+- Joints had **no range limits** (`jnt_range` 0,0). They now use the observed step range widened by
+  0.25 x span + 0.35 rad (assumption: true ROM exceeds what walking uses).
+- **Direct torque control is infeasible for this body.** Leg-segment inertia is ~6.5e-8 while torques that
+  bear body weight are ~O(1): soft joint limits (stiffness scales with the tiny inertia) are overpowered
+  (overshoot 1-7 rad) and strong torques blow up the integrator (`mjWARN_BADQACC`) for every
+  strength/stiffness/damping/integrator combination tried (about 20 configurations).
+- Chosen model: **equilibrium-point muscles**. Each joint has an agonist and an antagonist pool (from the
+  FlyWire muscle annotations); activation = r / (r + 25 Hz) with a 30 ms time constant; the pair sets the
+  joint's equilibrium angle between the standing posture and 90% of the way to a limit; tissue servo
+  (kp 45, damping 1.0) supplies stiffness. No joint-target gain or slew limit remains.
+
+**Acceptance checks** (`python -m noesis.experiments.body_check`, no brain)
+- Stance, muscles relaxed: height 1.08 mm, upright +1.00, joint error 0.08 rad -> PASS.
+- Floor: deepest penetration 20-50 um in every run (inside the 50 um contact skin of `world.py`).
+- One leg at a time at the extreme of its range (damping 1.0, legs LF/LH): joints reach the extreme (7/7)
+  and 3 of 4 cases overshoot the true limit by 0.000 rad; the loaded hind leg at full antagonist activation
+  overshoots by **0.10 rad** (tolerance 0.05 -> FAIL, known limitation: body weight overpowers the soft stop).
+  Damping 3.0 reduces it to 0.057 rad but makes the joint too slow (67 ms time constant).
+- All 42 joints at their extremes at once (information only): overshoot 0.07-0.09 rad.
+
+**Brain + muscle body** (`newborn_muscles`, 3 s, birth at 0.4 s, da=1, one run each)
+
+| condition | mean joint offset | height (mm) | uprightness mean / min |
+|---|---|---|---|
+| blind | 0.12 rad | 0.89 | +0.96 / +0.85 |
+| leg + balance senses | 0.16 rad | 0.80 | +0.99 / +0.93 |
+
+The fly now stays upright (before: +0.71 / +0.29 with the old position-target mapping). After the brain
+wakes it settles into a low crouch; it does not walk. Single runs: not statistically established.
