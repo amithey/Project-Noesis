@@ -41,6 +41,7 @@ def build_connectome(
     connections_csv: Path,
     min_syn: int = 5,
     nt_sign: dict[str, int] | None = None,
+    unknown_sign: int = UNKNOWN_NT_SIGN,
 ) -> Connectome:
     """Aggregate per-neuropil rows to neuron pairs, drop weak pairs, sign by presynaptic NT."""
     sign_map = DEFAULT_NT_SIGN if nt_sign is None else nt_sign
@@ -59,7 +60,7 @@ def build_connectome(
         raise ValueError("connections reference root ids missing from the neuron table")
 
     sign = (
-        neurons["Predicted NT type"].map(sign_map).fillna(UNKNOWN_NT_SIGN).to_numpy(np.float32)
+        neurons["Predicted NT type"].map(sign_map).fillna(unknown_sign).to_numpy(np.float32)
     )
     weight = pairs["syn_count"].to_numpy(np.float32) * sign[pre]
     W = sparse.csr_matrix((weight, (pre, post)), shape=(len(neurons), len(neurons)))
