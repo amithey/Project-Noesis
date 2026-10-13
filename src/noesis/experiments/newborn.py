@@ -16,6 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
+from noesis.balance import BalanceMap
 from noesis.connectome import load_cached
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_motor_matrix
@@ -36,7 +37,9 @@ def main() -> None:
                     help="spike-frequency adaptation, mV per spike (0 = off)")
     ap.add_argument("--dt-ms", type=float, default=0.5, help="LIF time step")
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--no-senses", action="store_true", help="blind brain: no sensory feedback")
+    ap.add_argument("--no-senses", action="store_true", help="no leg sensory feedback")
+    ap.add_argument("--no-balance", action="store_true",
+                    help="no gravity (Johnston) / rotation (haltere) senses")
     ap.add_argument("--viewer", action="store_true", help="live MuJoCo window")
     ap.add_argument("--video", type=Path, help="write an mp4 (slower)")
     a = ap.parse_args()
@@ -71,7 +74,23 @@ def main() -> None:
     j = {(leg, d): names.index(f"joint_{leg}{d}") for leg in LEGS for d in ("Coxa", "Femur", "Tibia")}
     sensors = [n.split("/")[-1][:2] for n in fly.contact_sensor_placements]
     leg_of_sensor = np.array([LEGS.index(x) for x in sensors])
-    print("senses:", "OFF (blind)" if senses is None else f"{len(senses.idx)} leg sensory neurons")
+    balance = None if a.no_balance else BalanceMap(cn.neurons)
+    print("leg senses:", "OFF" if senses is None else f"{len(senses.idx)} neurons",
+          "| balance senses:", "OFF" if balance is None else f"{len(balance.idx)} neurons")
+
+    def sensory_drive(obs):
+        idx, rate = [], []
+        if senses is not None:
+            idx.append(senses.idx)
+            rate.append(senses.drive(leg_states(obs)))
+        if balance is not None:
+            cv = obs["cardinal_vectors"]  # thorax x/y/z axes in world coordinates
+            idx.append(balance.idx)
+            rate.append(balance.drive(np.array([cv[0][2], cv[1][2], cv[2][2]]), obs["fly"][3]))
+        if not idx:
+            return {}
+        return {"drive_idx": np.concatenate(idx), "drive_rate_hz": np.concatenate(rate),
+                "drive_weight": 400.0}
 
     def leg_states(obs):
         ang, vel = obs["joints"][0] - rest, obs["joints"][1]
@@ -101,12 +120,8 @@ def main() -> None:
             if not awake:
                 print(f"t={t:.2f}s  *** the brain wakes ***", flush=True)
                 awake = True
-            drive = {}
-            if senses is not None:
-                drive = {"drive_idx": senses.idx, "drive_rate_hz": senses.drive(leg_states(obs)),
-                         "drive_weight": 400.0}
             _, spikes = net.run(chunk_ms, background_hz=a.bg_hz,
-                                background_weight=a.bg_weight, **drive)
+                                background_weight=a.bg_weight, **sensory_drive(obs))
             r = rates.update(spikes, chunk_ms)
             u = np.tanh((G @ r) / a.r0)
             desired = rest + a.gain * u
