@@ -343,3 +343,28 @@ Each BANC synapse is multiplied by its brain region's FAFB/BANC synapse ratio (b
   the world was a data artifact.
 - Background drive that made the raw brain "awake" (5 Hz x 60) now gives 5 Hz mean, so earlier calibrations
   (background, adaptation, APL gain) were made on the weak brain and need redoing on the corrected one.
+
+## 2026-10-13 — does the brain really respond? (`response_battery.py`)
+
+Predictions fixed before running (Shiu et al. 2024; fly taste/olfaction biology). Each trial: 0.5 s rest,
+1 s stimulus at 100 Hz (odour 80 Hz), 1 s recovery; 3 seeds; no background drive; same LIF parameters.
+
+| prediction | raw BANC | corrected BANC |
+|---|---|---|
+| P1 sugar raises MN9 | FAIL 0 -> 0 Hz | **PASS** 0 -> 9.3 Hz |
+| P2 water raises MN9 | FAIL 0 -> 0 | **PASS** 0 -> 4.8 |
+| P3 bitter < half of sugar at MN9 | (pass, both 0) | **PASS** 0 vs 9.3 |
+| P4 bitter added to sugar lowers MN9 | FAIL | **PASS** 1.5 vs 9.3 |
+| P5 sugar raises reward dopamine (PAM) | FAIL 0 -> 0 | PASS, small: 0 -> 1.0 Hz |
+| P6 bitter raises punishment dopamine (PPL1) more than sugar | FAIL | PASS, weak: 75 vs 64 Hz |
+| P7 odour drives its own glomeruli more | PASS 210 vs 81 | **PASS** 264 vs 118 |
+| P8 activity returns to rest after the stimulus | FAIL | **FAIL** |
+
+- The corrected brain passes 7 of 8, the raw brain 2 (one trivially). The taste-to-feeding logic of Shiu et al.
+  (sugar and water drive MN9, bitter does not and suppresses sugar) holds only after correcting the counts.
+- **It does not return to rest**: after any strong stimulus 12,000-19,000 neurons keep firing for the whole
+  recovery second (rest: 0). The network flips into a self-sustained state. This is the next problem: a real
+  brain recovers, and learning experiments need clean trials.
+- Weak spots behind two passes: PPL1 fires 60-80 Hz to *every* stimulus (odour 82, water 71) and PAM responds
+  more to odour (3 Hz) and bitter (2.3 Hz) than to sugar (1 Hz) -- the dopamine responses are not yet specific.
+  In 2 of 3 seeds bitter also drove antennal-lobe projection neurons (~110 Hz), part of the same global state.
