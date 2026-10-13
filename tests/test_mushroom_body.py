@@ -108,3 +108,17 @@ def test_weak_edges_are_added_only_inside_the_olfactory_mushroom_body_pathway():
     assert out[0, 1] == 2.0   # KC -> MBON, 2 synapses, ACh excitatory
     assert out[0, 3] == 0.0   # target outside the pathway
     assert out[3, 1] == 0.0   # presynaptic neuron outside the pathway
+
+
+def test_graded_apl_removes_spiking_output_and_inhibits_in_proportion_to_kc_activity():
+    from noesis.mushroom_body import GradedAPL
+    # KC 0, KC 1 -> APL 2 ; APL 2 -> KC 0 (6 syn), KC 1 (3 syn)
+    W = sparse.csr_matrix(np.array([[0, 0, 4.0], [0, 0, 4.0], [-6.0, -3.0, 0]]))
+    pops = MBPopulations(orn=EMPTY, pn=EMPTY, kc=np.array([0, 1]), mbon=EMPTY, dan=EMPTY, apl=np.array([2]))
+    net = LIFNetwork(W)
+    apl = GradedAPL(net, pops, gain=1.0, tau_ms=1e-6)
+    assert not net.data[net.indptr[2]:net.indptr[3]].any()   # spiking output removed
+    quiet = apl.current(np.array([], dtype=int), 5.0)["current_mv_per_ms"]
+    busy = apl.current(np.array([0, 0, 1, 1]), 5.0)["current_mv_per_ms"]
+    assert np.all(quiet == 0) and np.all(busy < 0)
+    assert np.isclose(busy[0] / busy[1], 2.0)                 # follows APL->KC synapse counts

@@ -21,8 +21,14 @@ from noesis.body import BodyParams, CollisionGuard, MuscleModel, make_fly
 from noesis.connectome import load_all_pairs, load_cached
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_muscle_matrices
-from noesis.mushroom_body import DopamineGatedPlasticity, populations, with_weak_pathway_edges
+from noesis.mushroom_body import (
+    DopamineGatedPlasticity,
+    GradedAPL,
+    populations,
+    with_weak_pathway_edges,
+)
 from noesis.sensory import LEGS, LegState, SensoryMap
+from noesis.viz.brain_map import write_activity
 
 
 def _world_kwargs(arena=None) -> dict:
@@ -60,8 +66,12 @@ def main() -> None:
     ap.add_argument("--no-environment-senses", action="store_true", help="habitat visible but not sensed")
     ap.add_argument("--plasticity", action="store_true",
                     help="intrinsic dopamine-gated learning at the mushroom-body KC->MBON synapses")
+    ap.add_argument("--apl-gain", type=float, default=1024.0,
+                    help="graded (non-spiking) APL inhibition with --plasticity; 0 = spiking APL")
     ap.add_argument("--eta", type=float, default=5e-4, help="plasticity strength")
     ap.add_argument("--no-guard", action="store_true", help="do not keep muscle commands collision-free")
+    ap.add_argument("--brain-map", type=Path,
+                    help="publish live firing rates here for `python -m noesis.viz.brain_map --watch`")
     ap.add_argument("--viewer", action="store_true", help="live MuJoCo window")
     ap.add_argument("--video", type=Path, help="write an mp4 (slower)")
     a = ap.parse_args()
@@ -74,7 +84,9 @@ def main() -> None:
         pairs = load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons)
         W = with_weak_pathway_edges(cn, pairs, pops)
     net = LIFNetwork(W, LIFParams(dt=a.dt_ms, da=a.adapt), seed=a.seed)
+    apl = GradedAPL(net, pops, gain=a.apl_gain) if a.plasticity and a.apl_gain > 0 else None
     plast = DopamineGatedPlasticity(net, pops, eta=a.eta) if a.plasticity else None
+    apl_current: dict = {}
     habitat_world = a.arena == "habitat"
     arena = None
     if habitat_world:
@@ -153,10 +165,14 @@ def main() -> None:
                 print(f"t={t:.2f}s  *** the brain wakes ***", flush=True)
                 awake = True
             _, spikes = net.run(chunk_ms, background_hz=a.bg_hz, background_weight=a.bg_weight,
-                                **sensory_drive(obs))
+                                **sensory_drive(obs), **apl_current)
+            if apl is not None:
+                apl_current = apl.current(spikes, chunk_ms)
             if plast is not None:
                 plast.step(spikes, chunk_ms)
             command = muscles.step(rates.update(spikes, chunk_ms), chunk_ms)
+            if a.brain_map is not None and k % 4 == 0:  # every 20 ms of simulated time
+                write_activity(a.brain_map, rates.rate, t)
             if guard is not None:
                 command = guard.filter(obs["joints"][0], command)
         try:

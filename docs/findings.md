@@ -253,3 +253,49 @@ Still far from the sparse code of real flies (~5-10% of Kenyon cells), still no 
 **What would be needed** (each is a modelling decision, not done yet): graded (non-spiking) APL inhibition,
 a re-examined antennal-lobe local-neuron sign map, and a neuromodulatory (slow, receptor-type dependent)
 channel for the taste-to-dopamine route.
+
+## 2026-10-13 — graded (non-spiking) APL and what limits learning (`GradedAPL`)
+
+The spiking APL saturated at ~390 Hz. `GradedAPL` removes its spike output and injects a continuous
+inhibitory input into every Kenyon cell, proportional to that KC's APL synapse count and to the
+input-weighted Kenyon-cell rate (new `current_idx` / `current_mv_per_ms` input of `LIFNetwork.run`).
+Its one parameter (`gain`) was **calibrated to Kenyon-cell sparseness** (5-glomerulus odour, 600 ms):
+
+| gain | KCs active (A / B) | KC rate | A/B overlap |
+|---|---|---|---|
+| spiking APL | 57% / 50% | 21 Hz | 87% |
+| 1 | 67% / 63% | 28 Hz | 92% |
+| 64 | 44% / 42% | 16 Hz | 88% |
+| 256 | 31% / 28% | 10 Hz | 80% |
+| **1024** (used) | **21% / 17%** | 6.4 Hz | **76%** |
+| 4096 | 17% / 13% | 5.5 Hz | 74% |
+
+Global inhibition cannot get below ~74% overlap: the input from the antennal lobe is itself non-specific.
+
+**Conditioning with graded APL (gain 1024) -- the uncalibrated test:**
+
+| | MBON response A | MBON response B | plastic weights |
+|---|---|---|---|
+| control, no reward | -25.5% | -2.2% | 1.00 |
+| direct dopamine, eta 5e-4 | -24.1% | +11.6% | 0.91 |
+| direct dopamine, eta 5e-3 | -27.3% | -6.5% | 0.61 |
+
+Learning effect beyond the control: ~2 percentage points for A, ~4 for B. **No odour-specific learning**,
+even though the plastic synapses were depressed by 39%.
+
+**Why:** in this table Kenyon cells provide only **23% of all synapses onto MBONs (median 6% per MBON**,
+10th-90th percentile 0-59%); the rest is 19,792 excitatory and 21,182 inhibitory synapses from other neurons.
+As far as I know Kenyon cells are the dominant MBON input in the literature, so this looks like a property
+of the data (possibly synapse detection in the dense mushroom-body lobes) rather than of the model; it is
+not verified here. Changing KC->MBON weights therefore barely moves MBON output.
+
+`newborn_muscles --plasticity` now uses graded APL (`--apl-gain`, default 1024).
+
+## 2026-10-13 — brain map (`noesis.viz.brain_map`)
+
+Every downloaded neuron as a dot that lights up when it fires, written live by
+`newborn_muscles --brain-map FILE` and drawn by `python -m noesis.viz.brain_map --watch FILE`.
+The tables have no neuron positions, so the layout is **schematic**: each neuron sits around a hand-placed
+point for its main region (`Top in/out region`) on its own side, brain above, nerve cord below. A
+`--coords` CSV (`root_id,x,y,z`) switches to real positions if one is downloaded. 9,477 neurons have no
+synapses in the table (`NO_CONS`); they still fire from background noise and are drawn apart.

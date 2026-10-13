@@ -39,3 +39,13 @@ def test_adaptation_lowers_rate_of_strongly_driven_neuron():
     base, _ = simulate(W, 1000.0, params=LIFParams(da=0.0), **drive)
     adapted, _ = simulate(W, 1000.0, params=LIFParams(da=0.5), **drive)
     assert 0 < len(adapted) < 0.8 * len(base)
+
+
+def test_continuous_inhibitory_current_silences_a_driven_neuron():
+    W = sparse.csr_matrix((1, 1))
+    drive = {"stim_idx": np.array([0]), "stim_rate_hz": 200.0, "stim_weight": 60.0}
+    free, _ = simulate(W, 500.0, **drive)
+    from noesis.lif import LIFNetwork
+    net = LIFNetwork(W)
+    held, _ = net.run(500.0, np.array([0]), 200.0, 60.0, current_idx=np.array([0]), current_mv_per_ms=-5.0)
+    assert len(free) > 10 and len(held) < 0.2 * len(free)

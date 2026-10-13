@@ -18,18 +18,26 @@ import numpy as np
 
 from noesis.connectome import load_all_pairs, load_cached
 from noesis.lif import LIFNetwork, LIFParams
-from noesis.mushroom_body import DopamineGatedPlasticity, populations, with_weak_pathway_edges
+from noesis.mushroom_body import (
+    DopamineGatedPlasticity,
+    GradedAPL,
+    populations,
+    with_weak_pathway_edges,
+)
 
 CHUNK_MS = 5.0
 
 
-def _run(net, plast, pops, ms, drive_idx, rate, weight, learn):
+def _run(net, plast, pops, ms, drive_idx, rate, weight, learn, apl=None):
     """Run ``ms`` ms; return mean Hz of (KC, MBON, DAN) populations and per-neuron spike counts."""
     plast.enabled = learn
     counts = np.zeros(net.n)
+    cur = {}
     for _ in range(round(ms / CHUNK_MS)):
-        _, sp = net.run(CHUNK_MS, drive_idx=drive_idx, drive_rate_hz=rate, drive_weight=weight)
+        _, sp = net.run(CHUNK_MS, drive_idx=drive_idx, drive_rate_hz=rate, drive_weight=weight, **cur)
         plast.step(sp, CHUNK_MS)
+        if apl is not None:
+            cur = apl.current(sp, CHUNK_MS)
         counts += np.bincount(sp, minlength=net.n)
     sec = ms * 1e-3
     hz = lambda idx: counts[idx].sum() / max(len(idx), 1) / sec
@@ -46,6 +54,7 @@ def main() -> None:
     ap.add_argument("--glomeruli", type=int, default=5, help="glomeruli (receptor types) per odour")
     ap.add_argument("--odor-hz", type=float, default=80.0)
     ap.add_argument("--adapt", type=float, default=1.0)
+    ap.add_argument("--apl-gain", type=float, default=0.0, help="0 = spiking APL; >0 = graded APL")
     ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()
 
@@ -57,6 +66,7 @@ def main() -> None:
           f"DAN {len(pops.dan)} | edges {cn.W.nnz} -> {W.nnz} (+{W.nnz - cn.W.nnz} weak olfactory/MB)")
 
     net = LIFNetwork(W, LIFParams(dt=0.5, da=a.adapt), seed=a.seed)
+    apl = GradedAPL(net, pops, gain=a.apl_gain) if a.apl_gain > 0 else None
     plast = DopamineGatedPlasticity(net, pops, eta=a.eta)
     print(f"plastic KC->MBON synapses: {len(plast.pos)}")
 
@@ -73,7 +83,7 @@ def main() -> None:
     def test(label):
         out, active = {}, {}
         for name, idx in odor.items():
-            out[name], cnt = _run(net, plast, pops, a.test_ms, idx, a.odor_hz, 400.0, learn=False)
+            out[name], cnt = _run(net, plast, pops, a.test_ms, idx, a.odor_hz, 400.0, learn=False, apl=apl)
             active[name] = cnt[pops.kc] > 0
             _run(net, plast, pops, 300.0, None, 0.0, 0.0, learn=False)  # let activity settle
         print(f"{label:10s} KC / MBON / DAN Hz  odour A: {out['A'][0]:5.2f} {out['A'][1]:6.2f} {out['A'][2]:5.2f}"
@@ -95,7 +105,7 @@ def main() -> None:
         rate = np.concatenate([np.full(len(odor["A"]), a.odor_hz),
                                np.full(len(reward), 60.0 if a.reward == "direct" else 200.0)])
         drive = (idx, rate, 400.0)
-    (kc, mb, da), _ = _run(net, plast, pops, a.train_ms, *drive, learn=True)
+    (kc, mb, da), _ = _run(net, plast, pops, a.train_ms, *drive, learn=True, apl=apl)
     print(f"training ({a.reward}): KC {kc:.2f} Hz, MBON {mb:.2f} Hz, DAN {da:.2f} Hz | "
           f"plastic weights at {plast.mean_weight_fraction:.3f} of connectome value", flush=True)
 

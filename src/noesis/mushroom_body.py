@@ -118,3 +118,43 @@ class DopamineGatedPlasticity:
     def mean_weight_fraction(self) -> float:
         """Mean current / connectome weight of the plastic synapses (1.0 = untouched)."""
         return float(np.mean(self.net.data[self.pos] / self.w0)) if len(self.pos) else 1.0
+
+
+class GradedAPL:
+    """The APL neuron as a non-spiking, graded inhibitor of all Kenyon cells.
+
+    The real APL does not fire action potentials: it depolarises with total Kenyon-cell input and
+    releases GABA continuously. A spiking APL saturates (~400 Hz in this model) and cannot scale its
+    inhibition, so its spiking output is removed and replaced by a continuous inhibitory input:
+
+        a      <- low-pass( sum_k  w(KC_k -> APL) * rate_k  /  sum_k w(KC_k -> APL) )      [Hz]
+        I_KC_i  = -gain * w_syn * syn(APL -> KC_i) * a                                    [mV/ms]
+
+    i.e. APL behaves like a synapse that "fires" at ``gain`` x the input-weighted Kenyon-cell rate.
+    ``gain`` is the one free parameter; it is calibrated to the Kenyon-cell sparseness of real flies.
+    """
+
+    def __init__(self, net, pops: MBPopulations, gain: float = 1.0, tau_ms: float = 10.0):
+        self.net, self.pops, self.gain, self.tau = net, pops, gain, tau_ms
+        n = net.n
+        rows = np.repeat(np.arange(n), np.diff(net.indptr))
+        is_apl = np.zeros(n, bool)
+        is_apl[pops.apl] = True
+        is_kc = np.zeros(n, bool)
+        is_kc[pops.kc] = True
+        # KC -> APL input weights and APL -> KC output synapse counts, read from the connectome
+        into = is_kc[rows] & is_apl[net.indices]
+        self.w_in = np.bincount(rows[into], weights=np.abs(net.data[into]), minlength=n)[pops.kc]
+        out = is_apl[rows] & is_kc[net.indices]
+        self.w_out = np.bincount(net.indices[out], weights=np.abs(net.data[out]), minlength=n)[pops.kc]
+        net.data[is_apl[rows]] = 0.0  # non-spiking: no spike-triggered output at all
+        self.level = 0.0  # APL activation, Hz-equivalent
+
+    def current(self, spike_idx: np.ndarray, window_ms: float) -> dict:
+        """Update APL from the last window's spikes; return ``LIFNetwork.run`` current arguments."""
+        counts = np.bincount(spike_idx, minlength=self.net.n)[self.pops.kc]
+        rate = counts / (window_ms * 1e-3)
+        drive = float(self.w_in @ rate / max(self.w_in.sum(), 1e-9))
+        self.level += (drive - self.level) * (1 - np.exp(-window_ms / self.tau))
+        mv_per_ms = -self.gain * self.net.p.w_syn * self.w_out * self.level * 1e-3
+        return {"current_idx": self.pops.kc, "current_mv_per_ms": mv_per_ms}
