@@ -39,8 +39,13 @@ def main() -> None:
     ap.add_argument("--video", type=Path, help="write an mp4 (slower)")
     a = ap.parse_args()
 
-    from flygym import Camera, Fly, SingleFlySimulation  # heavy import, keep local
-    from flygym import PhysicsError, preprogrammed
+    from flygym import (  # heavy import, keep local
+        Camera,
+        Fly,
+        PhysicsError,
+        SingleFlySimulation,
+        preprogrammed,
+    )
 
     cn = load_cached(a.data / "raw", a.data / "processed")
     net = LIFNetwork(cn.W, LIFParams(dt=a.dt_ms), seed=a.seed)
@@ -96,8 +101,8 @@ def main() -> None:
                 awake = True
             drive = {}
             if senses is not None:
-                drive = dict(drive_idx=senses.idx, drive_rate_hz=senses.drive(leg_states(obs)),
-                             drive_weight=400.0)
+                drive = {"drive_idx": senses.idx, "drive_rate_hz": senses.drive(leg_states(obs)),
+                         "drive_weight": 400.0}
             _, spikes = net.run(chunk_ms, background_hz=a.bg_hz,
                                 background_weight=a.bg_weight, **drive)
             r = rates.update(spikes, chunk_ms)
