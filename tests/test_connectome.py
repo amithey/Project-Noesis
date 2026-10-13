@@ -37,3 +37,13 @@ def test_rejects_connections_to_unknown_neurons(tiny):
     ).to_csv(tiny / "c.csv", index=False)
     with pytest.raises(ValueError):
         build_connectome(tiny / "n.csv", tiny / "c.csv")
+
+
+def test_nt_override_makes_apl_inhibitory_despite_its_prediction(tmp_path):
+    pd.DataFrame({"Root ID": [1, 2], "Predicted NT type": ["ACH", "ACH"],
+                  "Primary Cell Type": ["APL", "KCg"]}).to_csv(tmp_path / "n.csv", index=False)
+    pd.DataFrame({"pre_root_id": [1, 2], "post_root_id": [2, 1], "neuropil": ["MB", "MB"],
+                  "syn_count": [9, 9], "nt_type": [None, None]}).to_csv(tmp_path / "c.csv", index=False)
+    W = build_connectome(tmp_path / "n.csv", tmp_path / "c.csv").W.toarray()
+    assert W[0, 1] == -9   # APL -> KC inhibitory (GABAergic), whatever the table predicts
+    assert W[1, 0] == 9    # KC -> APL stays excitatory

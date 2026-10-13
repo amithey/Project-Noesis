@@ -16,13 +16,13 @@ is an assumption; the connectome supplies the topology and the initial weights o
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
 from scipy import sparse
 
-from noesis.connectome import DEFAULT_NT_SIGN, UNKNOWN_NT_SIGN, Connectome
+from noesis.connectome import Connectome, presynaptic_signs
 
 
 @dataclass(frozen=True)
@@ -32,6 +32,7 @@ class MBPopulations:
     kc: np.ndarray
     mbon: np.ndarray
     dan: np.ndarray
+    apl: np.ndarray = field(default_factory=lambda: np.zeros(0, int))
 
 
 def populations(neurons: pd.DataFrame) -> MBPopulations:
@@ -45,6 +46,7 @@ def populations(neurons: pd.DataFrame) -> MBPopulations:
         kc=where(sub.str.startswith("KC")),
         mbon=where(ctype.str.startswith("MBON")),
         dan=where(ctype.str.startswith(("PAM", "PPL", "PPM")) | cls.eq("mushroom_body_dopaminergic_neuron")),
+        apl=where(ctype.eq("APL")),
     )
 
 
@@ -54,13 +56,12 @@ def with_weak_pathway_edges(cn: Connectome, pairs: pd.DataFrame, pops: MBPopulat
     n = cn.n
     pre_set = np.zeros(n, bool)
     post_set = np.zeros(n, bool)
-    for idx in (pops.orn, pops.pn, pops.kc, pops.dan, pops.mbon):
+    for idx in (pops.orn, pops.pn, pops.kc, pops.dan, pops.mbon, pops.apl):
         pre_set[idx] = True
-    for idx in (pops.pn, pops.kc, pops.mbon, pops.dan):
+    for idx in (pops.pn, pops.kc, pops.mbon, pops.dan, pops.apl):
         post_set[idx] = True
     weak = pairs[(pairs["syn"] < min_syn) & pre_set[pairs["pre"]] & post_set[pairs["post"]]]
-    sign = (cn.neurons["Predicted NT type"].map(DEFAULT_NT_SIGN).fillna(UNKNOWN_NT_SIGN)
-            .to_numpy(np.float32))
+    sign = presynaptic_signs(cn.neurons)
     extra = sparse.csr_matrix(
         (weak["syn"].to_numpy(np.float32) * sign[weak["pre"].to_numpy()],
          (weak["pre"].to_numpy(), weak["post"].to_numpy())), shape=(n, n))

@@ -19,6 +19,23 @@ DEFAULT_NT_SIGN: dict[str, int] = {
 }
 UNKNOWN_NT_SIGN = 1
 
+# Predicted neurotransmitters that contradict established biology, by cell type. They override the
+# table's prediction everywhere. APL, the mushroom body's feedback interneuron, is GABAergic (Liu &
+# Davis 2009) but predicted cholinergic here, which turned its global feedback into excitation.
+NT_OVERRIDES: dict[str, str] = {"APL": "GABA"}
+
+
+def presynaptic_signs(neurons: pd.DataFrame, sign_map: dict[str, int] | None = None,
+                      unknown_sign: int = UNKNOWN_NT_SIGN) -> np.ndarray:
+    """+1 / -1 / 0 per neuron from its predicted neurotransmitter, with ``NT_OVERRIDES`` applied."""
+    sign_map = DEFAULT_NT_SIGN if sign_map is None else sign_map
+    nt = neurons["Predicted NT type"].copy()
+    ctype = neurons.get("Primary Cell Type")
+    if ctype is not None:
+        for cell_type, override in NT_OVERRIDES.items():
+            nt[ctype.eq(cell_type)] = override
+    return nt.map(sign_map).fillna(unknown_sign).to_numpy(np.float32)
+
 
 @dataclass(frozen=True)
 class Connectome:
@@ -59,9 +76,7 @@ def build_connectome(
     if np.isnan(pre.astype(float)).any() or np.isnan(post.astype(float)).any():
         raise ValueError("connections reference root ids missing from the neuron table")
 
-    sign = (
-        neurons["Predicted NT type"].map(sign_map).fillna(unknown_sign).to_numpy(np.float32)
-    )
+    sign = presynaptic_signs(neurons, sign_map, unknown_sign)
     weight = pairs["syn_count"].to_numpy(np.float32) * sign[pre]
     W = sparse.csr_matrix((weight, (pre, post)), shape=(len(neurons), len(neurons)))
     return Connectome(neurons=neurons.reset_index(drop=True), W=W)
@@ -72,7 +87,11 @@ def load_cached(raw_dir: Path, cache_dir: Path, **kwargs) -> Connectome:
     nfile = cache_dir / "neurons.parquet"
     wfile = cache_dir / f"W_min{kwargs.get('min_syn', 5)}.npz"
     if nfile.exists() and wfile.exists():
-        return Connectome(pd.read_parquet(nfile), sparse.load_npz(wfile).tocsr())
+        neurons, W = pd.read_parquet(nfile), sparse.load_npz(wfile).tocsr()
+        sign = presynaptic_signs(neurons)  # re-sign cached rows (the cache predates overrides)
+        rows = np.repeat(np.arange(W.shape[0]), np.diff(W.indptr))
+        W.data = np.abs(W.data) * sign[rows]
+        return Connectome(neurons, W)
     cn = build_connectome(raw_dir / "neurons.csv", raw_dir / "connections_princeton.csv", **kwargs)
     cache_dir.mkdir(parents=True, exist_ok=True)
     cn.neurons.to_parquet(nfile)
