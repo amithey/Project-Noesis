@@ -32,6 +32,8 @@ def main() -> None:
     ap.add_argument("--gain", type=float, default=0.8, help="joint swing (rad) at saturation")
     ap.add_argument("--r0", type=float, default=100.0, help="rate difference (Hz) giving ~76%% swing")
     ap.add_argument("--slew", type=float, default=8.0, help="max joint-target speed (rad/s)")
+    ap.add_argument("--adapt", type=float, default=1.0,
+                    help="spike-frequency adaptation, mV per spike (0 = off)")
     ap.add_argument("--dt-ms", type=float, default=0.5, help="LIF time step")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--no-senses", action="store_true", help="blind brain: no sensory feedback")
@@ -48,7 +50,7 @@ def main() -> None:
     )
 
     cn = load_cached(a.data / "raw", a.data / "processed")
-    net = LIFNetwork(cn.W, LIFParams(dt=a.dt_ms), seed=a.seed)
+    net = LIFNetwork(cn.W, LIFParams(dt=a.dt_ms, da=a.adapt), seed=a.seed)
 
     # contact sensors on every leg segment (default is tarsi only, which do not touch down)
     fly = Fly(init_pose="stretch", control="position", enable_adhesion=True,
@@ -92,7 +94,7 @@ def main() -> None:
     target = rest.copy()
     t_wall = time.time()
     awake = False
-    motion, height = [], []
+    motion, height, up = [], [], []
     for k in range(round(a.seconds * 1e3 / chunk_ms)):
         t = k * chunk_ms * 1e-3
         if t >= a.birth:
@@ -125,6 +127,7 @@ def main() -> None:
         if awake:
             motion.append(np.abs(obs["joints"][0] - rest).mean())
             height.append(obs["fly"][0][2])
+            up.append(obs["cardinal_vectors"][2][2])  # thorax z-axis . world up (+1 upright)
         if k % 40 == 0:
             moved = np.abs(obs["joints"][0] - rest).max()
             pos = obs["fly"][0]
@@ -133,7 +136,8 @@ def main() -> None:
                   f"active neurons={int(net.nact[0])}", flush=True)
     if motion:
         print(f"SUMMARY awake: mean joint offset {np.mean(motion):.2f} rad, "
-              f"body height {np.mean(height):.2f} mm (min {np.min(height):.2f}, max {np.max(height):.2f})")
+              f"body height {np.mean(height):.2f} mm (min {np.min(height):.2f}, max {np.max(height):.2f}), "
+              f"uprightness mean {np.mean(up):+.2f} min {np.min(up):+.2f} (+1 upright, -1 on its back)")
     if cam:
         a.video.parent.mkdir(parents=True, exist_ok=True)
         cam.save_video(a.video)
