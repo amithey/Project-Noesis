@@ -299,3 +299,46 @@ The tables have no neuron positions, so the layout is **schematic**: each neuron
 point for its main region (`Top in/out region`) on its own side, brain above, nerve cord below. A
 `--coords` CSV (`root_id,x,y,z`) switches to real positions if one is downloaded. 9,477 neurons have no
 synapses in the table (`NO_CONS`); they still fire from background noise and are drawn apart.
+
+## 2026-10-13 — where MBON input comes from (`compare_mb_coverage.py`)
+
+Per-synapse neuropil labels in `connections_princeton.csv` (BANC, all pairs incl. < 5 synapses):
+
+| | synapses onto MBONs | from Kenyon cells |
+|---|---|---|
+| inside the mushroom body (MB_*) | 10,799 (20%) | **71%** |
+| outside (mostly CRE, SMP, LAL) | 42,676 (80%) | 11% |
+
+- **Model limitation:** at their dendrites in the mushroom body, MBONs do get most input from Kenyon cells,
+  as expected. But 80% of their synapses are outside the mushroom body (axonal regions). A point-neuron LIF
+  gives those the same weight as dendritic input, which drowns the Kenyon-cell signal. This, not only the
+  data, explains why KC->MBON plasticity barely moves MBON output.
+- **Possible data limitation (unverified):** a Kenyon cell has a median of 9.6 output synapses in this table and
+  2.8 onto MBONs; an MBON receives ~121 KC synapses. These look very low for Kenyon cells, which suggests
+  under-detected synapses in the dense mushroom-body lobes of BANC. `compare_mb_coverage` reports the same
+  numbers for any other dataset (e.g. FAFB) to settle this.
+
+## 2026-10-13 — BANC vs FAFB: the synapse shortfall is real (`compare_mb_coverage --regions`)
+
+FAFB v783 downloaded from Codex (`connections_princeton.csv.gz`, `consolidated_cell_types.csv.gz`, plus the
+unthresholded Buhmann table). All tables include 1-synapse rows, so the comparison is like for like.
+
+| | BANC | FAFB (Princeton) | FAFB (Buhmann, unthresholded) |
+|---|---|---|---|
+| output synapses per Kenyon cell | 9.6 | 129.5 | 190.2 |
+| KC->MBON synapses per KC | 2.8 | 43.8 | 49.6 |
+| KC->MBON synapses per MBON | 121 | 2,364 | 2,674 |
+| MBON input inside the mushroom body | 20% | 59% | 61% |
+| KC share of all MBON input | 23% | 63% | 67% |
+
+Synapse totals per region, BANC / FAFB: mushroom body 0.20, lateral horn 0.21, optic lobe 0.28,
+SMP/SIP/SLP/CRE 0.29, central complex 0.37, GNG 0.39, antennal lobe 0.62 (whole tables 0.46, but BANC's also
+contains the nerve cord, which FAFB lacks).
+
+- **BANC under-counts synapses throughout the brain** (to 20-60% of FAFB), worst in the mushroom body and
+  lateral horn, and 13-20x for Kenyon-cell synapses specifically. The empty MBON responses and the missing
+  learning effect are explained by the data, not only by the model.
+- **Consequence for the whole simulation:** the LIF parameters (0.275 mV per synapse, 7 mV to threshold) come
+  from Shiu et al., who calibrated them on FAFB counts. On BANC counts the brain is ~3x weaker, consistent with
+  signals dying after 2-3 hops, MN9 needing 200 Hz instead of 100 Hz, and the need for strong background drive.
+  (Not yet tested directly.)
