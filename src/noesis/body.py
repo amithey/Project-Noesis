@@ -36,6 +36,15 @@ LEGS = ("LF", "LM", "LH", "RF", "RM", "RH")
 DOFS = ("Coxa", "Coxa_roll", "Coxa_yaw", "Femur", "Femur_roll", "Tibia", "Tarsus1")
 JOINTS = tuple(f"joint_{leg}{d}" for leg in LEGS for d in DOFS)  # NeuroMechFly leg order
 
+# Solid body: every leg segment collides with the head, eyes, thorax and abdomen, so a leg cannot
+# pass through them (NeuroMechFly lets legs collide only with each other). The body parts are
+# meshes, which are too slow to collide every step (24x slower), so each gets an invisible
+# ellipsoid proxy sized from the mesh's bounding box. Coxae are left out: fused to the thorax.
+BODY_GEOMS = ("Thorax", "Head", "LEye", "REye", "A1A2", "A3", "A4", "A5", "A6")
+LEG_GEOMS = tuple(f"{side}{pos}{seg}" for side in "LR" for pos in "FMH"
+                  for seg in ("Femur", "Tibia", "Tarsus1", "Tarsus2", "Tarsus3", "Tarsus4", "Tarsus5"))
+PROXY_SCALE = 0.9  # proxies are slightly smaller than the mesh so the resting posture is not in contact
+
 
 @dataclass(frozen=True)
 class BodyParams:
@@ -76,7 +85,8 @@ def joint_limits(params: BodyParams | None = None) -> dict[str, tuple[float, flo
     return out
 
 
-def make_fly(params: BodyParams | None = None, spawn_pos=(0.0, 0.0, 1.5), floor="all", **fly_kwargs):
+def make_fly(params: BodyParams | None = None, spawn_pos=(0.0, 0.0, 1.5), floor="all",
+             body_proxies=True, **fly_kwargs):
     """A NeuroMechFly body in the standing posture with joint limits and tissue servos."""
     from flygym import Fly
     from flygym.state import KinematicPose
@@ -90,12 +100,104 @@ def make_fly(params: BodyParams | None = None, spawn_pos=(0.0, 0.0, 1.5), floor=
         actuator_gain=p.servo_kp, actuator_forcerange=p.servo_forcerange,
         joint_damping=p.joint_damping, **kwargs,
     )
+    if body_proxies:
+        _add_body_proxies(fly)
     for name, (lo, hi) in joint_limits(p).items():
         joint = fly.model.find("joint", name)
         joint.limited = "true"
         joint.range = (lo, hi)
         joint.solreflimit = (p.limit_solref, 1.0)
     return fly
+
+
+def _add_body_proxies(fly) -> None:
+    """Add invisible ellipsoid proxies (sized from each mesh's bounding box) for distance queries.
+
+    They have no contacts: making them collide dynamically crashed the physics (``BADQACC``) even
+    in plain standing, because stiff servos and tiny segment masses do not mix with extra contact
+    pairs. ``CollisionGuard`` measures leg-to-proxy distances instead.
+    """
+    from dm_control import mjcf
+
+    phys = mjcf.Physics.from_mjcf_model(fly.model)  # compile once to read the mesh bounding boxes
+    named = phys.named.model
+    for g in BODY_GEOMS:
+        key = g if g in named.geom_size.axes.row.names else f"{fly.name}/{g}"
+        geom = fly.model.find("geom", g)
+        geom.parent.add(
+            "geom", name=f"proxy_{g}", type="ellipsoid",
+            size=PROXY_SCALE * np.asarray(named.geom_size[key]),
+            pos=named.geom_pos[key], quat=named.geom_quat[key],
+            contype=0, conaffinity=0, rgba=(0, 0, 0, 0), group=5,
+            mass=0,  # distance queries only: must not add inertia to the body
+            dclass=geom.dclass,  # else FlyGym mistakes the proxy for part of the floor
+        )
+
+
+class CollisionGuard:
+    """Keeps muscle commands from driving a leg into the head, eyes, thorax or abdomen.
+
+    A stiff tissue servo overpowers contact forces (segment inertias are ~1e-8), so contact alone
+    cannot stop a leg from entering the head, and extra contact pairs destabilise the physics. A real
+    muscle cannot push a leg through its own body, so the commanded equilibrium pose is shortened
+    along the line from the current pose to the last pose that keeps a clearance from the body
+    proxies. Distances are exact (``mj_geomDistance``); leg-leg collisions stay with FlyGym.
+    """
+
+    def __init__(self, physics, fly, joint_names, buffer_mm: float = 0.1, slack_mm: float = 0.005,
+                 steps: int = 8, reach_mm: float = 0.6):
+        import mujoco
+
+        self._mj = mujoco
+        self.model = physics.model.ptr
+        self.live = physics.data.ptr
+        self.scratch = mujoco.MjData(self.model)
+        obj = mujoco.mjtObj.mjOBJ_GEOM
+        ident = lambda g: mujoco.mj_name2id(self.model, obj, f"{fly.name}/{g}")
+        self.qadr = np.array([
+            self.model.jnt_qposadr[mujoco.mj_name2id(
+                self.model, mujoco.mjtObj.mjOBJ_JOINT, f"{fly.name}/{j}")] for j in joint_names])
+        self.pairs = [(ident(leg), ident(f"proxy_{b}")) for leg in LEG_GEOMS for b in BODY_GEOMS]
+        self.buffer, self.slack, self.steps, self.reach = buffer_mm, slack_mm, steps, reach_mm
+        self.shortened = 0  # how many commands had to be shortened (diagnostic)
+        self._fromto = np.zeros(6)
+
+    def _gap(self, data) -> float:
+        """Smallest signed distance (mm, negative = overlap) from any leg segment to a body proxy."""
+        d = self.reach
+        best = d
+        for g1, g2 in self.pairs:
+            best = min(best, self._mj.mj_geomDistance(self.model, data, g1, g2, d, self._fromto))
+        return best
+
+    def live_gap(self) -> float:
+        """Current leg-to-body gap in the running simulation (use after a physics step)."""
+        return self._gap(self.live)
+
+    def _clearance(self, q: np.ndarray) -> float:
+        d = self.scratch
+        d.qpos[:] = self.live.qpos
+        d.qpos[self.qadr] = q
+        self._mj.mj_kinematics(self.model, d)
+        return self._gap(d)
+
+    def filter(self, current: np.ndarray, target: np.ndarray) -> np.ndarray:
+        """Largest fraction of the way from ``current`` to ``target`` that keeps the clearance.
+
+        A pose is acceptable if no leg comes closer than ``buffer_mm`` to the body -- or, when it is
+        already closer than that, no closer than now.
+        """
+        need = min(self.buffer, self._clearance(current)) - self.slack
+        if self._clearance(target) >= need:
+            return target
+        best = 0.0
+        for k in range(1, self.steps):
+            frac = k / self.steps
+            if self._clearance(current + frac * (target - current)) < need:
+                break
+            best = frac
+        self.shortened += 1
+        return current + best * (target - current)
 
 
 class MuscleModel:

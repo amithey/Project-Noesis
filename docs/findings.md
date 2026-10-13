@@ -158,3 +158,56 @@ Goal: the body only supplies physics (skeleton, joint limits, muscles, tissue); 
 
 The fly now stays upright (before: +0.71 / +0.29 with the old position-target mapping). After the brain
 wakes it settles into a low crouch; it does not walk. Single runs: not statistically established.
+
+## 2026-10-13 — leg through the body (the "leg in the eye" problem)
+
+FlyGym collides legs only with other legs; the head, eyes, thorax and abdomen are not in the self-collision
+set, so a leg passes through them.
+
+- Measured (10 random extreme poses of both front legs, reached over 100 ms): **worst leg-to-body overlap
+  520 um** (a front femur inside the eye/thorax ellipsoid). Same 3 poses: 464 um unguarded.
+- **Dynamic solid-body contacts do not work here.** Collision pairs leg x (ellipsoid proxy of each body part)
+  slowed the physics 24x (mesh bodies; 2x with proxies) and then **crashed the simulation in plain standing**
+  (`BADQACC`) at two drop heights, while the same body without them stands (z 1.12 mm). Making the contacts
+  stiffer (absolute spring/damper), softer or giving them a 0.2 mm skin did not reduce the overlap
+  (350-600 um) and 5 of 8 poses blew up with the skin. Cause: the tissue servo (force up to 65) overpowers any
+  contact, whose strength scales with the ~1e-8 segment inertia.
+- **Shipped instead: `CollisionGuard`.** Massless ellipsoid proxies (sized from each mesh's bounding box,
+  0.9x) exist only for exact distance queries (`mj_geomDistance`); the commanded equilibrium pose is shortened
+  to the last pose that keeps a 0.1 mm clearance (or no closer than now). Result: **464 -> 271 um** on the
+  same 3 poses. **This reduces, but does not eliminate, the overlap**: the leg can still enter the eye by up to
+  ~0.27 mm in adversarial poses (the proxies already overlap the legs by ~80 um in the standing pose).
+- A bug found on the way: the proxy geoms initially had default density and **added mass to the body**, which
+  silently changed the whole physics (crouch at 0.6 mm instead of standing at 1.1 mm); they are massless now.
+
+## 2026-10-13 — intrinsic learning in the mushroom body (`mushroom_body.py`, `mb_conditioning.py`)
+
+Population in the BANC table: 4,139 Kenyon cells, 104 MBONs, 318 dopaminergic neurons, 3,007 olfactory
+receptor neurons (56 glomerulus types), 699 antennal-lobe projection neurons. **Finding:** the global
+`min_syn=5` filter keeps only 778 KC->MBON pairs; most are 1-4 synapses, so the learning substrate was
+mostly deleted. `with_weak_pathway_edges` restores the sub-threshold pairs inside the olfactory/MB pathway
+(+13,855 edges, 3,109 plastic KC->MBON synapses).
+
+Rule (assumption): dopamine-paired depression of KC->MBON, `dw = -eta * trace(KC) * gate * w`, where the
+gate is the brain's own DAN rate above its slow baseline plus 5 Hz; recovery toward the connectome value.
+Nothing outside the brain supplies a reward.
+
+Assay (brain only; odour = ORNs of 5 glomeruli, A and B disjoint; MBON response before/after, plasticity
+frozen during tests):
+
+| reward | DAN rate in training | plastic weights | MBON response A | MBON response B |
+|---|---|---|---|---|
+| direct DAN stimulation (60 Hz) | 73 Hz | 0.54 | -56% | -48% |
+| none (control) | 1.2 Hz | 1.00 (untouched) | -15% | +0% |
+| sugar-taste neurons (200 Hz) | 1.2 Hz | 1.00 (untouched) | -18% | -1% |
+
+- The mechanism is dopamine-gated (control untouched). A first version was **not**: the dopamine baseline
+  started at 0, so 1 Hz of DAN noise looked like reward and all three conditions gave the same ~-65%.
+- **No odour specificity**: 77% of the Kenyon cells fire for either odour (overlap 95-97% of the union).
+  The connectome network does not produce the sparse Kenyon-cell code that specific learning needs.
+- **The natural reward path is broken**: sugar-taste neurons at 200 Hz leave the DANs at 1.2 Hz, so nothing in
+  the world currently drives dopamine through the connectome. The -15% / -18% change for odour A with
+  untouched weights is a repeated-exposure effect of the dynamics, not learning.
+- So the fly cannot yet "learn by itself" from the world: the plasticity exists and is validated against
+  its controls, but its two prerequisites (sparse odour code, world -> dopamine pathway) do not hold in this
+  LIF model.

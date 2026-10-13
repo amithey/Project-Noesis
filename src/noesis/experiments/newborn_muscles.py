@@ -17,20 +17,30 @@ from pathlib import Path
 import numpy as np
 
 from noesis.balance import BalanceMap
-from noesis.body import BodyParams, MuscleModel, make_fly
-from noesis.connectome import load_cached
+from noesis.body import BodyParams, CollisionGuard, MuscleModel, make_fly
+from noesis.connectome import load_all_pairs, load_cached
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_muscle_matrices
+from noesis.mushroom_body import DopamineGatedPlasticity, populations, with_weak_pathway_edges
 from noesis.sensory import LEGS, LegState, SensoryMap
 
 
-def _world_kwargs() -> dict:
+def _world_kwargs(arena=None) -> dict:
     """The shared physical world (floor, gravity, contact) when available."""
     try:
         from noesis import world
     except ImportError:
+        return {} if arena is None else {"arena": arena}
+    return {"arena": arena if arena is not None else world.floor_arena(), "gravity": world.GRAVITY}
+
+
+def _merge(parts) -> dict:
+    """Combine drive parts that share one event weight each into ``LIFNetwork.run`` arguments."""
+    if not parts:
         return {}
-    return {"arena": world.floor_arena(), "gravity": world.GRAVITY}
+    return {"drive_idx": np.concatenate([p[0] for p in parts]),
+            "drive_rate_hz": np.concatenate([p[1] for p in parts]),
+            "drive_weight": np.concatenate([np.full(len(p[0]), p[2]) for p in parts])}
 
 
 def main() -> None:
@@ -45,6 +55,13 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--no-senses", action="store_true", help="no leg sensory feedback")
     ap.add_argument("--no-balance", action="store_true", help="no gravity/rotation senses")
+    ap.add_argument("--arena", choices=("empty", "habitat"), default="empty",
+                    help="habitat = the world with odours, food, light, obstacles (needs noesis.habitat)")
+    ap.add_argument("--no-environment-senses", action="store_true", help="habitat visible but not sensed")
+    ap.add_argument("--plasticity", action="store_true",
+                    help="intrinsic dopamine-gated learning at the mushroom-body KC->MBON synapses")
+    ap.add_argument("--eta", type=float, default=5e-4, help="plasticity strength")
+    ap.add_argument("--no-guard", action="store_true", help="do not keep muscle commands collision-free")
     ap.add_argument("--viewer", action="store_true", help="live MuJoCo window")
     ap.add_argument("--video", type=Path, help="write an mp4 (slower)")
     a = ap.parse_args()
@@ -52,16 +69,30 @@ def main() -> None:
     from flygym import Camera, PhysicsError, SingleFlySimulation, preprogrammed
 
     cn = load_cached(a.data / "raw", a.data / "processed")
-    net = LIFNetwork(cn.W, LIFParams(dt=a.dt_ms, da=a.adapt), seed=a.seed)
+    W, pops = cn.W, populations(cn.neurons)
+    if a.plasticity:  # the learning substrate is made of sub-threshold (1-4 synapse) pairs
+        pairs = load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons)
+        W = with_weak_pathway_edges(cn, pairs, pops)
+    net = LIFNetwork(W, LIFParams(dt=a.dt_ms, da=a.adapt), seed=a.seed)
+    plast = DopamineGatedPlasticity(net, pops, eta=a.eta) if a.plasticity else None
+    habitat_world = a.arena == "habitat"
+    arena = None
+    if habitat_world:
+        from noesis.environment_senses import EnvironmentSenses, merge_drive, mouth_position
+        from noesis.habitat import habitat_arena
+        arena = habitat_arena()
+    environmental_input = habitat_world and not a.no_environment_senses
 
     params = BodyParams()
     fly = make_fly(params, spawn_pos=(0.0, 0.0, 1.2),
-                   contact_sensor_placements=preprogrammed.get_collision_geometries("legs"))
+                   contact_sensor_placements=preprogrammed.get_collision_geometries("legs"),
+                   enable_olfaction=environmental_input, enable_vision=environmental_input,
+                   vision_refresh_rate=20)
     cam = None
     if a.video:
         cam = Camera(attachment_point=fly.model.worldbody, camera_name="camera_left",
                      targeted_fly_names=fly.name, play_speed=0.1, fps=30)
-    sim = SingleFlySimulation(fly=fly, cameras=[cam] if cam else [], timestep=1e-4, **_world_kwargs())
+    sim = SingleFlySimulation(fly=fly, cameras=[cam] if cam else [], timestep=1e-4, **_world_kwargs(arena))
     try:
         from noesis.world import configure_floor_contacts
         configure_floor_contacts(sim)
@@ -78,6 +109,8 @@ def main() -> None:
           f"{int((g_pos.getnnz(axis=1) > 0).sum())} joints with an agonist, "
           f"{int((g_neg.getnnz(axis=1) > 0).sum())} with an antagonist")
 
+    guard = None if a.no_guard else CollisionGuard(sim.physics, fly, names)
+    environment = EnvironmentSenses(cn.neurons, fly.retina, seed=0) if environmental_input else None
     senses = None if a.no_senses else SensoryMap(cn.neurons)
     balance = None if a.no_balance else BalanceMap(cn.neurons)
     j = {(leg, d): names.index(f"joint_{leg}{d}") for leg in LEGS for d in ("Coxa", "Femur", "Tibia")}
@@ -90,18 +123,17 @@ def main() -> None:
                               ang[j[leg, "Femur"]], load[LEGS.index(leg)]) for leg in LEGS}
 
     def sensory_drive(obs):
-        idx, rate = [], []
+        parts = []  # (neuron indices, rates in Hz, event weight)
         if senses is not None:
-            idx.append(senses.idx)
-            rate.append(senses.drive(leg_states(obs)))
+            parts.append((senses.idx, senses.drive(leg_states(obs)), 400.0))
         if balance is not None:
             cv = obs["cardinal_vectors"]
-            idx.append(balance.idx)
-            rate.append(balance.drive(np.array([cv[0][2], cv[1][2], cv[2][2]]), obs["fly"][3]))
-        if not idx:
-            return {}
-        return {"drive_idx": np.concatenate(idx), "drive_rate_hz": np.concatenate(rate),
-                "drive_weight": 400.0}
+            parts.append((balance.idx, balance.drive(
+                np.array([cv[0][2], cv[1][2], cv[2][2]]), obs["fly"][3]), 400.0))
+        if environment is not None:
+            rates_env, _ = environment.drive(obs, arena.habitat, mouth_position(sim, fly), sim.curr_time)
+            parts.append((environment.idx, rates_env, 100.0))
+        return merge_drive(parts) if parts and habitat_world else _merge(parts)
 
     viewer = None
     if a.viewer:
@@ -122,7 +154,11 @@ def main() -> None:
                 awake = True
             _, spikes = net.run(chunk_ms, background_hz=a.bg_hz, background_weight=a.bg_weight,
                                 **sensory_drive(obs))
+            if plast is not None:
+                plast.step(spikes, chunk_ms)
             command = muscles.step(rates.update(spikes, chunk_ms), chunk_ms)
+            if guard is not None:
+                command = guard.filter(obs["joints"][0], command)
         try:
             for _ in range(phys_per_chunk):
                 obs, *_ = sim.step({"joints": command, "adhesion": adhesion})
@@ -144,6 +180,8 @@ def main() -> None:
             print(f"t={t:5.2f}s wall={time.time() - t_wall:6.1f}s  fly xyz=({pos[0]:.2f},{pos[1]:.2f},"
                   f"{pos[2]:.2f}) mm  max joint offset={np.abs(obs['joints'][0] - rest).max():.2f} rad  "
                   f"muscle activation mean +{muscles.a_pos.mean():.2f}/-{muscles.a_neg.mean():.2f}  "
+                  f"DAN {0.0 if plast is None else plast.dopamine:.1f} Hz, "
+                  f"plastic weights {1.0 if plast is None else plast.mean_weight_fraction:.3f}  "
                   f"active neurons={int(net.nact[0])}", flush=True)
     if motion:
         print(f"SUMMARY awake: mean joint offset {np.mean(motion):.2f} rad, "

@@ -4,8 +4,9 @@
 2. Range of motion: full agonist (then antagonist) activation of one leg's muscles must bring
    its joints to the extreme and never push any beyond the limit (other legs stand).
 3. Floor: the deepest floor penetration seen in every run.
-4. Information only: a command 0.3 rad *beyond* the range (the muscle model never issues one),
-   to show how hard the joint stop is.
+4. Leg through body (``--self-collision-poses N``): random extreme poses of both front legs,
+   reached over 100 ms like muscle activation; worst leg-to-body overlap with and without the
+   collision guard.
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ import argparse
 
 import numpy as np
 
-from noesis.body import BodyParams, MuscleModel, make_fly
+from noesis.body import BodyParams, CollisionGuard, MuscleModel, make_fly
 
 
 def _sim(params: BodyParams):
@@ -46,6 +47,32 @@ def _floor_depth_mm(sim) -> float:
     return float(max(0.0, -c.dist[: d.ncon][on_floor].min())) if on_floor.any() else 0.0
 
 
+def leg_through_body_test(poses: int, guarded: bool, seed: int = 0) -> float:
+    """Worst leg-to-body overlap (mm, >= 0) over random extreme front-leg poses."""
+    from scipy import sparse
+
+    fly, sim = _sim(BodyParams())
+    names = list(fly.actuated_joints)
+    zero = sparse.csr_matrix((len(names), 1))
+    m = MuscleModel(zero, zero, names)
+    guard = CollisionGuard(sim.physics, fly, names)
+    front = np.array([nm.startswith(("joint_LF", "joint_RF")) for nm in names])
+    rng = np.random.default_rng(seed)
+    worst = 0.0
+    for _ in range(poses):
+        pick = rng.random(len(names)) < 0.5
+        ext = np.where(front, np.where(pick, m.hi_eq, m.lo_eq), m.stand)
+        obs, _ = sim.reset()
+        cmd = m.stand
+        for k in range(2400):
+            if k % 50 == 0:  # one muscle update per 5 ms, ramping to the extreme over 100 ms
+                ramp = m.stand + (ext - m.stand) * min(1.0, k / 1000)
+                cmd = guard.filter(obs["joints"][0], ramp) if guarded else ramp
+            obs, *_ = sim.step({"joints": cmd, "adhesion": np.ones(6, int)})
+            worst = max(worst, -guard.live_gap())
+    return worst
+
+
 def _run(sim, command: np.ndarray, seconds: float):
     obs, _ = sim.reset()
     joints = obs["joints"][0]
@@ -65,14 +92,21 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--stand-s", type=float, default=0.6)
     ap.add_argument("--push-s", type=float, default=0.4)
-    ap.add_argument("--beyond", action="store_true", help="also run the informational test 4")
-    ap.add_argument("--limit-solref", type=float, default=BodyParams.limit_solref)
     ap.add_argument("--legs", default="LF,RM,LH", help="legs to test one at a time")
     ap.add_argument("--damping", type=float, default=BodyParams.joint_damping)
+    ap.add_argument("--self-collision-poses", type=int, default=0,
+                    help="run only the leg-through-body test with this many random poses")
     ap.add_argument("--tolerance", type=float, default=0.05, help="rad beyond limit allowed")
     a = ap.parse_args()
 
-    params = BodyParams(limit_solref=a.limit_solref, joint_damping=a.damping)
+    if a.self_collision_poses:
+        for guarded in (False, True):
+            worst = leg_through_body_test(a.self_collision_poses, guarded)
+            print(f"== 4. leg through body, {'with' if guarded else 'without'} guard: worst overlap "
+                  f"{worst * 1000:.0f} um over {a.self_collision_poses} random front-leg poses", flush=True)
+        raise SystemExit(0)
+
+    params = BodyParams(joint_damping=a.damping)
     fly, sim = _sim(params)
     names = list(fly.actuated_joints)
     n = len(names)
@@ -87,11 +121,11 @@ def main() -> None:
     passed = up > 0.9 and 0.9 < z < 2.0
     ok &= passed
     print(f"   body height {z:.2f} mm, uprightness {up:+.2f}, max joint error {err:.2f} rad, "
-          f"deepest floor penetration {depth * 1000:.1f} um -> {'PASS' if passed else 'FAIL'}")
+          f"deepest floor penetration {depth * 1000:.1f} um -> {'PASS' if passed else 'FAIL'}", flush=True)
 
     # 2. one leg at a time at the extreme of its range, the others standing: isolates the joint stop
     for leg in a.legs.split(","):
-        mine = np.array([f"joint_{leg}" in nm and nm.startswith(f"joint_{leg}") for nm in names])
+        mine = np.array([nm.startswith(f"joint_{leg}") for nm in names])
         for kind, ext in (("hi", muscles.hi_eq), ("lo", muscles.lo_eq)):
             cmd = np.where(mine, ext, muscles.stand)
             label = f"{leg} leg, full {'agonist' if kind == 'hi' else 'antagonist'} activation"
@@ -107,7 +141,8 @@ def main() -> None:
             passed = over.max() <= a.tolerance and reached >= 0.8 * mine.sum()
             ok &= passed
             print(f"== 2. {label}: worst overshoot {over.max():.3f} rad, {reached}/{int(mine.sum())} joints "
-                  f"reached the extreme, floor penetration {depth * 1000:.1f} um -> {'PASS' if passed else 'FAIL'}")
+                  f"reached the extreme, floor penetration {depth * 1000:.1f} um -> {'PASS' if passed else 'FAIL'}",
+                  flush=True)
 
     # information only: every joint of every leg at once (whole body is flung around)
     for kind, ext in (("hi", muscles.hi_eq), ("lo", muscles.lo_eq)):
@@ -118,13 +153,6 @@ def main() -> None:
         except PhysicsError:
             print(f"== info: all {n} joints at once, {kind}: physics became unstable")
 
-    if a.beyond:
-        print("== 4. information: command 0.3 rad beyond the range (never issued by the muscle model)")
-        try:
-            _, lo, hi, _ = _run(sim, muscles.hi + 0.3, a.push_s)
-            print(f"   worst overshoot {np.maximum(hi - muscles.hi, 0).max():.3f} rad")
-        except PhysicsError:
-            print("   physics became unstable")
     print("ALL PASS" if ok else "SOME CHECKS FAILED")
     raise SystemExit(0 if ok else 1)
 
