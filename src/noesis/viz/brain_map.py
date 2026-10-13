@@ -78,12 +78,32 @@ def neuron_positions(neurons: pd.DataFrame, coords_csv: Path | None = None, seed
     return pos
 
 
-def write_activity(path: Path, rates_hz: np.ndarray, time_s: float) -> None:
-    """Atomically publish the latest per-neuron firing rates for a live viewer."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_name(path.stem + ".tmp.npz")
-    np.savez(tmp, rates=rates_hz.astype(np.float16), time=np.float32(time_s))
-    os.replace(tmp, path)
+def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool = True) -> bool:
+    """Atomically publish the latest per-neuron firing rates for a live viewer.
+
+    Never raises: on Windows the viewer (or OneDrive) may briefly hold the file, and a skipped frame
+    must not stop the simulation. Returns whether the frame was written.
+    """
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_name(path.stem + ".tmp.npz")
+        np.savez(tmp, rates=rates_hz.astype(np.float16), time=np.float32(time_s), awake=np.bool_(awake))
+        for _ in range(5):
+            try:
+                os.replace(tmp, path)
+                return True
+            except PermissionError:
+                time.sleep(0.02)
+    except OSError:
+        pass
+    return False
+
+
+def read_activity(path: Path) -> tuple[np.ndarray, float, bool]:
+    """Load one published frame and release the file immediately (Windows file locking)."""
+    with np.load(path) as f:
+        awake = bool(f["awake"]) if "awake" in f.files else True
+        return f["rates"].astype(np.float32), float(f["time"]), awake
 
 
 class BrainMap:
@@ -112,14 +132,16 @@ class BrainMap:
         self.ax.set_aspect("equal")
         self.ax.axis("off")
 
-    def update(self, rates_hz: np.ndarray, time_s: float | None = None, min_hz: float = 1.0) -> None:
+    def update(self, rates_hz: np.ndarray, time_s: float | None = None, min_hz: float = 1.0,
+               awake: bool = True) -> None:
         on = np.flatnonzero(rates_hz > min_hz)
         r = rates_hz[on].astype(float)
         self.lit.set_offsets(self.pos[on] if len(on) else np.zeros((0, 2)))
         self.lit.set_array(np.log10(r + 1.0))
         self.lit.set_sizes(1.0 + 4.0 * np.clip(np.log10(r + 1.0) / 2.3, 0, 1))
         label = f"t = {time_s:6.3f} s   " if time_s is not None else ""
-        self.text.set_text(f"{label}firing: {len(on):,} / {len(rates_hz):,} neurons")
+        state = "" if awake else "   (brain still asleep: waiting for birth)"
+        self.text.set_text(f"{label}firing: {len(on):,} / {len(rates_hz):,} neurons{state}")
 
 
 def main() -> None:
@@ -140,8 +162,8 @@ def main() -> None:
         import matplotlib
         matplotlib.use("Agg")
         m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
-        f = np.load(a.snapshot)
-        m.update(f["rates"], float(f["time"]))
+        rates, t, awake = read_activity(a.snapshot)
+        m.update(rates, t, awake=awake)
         a.out.parent.mkdir(parents=True, exist_ok=True)
         m.fig.savefig(a.out, dpi=150, facecolor="black")
         print("saved", a.out)
@@ -153,16 +175,17 @@ def main() -> None:
     m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
     plt.ion()
     plt.show()
+    m.text.set_text(f"waiting for the simulation to write {a.watch} ...")
     last = 0.0
     while plt.fignum_exists(m.fig.number):
         try:
             stamp = a.watch.stat().st_mtime
             if stamp != last:
-                f = np.load(a.watch)
-                m.update(f["rates"], float(f["time"]))
+                rates, t, awake = read_activity(a.watch)
+                m.update(rates, t, awake=awake)
                 last = stamp
-        except (FileNotFoundError, OSError, ValueError):
-            pass  # file not written yet or mid-replace
+        except (OSError, ValueError, KeyError, EOFError):
+            pass  # file not written yet, or caught mid-replace
         plt.pause(0.25)
         time.sleep(0.05)
 

@@ -171,10 +171,10 @@ def main() -> None:
             if plast is not None:
                 plast.step(spikes, chunk_ms)
             command = muscles.step(rates.update(spikes, chunk_ms), chunk_ms)
-            if a.brain_map is not None and k % 4 == 0:  # every 20 ms of simulated time
-                write_activity(a.brain_map, rates.rate, t)
             if guard is not None:
                 command = guard.filter(obs["joints"][0], command)
+        if a.brain_map is not None and k % 4 == 0:  # every 20 ms of simulated time, asleep too
+            write_activity(a.brain_map, rates.rate, t, awake=awake)
         try:
             for _ in range(phys_per_chunk):
                 obs, *_ = sim.step({"joints": command, "adhesion": adhesion})
