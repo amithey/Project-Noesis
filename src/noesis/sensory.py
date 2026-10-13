@@ -62,7 +62,7 @@ class SensoryMap:
     """Leg sensory neurons grouped by (organ kind, leg); ``drive`` returns their rates."""
 
     def __init__(self, neurons: pd.DataFrame, base_hz: float = 2.0, max_hz: float = 150.0,
-                 vel0: float = 2.0, load0: float = 2.0):
+                 vel0: float = 2.0, load0: float = 2.0, kinds: frozenset[str] | None = None):
         self.base_hz, self.max_hz, self.vel0, self.load0 = base_hz, max_hz, vel0, load0
         a = neurons[neurons["Flow"].eq("afferent") & neurons["Sub Class"].fillna("").str.contains("_leg_")]
         sub = a["Sub Class"].str.split("_leg_", n=1, expand=True)
@@ -72,6 +72,7 @@ class SensoryMap:
         t = pd.DataFrame({"idx": a.index.to_numpy(), "kind": kind, "leg": leg}).dropna()
         self.groups: list[tuple[str, str, np.ndarray]] = [
             (k, lg, g["idx"].to_numpy()) for (k, lg), g in t.groupby(["kind", "leg"])
+            if kinds is None or k in kinds  # optional organ-class ablation
         ]
         self.idx = np.concatenate([g[2] for g in self.groups])
         self._bounds = np.cumsum([0] + [len(g[2]) for g in self.groups])

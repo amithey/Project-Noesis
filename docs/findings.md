@@ -81,3 +81,33 @@ velocity. Preferred directions are random per neuron (not in the data); rectifie
 - The tilt appears only when leg senses are on, so the leg afferent -> motor-neuron loop is the
   likelier cause (strong, asymmetric excitation), not missing gravity information.
 - The balance-only fly stays upright but barely moves, like the blind one.
+
+## 2026-10-13 — audit: why do leg senses coincide with a tilted fly? (`leg_sense_audit.py`)
+
+**Structure** (row-normalised signed propagation, 1-3 hops, leg afferents -> leg motor neurons):
+- Per sensory neuron, campaniform (load) sensilla influence leg motor neurons ~700x more than bristles
+  (|influence| 0.065 vs 0.00009), hook 0.0076, claw 0.0047, hair plates 0.0034, club 0.0003.
+- Campaniform cells in the table are almost all on the front legs (29 L, 25 R; only 2 per other leg).
+- Most-driven muscles: tergotrochanter (the jump-muscle motor neurons), sternal posterior rotator,
+  tibia flexor.
+- Left/right: neuron inventories are symmetric (2,604 L / 2,616 R afferents; 195 L / 196 R motor
+  neurons) but campaniform influence is 2x larger on the right (asym -0.34).
+
+**Dynamics** (brain alone, resting-body sensory drive, 1.5 s, one seed): mean leg-MN rate 4.5 Hz
+without leg senses vs 3.8 Hz with them; mean |joint drive| 14.0 vs 15.2 Hz. Left/right mirror
+asymmetry of joint drive is already 0.31 **without any leg input** (0.29-0.41 with it): brain
+noise, not the senses, makes the motor output asymmetric.
+
+**Body ablation** (3 s, da=1, no balance senses, one run each; uprightness mean / min):
+
+| leg senses | upright |
+|---|---|
+| none | +0.99 / +0.92 |
+| all | +0.71 / +0.29 |
+| all except campaniform | +0.87 / +0.39 |
+| campaniform only (62 neurons) | +0.74 / +0.47 |
+
+**Conclusion:** the hypothesis "campaniform load sensors cause the tilt" is **not supported**: almost any
+sensory drive changes the trajectory. A single run per condition cannot separate causation from
+chaotic divergence; multiple seeds are required. Also note that the resting "claw/hook" transfer
+function puts those neurons at the sigmoid midpoint (~76 Hz) by construction.
