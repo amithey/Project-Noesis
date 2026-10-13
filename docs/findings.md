@@ -211,3 +211,45 @@ frozen during tests):
 - So the fly cannot yet "learn by itself" from the world: the plasticity exists and is validated against
   its controls, but its two prerequisites (sparse odour code, world -> dopamine pathway) do not hold in this
   LIF model.
+
+## 2026-10-13 — why learning from the world fails (`learning_prerequisites.py`)
+
+**Fix applied: APL is inhibitory.** The table predicts the APL neuron (the mushroom body's global feedback
+interneuron) as cholinergic; it is GABAergic in the literature. `connectome.NT_OVERRIDES` now corrects it
+everywhere (cached weights are re-signed on load), so its KC feedback became inhibition instead of
+excitation. Effect on the 5-glomerulus odour assay:
+
+| | APL excitatory (table) | APL inhibitory (fix) |
+|---|---|---|
+| Kenyon-cell rate | 36 Hz | 21 Hz |
+| Kenyon cells active per odour | 77% / 74% | 57% / 50% |
+| A/B overlap (of the union) | 95% | 87% |
+| conditioning, direct dopamine: MBON A / B | -56% / -48% | -49% / -43% |
+| control, no reward: MBON A / B | -15% / 0% | -25% / -8% (weights untouched) |
+
+Still far from the sparse code of real flies (~5-10% of Kenyon cells), still no odour-specific learning.
+
+**Why the code stays dense** (one odour = receptor neurons of 5 glomeruli):
+- Antennal lobe: the 26 projection neurons of the stimulated glomeruli fire 218 Hz, but **68% of the
+  other projection neurons fire too (87 Hz)**. Local neurons give projection neurons 89,109 excitatory vs
+  81,623 inhibitory synapses (by predicted NT) and fire at 142 Hz: lateral excitation spreads the odour across
+  the lobe instead of keeping it specific.
+- APL fires at ~390 Hz, the spiking ceiling of the LIF model at dt 0.5 ms. The real APL is non-spiking with
+  graded inhibition, so the model cannot scale its inhibition with Kenyon-cell activity.
+- Kenyon-cell to Kenyon-cell excitation is negligible (median 0 synapses per KC): not a cause.
+
+**Why sugar does not reach dopamine:**
+- Excitatory hops from the 541 sugar-taste neurons to the 281 reward dopamine neurons (PAM): with pairs >= 5
+  synapses the shortest is 3, only 15 PAM are within 3 hops and 192 are unreachable; with every pair >= 1
+  synapse the shortest is 2, 87 within 3 hops, 58 unreachable.
+- In the network, activity from 200-400 Hz sugar input dies after hop 3 (22-35 active neurons at hop 3,
+  none beyond). In the awake brain PAM fire 0.31 Hz without sugar and 0.30 Hz with it, also when every
+  1-4 synapse pair in the whole brain is added. Sugar raises overall brain activity (2.3 -> 3.4 Hz) but not
+  the reward neurons.
+- Interpretation (not tested here): the real sweet-taste-to-PAM signal is believed to involve
+  neuromodulatory (e.g. octopaminergic) and multi-hop routes that a fast, sign-only LIF network with uniform
+  thresholds does not carry.
+
+**What would be needed** (each is a modelling decision, not done yet): graded (non-spiking) APL inhibition,
+a re-examined antennal-lobe local-neuron sign map, and a neuromodulatory (slow, receptor-type dependent)
+channel for the taste-to-dopamine route.
