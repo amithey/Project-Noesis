@@ -1,7 +1,8 @@
 """Event-driven leaky integrate-and-fire network, after Shiu et al., Nature 2024.
 
 State per neuron: membrane potential ``v`` and synaptic input ``g`` (both mV).
-    dv/dt = (v_rest - v + g) / tau_m        dg/dt = -g / tau_syn
+    dv/dt = (v_rest - v + g - a) / tau_m    dg/dt = -g / tau_syn    da/dt = -a / tau_a
+(``a`` is optional spike-frequency adaptation, off by default.)
 A presynaptic spike adds ``w_syn * W[i, j]`` mV to ``g_j`` after ``delay``.
 External drive adds ``weight`` synapse-equivalents per Poisson event.
 
@@ -28,6 +29,10 @@ class LIFParams:
     delay: float = 1.8      # ms
     w_syn: float = 0.275    # mV per synapse
     dt: float = 0.1         # ms
+    # Spike-frequency adaptation: each spike adds ``da`` mV to a slow hyperpolarising term
+    # that decays with ``tau_a``; steady-state it is da * rate * tau_a. 0 disables it.
+    da: float = 0.0         # mV per spike
+    tau_a: float = 200.0    # ms
 
 
 @nb.njit(cache=True)
@@ -45,9 +50,9 @@ def _add(g, in_act, act, nact, j, val):
 
 
 @nb.njit(cache=True)
-def _run(indptr, indices, data, v, g, refr, ring, ring_n, act, in_act, nact, step0, n_steps,
+def _run(indptr, indices, data, v, g, adapt, refr, ring, ring_n, act, in_act, nact, step0, n_steps,
          stim_idx, stim_p, stim_w, bg_mean, bg_w,
-         v_rest, v_th, dv_k, dg_k, ref_steps, w_syn):
+         v_rest, v_th, dv_k, dg_k, ref_steps, w_syn, da_inc, da_k):
     n = v.shape[0]
     delay_steps = ring.shape[0]
     out_t = np.empty(1 << 16, np.int64)
@@ -56,6 +61,7 @@ def _run(indptr, indices, data, v, g, refr, ring, ring_n, act, in_act, nact, ste
     # Neurons whose g and v are this close to rest are treated as quiescent (<1% of the 7 mV
     # firing gap): keeps the active set small without changing spiking behaviour noticeably.
     eps_g = 5e-3
+    eps_a = 5e-2
     eps_v = 5e-2
     for s in range(n_steps):
         step = step0 + s
@@ -75,14 +81,16 @@ def _run(indptr, indices, data, v, g, refr, ring, ring_n, act, in_act, nact, ste
         keep = 0
         for a in range(nact[0]):  # only neurons with something to integrate
             i = act[a]
+            adapt[i] *= da_k
             if refr[i] > 0:
                 refr[i] -= 1
                 g[i] *= dg_k
             else:
-                v[i] += (v_rest - v[i] + g[i]) * dv_k
+                v[i] += (v_rest - v[i] + g[i] - adapt[i]) * dv_k
                 g[i] *= dg_k
                 if v[i] >= v_th:
                     v[i] = v_rest
+                    adapt[i] += da_inc
                     refr[i] = ref_steps
                     ring[slot, ring_n[slot]] = i
                     ring_n[slot] += 1
@@ -94,7 +102,9 @@ def _run(indptr, indices, data, v, g, refr, ring, ring_n, act, in_act, nact, ste
                     n_out += 1
             if abs(g[i]) < eps_g:
                 g[i] = 0.0
-            if g[i] == 0.0 and refr[i] == 0 and abs(v[i] - v_rest) < eps_v:
+            if abs(adapt[i]) < eps_a:
+                adapt[i] = 0.0
+            if g[i] == 0.0 and adapt[i] == 0.0 and refr[i] == 0 and abs(v[i] - v_rest) < eps_v:
                 v[i] = v_rest
                 in_act[i] = 0
             else:
@@ -115,6 +125,7 @@ class LIFNetwork:
         self.n = W.shape[0]
         self.v = np.full(self.n, self.p.v_rest)
         self.g = np.zeros(self.n)
+        self.adapt = np.zeros(self.n)
         self.refr = np.zeros(self.n, np.int32)
         delay_steps = max(1, round(self.p.delay / self.p.dt))
         self.ring = np.empty((delay_steps, self.n), np.int32)
@@ -146,11 +157,11 @@ class LIFNetwork:
         wts = np.broadcast_to(np.asarray(drive_weight, float), idx.shape).copy()
         n_steps = round(ms / p.dt)
         t, i = _run(
-            self.indptr, self.indices, self.data, self.v, self.g, self.refr, self.ring,
+            self.indptr, self.indices, self.data, self.v, self.g, self.adapt, self.refr, self.ring,
             self.ring_n, self.act, self.in_act, self.nact, self.step, n_steps, idx, prob, wts,
             background_hz * self.n * p.dt * 1e-3, background_weight,
             p.v_rest, p.v_th, p.dt / p.tau_m, float(np.exp(-p.dt / p.tau_syn)),
-            round(p.t_ref / p.dt), p.w_syn,
+            round(p.t_ref / p.dt), p.w_syn, p.da, float(np.exp(-p.dt / p.tau_a)),
         )
         self.step += n_steps
         return t * p.dt, i
