@@ -90,7 +90,12 @@ def main() -> None:
     habitat_world = a.arena == "habitat"
     arena = None
     if habitat_world:
-        from noesis.environment_senses import EnvironmentSenses, merge_drive, mouth_position
+        from noesis.environment_senses import (
+            EnvironmentSenses,
+            contact_tastes,
+            merge_drive,
+            mouth_position,
+        )
         from noesis.habitat import habitat_arena
         arena = habitat_arena()
     environmental_input = habitat_world and not a.no_environment_senses
@@ -134,6 +139,8 @@ def main() -> None:
         return {leg: LegState(ang[j[leg, "Tibia"]], vel[j[leg, "Tibia"]], ang[j[leg, "Coxa"]],
                               ang[j[leg, "Femur"]], load[LEGS.index(leg)]) for leg in LEGS}
 
+    triggers: dict = {}  # what the world is currently doing to the senses (habitat only)
+
     def sensory_drive(obs):
         parts = []  # (neuron indices, rates in Hz, event weight)
         if senses is not None:
@@ -143,7 +150,11 @@ def main() -> None:
             parts.append((balance.idx, balance.drive(
                 np.array([cv[0][2], cv[1][2], cv[2][2]]), obs["fly"][3]), 400.0))
         if environment is not None:
-            rates_env, _ = environment.drive(obs, arena.habitat, mouth_position(sim, fly), sim.curr_time)
+            obs["surface_taste"] = contact_tastes(sim, fly, arena.habitat)  # taste only on real contact
+            rates_env, telemetry = environment.drive(obs, arena.habitat, mouth_position(sim, fly),
+                                                     sim.curr_time)
+            triggers.clear()
+            triggers.update(telemetry)
             parts.append((environment.idx, rates_env, 100.0))
         return merge_drive(parts) if parts and habitat_world else _merge(parts)
 
@@ -174,7 +185,7 @@ def main() -> None:
             if guard is not None:
                 command = guard.filter(obs["joints"][0], command)
         if a.brain_map is not None and k % 4 == 0:  # every 20 ms of simulated time, asleep too
-            write_activity(a.brain_map, rates.rate, t, awake=awake)
+            write_activity(a.brain_map, rates.rate, t, awake=awake, triggers=triggers)
         try:
             for _ in range(phys_per_chunk):
                 obs, *_ = sim.step({"joints": command, "adhesion": adhesion})

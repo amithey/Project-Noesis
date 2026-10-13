@@ -15,6 +15,7 @@ opens a window that redraws whenever the file changes. ``--snapshot`` renders on
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import time
 from pathlib import Path
@@ -78,7 +79,8 @@ def neuron_positions(neurons: pd.DataFrame, coords_csv: Path | None = None, seed
     return pos
 
 
-def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool = True) -> bool:
+def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool = True,
+                   triggers: dict | None = None) -> bool:
     """Atomically publish the latest per-neuron firing rates for a live viewer.
 
     Never raises: on Windows the viewer (or OneDrive) may briefly hold the file, and a skipped frame
@@ -87,7 +89,8 @@ def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool 
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         tmp = path.with_name(path.stem + ".tmp.npz")
-        np.savez(tmp, rates=rates_hz.astype(np.float16), time=np.float32(time_s), awake=np.bool_(awake))
+        np.savez(tmp, rates=rates_hz.astype(np.float16), time=np.float32(time_s), awake=np.bool_(awake),
+                 triggers=np.array(json.dumps(triggers or {}, default=float)))
         for _ in range(5):
             try:
                 os.replace(tmp, path)
@@ -99,11 +102,24 @@ def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool 
     return False
 
 
-def read_activity(path: Path) -> tuple[np.ndarray, float, bool]:
+def read_activity(path: Path) -> tuple[np.ndarray, float, bool, dict]:
     """Load one published frame and release the file immediately (Windows file locking)."""
     with np.load(path) as f:
         awake = bool(f["awake"]) if "awake" in f.files else True
-        return f["rates"].astype(np.float32), float(f["time"]), awake
+        triggers = json.loads(str(f["triggers"])) if "triggers" in f.files else {}
+        return f["rates"].astype(np.float32), float(f["time"]), awake, triggers
+
+
+def describe_triggers(t: dict) -> str:
+    """Two-line summary of what the habitat is doing to the senses (empty outside the habitat)."""
+    if not t:
+        return ""
+    return (f"smell: food {t.get('odor_food', 0):.2f}  aversive {t.get('odor_aversive', 0):.2f}   "
+            f"taste: sugar {t.get('taste_sugar', 0):.1f}  water {t.get('taste_water', 0):.1f}  "
+            f"bitter {t.get('taste_bitter', 0):.1f}\n"
+            f"light {t.get('vision_mean', 0):.2f}   temperature {t.get('temperature_c', 0):.1f} C   "
+            f"humidity {t.get('humidity', 0):.2f}   sound {t.get('sound_envelope', 0):.2f}   "
+            f"world-driven neurons {t.get('environment_driven_neurons', 0):,}")
 
 
 class BrainMap:
@@ -124,6 +140,8 @@ class BrainMap:
                                    linewidths=0)
         self.text = self.ax.text(0.01, 0.99, "", transform=self.ax.transAxes, color="white",
                                  va="top", fontsize=10, family="monospace")
+        self.world = self.ax.text(0.01, 0.01, "", transform=self.ax.transAxes, color="#ffd27f",
+                                  va="bottom", fontsize=9, family="monospace")
         self.ax.set_title(title, color="white")
         if labels:
             for region, text in LABELS.items():
@@ -133,7 +151,7 @@ class BrainMap:
         self.ax.axis("off")
 
     def update(self, rates_hz: np.ndarray, time_s: float | None = None, min_hz: float = 1.0,
-               awake: bool = True) -> None:
+               awake: bool = True, triggers: dict | None = None) -> None:
         on = np.flatnonzero(rates_hz > min_hz)
         r = rates_hz[on].astype(float)
         self.lit.set_offsets(self.pos[on] if len(on) else np.zeros((0, 2)))
@@ -142,6 +160,7 @@ class BrainMap:
         label = f"t = {time_s:6.3f} s   " if time_s is not None else ""
         state = "" if awake else "   (brain still asleep: waiting for birth)"
         self.text.set_text(f"{label}firing: {len(on):,} / {len(rates_hz):,} neurons{state}")
+        self.world.set_text(describe_triggers(triggers or {}))
 
 
 def main() -> None:
@@ -162,8 +181,8 @@ def main() -> None:
         import matplotlib
         matplotlib.use("Agg")
         m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
-        rates, t, awake = read_activity(a.snapshot)
-        m.update(rates, t, awake=awake)
+        rates, t, awake, triggers = read_activity(a.snapshot)
+        m.update(rates, t, awake=awake, triggers=triggers)
         a.out.parent.mkdir(parents=True, exist_ok=True)
         m.fig.savefig(a.out, dpi=150, facecolor="black")
         print("saved", a.out)
@@ -181,8 +200,8 @@ def main() -> None:
         try:
             stamp = a.watch.stat().st_mtime
             if stamp != last:
-                rates, t, awake = read_activity(a.watch)
-                m.update(rates, t, awake=awake)
+                rates, t, awake, triggers = read_activity(a.watch)
+                m.update(rates, t, awake=awake, triggers=triggers)
                 last = stamp
         except (OSError, ValueError, KeyError, EOFError):
             pass  # file not written yet, or caught mid-replace

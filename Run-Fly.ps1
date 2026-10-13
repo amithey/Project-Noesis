@@ -1,12 +1,13 @@
 # Opens the live brain map in its own window, then runs the fly with the MuJoCo viewer.
 #   .\Run-Fly.ps1                      # 5 simulated seconds, leg + balance senses
-#   .\Run-Fly.ps1 -Seconds 10 -Habitat -Plasticity
+#   .\Run-Fly.ps1 -Seconds 10 -Plasticity
+#   .\Run-Fly.ps1 -Empty            # plain floor instead of the trigger habitat
 # The simulation runs ~50x slower than real time: the brain wakes at 0.5 s simulated time, which
 # takes one to two minutes of waiting; until then the map says the brain is still asleep.
 param(
     [double]$Seconds = 5,
     [double]$Birth = 0.5,
-    [switch]$Habitat,
+    [switch]$Empty,
     [switch]$Plasticity,
     [string]$Python = 'C:\dev\venvs\noesis\Scripts\python.exe'
 )
@@ -26,7 +27,7 @@ try {
                  '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture),
                  '--birth', $Birth.ToString([cultureinfo]::InvariantCulture),
                  '--brain-map', $live)
-    if ($Habitat) { $simArgs += @('--arena', 'habitat') }
+    if (-not $Empty) { $simArgs += @('--arena', 'habitat') }  # food, odours, light, obstacles
     if ($Plasticity) { $simArgs += '--plasticity' }
     & $Python @simArgs
 }
