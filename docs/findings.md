@@ -320,3 +320,20 @@ APL (1024), eta 5e-3:
 - So either KC->MBON synapses are under-counted in BANC, or one detected synapse stands for much more than
   0.275 mV. The FAFB comparison (`compare_mb_coverage`, waiting for the download) decides between them.
 - Fixed on the way: `mean_weight_fraction` returned NaN when a plastic synapse had zero initial weight.
+## 2026-10-13 — where MBON input comes from (`compare_mb_coverage.py`)
+
+Per-synapse neuropil labels in `connections_princeton.csv` (BANC, all pairs incl. < 5 synapses):
+
+| | synapses onto MBONs | from Kenyon cells |
+|---|---|---|
+| inside the mushroom body (MB_*) | 10,799 (20%) | **71%** |
+| outside (mostly CRE, SMP, LAL) | 42,676 (80%) | 11% |
+
+- **Model limitation:** at their dendrites in the mushroom body, MBONs do get most input from Kenyon cells,
+  as expected. But 80% of their synapses are outside the mushroom body (axonal regions). A point-neuron LIF
+  gives those the same weight as dendritic input, which drowns the Kenyon-cell signal. This, not only the
+  data, explains why KC->MBON plasticity barely moves MBON output.
+- **Possible data limitation (unverified):** a Kenyon cell has a median of 9.6 output synapses in this table and
+  2.8 onto MBONs; an MBON receives ~121 KC synapses. These look very low for Kenyon cells, which suggests
+  under-detected synapses in the dense mushroom-body lobes of BANC. `compare_mb_coverage` reports the same
+  numbers for any other dataset (e.g. FAFB) to settle this.
