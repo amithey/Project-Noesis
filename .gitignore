@@ -6,3 +6,4 @@ __pycache__/
 # raw + derived data are large and licensed (FlyWire, CC-BY-NC): never commit
 data/
 outputs/
+downloaded file/
