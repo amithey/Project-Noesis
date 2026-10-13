@@ -135,7 +135,8 @@ class GradedAPL:
     ``gain`` is the one free parameter; it is calibrated to the Kenyon-cell sparseness of real flies.
     """
 
-    def __init__(self, net, pops: MBPopulations, gain: float = 1.0, tau_ms: float = 10.0):
+    def __init__(self, net, pops: MBPopulations, gain: float = 1.0, tau_ms: float = 10.0,
+                 uniform: bool = False):
         self.net, self.pops, self.gain, self.tau = net, pops, gain, tau_ms
         n = net.n
         rows = np.repeat(np.arange(n), np.diff(net.indptr))
@@ -148,6 +149,9 @@ class GradedAPL:
         self.w_in = np.bincount(rows[into], weights=np.abs(net.data[into]), minlength=n)[pops.kc]
         out = is_apl[rows] & is_kc[net.indices]
         self.w_out = np.bincount(net.indices[out], weights=np.abs(net.data[out]), minlength=n)[pops.kc]
+        if uniform:  # APL contacts every KC; BANC misses the synapses of ~24% of them
+            self.w_in = np.full(len(pops.kc), self.w_in.mean())
+            self.w_out = np.full(len(pops.kc), self.w_out.mean())
         net.data[is_apl[rows]] = 0.0  # non-spiking: no spike-triggered output at all
         self.level = 0.0  # APL activation, Hz-equivalent
 
@@ -208,6 +212,71 @@ def compartmentalize_mbons(W: sparse.csr_matrix, comp: pd.DataFrame, neurons: pd
     sign = presynaptic_signs(neurons)
     data = coo.data.copy()
     data[hit] = sign[coo.row[hit]] * eff[pos[hit]]
+    out = sparse.csr_matrix((data, (coo.row, coo.col)), shape=W.shape)
+    out.sort_indices()
+    return out
+
+
+def mb_class(cell_type: str) -> str:
+    """Coarse mushroom-body class of a FlyWire cell-type name (same rule for BANC and FAFB)."""
+    t = str(cell_type)
+    if t.startswith("KC"):
+        return "KC"
+    if t.startswith("MBON"):
+        return "MBON"
+    if t == "APL":
+        return "APL"
+    if t.startswith(("PAM", "PPL", "PPM")):
+        return "DAN"
+    if "PN" in t:
+        return "PN"
+    return "other"
+
+
+def kc_rescale_factors(banc_pairs: pd.DataFrame, banc_types: np.ndarray, fafb_dir,
+                       min_synapses: int = 1000) -> dict[tuple[str, str], float]:
+    """FAFB / BANC synapse ratio for every (pre class, post class) that involves Kenyon cells.
+
+    BANC under-counts Kenyon-cell synapses (e.g. KC -> MBON 18x fewer than FAFB). Classes with fewer
+    than ``min_synapses`` in either dataset are left out (no rescaling) rather than trusted.
+    """
+    from pathlib import Path
+
+    fafb_dir = Path(fafb_dir)
+    to_class = np.vectorize(mb_class)
+    bc = to_class(banc_types)
+    b = pd.DataFrame({"pre": bc[banc_pairs["pre"].to_numpy()], "post": bc[banc_pairs["post"].to_numpy()],
+                      "syn": banc_pairs["syn"].to_numpy()})
+    ft = pd.read_csv(fafb_dir / "consolidated_cell_types.csv.gz").set_index("root_id")["primary_type"]
+    fc = pd.read_csv(fafb_dir / "connections_princeton.csv.gz",
+                     usecols=["pre_root_id", "post_root_id", "syn_count"])
+    f = pd.DataFrame({"pre": to_class(ft.reindex(fc["pre_root_id"]).fillna("?").to_numpy()),
+                      "post": to_class(ft.reindex(fc["post_root_id"]).fillna("?").to_numpy()),
+                      "syn": fc["syn_count"].to_numpy()})
+    out = {}
+    for d in (b, f):
+        d.drop(d.index[(d["pre"] != "KC") & (d["post"] != "KC")], inplace=True)
+    tb, tf = b.groupby(["pre", "post"])["syn"].sum(), f.groupby(["pre", "post"])["syn"].sum()
+    for key in tb.index.intersection(tf.index):
+        if tb[key] >= min_synapses and tf[key] >= min_synapses:
+            out[key] = float(tf[key] / tb[key])
+    return out
+
+
+def rescale_kc_edges(W: sparse.csr_matrix, cell_types: np.ndarray,
+                     factors: dict[tuple[str, str], float]) -> sparse.csr_matrix:
+    """Multiply every edge touching a Kenyon cell by the FAFB/BANC factor of its class pair.
+
+    The connectivity pattern stays BANC's (no edges are invented); only the synapse counts of
+    existing KC edges are brought to FAFB totals per class pair. Concentrating the missing synapses
+    on the pairs BANC did detect is an assumption.
+    """
+    cls = np.vectorize(mb_class)(cell_types)
+    coo = W.tocoo()
+    pre_c, post_c = cls[coo.row], cls[coo.col]
+    data = coo.data.astype(np.float64).copy()
+    for (a, b), factor in factors.items():
+        data[(pre_c == a) & (post_c == b)] *= factor
     out = sparse.csr_matrix((data, (coo.row, coo.col)), shape=W.shape)
     out.sort_indices()
     return out

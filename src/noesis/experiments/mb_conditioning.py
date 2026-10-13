@@ -22,8 +22,10 @@ from noesis.mushroom_body import (
     DopamineGatedPlasticity,
     GradedAPL,
     compartmentalize_mbons,
+    kc_rescale_factors,
     mbon_input_compartments,
     populations,
+    rescale_kc_edges,
     with_weak_pathway_edges,
 )
 
@@ -58,6 +60,11 @@ def main() -> None:
     ap.add_argument("--adapt", type=float, default=1.0)
     ap.add_argument("--mbon-axonal-weight", type=float, default=-1.0,
                     help="weight of synapses onto MBON axons (outside the MB); <0 = point neurons")
+    ap.add_argument("--kc-rescale", action="store_true",
+                    help="bring BANC Kenyon-cell synapse counts to FAFB totals (needs <data>/fafb)")
+    ap.add_argument("--sparseness-only", action="store_true", help="only measure KC sparseness")
+    ap.add_argument("--apl-uniform", action="store_true",
+                    help="APL inhibits every KC equally (BANC lacks APL synapses on ~24% of KCs)")
     ap.add_argument("--apl-gain", type=float, default=0.0, help="0 = spiking APL; >0 = graded APL")
     ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()
@@ -70,11 +77,23 @@ def main() -> None:
         comp = mbon_input_compartments(a.data / "raw", a.data / "processed", cn.neurons, pops.mbon)
         W = compartmentalize_mbons(W, comp, cn.neurons, a.mbon_axonal_weight)
         print(f"MBON inputs: dendritic (MB) x1, axonal x{a.mbon_axonal_weight:g}")
+    if a.kc_rescale:
+        import json
+        cache = a.data / "processed" / "kc_rescale_factors.json"
+        if cache.exists():
+            factors = {tuple(k.split("->")): v for k, v in json.loads(cache.read_text()).items()}
+        else:
+            ctype = cn.neurons["Primary Cell Type"].fillna("?").to_numpy()
+            factors = kc_rescale_factors(pairs, ctype, a.data / "fafb")
+            cache.write_text(json.dumps({"->".join(k): v for k, v in factors.items()}, indent=1))
+        W = rescale_kc_edges(W, cn.neurons["Primary Cell Type"].fillna("?").to_numpy(), factors)
+        print("KC synapses rescaled to FAFB: " + ", ".join(f"{a_}->{b_} x{f:.1f}" for (a_, b_), f in
+                                                     sorted(factors.items())))
     print(f"ORN {len(pops.orn)}  PN {len(pops.pn)}  KC {len(pops.kc)}  MBON {len(pops.mbon)}  "
           f"DAN {len(pops.dan)} | edges {cn.W.nnz} -> {W.nnz} (+{W.nnz - cn.W.nnz} weak olfactory/MB)")
 
     net = LIFNetwork(W, LIFParams(dt=0.5, da=a.adapt), seed=a.seed)
-    apl = GradedAPL(net, pops, gain=a.apl_gain) if a.apl_gain > 0 else None
+    apl = GradedAPL(net, pops, gain=a.apl_gain, uniform=a.apl_uniform) if a.apl_gain > 0 else None
     plast = DopamineGatedPlasticity(net, pops, eta=a.eta)
     print(f"plastic KC->MBON synapses: {len(plast.pos)}")
 
@@ -102,6 +121,8 @@ def main() -> None:
         return out
 
     before = test("before")
+    if a.sparseness_only:
+        return
 
     # training: odour A (+ reward)
     if a.reward == "none":

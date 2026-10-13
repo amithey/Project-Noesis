@@ -140,3 +140,24 @@ def test_mean_weight_fraction_ignores_zero_weight_synapses():
     _, _, plast = _net()
     plast.w0[0] = 0.0
     assert np.isfinite(plast.mean_weight_fraction)
+
+
+def test_mb_class_and_kc_rescaling_by_class_pair():
+    from noesis.mushroom_body import mb_class, rescale_kc_edges
+    assert [mb_class(t) for t in ("KCg-m", "MBON01", "APL", "PAM05", "DA1_lPN", "AVLP001")] == \
+        ["KC", "MBON", "APL", "DAN", "PN", "other"]
+    types = np.array(["KCg-m", "MBON01", "APL", "AVLP001"])
+    W = sparse.csr_matrix(np.array([[0, 2.0, 3.0, 4.0], [0, 0, 0, 0], [-5.0, 0, 0, 0], [0, 6.0, 0, 0]]))
+    out = rescale_kc_edges(W, types, {("KC", "MBON"): 10.0, ("APL", "KC"): 2.0}).toarray()
+    assert out[0, 1] == 20.0 and out[2, 0] == -10.0  # rescaled, sign kept
+    assert out[0, 2] == 3.0 and out[0, 3] == 4.0      # class pairs without a factor untouched
+    assert out[3, 1] == 6.0                           # edges not touching a KC untouched
+
+
+def test_uniform_apl_inhibits_kcs_without_detected_apl_synapses():
+    from noesis.mushroom_body import GradedAPL
+    W = sparse.csr_matrix(np.array([[0, 0, 4.0], [0, 0, 4.0], [-6.0, 0, 0]]))  # KC 1 has no APL synapse
+    pops = MBPopulations(orn=EMPTY, pn=EMPTY, kc=np.array([0, 1]), mbon=EMPTY, dan=EMPTY, apl=np.array([2]))
+    plain = GradedAPL(LIFNetwork(W), pops, tau_ms=1e-6).current(np.array([0, 1]), 5.0)["current_mv_per_ms"]
+    even = GradedAPL(LIFNetwork(W), pops, tau_ms=1e-6, uniform=True).current(np.array([0, 1]), 5.0)
+    assert plain[1] == 0 and np.all(even["current_mv_per_ms"] < 0)

@@ -361,3 +361,37 @@ codex.flywire.ai (same "princeton" table format; Buhmann = a different synapse d
   KC synapses per (KC type -> target type) to FAFB totals, or take the mushroom-body circuit from FAFB.
 - The FAFB download (folder `FABA/`) also contains `coordinates.csv.gz` (positions of FAFB neurons; different
   neuron IDs from BANC) and several 0-byte files whose download failed; none of those were needed here.
+
+## 2026-10-13 — option 1: BANC Kenyon-cell synapses rescaled to FAFB (`rescale_kc_edges`)
+
+Every existing BANC edge that touches a Kenyon cell is multiplied by the FAFB/BANC synapse ratio of its
+class pair (KC, MBON, APL, DAN, PN, other; classes from cell-type names, pairs with >= 1,000 synapses in both
+datasets). No edges are invented; concentrating the missing synapses on the pairs BANC detected is an
+assumption. Ratios: KC->MBON x18.2, KC->APL x8.5, APL->KC x7.1, PN->KC x2.5, KC->KC x14.5 (and others).
+
+**A second gap, same cause:** 24% of BANC Kenyon cells have no APL synapse at all, so no APL gain could
+inhibit them (KCs active stayed ~19% / 50% from gain 2,048 to 8,192). APL contacts every KC in the fly, so
+`GradedAPL(uniform=True)` gives every KC the mean APL weight. Calibration (target fixed in advance: 10-20%
+of KCs active for odour A): gain 64 -> 30% / 44% (A / B), **256 -> 14% / 40%**, 1024 -> 6% / 38%;
+A/B overlap 53% -> 27% -> 13%. Mean KC rates for A and B stay similar (e.g. 1.6 vs 1.8 Hz at 1024), so the
+high B "active" share is mostly single onset spikes. Gain 256 used.
+
+**MBONs now respond to odours through Kenyon cells** (point neurons 18.9 / 12.5 Hz for A / B; with
+`--mbon-axonal-weight 0.2`: 13.8 / 9.5 Hz), and plasticity now moves their output:
+
+| condition (point MBONs) | MBON A | MBON B | plastic weights |
+|---|---|---|---|
+| control, no reward | -13.5% | +1.4% | 1.00 |
+| reward, eta 5e-3 | -85.9% | -83.4% | 0.23 |
+| reward, eta 5e-4 | -80.4% | -69.1% | 0.73 |
+| reward, eta 1e-4 | -43.7% | -36.2% | 0.93 |
+| reward, eta 2e-5 | -20.1% | -9.8% | 0.99 |
+| control, axonal 0.2 | -18.4% | -1.7% | 1.00 |
+| reward eta 5e-3, axonal 0.2 | -100% | -97.1% | 0.23 |
+
+- **Success criterion (A drops clearly more than in the control while B changes about as in the control):
+  not met at any learning rate.** B falls almost as much as A beyond the control (e.g. 30 vs 38 points at
+  eta 1e-4). The learning is real and large, but not odour-specific.
+- Likely remaining cause: the Kenyon cells that respond to B also fire during A training (40% of KCs spike at
+  least once to B; the antennal lobe spreads each odour to 68% of the other projection neurons). Depression
+  therefore hits B's synapses too. Single seed, one odour pair.
