@@ -63,3 +63,21 @@ Embodied, 3 s, birth at 0.4 s, one run each (da=1 unless stated):
 
 Adaptation did not remove the tilt when senses are on; the blind fly stays upright but barely
 moves. Single runs: differences are suggestive only.
+
+## 2026-10-13 — gravity and rotation senses (`balance.py`)
+
+1,053 afferents: Johnston's organ C/D/E/F (661, gravity/antennal position) driven by the
+body-frame "up" vector, haltere campaniform/chordotonal/orphan (392) driven by body angular
+velocity. Preferred directions are random per neuron (not in the data); rectified tuning.
+3 s, birth at 0.4 s, da=1, one run each:
+
+| condition | mean joint offset | uprightness mean / min |
+|---|---|---|
+| leg senses only | 0.14 rad | +0.71 / +0.29 |
+| leg + balance senses | 0.14 rad | +0.71 / +0.30 |
+| balance senses only | 0.10 rad | +0.98 / +0.89 |
+
+- Balance senses did **not** change the outcome: no self-righting, no measurable effect.
+- The tilt appears only when leg senses are on, so the leg afferent -> motor-neuron loop is the
+  likelier cause (strong, asymmetric excitation), not missing gravity information.
+- The balance-only fly stays upright but barely moves, like the blind one.
