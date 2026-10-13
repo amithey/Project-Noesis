@@ -53,21 +53,52 @@ class Connectome:
         return np.flatnonzero(np.asarray(mask))
 
 
+def _region(neuropil: pd.Series) -> pd.Series:
+    """Neuropil name without its side suffix (``MB_ML_L`` -> ``MB_ML``)."""
+    return neuropil.astype(str).str.replace(r"_[LR]$", "", regex=True)
+
+
+def neuropil_scale_factors(banc_connections: Path, reference_connections: Path,
+                           clip: tuple[float, float] = (1.0, 20.0)) -> dict[str, float]:
+    """Reference / BANC synapse ratio per brain region (both sides pooled), clipped to ``clip``.
+
+    BANC detects 20-60% of FAFB's synapses per brain region. Weights calibrated on FAFB counts (Shiu et
+    al.) are therefore too weak on BANC; multiplying each synapse by its region's ratio restores
+    FAFB-like totals. Pooling sides and clipping damp differences in where the two datasets draw region
+    boundaries. Regions absent from the reference (the nerve cord) get no factor, i.e. stay at 1.
+    """
+    b = pd.read_csv(banc_connections, usecols=["neuropil", "syn_count"])
+    f = pd.read_csv(reference_connections, usecols=["neuropil", "syn_count"])
+    tb = b.groupby(_region(b["neuropil"]))["syn_count"].sum()
+    tf = f.groupby(_region(f["neuropil"]))["syn_count"].sum()
+    common = tb.index.intersection(tf.index)
+    ratio = (tf[common] / tb[common]).clip(*clip)
+    return {str(k): float(v) for k, v in ratio.items()}
+
+
 def build_connectome(
     neurons_csv: Path,
     connections_csv: Path,
     min_syn: int = 5,
     nt_sign: dict[str, int] | None = None,
     unknown_sign: int = UNKNOWN_NT_SIGN,
+    region_scale: dict[str, float] | None = None,
 ) -> Connectome:
-    """Aggregate per-neuropil rows to neuron pairs, drop weak pairs, sign by presynaptic NT."""
+    """Aggregate per-neuropil rows to neuron pairs, drop weak pairs, sign by presynaptic NT.
+
+    ``region_scale`` multiplies each row's synapse count by its region's factor (default 1) before
+    aggregation, so ``min_syn`` applies to the corrected counts."""
     sign_map = DEFAULT_NT_SIGN if nt_sign is None else nt_sign
     neurons = pd.read_csv(neurons_csv, low_memory=False).rename(columns={"Root ID": "root_id"})
     if not neurons["root_id"].is_unique:
         raise ValueError("neurons table has duplicate root ids")
     index = pd.Series(np.arange(len(neurons), dtype=np.int64), index=neurons["root_id"])
 
-    conn = pd.read_csv(connections_csv, usecols=["pre_root_id", "post_root_id", "syn_count"])
+    cols = ["pre_root_id", "post_root_id", "syn_count"] + (["neuropil"] if region_scale else [])
+    conn = pd.read_csv(connections_csv, usecols=cols)
+    if region_scale:
+        factor = _region(conn["neuropil"]).map(region_scale).fillna(1.0)
+        conn["syn_count"] = conn["syn_count"] * factor.to_numpy()
     pairs = conn.groupby(["pre_root_id", "post_root_id"], as_index=False)["syn_count"].sum()
     pairs = pairs[pairs["syn_count"] >= min_syn]
 
@@ -83,9 +114,12 @@ def build_connectome(
 
 
 def load_cached(raw_dir: Path, cache_dir: Path, **kwargs) -> Connectome:
-    """Build once, then reuse ``cache_dir`` (Parquet + npz) on later runs."""
+    """Build once, then reuse ``cache_dir`` (Parquet + npz) on later runs.
+
+    With ``region_scale`` the weights are cached separately (``..._scaled.npz``)."""
     nfile = cache_dir / "neurons.parquet"
-    wfile = cache_dir / f"W_min{kwargs.get('min_syn', 5)}.npz"
+    suffix = "_scaled" if kwargs.get("region_scale") else ""
+    wfile = cache_dir / f"W_min{kwargs.get('min_syn', 5)}{suffix}.npz"
     if nfile.exists() and wfile.exists():
         neurons, W = pd.read_parquet(nfile), sparse.load_npz(wfile).tocsr()
         sign = presynaptic_signs(neurons)  # re-sign cached rows (the cache predates overrides)

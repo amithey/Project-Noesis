@@ -320,3 +320,26 @@ APL (1024), eta 5e-3:
 - So either KC->MBON synapses are under-counted in BANC, or one detected synapse stands for much more than
   0.275 mV. The FAFB comparison (`compare_mb_coverage`, waiting for the download) decides between them.
 - Fixed on the way: `mean_weight_fraction` returned NaN when a plastic synapse had zero initial weight.
+
+## 2026-10-13 — restoring FAFB-like synapse counts (`neuropil_scale_factors`, `rescale_check`)
+
+Each BANC synapse is multiplied by its brain region's FAFB/BANC synapse ratio (both sides pooled, clipped to
+1-20; 41 regions, median 2.73). The nerve cord has no FAFB counterpart and stays unscaled (assumption). The
+5-synapse threshold then applies to the corrected counts (1.53M -> 2.64M pairs). Same LIF parameters
+(Shiu et al.), adaptation 1 mV, 1 s per condition, no background unless stated:
+
+| | BANC as detected | BANC scaled to FAFB |
+|---|---|---|
+| MN9 with sugar at 50 / 100 / 200 Hz | 0 / 0 / 3.0 Hz | 1.5 / **14.0** / 23.5 Hz |
+| neurons reached by the sugar signal (100 Hz) | 754 | **14,446** |
+| reward dopamine neurons (PAM) > 5 Hz under sugar | **0** | **17-21** of 281 |
+| no input | silent | silent |
+| background 1 Hz x 60 | 12 neurons fire | 18 neurons fire |
+| background 5 Hz x 60 | 0.9 Hz mean | 5.0 Hz mean |
+
+- The corrected brain reproduces Shiu et al.'s feeding result at their ~100 Hz stimulus, which the raw BANC
+  counts never did, without tuning anything on this test.
+- **The sugar -> dopamine route exists once counts are corrected**: one of the two blockers of learning from
+  the world was a data artifact.
+- Background drive that made the raw brain "awake" (5 Hz x 60) now gives 5 Hz mean, so earlier calibrations
+  (background, adaptation, APL gain) were made on the weak brain and need redoing on the corrected one.
