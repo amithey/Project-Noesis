@@ -70,14 +70,42 @@ def coverage(folder: Path) -> dict:
     }
 
 
+REGIONS = {
+    "mushroom body (MB_*)": r"^MB_",
+    "antennal lobe (AL)": r"^AL_",
+    "lateral horn (LH)": r"^LH_",
+    "central complex (FB/EB/PB/NO)": r"^(FB|EB|PB|NO)",
+    "SMP/SIP/SLP/CRE": r"^(SMP|SIP|SLP|CRE)_",
+    "optic lobe (ME/LO/LOP)": r"^(ME|LO|LOP)_",
+    "GNG": r"^GNG$",
+}
+
+
+def region_totals(folder: Path) -> dict:
+    """Total synapses per brain region (to tell a mushroom-body-specific shortfall from a global one)."""
+    conn, _ = _tables(folder)
+    region = conn["neuropil"].astype(str)
+    out = {name: conn.loc[region.str.match(rx), "syn_count"].sum() for name, rx in REGIONS.items()}
+    out["(all, incl. nerve cord if present)"] = conn["syn_count"].sum()
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("folders", nargs="+", type=Path)
+    ap.add_argument("--regions", action="store_true", help="also compare synapse totals per region")
     a = ap.parse_args()
     rows = {f.name or str(f): coverage(f) for f in a.folders}
     table = pd.DataFrame(rows)
     with pd.option_context("display.float_format", "{:,.1f}".format, "display.width", 140):
         print(table.to_string())
+    if a.regions:
+        reg = pd.DataFrame({f.name or str(f): region_totals(f) for f in a.folders})
+        base = reg.columns[0]
+        for col in reg.columns[1:]:
+            reg[f"{base} / {col}"] = (reg[base] / reg[col]).round(2)
+        print()
+        print(reg.to_string(float_format="{:,.2f}".format))
 
 
 if __name__ == "__main__":
