@@ -47,3 +47,18 @@ def test_nt_override_makes_apl_inhibitory_despite_its_prediction(tmp_path):
     W = build_connectome(tmp_path / "n.csv", tmp_path / "c.csv").W.toarray()
     assert W[0, 1] == -9   # APL -> KC inhibitory (GABAergic), whatever the table predicts
     assert W[1, 0] == 9    # KC -> APL stays excitatory
+
+
+def test_region_scale_multiplies_synapses_by_region_before_the_threshold(tmp_path):
+    from noesis.connectome import neuropil_scale_factors
+
+    pd.DataFrame({"Root ID": [1, 2], "Predicted NT type": ["ACH", "ACH"]}).to_csv(tmp_path / "n.csv", index=False)
+    pd.DataFrame({"pre_root_id": [1, 1], "post_root_id": [2, 2], "neuropil": ["MB_ML_L", "VNC_T1"],
+                  "syn_count": [2, 1], "nt_type": [None, None]}).to_csv(tmp_path / "c.csv", index=False)
+    pd.DataFrame({"pre_root_id": [9, 9], "post_root_id": [8, 8], "neuropil": ["MB_ML_L", "MB_ML_R"],
+                  "syn_count": [30, 10], "nt_type": [None, None]}).to_csv(tmp_path / "ref.csv", index=False)
+    factors = neuropil_scale_factors(tmp_path / "c.csv", tmp_path / "ref.csv")
+    assert factors == {"MB_ML": 20.0}  # (30 + 10) / 2 = 20, both sides pooled; nerve cord has no factor
+    W = build_connectome(tmp_path / "n.csv", tmp_path / "c.csv", region_scale=factors).W.toarray()
+    assert W[0, 1] == 2 * 20.0 + 1  # MB rows scaled, the unmatched nerve-cord row kept at 1x
+    assert build_connectome(tmp_path / "n.csv", tmp_path / "c.csv").W.nnz == 0  # 3 synapses < 5 unscaled
