@@ -211,3 +211,186 @@ def compartmentalize_mbons(W: sparse.csr_matrix, comp: pd.DataFrame, neurons: pd
     out = sparse.csr_matrix((data, (coo.row, coo.col)), shape=W.shape)
     out.sort_indices()
     return out
+
+
+# --- mushroom-body circuit from FAFB ------------------------------------------------------------
+
+FAFB_MB_KINDS = ("pn", "kc", "apl", "mbon", "dan")
+
+
+def _kc_coarse(cell_type: pd.Series) -> pd.Series:
+    """Kenyon-cell lobe class from a type name: KCg / KCab / KCapbp (None for an unresolved 'KC')."""
+    t = cell_type.fillna("").astype(str)
+    coarse = np.select([t.str.startswith("KCapbp"), t.str.startswith("KCab"), t.str.startswith("KCg")],
+                       ["KCapbp", "KCab", "KCg"], default="")
+    return pd.Series(coarse, index=cell_type.index, dtype=object).replace("", None)
+
+
+def fafb_populations(fafb_neurons: pd.DataFrame) -> dict[str, np.ndarray]:
+    """FAFB root ids per MB population, from ``primary_type`` and FlyWire's ``class`` column."""
+    t = fafb_neurons["primary_type"].fillna("").astype(str)
+    cls = fafb_neurons["class"].fillna("").astype(str)
+    rid = fafb_neurons["root_id"].to_numpy()
+    masks = {
+        "pn": cls.eq("ALPN"),
+        "kc": cls.eq("Kenyon_Cell") | t.str.startswith("KC"),
+        "apl": t.eq("APL"),
+        "mbon": t.str.startswith("MBON"),
+        "dan": t.str.startswith(("PAM", "PPL", "PPM")) | cls.eq("DAN"),
+    }
+    taken = np.zeros(len(rid), bool)
+    out = {}
+    for kind in FAFB_MB_KINDS:  # each neuron in one population only
+        m = masks[kind].to_numpy() & ~taken
+        taken |= m
+        out[kind] = rid[m]
+    return out
+
+
+def _match(banc: pd.DataFrame, fafb: pd.DataFrame, levels: list[tuple[str, ...]],
+           rng: np.random.Generator) -> dict:
+    """One-to-one random matching of BANC rows (index = matrix index) to FAFB rows (index = root id).
+
+    For each level (a tuple of key columns, most specific first) the still-unmatched neurons of each
+    key present in both datasets are shuffled and paired up to the smaller count; the rest go on to
+    the next, coarser level. Rows with a missing key at a level are skipped there.
+    """
+    pairs: dict = {}
+    for cols in levels:
+        b = banc[~banc.index.isin(list(pairs))].dropna(subset=list(cols))
+        f = fafb[~fafb.index.isin(list(pairs.values()))].dropna(subset=list(cols))
+        if b.empty or f.empty:
+            continue
+        fgroups = f.groupby(list(cols)).groups
+        for key, bidx in sorted(b.groupby(list(cols)).groups.items()):
+            if key not in fgroups:
+                continue
+            bi = rng.permutation(np.asarray(bidx))
+            fi = rng.permutation(np.asarray(fgroups[key]))
+            k = min(len(bi), len(fi))
+            pairs.update(zip(bi[:k].tolist(), fi[:k].tolist()))
+    return pairs
+
+
+@dataclass
+class FAFBMushroomBody:
+    """Result of ``with_fafb_mushroom_body``."""
+
+    W: sparse.csr_matrix
+    banc_to_fafb: pd.Series      # FAFB root id per matched BANC matrix index
+    mapped: np.ndarray           # bool per BANC neuron: its MB-internal edges now come from FAFB
+    compartments: pd.DataFrame   # FAFB edges onto MBONs: pre, post (BANC indices), dend, axon
+    report: pd.DataFrame         # per population: neurons matched, edges / synapses mapped
+    unmatched_banc: dict = field(default_factory=dict)  # population -> type counts
+    unmatched_fafb: dict = field(default_factory=dict)
+
+
+def with_fafb_mushroom_body(W: sparse.csr_matrix, neurons: pd.DataFrame, pops: MBPopulations,
+                            fafb_neurons: pd.DataFrame, fafb_pairs: pd.DataFrame,
+                            seed: int = 0) -> FAFBMushroomBody:
+    """Replace the BANC edges among {PN, KC, APL, MBON, DAN} by the FAFB ones, mapped by cell type.
+
+    BANC under-counts Kenyon-cell synapses ~15-20x, so the mushroom-body circuit is taken from FAFB:
+    projection neurons, APL, MBONs and DANs are matched by primary type and side (then by type
+    alone); Kenyon cells by a seeded random one-to-one assignment within each KC type and side, then
+    within each lobe class (KCg / KCab / KCapbp) and side, then within the lobe class. FAFB has more
+    Kenyon cells than BANC, so they are subsampled. Every BANC edge between two *matched* neurons of
+    these populations is removed and every FAFB edge between their partners is added, signed by the
+    BANC presynaptic neuron (``presynaptic_signs``). Unmatched BANC neurons keep their BANC edges;
+    everything outside the mushroom-body circuit (ORN -> PN, inputs from and outputs to the rest of
+    the brain and nerve cord) stays BANC.
+
+    ``fafb_neurons``: root_id, primary_type, class, side. ``fafb_pairs``: pre_root_id, post_root_id,
+    syn (all neuropils) and optionally ``mb`` (synapses inside MB_* neuropils, for MBON compartments).
+    """
+    rng = np.random.default_rng(seed)
+    n = W.shape[0]
+    ctype = neurons["Primary Cell Type"].fillna("").astype(str).replace("", None)
+    side = neurons["Soma side"] if "Soma side" in neurons else pd.Series(None, index=neurons.index)
+    sub = neurons["Sub Class"] if "Sub Class" in neurons else pd.Series(None, index=neurons.index)
+    fpops = fafb_populations(fafb_neurons)
+    fn = fafb_neurons.set_index("root_id")
+    banc_to_fafb: dict = {}
+    rows, unmatched_banc, unmatched_fafb = [], {}, {}
+    for kind in FAFB_MB_KINDS:
+        bidx = getattr(pops, kind)
+        bidx = bidx[~np.isin(bidx, list(banc_to_fafb))]
+        b = pd.DataFrame({"type": ctype.iloc[bidx].to_numpy(), "side": side.iloc[bidx].to_numpy()},
+                         index=bidx)
+        f = pd.DataFrame({"type": fn.loc[fpops[kind], "primary_type"].to_numpy(),
+                          "side": fn.loc[fpops[kind], "side"].to_numpy()}, index=fpops[kind])
+        if kind == "kc":
+            coarse = _kc_coarse(ctype.iloc[bidx]).to_numpy()
+            b["coarse"] = np.where(pd.isna(coarse), _kc_coarse(sub.iloc[bidx]).to_numpy(), coarse)
+            b["coarse"] = b["coarse"].replace({np.nan: None})
+            f["coarse"] = _kc_coarse(f["type"]).to_numpy()
+            levels = [("type", "side"), ("coarse", "side"), ("coarse",)]
+        else:
+            levels = [("type", "side"), ("type",)]
+        pairs = _match(b, f, levels, rng)
+        banc_to_fafb.update(pairs)
+        unmatched_banc[kind] = b.loc[~b.index.isin(list(pairs)), "type"].fillna("?").value_counts()
+        unmatched_fafb[kind] = f.loc[~f.index.isin(list(pairs.values())), "type"].fillna("?").value_counts()
+        rows.append({"population": kind, "BANC neurons": len(b), "FAFB neurons": len(f),
+                     "matched": len(pairs)})
+
+    b2f = pd.Series(banc_to_fafb, dtype="int64").sort_index()
+    mapped = np.zeros(n, bool)
+    mapped[b2f.index.to_numpy()] = True
+    f2b = pd.Series(b2f.index.to_numpy(), index=b2f.to_numpy())
+    kind_of = {rid: kind for kind in FAFB_MB_KINDS for rid in fpops[kind].tolist()}
+
+    # FAFB edges inside the circuit, and among them those whose two ends were both matched
+    internal = fafb_pairs[fafb_pairs["pre_root_id"].isin(list(kind_of))
+                          & fafb_pairs["post_root_id"].isin(list(kind_of))]
+    keep = (internal["pre_root_id"].isin(f2b.index) & internal["post_root_id"].isin(f2b.index)).to_numpy()
+    edges = internal[keep]
+    pre = f2b.reindex(edges["pre_root_id"]).to_numpy(np.int64)
+    post = f2b.reindex(edges["post_root_id"]).to_numpy(np.int64)
+    sign = presynaptic_signs(neurons)
+    syn = edges["syn"].to_numpy(np.float32)
+    add = sparse.csr_matrix((syn * sign[pre], (pre, post)), shape=(n, n))
+
+    coo = W.tocoo()
+    drop = mapped[coo.row] & mapped[coo.col]
+    kept = sparse.csr_matrix((coo.data[~drop], (coo.row[~drop], coo.col[~drop])), shape=(n, n))
+    out = (kept + add).tocsr()
+    out.sort_indices()
+
+    # bookkeeping per presynaptic population
+    pre_kind = internal["pre_root_id"].map(kind_of).to_numpy()
+    for r in rows:
+        k = r["population"]
+        m = pre_kind == k
+        r["FAFB edges"] = int(m.sum())
+        r["FAFB edges mapped"] = int((m & keep).sum())
+        r["FAFB syn"] = int(internal["syn"].to_numpy()[m].sum())
+        r["FAFB syn mapped"] = int(internal["syn"].to_numpy()[m & keep].sum())
+        r["BANC syn replaced"] = int(np.abs(coo.data[drop][np.isin(coo.row[drop], getattr(pops, k))]).sum())
+
+    is_mbon = np.zeros(n, bool)
+    is_mbon[pops.mbon] = True
+    onto = is_mbon[post]
+    mb_in = edges["mb"].to_numpy(np.float32) if "mb" in edges else syn
+    comp = pd.DataFrame({"pre": pre[onto], "post": post[onto], "dend": mb_in[onto],
+                         "axon": (syn - mb_in)[onto]})
+    return FAFBMushroomBody(W=out, banc_to_fafb=b2f, mapped=mapped, compartments=comp,
+                            report=pd.DataFrame(rows).set_index("population"),
+                            unmatched_banc=unmatched_banc, unmatched_fafb=unmatched_fafb)
+
+
+def load_fafb_mushroom_body(connections_csv, cell_types_csv,
+                            classification_csv) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """FAFB neuron table (root_id, primary_type, class, side) and per-pair synapse counts among the
+    mushroom-body populations (pre_root_id, post_root_id, syn, mb = synapses in MB_* neuropils)."""
+    types = pd.read_csv(cell_types_csv, usecols=["root_id", "primary_type"])
+    cls = pd.read_csv(classification_csv, usecols=["root_id", "class", "side"])
+    fafb_neurons = cls.merge(types, on="root_id", how="outer")
+    ids = np.concatenate(list(fafb_populations(fafb_neurons).values()))
+    conn = pd.read_csv(connections_csv, usecols=["pre_root_id", "post_root_id", "neuropil", "syn_count"])
+    conn = conn[conn["pre_root_id"].isin(ids) & conn["post_root_id"].isin(ids)]
+    in_mb = conn["neuropil"].astype(str).str.startswith("MB_")
+    conn = conn.assign(mb=np.where(in_mb, conn["syn_count"], 0))
+    pairs = (conn.groupby(["pre_root_id", "post_root_id"], as_index=False)[["syn_count", "mb"]].sum()
+             .rename(columns={"syn_count": "syn"}))
+    return fafb_neurons, pairs

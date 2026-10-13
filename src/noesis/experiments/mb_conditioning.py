@@ -7,6 +7,11 @@ is measured with plasticity frozen. Learning predicts a drop for A and little ch
 Reward can arrive two ways: ``direct`` stimulates the dopaminergic neurons (the optogenetic
 reward assay used on real flies), ``sugar`` stimulates sugar-taste neurons so the dopamine
 neurons are driven only through the connectome. ``--reward none`` is the control.
+
+``--mb-source fafb`` replaces the mushroom-body circuit (PN, KC, APL, MBON, DAN edges) with the FAFB
+one mapped onto BANC neurons by cell type (``with_fafb_mushroom_body``); BANC under-counts Kenyon-cell
+synapses ~15-20x. FAFB tables are read from ``--fafb`` (connections_princeton.csv.gz,
+consolidated_cell_types.csv.gz and classification.csv.gz, found there or via ``--fafb-classification``).
 """
 
 from __future__ import annotations
@@ -15,6 +20,7 @@ import argparse
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 from noesis.connectome import load_all_pairs, load_cached
 from noesis.lif import LIFNetwork, LIFParams
@@ -22,8 +28,10 @@ from noesis.mushroom_body import (
     DopamineGatedPlasticity,
     GradedAPL,
     compartmentalize_mbons,
+    load_fafb_mushroom_body,
     mbon_input_compartments,
     populations,
+    with_fafb_mushroom_body,
     with_weak_pathway_edges,
 )
 
@@ -60,23 +68,52 @@ def main() -> None:
                     help="weight of synapses onto MBON axons (outside the MB); <0 = point neurons")
     ap.add_argument("--apl-gain", type=float, default=0.0, help="0 = spiking APL; >0 = graded APL")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--mb-source", choices=("banc", "fafb"), default="banc",
+                    help="where the PN/KC/APL/MBON/DAN edges come from")
+    ap.add_argument("--fafb", type=Path, default=None, help="FAFB table folder (default DATA/fafb)")
+    ap.add_argument("--fafb-classification", type=Path, default=None,
+                    help="FAFB classification.csv.gz (default: in --fafb, else DATA/../FABA)")
     a = ap.parse_args()
 
     cn = load_cached(a.data / "raw", a.data / "processed")
     pairs = load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons)
     pops = populations(cn.neurons)
     W = with_weak_pathway_edges(cn, pairs, pops)
+    fmb = None
+    if a.mb_source == "fafb":
+        fdir = a.fafb or a.data / "fafb"
+        fcls = a.fafb_classification or next(
+            (p for p in (fdir / "classification.csv.gz", a.data.parent / "FABA" / "classification.csv.gz")
+             if p.exists()), fdir / "classification.csv.gz")
+        fneurons, fpairs = load_fafb_mushroom_body(fdir / "connections_princeton.csv.gz",
+                                                   fdir / "consolidated_cell_types.csv.gz", fcls)
+        fmb = with_fafb_mushroom_body(W, cn.neurons, pops, fneurons, fpairs, seed=a.seed)
+        W = fmb.W
+        with pd.option_context("display.width", 200, "display.max_columns", 20):
+            print("mushroom body from FAFB (matched by cell type):")
+            print(fmb.report.to_string())
+        for kind, counts in fmb.unmatched_banc.items():
+            if len(counts):
+                print(f"  unmatched BANC {kind}: {counts.sum()} {counts.head(8).to_dict()}")
+        for kind, counts in fmb.unmatched_fafb.items():
+            if len(counts):
+                print(f"  unmatched FAFB {kind}: {counts.sum()} {counts.head(8).to_dict()}")
     if a.mbon_axonal_weight >= 0:
         comp = mbon_input_compartments(a.data / "raw", a.data / "processed", cn.neurons, pops.mbon)
+        if fmb is not None:  # replaced pairs take their dendrite/axon split from FAFB
+            replaced = fmb.mapped[comp["pre"].to_numpy(np.int64)] & fmb.mapped[comp["post"].to_numpy(np.int64)]
+            comp = pd.concat([comp[~replaced], fmb.compartments], ignore_index=True)
         W = compartmentalize_mbons(W, comp, cn.neurons, a.mbon_axonal_weight)
         print(f"MBON inputs: dendritic (MB) x1, axonal x{a.mbon_axonal_weight:g}")
     print(f"ORN {len(pops.orn)}  PN {len(pops.pn)}  KC {len(pops.kc)}  MBON {len(pops.mbon)}  "
-          f"DAN {len(pops.dan)} | edges {cn.W.nnz} -> {W.nnz} (+{W.nnz - cn.W.nnz} weak olfactory/MB)")
+          f"DAN {len(pops.dan)} | edges {cn.W.nnz} -> {W.nnz} (+{W.nnz - cn.W.nnz} weak olfactory/MB"
+          f"{', net of the FAFB swap' if fmb is not None else ''})")
 
     net = LIFNetwork(W, LIFParams(dt=0.5, da=a.adapt), seed=a.seed)
     apl = GradedAPL(net, pops, gain=a.apl_gain) if a.apl_gain > 0 else None
     plast = DopamineGatedPlasticity(net, pops, eta=a.eta)
-    print(f"plastic KC->MBON synapses: {len(plast.pos)}")
+    print(f"plastic KC->MBON synapses: {len(plast.pos)} "
+          f"({np.abs(plast.w0).sum() / max(len(pops.mbon), 1):.0f} synapse-weights per MBON)")
 
     rng = np.random.default_rng(a.seed)
     # an odour = the receptor neurons of a few glomeruli; A and B use disjoint glomeruli
@@ -93,7 +130,7 @@ def main() -> None:
         for name, idx in odor.items():
             out[name], cnt = _run(net, plast, pops, a.test_ms, idx, a.odor_hz, 400.0, learn=False, apl=apl)
             active[name] = cnt[pops.kc] > 0
-            _run(net, plast, pops, 300.0, None, 0.0, 0.0, learn=False)  # let activity settle
+            _run(net, plast, pops, 300.0, None, 0.0, 0.0, learn=False, apl=apl)  # let activity settle
         print(f"{label:10s} KC / MBON / DAN Hz  odour A: {out['A'][0]:5.2f} {out['A'][1]:6.2f} {out['A'][2]:5.2f}"
               f"   odour B: {out['B'][0]:5.2f} {out['B'][1]:6.2f} {out['B'][2]:5.2f}", flush=True)
         a_, b_ = active["A"], active["B"]

@@ -140,3 +140,70 @@ def test_mean_weight_fraction_ignores_zero_weight_synapses():
     _, _, plast = _net()
     plast.w0[0] = 0.0
     assert np.isfinite(plast.mean_weight_fraction)
+
+
+def _fafb_example():
+    """BANC: PN 0, KCs 1-3 (KCg-m left, KCg left, KCab right), MBON 4, DAN 5, other 6.
+    FAFB: one PN, four KCs, one MBON, one DAN (ids 100+)."""
+    from noesis.connectome import Connectome
+    neurons = pd.DataFrame({
+        "Primary Cell Type": ["DA1_lPN", "KCg-m", "KCg", "KCab", "MBON01", "PAM05", "other"],
+        "Sub Class": ["", "KCg", "KCg", "KCab", "", "", ""],
+        "Class": ["antennal_lobe_projection_neuron", "", "", "", "", "", ""],
+        "Soma side": ["left", "left", "left", "right", "left", "left", "left"],
+        "Predicted NT type": ["ACH", "ACH", "ACH", "ACH", "GLUT", "DA", "ACH"],
+    })
+    pops = MBPopulations(orn=EMPTY, pn=np.array([0]), kc=np.array([1, 2, 3]), mbon=np.array([4]),
+                         dan=np.array([5]))
+    # BANC edges: PN->KC1 (5), KC1->MBON (2), KC1->other (9), other->MBON (7), MBON->DAN (6)
+    W = sparse.csr_matrix(((5.0, 2.0, 9.0, 7.0, -6.0), ((0, 1, 1, 6, 4), (1, 4, 6, 4, 5))), shape=(7, 7))
+    fafb_neurons = pd.DataFrame({
+        "root_id": [100, 101, 102, 103, 104, 105, 106],
+        "primary_type": ["DA1_lPN", "KCg-m", "KCg-m", "KCab", "KCapbp-m", "MBON01", "PAM05"],
+        "class": ["ALPN", "Kenyon_Cell", "Kenyon_Cell", "Kenyon_Cell", "Kenyon_Cell", "MBON", "DAN"],
+        "side": ["left", "left", "left", "right", "right", "left", "left"],
+    })
+    fafb_pairs = pd.DataFrame({
+        "pre_root_id": [100, 101, 102, 103, 104, 105],
+        "post_root_id": [101, 105, 105, 105, 105, 106],
+        "syn": [20, 40, 30, 50, 60, 8],
+        "mb": [0, 40, 30, 45, 60, 0],
+    })
+    return Connectome(neurons=neurons, W=W), pops, fafb_neurons, fafb_pairs
+
+
+def test_fafb_mushroom_body_matches_cell_types_and_kcs_one_to_one():
+    from noesis.mushroom_body import with_fafb_mushroom_body
+    cn, pops, fn, fp = _fafb_example()
+    r = with_fafb_mushroom_body(cn.W, cn.neurons, pops, fn, fp, seed=0)
+    b2f = r.banc_to_fafb.to_dict()
+    assert b2f[0] == 100 and b2f[4] == 105 and b2f[5] == 106      # PN, MBON, DAN by type
+    assert b2f[3] == 103                                            # KCab right -> the KCab
+    assert {b2f[1], b2f[2]} == {101, 102}                           # KCg-m, then KCg by lobe class
+    assert 104 not in b2f.values()                                  # FAFB surplus KC is subsampled away
+    assert r.report.loc["kc", "matched"] == 3 and r.report.loc["kc", "FAFB neurons"] == 4
+
+
+def test_fafb_mushroom_body_replaces_only_edges_among_matched_neurons():
+    from noesis.mushroom_body import with_fafb_mushroom_body
+    cn, pops, fn, fp = _fafb_example()
+    r = with_fafb_mushroom_body(cn.W, cn.neurons, pops, fn, fp, seed=0)
+    out = r.W.toarray()
+    kc_of = {v: k for k, v in r.banc_to_fafb.items()}
+    assert out[0, kc_of[101]] == 20.0                   # PN -> KC from FAFB
+    assert out[0, 1] == (20.0 if kc_of[101] == 1 else 0.0)  # BANC PN->KC1 (5) replaced
+    assert out[3, 4] == 50.0                            # KCab -> MBON from FAFB
+    assert out[1, 4] in (40.0, 30.0)                    # BANC 2 synapses replaced by FAFB count
+    assert out[4, 5] == -8.0                            # MBON -> DAN, signed by BANC NT (GLUT)
+    assert out[1, 6] == 9.0 and out[6, 4] == 7.0        # edges to/from the rest of BANC stay
+    assert r.report.loc["kc", "FAFB syn"] == 180 and r.report.loc["kc", "FAFB syn mapped"] == 120
+
+
+def test_fafb_mushroom_body_keeps_compartments_and_is_seeded():
+    from noesis.mushroom_body import with_fafb_mushroom_body
+    cn, pops, fn, fp = _fafb_example()
+    r = with_fafb_mushroom_body(cn.W, cn.neurons, pops, fn, fp, seed=0)
+    kcab = r.compartments[r.compartments["pre"] == 3].iloc[0]
+    assert kcab["post"] == 4 and kcab["dend"] == 45 and kcab["axon"] == 5
+    again = with_fafb_mushroom_body(cn.W, cn.neurons, pops, fn, fp, seed=0)
+    assert again.banc_to_fafb.equals(r.banc_to_fafb)
