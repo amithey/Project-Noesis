@@ -122,3 +122,21 @@ def test_graded_apl_removes_spiking_output_and_inhibits_in_proportion_to_kc_acti
     busy = apl.current(np.array([0, 0, 1, 1]), 5.0)["current_mv_per_ms"]
     assert np.all(quiet == 0) and np.all(busy < 0)
     assert np.isclose(busy[0] / busy[1], 2.0)                 # follows APL->KC synapse counts
+
+
+def test_compartments_reweight_axonal_input_onto_mbons_only():
+    from noesis.mushroom_body import compartmentalize_mbons
+    neurons = pd.DataFrame({"Predicted NT type": ["ACH", "GABA", "ACH"], "Primary Cell Type": ["KCg", "x", "MBON01"]})
+    # 0 -> 2 (KC onto MBON), 1 -> 2 (inhibitory, mostly axonal), 0 -> 1 (not an MBON target)
+    W = sparse.csr_matrix(np.array([[0, 8.0, 10.0], [0, 0, -12.0], [0, 0, 0]]))
+    comp = pd.DataFrame({"pre": [0, 1], "post": [2, 2], "dend": [10.0, 2.0], "axon": [0.0, 10.0]})
+    out = compartmentalize_mbons(W, comp, neurons, axonal_weight=0.1).toarray()
+    assert out[0, 2] == 10.0                    # dendritic KC input unchanged
+    assert np.isclose(out[1, 2], -(2.0 + 1.0))  # 2 dendritic + 0.1 * 10 axonal, sign kept
+    assert out[0, 1] == 8.0                     # non-MBON synapse untouched
+
+
+def test_mean_weight_fraction_ignores_zero_weight_synapses():
+    _, _, plast = _net()
+    plast.w0[0] = 0.0
+    assert np.isfinite(plast.mean_weight_fraction)

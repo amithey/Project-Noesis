@@ -299,3 +299,24 @@ The tables have no neuron positions, so the layout is **schematic**: each neuron
 point for its main region (`Top in/out region`) on its own side, brain above, nerve cord below. A
 `--coords` CSV (`root_id,x,y,z`) switches to real positions if one is downloaded. 9,477 neurons have no
 synapses in the table (`NO_CONS`); they still fire from background noise and are drawn apart.
+
+## 2026-10-13 — MBON dendrite/axon compartments (`compartmentalize_mbons`)
+
+Synapses onto MBONs are re-weighted by location: inside the mushroom body (dendrites) x1, outside (axons)
+x `axonal_weight` (an assumption: axonal input barely affects spike initiation). Conditioning with graded
+APL (1024), eta 5e-3:
+
+| axonal weight | MBON odour response before | after reward / after control |
+|---|---|---|
+| 1 (point neuron, earlier) | 3.5 Hz | -27% / -25% |
+| 0.2 | 0.03 Hz | ~0 / ~0 |
+| 0 | 0.03 Hz | ~0 / ~0 |
+
+- With dendritic input only, **MBONs are essentially silent to odours (0.03 Hz)**: all of the earlier MBON
+  odour response came from synapses on their axons, not from Kenyon cells. Plasticity at KC->MBON synapses
+  cannot be read out from neurons that the KC input does not drive.
+- Back-of-envelope: an MBON has ~120 KC synapses here; with 21% of KCs firing at ~6 Hz they add about
+  120 x 0.21 x 0.275 mV x 6 Hz x 5 ms = 0.2 mV of drive, against a 7 mV threshold (>30x short).
+- So either KC->MBON synapses are under-counted in BANC, or one detected synapse stands for much more than
+  0.275 mV. The FAFB comparison (`compare_mb_coverage`, waiting for the download) decides between them.
+- Fixed on the way: `mean_weight_fraction` returned NaN when a plastic synapse had zero initial weight.
