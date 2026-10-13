@@ -51,7 +51,7 @@ def _add(g, in_act, act, nact, j, val):
 
 @nb.njit(cache=True)
 def _run(indptr, indices, data, v, g, adapt, refr, ring, ring_n, act, in_act, nact, step0, n_steps,
-         stim_idx, stim_p, stim_w, bg_mean, bg_w,
+         stim_idx, stim_p, stim_w, bg_mean, bg_w, cur_idx, cur_val,
          v_rest, v_th, dv_k, dg_k, ref_steps, w_syn, da_inc, da_k):
     n = v.shape[0]
     delay_steps = ring.shape[0]
@@ -72,6 +72,8 @@ def _run(indptr, indices, data, v, g, adapt, refr, ring, ring_n, act, in_act, na
             for e in range(indptr[pre], indptr[pre + 1]):
                 _add(g, in_act, act, nact, indices[e], data[e] * w_syn)
         ring_n[slot] = 0
+        for k in range(cur_idx.shape[0]):  # continuous (graded) input, mV per step
+            _add(g, in_act, act, nact, cur_idx[k], cur_val[k])
         for k in range(stim_idx.shape[0]):
             if np.random.random() < stim_p[k]:
                 _add(g, in_act, act, nact, stim_idx[k], stim_w[k] * w_syn)
@@ -148,18 +150,23 @@ class LIFNetwork:
         drive_weight: float | np.ndarray = 50.0,
         background_hz: float = 0.0,
         background_weight: float = 50.0,
+        current_idx: np.ndarray | None = None,
+        current_mv_per_ms: float | np.ndarray = 0.0,
     ) -> tuple[np.ndarray, np.ndarray]:
         """Advance ``ms``. Poisson drive onto ``drive_idx`` (per-neuron rate/weight allowed);
-        ``background_hz`` is the mean event rate *per neuron* on random neurons."""
+        ``background_hz`` is the mean event rate *per neuron* on random neurons;
+        ``current_mv_per_ms`` is a continuous input to ``g`` of ``current_idx`` (negative inhibits)."""
         p = self.p
         idx = np.zeros(0, np.int64) if drive_idx is None else np.asarray(drive_idx, np.int64)
         prob = np.broadcast_to(np.asarray(drive_rate_hz, float) * p.dt * 1e-3, idx.shape).copy()
         wts = np.broadcast_to(np.asarray(drive_weight, float), idx.shape).copy()
         n_steps = round(ms / p.dt)
+        cidx = np.zeros(0, np.int64) if current_idx is None else np.asarray(current_idx, np.int64)
+        cval = np.broadcast_to(np.asarray(current_mv_per_ms, float) * p.dt, cidx.shape).copy()
         t, i = _run(
             self.indptr, self.indices, self.data, self.v, self.g, self.adapt, self.refr, self.ring,
             self.ring_n, self.act, self.in_act, self.nact, self.step, n_steps, idx, prob, wts,
-            background_hz * self.n * p.dt * 1e-3, background_weight,
+            background_hz * self.n * p.dt * 1e-3, background_weight, cidx, cval,
             p.v_rest, p.v_th, p.dt / p.tau_m, float(np.exp(-p.dt / p.tau_syn)),
             round(p.t_ref / p.dt), p.w_syn, p.da, float(np.exp(-p.dt / p.tau_a)),
         )
