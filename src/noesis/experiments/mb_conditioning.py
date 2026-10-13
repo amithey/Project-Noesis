@@ -112,7 +112,7 @@ def main() -> None:
         for name, idx in odor.items():
             out[name], cnt = _run(net, plast, pops, a.test_ms, idx, a.odor_hz, 400.0, learn=False, apl=apl)
             active[name] = cnt[pops.kc] > 0
-            _run(net, plast, pops, 300.0, None, 0.0, 0.0, learn=False)  # let activity settle
+            _run(net, plast, pops, 300.0, None, 0.0, 0.0, learn=False, apl=apl)  # settle, APL still on
         print(f"{label:10s} KC / MBON / DAN Hz  odour A: {out['A'][0]:5.2f} {out['A'][1]:6.2f} {out['A'][2]:5.2f}"
               f"   odour B: {out['B'][0]:5.2f} {out['B'][1]:6.2f} {out['B'][2]:5.2f}", flush=True)
         a_, b_ = active["A"], active["B"]

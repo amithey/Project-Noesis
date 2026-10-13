@@ -395,3 +395,25 @@ high B "active" share is mostly single onset spikes. Gain 256 used.
 - Likely remaining cause: the Kenyon cells that respond to B also fire during A training (40% of KCs spike at
   least once to B; the antennal lobe spreads each odour to 68% of the other projection neurons). Depression
   therefore hits B's synapses too. Single seed, one odour pair.
+
+**Correction (same day): the settle pause between the two test odours ran with the graded APL off.**
+Found by the option-2 run. During the 300 ms pause the antennal lobe keeps firing, so Kenyon cells burst
+uninhibited when odour B starts; the "B active" shares above (40%, 38%) are that artifact. Fixed in
+`mb_conditioning` (settle now passes `apl=apl`). Corrected option-1 numbers (uniform APL, rescaled KCs):
+
+| | KCs active A / B | A/B overlap | MBON A | MBON B |
+|---|---|---|---|---|
+| gain 256, before training | 14% / 12% | 57% | 18.9 Hz | 16.1 Hz |
+| gain 1024, before training | 6% / 5% | 52% | 6.5 Hz | 5.3 Hz |
+
+| gain 256, point MBONs | MBON A | MBON B | plastic weights |
+|---|---|---|---|
+| control, no reward | -14.1% | -1.1% | 1.00 |
+| reward, eta 5e-4 | -72.2% | -66.6% | 0.96 |
+| reward, eta 1e-4 | -36.3% | -25.0% | 0.99 |
+
+Beyond the control: A -58 vs B -66 points (eta 5e-4), A -22 vs B -24 (eta 1e-4). **Still not odour-specific.**
+With the artifact removed the reason is plain: more than half of the responding Kenyon cells are shared by the
+two odours (57% overlap), so depressing A's synapses depresses B's. The option-2 run (FAFB mushroom body,
+`feature/mb-from-fafb`) reaches the same conclusion independently: 98% of B-responsive KCs also fire during A
+training; synapses of shared KCs fall to 0.52 while A-only / B-only KCs stay at 0.96 / 0.95.
