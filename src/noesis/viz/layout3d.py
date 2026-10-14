@@ -41,11 +41,14 @@ NT_RGB: dict[str, tuple[float, float, float]] = {
 FLASH_TAU_S = 0.35
 # Share of the smoothed firing rate mixed under the spike flash.
 RATE_MIX = 0.65
-QUIET_FLOOR = 0.22
+QUIET_FLOOR = 0.14
 
-BACKBONE_EDGES = 8000
-LIVE_EDGES = 2000
-LIVE_SOURCES = 500
+# Fewer, shorter edges. Long chords across the whole CNS read as fog, not a network.
+BACKBONE_EDGES = 1400
+LIVE_EDGES = 650
+LIVE_SOURCES = 400
+LOCAL_EDGE_LENGTH = 52.0
+BRIDGE_EDGE_LENGTH = 115.0
 
 
 class Neuropil(NamedTuple):
@@ -135,7 +138,6 @@ LABELS_3D: tuple[tuple[str, str], ...] = (
     ("T2_MESONM", "T2"),
     ("T3_METANM", "T3"),
     ("ABDNM", "abdomen"),
-    ("NO_CONS", "no synapses"),
 )
 
 _OPTIC = {"ME", "LO", "LOP", "AME"}
@@ -187,7 +189,8 @@ def label_anchors() -> list[tuple[str, np.ndarray]]:
     for name, text in LABELS_3D:
         anchor = neuropil_center(name, "right")
         anchor = anchor.copy()
-        anchor[0] += NEUROPILS[name].radii[0] + 14.0
+        anchor[0] += NEUROPILS[name].radii[0] + 16.0
+        anchor[1] += NEUROPILS[name].radii[1] + 10.0
         anchors.append((text, anchor))
     return anchors
 
@@ -365,14 +368,88 @@ def rgba_from_glow(base_rgb: np.ndarray, glow: np.ndarray) -> np.ndarray:
     rgb = np.clip(np.asarray(base_rgb, np.float32) * amp, 0.0, 1.0)
     out = np.empty((len(level), 4), np.float32)
     out[:, :3] = rgb
-    out[:, 3] = np.float32(0.38) + np.float32(0.62) * level
+    out[:, 3] = np.float32(0.30) + np.float32(0.70) * level
     return out
 
 
 def point_sizes(glow: np.ndarray) -> np.ndarray:
-    """Pixel size. Quiet neurons stay small; a spike is several times larger."""
+    """Pixel size. A spike is a large bright core; quiet neurons stay small dots."""
     level = np.clip(np.asarray(glow, np.float32), 0.0, 1.0)
-    return (np.float32(1.7) + np.float32(8.0) * level).astype(np.float32)
+    return (np.float32(1.5) + np.float32(8.0) * level).astype(np.float32)
+
+
+def family_colors(names: np.ndarray) -> np.ndarray:
+    """``(n, 3)`` neuropil-family color, used for the resting network rather than transmitter."""
+    codes, uniq = pd.factorize(pd.Series(np.asarray(names)), sort=False)
+    lut = np.array([_region_rgb(str(name)) for name in uniq], np.float32)
+    return np.ascontiguousarray(lut[codes], dtype=np.float32)
+
+
+# Wireframe volumes. Only the regions a watcher uses to orient; every neuron is still a point.
+SHELL_REGIONS: tuple[str, ...] = (
+    "ME", "LO", "AL", "MB_CA", "LH", "FB", "EB", "PB", "GNG",
+    "T1_PRONM", "T2_MESONM", "T3_METANM", "ABDNM",
+)
+
+
+def _loop_segments(pts: np.ndarray, closed: bool) -> np.ndarray:
+    if closed:
+        nxt = np.roll(pts, -1, axis=0)
+        src = pts
+    else:
+        src, nxt = pts[:-1], pts[1:]
+    out = np.empty((len(src) * 2, 3), np.float32)
+    out[0::2] = src
+    out[1::2] = nxt
+    return out
+
+
+def _ellipsoid_loops(center: np.ndarray, radii: np.ndarray, n_arc: int) -> np.ndarray:
+    """Latitude and longitude loops on an axis-aligned ellipsoid."""
+    parts = []
+    us = np.linspace(0.0, 2.0 * np.pi, n_arc, endpoint=False)
+    for v in (-0.65, 0.0, 0.65):
+        cv, sv = np.cos(v), np.sin(v)
+        pts = np.stack(
+            [radii[0] * np.cos(us) * cv, np.full(n_arc, radii[1] * sv), radii[2] * np.sin(us) * cv],
+            axis=1,
+        )
+        parts.append(_loop_segments(pts + center, closed=True))
+    vs = np.linspace(-np.pi / 2.0, np.pi / 2.0, max(n_arc // 2, 8))
+    for u in (0.0, np.pi / 2.0, np.pi, 3.0 * np.pi / 2.0):
+        cu, su = np.cos(u), np.sin(u)
+        pts = np.stack(
+            [radii[0] * cu * np.cos(vs), radii[1] * np.sin(vs), radii[2] * su * np.cos(vs)],
+            axis=1,
+        )
+        parts.append(_loop_segments(pts + center, closed=False))
+    return np.concatenate(parts)
+
+
+def shell_wireframe(scale: float = 1.15, n_arc: int = 22) -> tuple[np.ndarray, np.ndarray]:
+    """Faint ellipsoid shells around the orienting neuropils, left and right.
+
+    Returns segment vertices ``(N, 3)`` and per-vertex RGBA. Paired neuropils are
+    mirrored; midline ones (central complex, GNG) are drawn once.
+    """
+    segments: list[np.ndarray] = []
+    colors: list[np.ndarray] = []
+    for name in SHELL_REGIONS:
+        spec = NEUROPILS[name]
+        rgb = np.asarray(_region_rgb(name), np.float32)
+        signs = (1.0,) if not spec.paired else (-1.0, 1.0)
+        radii = np.asarray(spec.radii, np.float32) * np.float32(scale)
+        for sign in signs:
+            center = np.array(spec.center, np.float32)
+            if spec.paired:
+                center[0] *= np.float32(sign)
+            loops = _ellipsoid_loops(center, radii, n_arc)
+            segments.append(loops)
+            col = np.empty((len(loops), 4), np.float32)
+            col[:, :3] = rgb
+            col[:, 3] = np.float32(0.42)
+            colors.append(col)
+    return np.concatenate(segments), np.concatenate(colors)
 
 
 def format_hud(
@@ -400,6 +477,11 @@ def format_hud(
     return "\n".join(lines)
 
 
+def _edge_lengths(positions: np.ndarray, rows: np.ndarray, cols: np.ndarray) -> np.ndarray:
+    delta = np.asarray(positions, np.float32)[rows] - np.asarray(positions, np.float32)[cols]
+    return np.linalg.norm(delta, axis=1)
+
+
 def backbone_from_csr(
     indptr: np.ndarray,
     indices: np.ndarray,
@@ -407,10 +489,16 @@ def backbone_from_csr(
     region_ids: np.ndarray,
     max_edges: int = BACKBONE_EDGES,
     seed: int = 0,
+    positions: np.ndarray | None = None,
+    max_length: float | None = None,
+    bridge_length: float | None = None,
+    within_fraction: float = 0.5,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Capped strong edges, half within a neuropil and half between neuropils.
+    """Capped strong edges. Most stay inside a neuropil; a few bridges connect regions.
 
-    ``region_ids[i]`` is an integer neuropil code. Self-loops are dropped.
+    ``region_ids[i]`` is an integer neuropil code. Self-loops are dropped. When
+    ``positions`` and a length limit are given, chords longer than that limit are
+    left out so the drawing does not become a web across the whole nervous system.
     """
     indptr = np.asarray(indptr)
     indices = np.asarray(indices)
@@ -425,12 +513,20 @@ def backbone_from_csr(
     if rows.size == 0:
         return np.zeros(0, np.int32), np.zeros(0, np.int32)
     same = np.asarray(region_ids)[rows] == np.asarray(region_ids)[cols]
+    lengths = None
+    if positions is not None and (max_length is not None or bridge_length is not None):
+        lengths = _edge_lengths(positions, rows, cols)
     rng = np.random.default_rng(seed)
-    within_budget = max_edges // 2
-    budgets = (within_budget, max_edges - within_budget)
+    within_budget = int(max_edges * within_fraction)
+    budgets = (
+        (same, within_budget, max_length),
+        (~same, max_edges - within_budget, bridge_length if bridge_length is not None else max_length),
+    )
     chosen: list[np.ndarray] = []
-    for mask, budget in ((same, budgets[0]), (~same, budgets[1])):
+    for mask, budget, limit in budgets:
         idx = np.flatnonzero(mask)
+        if limit is not None and lengths is not None and idx.size:
+            idx = idx[lengths[idx] <= limit]
         if idx.size == 0 or budget <= 0:
             continue
         if idx.size > budget:
@@ -462,8 +558,16 @@ def live_synapse_edges(
     active: np.ndarray,
     max_edges: int = LIVE_EDGES,
     max_sources: int = LIVE_SOURCES,
+    positions: np.ndarray | None = None,
+    max_length: float | None = None,
+    max_long: int = 40,
+    long_length: float = BRIDGE_EDGE_LENGTH,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Synapses among ``active`` neurons, strongest first, never more than ``max_edges``."""
+    """Synapses among ``active`` neurons, strongest first, never more than ``max_edges``.
+
+    With ``positions``, short edges fill the budget first and only ``max_long`` longer
+    ones (still under ``long_length``) are kept, so a firing region shows its own web.
+    """
     indptr = np.asarray(indptr)
     indices = np.asarray(indices)
     weight = np.abs(np.asarray(data, np.float64))
@@ -501,6 +605,32 @@ def live_synapse_edges(
     pre = np.concatenate(pres)
     post = np.concatenate(posts)
     w = np.concatenate(weights)
+    if positions is not None and max_length is not None and pre.size:
+        length = _edge_lengths(positions, pre, post)
+        short = length <= max_length
+        bridge = (length > max_length) & (length <= long_length)
+        keep_short = np.flatnonzero(short)
+        keep_long = np.flatnonzero(bridge)
+        short_budget = max(max_edges - max_long, 0)
+        if short_budget == 0:
+            keep_short = keep_short[:0]
+        elif keep_short.size > short_budget:
+            pick = np.argpartition(w[keep_short], -short_budget)[-short_budget:]
+            keep_short = keep_short[pick]
+        if max_long > 0 and keep_long.size > max_long:
+            pick = np.argpartition(w[keep_long], -max_long)[-max_long:]
+            keep_long = keep_long[pick]
+        room = max(max_edges - int(keep_short.size), 0)
+        if keep_long.size > room:
+            if room == 0:
+                keep_long = keep_long[:0]
+            else:
+                pick = np.argpartition(w[keep_long], -room)[-room:]
+                keep_long = keep_long[pick]
+        if keep_short.size == 0 and keep_long.size == 0:
+            return np.zeros(0, np.int32), np.zeros(0, np.int32)
+        chosen = np.concatenate([keep_short, keep_long])
+        return pre[chosen], post[chosen]
     if pre.size > max_edges:
         pick = np.argpartition(w, -max_edges)[-max_edges:]
         pre, post = pre[pick], post[pick]
@@ -535,11 +665,21 @@ def segment_positions(positions: np.ndarray, pre: np.ndarray, post: np.ndarray) 
     return out
 
 
-def segment_colors(base_rgb: np.ndarray, pre: np.ndarray, alpha: float, gain: float) -> np.ndarray:
-    """RGBA per vertex, taken from the presynaptic neuron."""
+def segment_colors(
+    base_rgb: np.ndarray,
+    pre: np.ndarray,
+    alpha: float,
+    gain: float,
+    tint: tuple[float, float, float] = (0.0, 0.0, 0.0),
+    tint_weight: float = 0.0,
+) -> np.ndarray:
+    """RGBA per vertex, taken from the presynaptic neuron and optionally pulled toward ``tint``."""
     if len(pre) == 0:
         return np.zeros((0, 4), np.float32)
-    src = np.clip(np.asarray(base_rgb, np.float32)[pre] * np.float32(gain), 0.0, 1.0)
+    src = np.asarray(base_rgb, np.float32)[pre] * np.float32(gain)
+    if tint_weight:
+        src = src * np.float32(1.0 - tint_weight) + np.asarray(tint, np.float32) * np.float32(tint_weight)
+    src = np.clip(src, 0.0, 1.0)
     col = np.empty((len(pre) * 2, 4), np.float32)
     col[0::2, :3] = src
     col[1::2, :3] = src

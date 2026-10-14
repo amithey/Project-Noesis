@@ -27,7 +27,9 @@ from noesis.viz.layout3d import (
     live_synapse_edges,
     neuron_positions_3d,
     neuropil_center,
+    point_sizes,
     rgba_from_glow,
+    shell_wireframe,
 )
 
 
@@ -193,6 +195,36 @@ def test_edges_are_capped_and_live_edges_stay_inside_the_active_set():
     assert len(pre) <= 3
     assert np.isin(pre, np.arange(12)).all()
     assert np.isin(post, np.arange(12)).all()
+
+
+def test_long_chords_drop_spikes_outsize_quiet_dots_and_shells_span_the_cns():
+    positions = np.array([[0, 0, 0], [12, 0, 0], [390, 0, 0], [400, 0, 0]], np.float32)
+    weights = sparse.csr_matrix(
+        (np.array([5.0, 50.0, 4.0]), (np.array([0, 1, 2]), np.array([1, 3, 3]))),
+        shape=(4, 4),
+    )
+    region = np.array([0, 0, 1, 1])
+    pre, post = backbone_from_csr(
+        weights.indptr, weights.indices, weights.data, region,
+        max_edges=4, seed=0, positions=positions, max_length=52.0, bridge_length=80.0,
+    )
+    pairs = set(zip(pre.tolist(), post.tolist(), strict=True))
+    assert (0, 1) in pairs
+    assert (1, 3) not in pairs
+
+    pre, post = live_synapse_edges(
+        weights.indptr, weights.indices, weights.data, np.array([0, 1, 2, 3]),
+        max_edges=4, positions=positions, max_length=52.0, max_long=0, long_length=80.0,
+    )
+    assert set(zip(pre.tolist(), post.tolist(), strict=True)) <= {(0, 1), (2, 3)}
+
+    assert point_sizes(np.array([1.0]))[0] >= point_sizes(np.array([0.0]))[0] * 4
+
+    seg, col = shell_wireframe()
+    assert np.isfinite(seg).all() and np.isfinite(col).all()
+    assert seg[:, 0].min() < -200 and seg[:, 0].max() > 200
+    assert seg[:, 1].max() > 80 and seg[:, 1].min() < -280
+    assert col[:, 3].max() < 0.8
 
 
 def test_window_geometry_and_launchers_default_to_the_3d_view():

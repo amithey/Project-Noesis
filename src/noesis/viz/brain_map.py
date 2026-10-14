@@ -192,10 +192,10 @@ def describe_triggers(t: dict) -> str:
         )
     if "hemolymph_sugar" in t:
         lines.append(
-            f"inside | hemolymph sugar {t.get('hemolymph_sugar', 0):.2f}  "
+            f"inside | sugar {t.get('hemolymph_sugar', 0):.2f}  "
             f"hydration {t.get('hemolymph_hydration', 0):.2f}  O2 {t.get('hemolymph_oxygen', 0):.2f}  "
-            f"heart {t.get('heart_rate_hz', 0):.1f} Hz  "
-            f"MN9 {t.get('mn9_hz', 0):.1f} Hz  DILP {t.get('dilp_hz', 0):.1f} Hz"
+            f"heart {t.get('heart_rate_hz', 0):.1f}  "
+            f"MN9 {t.get('mn9_hz', 0):.1f}  DILP {t.get('dilp_hz', 0):.1f} Hz"
         )
     if "body_z_mm" in t or "muscle_pos_mean" in t:
         lines.append(

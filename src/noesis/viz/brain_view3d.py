@@ -2,8 +2,9 @@
 
 ``Run-Fly.ps1`` opens this beside the MuJoCo body. Drag to orbit, right-drag to
 pan, the wheel zooms. A spike flashes in the neuron's transmitter color and fades;
-quiet neurons stay dim. Edges are a capped backbone plus synapses among neurons
-that just fired — never the full connectome.
+quiet neurons stay dim. A spike is a bright core with a short colored afterglow.
+Edges are a short capped backbone inside each neuropil, plus the synapses among
+neurons that just fired — never the full connectome.
 
     python -m noesis.viz.brain_view3d --data DATA --watch ACTIVITY.npz
     python -m noesis.viz.brain_view3d --data DATA --snapshot demo --out outputs/brain_view3d.png
@@ -21,10 +22,13 @@ import pandas as pd
 from noesis.viz.brain_map import read_activity_frame
 from noesis.viz.layout3d import (
     BACKBONE_EDGES,
+    BRIDGE_EDGE_LENGTH,
     LIVE_EDGES,
+    LOCAL_EDGE_LENGTH,
     Glow,
     backbone_from_csr,
     base_colors,
+    family_colors,
     format_hud,
     hottest_neurons,
     label_anchors,
@@ -35,6 +39,7 @@ from noesis.viz.layout3d import (
     rgba_from_glow,
     segment_colors,
     segment_positions,
+    shell_wireframe,
 )
 
 LAYOUT_NOTE = "3D neuropil layout (not measured BANC coordinates)"
@@ -102,9 +107,18 @@ def demo_activity(neurons: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, dict, 
     return rates, spikes, triggers, "demo frame - antennal lobe and T1 lit"
 
 
-def fit_center(positions: np.ndarray) -> tuple[np.ndarray, float]:
-    """Camera center and span covering every neuron, brain and nerve cord together."""
-    lo, hi = positions.min(axis=0), positions.max(axis=0)
+def fit_center(positions: np.ndarray, names: np.ndarray | None = None) -> tuple[np.ndarray, float]:
+    """Camera center and span of the nervous system, brain and nerve cord together.
+
+    Unconnected fragments (``NO_CONS``) sit far to the side and are left out of the
+    frame so the neuropils fill the window.
+    """
+    use = positions
+    if names is not None:
+        keep = np.asarray(names) != "NO_CONS"
+        if bool(keep.any()):
+            use = positions[keep]
+    lo, hi = use.min(axis=0), use.max(axis=0)
     return (lo + hi) / 2.0, float(np.max(hi - lo))
 
 
@@ -172,26 +186,31 @@ def _hidden_segment(center: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     return seg, col
 
 
-def _edge_buffers(positions, base_rgb, pre, post, alpha, gain, center):
+def _edge_buffers(positions, base_rgb, pre, post, alpha, gain, center, tint=(0.0, 0.0, 0.0), tint_weight=0.0):
     if len(pre) == 0:
         return _hidden_segment(center)
-    return segment_positions(positions, pre, post), segment_colors(base_rgb, pre, alpha, gain)
+    return (
+        segment_positions(positions, pre, post),
+        segment_colors(base_rgb, pre, alpha, gain, tint=tint, tint_weight=tint_weight),
+    )
 
 
 class NetworkView:
     """Point-sprite neurons, capped edges, and a telemetry strip."""
 
-    def __init__(self, positions, base_rgb, matrix, region_ids, size, position, title):
+    def __init__(self, positions, base_rgb, matrix, region_ids, names, size, position, title):
         scene, self.app, keys = _bind()
         self.scene = scene
         self.positions = np.ascontiguousarray(positions, np.float32)
         self.base_rgb = np.ascontiguousarray(base_rgb, np.float32)
+        self.names = np.asarray(names)
+        self.family = family_colors(self.names)
         self.n = len(self.positions)
         self.glow = Glow(self.n)
         self.matrix = matrix
         self.region = region_ids
         self.backbone = self._backbone()
-        self._fit_center, self._fit_span = fit_center(self.positions)
+        self._fit_center, self._fit_span = fit_center(self.positions, self.names)
         kwargs = {"size": size, "bgcolor": "black", "keys": "interactive", "show": False, "title": title}
         if position is not None:
             kwargs["position"] = position
@@ -204,23 +223,31 @@ class NetworkView:
         self.view.bgcolor = "black"
         self.hud_view.bgcolor = "#10141c"
         self.camera = _orbit_camera(scene, keys)(
-            fov=48, elevation=18, azimuth=-58, up="+y"
+            fov=45, elevation=24, azimuth=-68, up="+y"
         )
         self.view.camera = self.camera
         self.home = None
-        seg, col = _hidden_segment(self.positions.mean(axis=0))
+        mean = self.positions.mean(axis=0)
+        shell_pos, shell_col = shell_wireframe()
+        self.shell_line = scene.visuals.Line(
+            pos=shell_pos, color=shell_col, connect="segments", width=1.15, method="gl",
+            parent=self.view.scene, antialias=True,
+        )
+        self.shell_line.set_gl_state(depth_test=False, blend=True)
         back_seg, back_col = _edge_buffers(
-            self.positions, self.base_rgb, self.backbone[0], self.backbone[1], 0.28, 0.65,
-            self.positions.mean(axis=0),
+            self.positions, self.family, self.backbone[0], self.backbone[1], 0.30, 0.70, mean,
         )
         self.backbone_line = scene.visuals.Line(
-            pos=back_seg, color=back_col, connect="segments", width=1.0, method="gl",
+            pos=back_seg, color=back_col, connect="segments", width=1.15, method="gl",
             parent=self.view.scene, antialias=False,
         )
+        self.backbone_line.set_gl_state(depth_test=False, blend=True)
+        seg, col = _hidden_segment(mean)
         self.live_line = scene.visuals.Line(
-            pos=seg, color=col, connect="segments", width=1.4, method="gl",
+            pos=seg, color=col, connect="segments", width=2.4, method="gl",
             parent=self.view.scene, antialias=False,
         )
+        self.live_line.set_gl_state(depth_test=False, blend=True)
         shown = np.zeros(self.n, np.float32)
         self.markers = scene.visuals.Markers(parent=self.view.scene)
         self.markers.set_gl_state(
@@ -230,9 +257,15 @@ class NetworkView:
             self.positions, face_color=rgba_from_glow(self.base_rgb, shown),
             size=point_sizes(shown), edge_width=0.0, symbol="o",
         )
+        self.cores = scene.visuals.Markers(parent=self.view.scene)
+        self.cores.set_gl_state(depth_test=False, blend=True)
+        self.cores.set_data(
+            self.positions[:1], face_color=np.zeros((1, 4), np.float32),
+            size=np.array([0.1], np.float32), edge_width=0.0, symbol="o",
+        )
         for text, anchor in label_anchors():
             scene.visuals.Text(
-                text, pos=anchor, color=(0.62, 0.70, 0.86, 0.95), font_size=11,
+                text, pos=anchor, color=(0.90, 0.94, 1.0, 1.0), font_size=15,
                 anchor_x="left", anchor_y="center", parent=self.view.scene,
             )
         self.hud_view.camera = scene.PanZoomCamera(rect=(0, 0, 100, 100), aspect=None)
@@ -252,16 +285,18 @@ class NetworkView:
             return np.zeros(0, np.int32), np.zeros(0, np.int32)
         return backbone_from_csr(
             self.matrix.indptr, self.matrix.indices, self.matrix.data, self.region,
-            max_edges=BACKBONE_EDGES,
+            max_edges=BACKBONE_EDGES, positions=self.positions,
+            max_length=LOCAL_EDGE_LENGTH, bridge_length=BRIDGE_EDGE_LENGTH,
+            within_fraction=0.94,
         )
 
     def _frame_home(self) -> None:
         center, span = self._fit_center, self._fit_span
         self.camera.center = (float(center[0]), float(center[1]), float(center[2]))
-        self.camera.fov = 48
-        self.camera.elevation = 18
-        self.camera.azimuth = -58
-        self.camera.scale_factor = max(span, 1.0) * 0.62
+        self.camera.fov = 45
+        self.camera.elevation = 24
+        self.camera.azimuth = -68
+        self.camera.scale_factor = max(span, 1.0) * 0.72
         self.home = (
             self.camera.center, self.camera.scale_factor, self.camera.elevation, self.camera.azimuth
         )
@@ -275,14 +310,31 @@ class NetworkView:
             self.camera.azimuth = azimuth
 
     def paint(self, shown: np.ndarray) -> None:
+        level = np.clip(np.asarray(shown, np.float32), 0.0, 1.0)
         self.markers.set_data(
-            self.positions, face_color=rgba_from_glow(self.base_rgb, shown),
-            size=point_sizes(shown), edge_width=0.0, symbol="o",
+            self.positions, face_color=rgba_from_glow(self.base_rgb, level),
+            size=point_sizes(level), edge_width=0.0, symbol="o",
+        )
+        # Every spike in this window gets a sharp core, drawn in front of the cloud.
+        hot = np.flatnonzero(level >= np.float32(0.72))
+        if hot.size == 0:
+            self.cores.set_data(
+                self.positions[:1], face_color=np.zeros((1, 4), np.float32),
+                size=np.array([0.1], np.float32), edge_width=0.0, symbol="o",
+            )
+            return
+        color = np.empty((hot.size, 4), np.float32)
+        color[:, :3] = np.clip(self.base_rgb[hot] * np.float32(0.28) + np.float32(0.78), 0.0, 1.0)
+        color[:, 3] = 1.0
+        self.cores.set_data(
+            self.positions[hot], face_color=color,
+            size=np.full(hot.size, 4.4, np.float32), edge_width=0.0, symbol="o",
         )
 
     def set_live_edges(self, pre: np.ndarray, post: np.ndarray) -> None:
         seg, col = _edge_buffers(
-            self.positions, self.base_rgb, pre, post, 0.92, 1.15, self.positions.mean(axis=0)
+            self.positions, self.base_rgb, pre, post, 0.96, 1.05, self.positions.mean(axis=0),
+            tint=(1.0, 0.96, 0.82), tint_weight=0.62,
         )
         self.live_line.set_data(pos=seg, color=col, connect="segments")
 
@@ -311,7 +363,7 @@ def region_codes(names: np.ndarray) -> np.ndarray:
 def build_view(neurons, positions, matrix, size, position, title) -> NetworkView:
     names = primary_region(neurons)
     return NetworkView(
-        positions, base_colors(neurons), matrix, region_codes(names), size, position, title
+        positions, base_colors(neurons), matrix, region_codes(names), names, size, position, title
     )
 
 
@@ -324,7 +376,9 @@ def apply_activity(view: NetworkView, rates, spikes, time_s, awake, note, trigge
     if view.matrix is not None and view.matrix.shape[0] == view.n:
         sources = hottest_neurons(rates, spikes)
         pre, post = live_synapse_edges(
-            view.matrix.indptr, view.matrix.indices, view.matrix.data, sources, max_edges=LIVE_EDGES
+            view.matrix.indptr, view.matrix.indices, view.matrix.data, sources,
+            max_edges=LIVE_EDGES, positions=view.positions, max_length=LOCAL_EDGE_LENGTH,
+            max_long=16, long_length=BRIDGE_EDGE_LENGTH,
         )
         view.set_live_edges(pre, post)
     n_spiked = int(np.count_nonzero(spikes)) if spikes is not None else 0
