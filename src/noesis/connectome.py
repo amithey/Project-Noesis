@@ -22,7 +22,13 @@ UNKNOWN_NT_SIGN = 1
 # Predicted neurotransmitters that contradict established biology, by cell type. They override the
 # table's prediction everywhere. APL, the mushroom body's feedback interneuron, is GABAergic (Liu &
 # Davis 2009) but predicted cholinergic here, which turned its global feedback into excitation.
-NT_OVERRIDES: dict[str, str] = {"APL": "GABA"}
+NT_OVERRIDES: dict[str, str] = {
+    "APL": "GABA",
+    # il3LN6 is GABA-immunopositive and ChAT/vGlut-negative: Salman et al. 2026,
+    # Fig. 2I-L, https://doi.org/10.1152/jn.00571.2025. The left BANC cell's
+    # predicted ACh contradicts this evidence and its own verified GABA label.
+    "il3LN6": "GABA",
+}
 
 
 def presynaptic_signs(neurons: pd.DataFrame, sign_map: dict[str, int] | None = None,

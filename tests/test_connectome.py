@@ -62,3 +62,20 @@ def test_region_scale_multiplies_synapses_by_region_before_the_threshold(tmp_pat
     W = build_connectome(tmp_path / "n.csv", tmp_path / "c.csv", region_scale=factors).W.toarray()
     assert W[0, 1] == 2 * 20.0 + 1  # MB rows scaled, the unmatched nerve-cord row kept at 1x
     assert build_connectome(tmp_path / "n.csv", tmp_path / "c.csv").W.nnz == 0  # 3 synapses < 5 unscaled
+
+
+def test_il3ln6_override_applies_on_build_and_cached_reload(tmp_path):
+    from noesis.connectome import load_cached
+
+    raw = tmp_path / 'raw'
+    raw.mkdir()
+    pd.DataFrame({'Root ID': [1, 2, 3], 'Predicted NT type': ['ACH', 'GABA', 'ACH'],
+                  'Primary Cell Type': ['il3LN6', 'il3LN6', 'lLN1_bc']}).to_csv(raw / 'neurons.csv', index=False)
+    pd.DataFrame({'pre_root_id': [1, 2, 3], 'post_root_id': [3, 3, 1],
+                  'syn_count': [9, 8, 7]}).to_csv(raw / 'connections_princeton.csv', index=False)
+    cache = tmp_path / 'cache'
+    built = load_cached(raw, cache)
+    loaded = load_cached(raw, cache)
+    assert built.W.toarray().tolist() == loaded.W.toarray().tolist()
+    assert built.W[0, 2] == -9 and built.W[1, 2] == -8
+    assert built.W[2, 0] == 7  # Established cholinergic LN is untouched.

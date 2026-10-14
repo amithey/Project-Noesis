@@ -1,0 +1,65 @@
+{
+  "silence": [
+    {
+      "seed": 0,
+      "gain": null,
+      "brain": {
+        "n": 158262,
+        "mean_hz": 0.0,
+        "active_fraction": 0.0,
+        "ge5hz_fraction": 0.0
+      }
+    },
+    {
+      "seed": 0,
+      "gain": 1024.0,
+      "brain": {
+        "n": 158262,
+        "mean_hz": 0.0,
+        "active_fraction": 0.0,
+        "ge5hz_fraction": 0.0
+      }
+    },
+    {
+      "seed": 1,
+      "gain": null,
+      "brain": {
+        "n": 158262,
+        "mean_hz": 0.0,
+        "active_fraction": 0.0,
+        "ge5hz_fraction": 0.0
+      }
+    },
+    {
+      "seed": 1,
+      "gain": 1024.0,
+      "brain": {
+        "n": 158262,
+        "mean_hz": 0.0,
+        "active_fraction": 0.0,
+        "ge5hz_fraction": 0.0
+      }
+    },
+    {
+      "seed": 2,
+      "gain": null,
+      "brain": {
+        "n": 158262,
+        "mean_hz": 0.0,
+        "active_fraction": 0.0,
+        "ge5hz_fraction": 0.0
+      }
+    },
+    {
+      "seed": 2,
+      "gain": 1024.0,
+      "brain": {
+        "n": 158262,
+        "mean_hz": 0.0,
+        "active_fraction": 0.0,
+        "ge5hz_fraction": 0.0
+      }
+    }
+  ],
+  "no_change_repeat_identical": true
+}

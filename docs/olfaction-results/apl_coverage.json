@@ -1,0 +1,22 @@
+{
+  "banc_kcs": 4139,
+  "corrected_uncovered_kcs": 980,
+  "raw_uncovered_kcs": 980,
+  "corrected_apl_weight_quantiles": [
+    0.0,
+    0.0,
+    24.65143585205078,
+    78.822607421875,
+    257.4335021972656
+  ],
+  "uncovered_by_subclass": {
+    "KCg": 493,
+    "KCab": 461,
+    "KCapbp": 13,
+    "KC": 13
+  },
+  "fafb_kcs": 5177,
+  "fafb_uncovered_kcs": 0,
+  "fafb_apl_synapses_per_kc_mean": 28.39887966003477,
+  "banc_apl_raw_synapses_per_kc_mean": 5.027059676250302
+}
