@@ -5,7 +5,7 @@ the map shows which neurons fire, and its status line shows MN9 (the feeding mot
 reward dopamine neurons (PAM) respond. ``--scaled`` uses BANC synapses corrected to FAFB counts.
 
     python -m noesis.experiments.live_brain --scaled --brain-map <file>
-    python -m noesis.viz.brain_map --watch <file>          (in a second window)
+    python -m noesis.viz.brain_view3d --watch <file>       (in a second window)
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ import numpy as np
 from noesis.connectome import corrected_scale, load_cached
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker
-from noesis.viz.brain_map import write_activity
+from noesis.viz.brain_map import spike_histogram, write_activity
 
 
 def main() -> None:
@@ -57,7 +57,7 @@ def main() -> None:
         r = rates.update(spikes, chunk_ms)
         note = (f"{brain} | sugar {'ON ' if on else 'off'} ({a.sugar_hz:.0f} Hz) | "
                 f"MN9 {r[mn9].mean():5.1f} Hz | PAM > 5 Hz: {(r[pam] > 5).sum():3d} of {len(pam)}")
-        write_activity(a.brain_map, r, t, awake=True, note=note)
+        write_activity(a.brain_map, r, t, awake=True, note=note, spikes=spike_histogram([spikes], cn.n))
         if k % 25 == 0:
             print(f"t={t:5.1f}s  {note}", flush=True)
         if a.realtime:

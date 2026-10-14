@@ -1,6 +1,10 @@
 """Map of every downloaded neuron that lights up when the neuron fires.
 
-The BANC tables carry no 3-D neuron positions, so the default layout is *schematic*: each neuron is
+``Run-Fly.ps1`` opens the 3D network (``noesis.viz.brain_view3d``) by default. This module is the
+2D schematic fallback (``Run-Fly.ps1 -Flat2D``) and the activity file the simulation writes for
+either viewer.
+
+The BANC tables carry no 3-D neuron positions, so the 2D layout is *schematic*: each neuron is
 placed around a hand-placed point for its main brain region (``Top in/out region``), on its own side
 of the body, brain above and nerve cord below -- shaped like the BANC overview, not anatomically exact.
 If a coordinates table is supplied (``--coords`` CSV with ``root_id,x,y,z``), real positions are used.
@@ -19,6 +23,7 @@ import contextlib
 import json
 import os
 import time
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -80,9 +85,27 @@ def neuron_positions(neurons: pd.DataFrame, coords_csv: Path | None = None, seed
     return pos
 
 
+def spike_histogram(chunks: list[np.ndarray], n: int) -> np.ndarray:
+    """Spike counts over one publish window. ``chunks`` are arrays of neuron indices."""
+    counts = np.zeros(n, np.uint32)
+    for idx in chunks:
+        ids = np.asarray(idx, np.int64).ravel()
+        if ids.size == 0:
+            continue
+        if ids.min() < 0 or ids.max() >= n:
+            ids = ids[(ids >= 0) & (ids < n)]
+        if ids.size:
+            counts += np.bincount(ids, minlength=n).astype(np.uint32)
+    return np.minimum(counts, np.uint16(65535)).astype(np.uint16)
+
+
 def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool = True,
-                   note: str = "", triggers: dict | None = None) -> bool:
+                   note: str = "", triggers: dict | None = None,
+                   spikes: np.ndarray | None = None) -> bool:
     """Atomically publish the latest per-neuron firing rates for a live viewer.
+
+    ``spikes``, when given and the same length as ``rates_hz``, is the spike count in this
+    publish window (so a single spike can light up before the smoothed rate does).
 
     Never raises: on Windows the viewer (or OneDrive) may briefly hold the file, and a skipped frame
     must not stop the simulation. Returns whether the frame was written.
@@ -90,14 +113,17 @@ def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool 
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         tmp = path.with_name(path.stem + ".tmp.npz")
-        np.savez(
-            tmp,
-            rates=rates_hz.astype(np.float16),
-            time=np.float32(time_s),
-            awake=np.bool_(awake),
-            note=np.str_(note),
-            triggers=np.array(json.dumps(triggers or {}, default=float)),
-        )
+        payload = {
+            "rates": rates_hz.astype(np.float16),
+            "time": np.float32(time_s),
+            "awake": np.bool_(awake),
+            "note": np.str_(note),
+            "triggers": np.array(json.dumps(triggers or {}, default=float)),
+        }
+        if spikes is not None and np.asarray(spikes).shape == (len(rates_hz),):
+            clipped = np.minimum(np.asarray(spikes), np.iinfo(np.uint16).max)
+            payload["spikes"] = clipped.astype(np.uint16)
+        np.savez(tmp, **payload)
         for _ in range(5):
             try:
                 os.replace(tmp, path)
@@ -124,6 +150,32 @@ def read_activity_full(path: Path) -> tuple[np.ndarray, float, bool, str, dict]:
         note = str(f["note"]) if "note" in f.files else ""
         triggers = json.loads(str(f["triggers"])) if "triggers" in f.files else {}
         return f["rates"].astype(np.float32), float(f["time"]), awake, note, triggers
+
+
+@dataclass(frozen=True)
+class ActivityFrame:
+    """One published frame, including spike counts when the writer sent them."""
+
+    rates: np.ndarray
+    time_s: float
+    awake: bool
+    note: str
+    triggers: dict
+    spikes: np.ndarray
+
+
+def read_activity_frame(path: Path) -> ActivityFrame:
+    """Load a frame for the 3D viewer. Missing spike counts are zeros (older writers)."""
+    with np.load(path) as f:
+        rates = f["rates"].astype(np.float32)
+        awake = bool(f["awake"]) if "awake" in f.files else True
+        note = str(f["note"]) if "note" in f.files else ""
+        triggers = json.loads(str(f["triggers"])) if "triggers" in f.files else {}
+        if "spikes" in f.files and np.asarray(f["spikes"]).shape == rates.shape:
+            spikes = np.asarray(f["spikes"]).astype(np.int32)
+        else:
+            spikes = np.zeros(rates.shape, np.int32)
+        return ActivityFrame(rates, float(f["time"]), awake, note, triggers, spikes)
 
 
 def describe_triggers(t: dict) -> str:

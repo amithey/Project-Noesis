@@ -12,6 +12,7 @@ dependencies = ["numpy>=1.26", "scipy>=1.11", "pandas>=2.1", "pyarrow>=14", "num
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.5"]
 body = ["flygym>=1.2", "networkx>=3"]
+view = ["vispy>=0.14"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

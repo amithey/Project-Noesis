@@ -29,7 +29,7 @@ from noesis.mushroom_body import (
     with_weak_pathway_edges,
 )
 from noesis.sensory import LEGS, LegState, SensoryMap
-from noesis.viz.brain_map import write_activity
+from noesis.viz.brain_map import spike_histogram, write_activity
 
 
 def _world_kwargs(arena=None) -> dict:
@@ -78,7 +78,7 @@ def main() -> None:
     ap.add_argument("--eta", type=float, default=5e-4, help="plasticity strength")
     ap.add_argument("--no-guard", action="store_true", help="do not keep muscle commands collision-free")
     ap.add_argument("--brain-map", type=Path,
-                    help="publish live firing rates here for `python -m noesis.viz.brain_map --watch`")
+                    help="publish live firing rates here for `python -m noesis.viz.brain_view3d --watch`")
     ap.add_argument("--viewer", action="store_true", help="live MuJoCo window")
     ap.add_argument("--video", type=Path, help="write an mp4 (slower)")
     a = ap.parse_args()
@@ -160,6 +160,7 @@ def main() -> None:
                               ang[j[leg, "Femur"]], load[LEGS.index(leg)]) for leg in LEGS}
 
     triggers: dict = {}
+    pending_spikes: list[np.ndarray] = []
 
     def sensory_drive(obs, dt_s: float):
         parts = []  # (neuron indices, rates in Hz, event weight)
@@ -216,6 +217,7 @@ def main() -> None:
                 awake = True
             _, spikes = net.run(chunk_ms, background_hz=a.bg_hz, background_weight=a.bg_weight,
                                 **sensory_drive(obs, chunk_ms * 1e-3), **apl_current)
+            pending_spikes.append(np.asarray(spikes))
             if apl is not None:
                 apl_current = apl.current(spikes, chunk_ms)
             if plast is not None:
@@ -229,7 +231,11 @@ def main() -> None:
             dn_hz = float(rates.rate[dn_idx].mean()) if len(dn_idx) else 0.0
             mn_hz = float(rates.rate[leg_mn_idx].mean()) if len(leg_mn_idx) else 0.0
             note = f"{brain_label} | DN {dn_hz:4.1f} Hz | leg MN {mn_hz:4.1f} Hz"
-            write_activity(a.brain_map, rates.rate, t, awake=awake, note=note, triggers=triggers)
+            write_activity(
+                a.brain_map, rates.rate, t, awake=awake, note=note, triggers=triggers,
+                spikes=spike_histogram(pending_spikes, cn.n),
+            )
+            pending_spikes.clear()
         try:
             for _ in range(phys_per_chunk):
                 obs, *_ = sim.step({"joints": command, "adhesion": adhesion})

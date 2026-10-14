@@ -16,8 +16,9 @@ $env:PYTHONPATH = Join-Path $PSScriptRoot 'src'
 $live = Join-Path $env:TEMP 'noesis_live_brain.npz'
 Push-Location -LiteralPath $PSScriptRoot
 try {
-    Start-Process -FilePath $Python -ArgumentList @('-m', 'noesis.viz.brain_map', '--data', "`"$Data`"",
-        '--watch', "`"$live`"") -WorkingDirectory $PSScriptRoot
+    $mapArgs = @('-m', 'noesis.viz.brain_view3d', '--data', "`"$Data`"", '--watch', "`"$live`"")
+    if ($Scaled) { $mapArgs += '--scaled' }
+    Start-Process -FilePath $Python -ArgumentList $mapArgs -WorkingDirectory $PSScriptRoot
     $demo = @('-m', 'noesis.experiments.live_brain', '--data', $Data, '--brain-map', $live, '--realtime',
               '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture),
               '--period', $Period.ToString([cultureinfo]::InvariantCulture))
