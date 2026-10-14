@@ -15,6 +15,8 @@ opens a window that redraws whenever the file changes. ``--snapshot`` renders on
 from __future__ import annotations
 
 import argparse
+import contextlib
+import json
 import os
 import time
 from pathlib import Path
@@ -79,7 +81,7 @@ def neuron_positions(neurons: pd.DataFrame, coords_csv: Path | None = None, seed
 
 
 def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool = True,
-                   note: str = "") -> bool:
+                   note: str = "", triggers: dict | None = None) -> bool:
     """Atomically publish the latest per-neuron firing rates for a live viewer.
 
     Never raises: on Windows the viewer (or OneDrive) may briefly hold the file, and a skipped frame
@@ -88,8 +90,14 @@ def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool 
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         tmp = path.with_name(path.stem + ".tmp.npz")
-        np.savez(tmp, rates=rates_hz.astype(np.float16), time=np.float32(time_s), awake=np.bool_(awake),
-                 note=np.str_(note))
+        np.savez(
+            tmp,
+            rates=rates_hz.astype(np.float16),
+            time=np.float32(time_s),
+            awake=np.bool_(awake),
+            note=np.str_(note),
+            triggers=np.array(json.dumps(triggers or {}, default=float)),
+        )
         for _ in range(5):
             try:
                 os.replace(tmp, path)
@@ -109,6 +117,54 @@ def read_activity(path: Path) -> tuple[np.ndarray, float, bool, str]:
         return f["rates"].astype(np.float32), float(f["time"]), awake, note
 
 
+def read_activity_full(path: Path) -> tuple[np.ndarray, float, bool, str, dict]:
+    """Load rates, time, awake flag, note, and structured triggers/telemetry dictionary."""
+    with np.load(path) as f:
+        awake = bool(f["awake"]) if "awake" in f.files else True
+        note = str(f["note"]) if "note" in f.files else ""
+        triggers = json.loads(str(f["triggers"])) if "triggers" in f.files else {}
+        return f["rates"].astype(np.float32), float(f["time"]), awake, note, triggers
+
+
+def describe_triggers(t: dict) -> str:
+    """Summary of world sensory inputs, internal hemolymph state, and embodied posture."""
+    if not t:
+        return ""
+    lines = []
+    if "odor_food" in t or "vision_mean" in t:
+        lines.append(
+            f"world  | smell: food {t.get('odor_food', 0):.2f} aversive {t.get('odor_aversive', 0):.2f}  "
+            f"taste: sugar {t.get('taste_sugar', 0):.1f} water {t.get('taste_water', 0):.1f} "
+            f"bitter {t.get('taste_bitter', 0):.1f}  light {t.get('vision_mean', 0):.2f}  "
+            f"T {t.get('temperature_c', 24):.1f}C  hum {t.get('humidity', 0.45):.2f}"
+        )
+    if "hemolymph_sugar" in t:
+        lines.append(
+            f"inside | hemolymph sugar {t.get('hemolymph_sugar', 0):.2f}  "
+            f"hydration {t.get('hemolymph_hydration', 0):.2f}  O2 {t.get('hemolymph_oxygen', 0):.2f}  "
+            f"heart {t.get('heart_rate_hz', 0):.1f} Hz  "
+            f"MN9 {t.get('mn9_hz', 0):.1f} Hz  DILP {t.get('dilp_hz', 0):.1f} Hz"
+        )
+    if "body_z_mm" in t or "muscle_pos_mean" in t:
+        lines.append(
+            f"body   | z {t.get('body_z_mm', 0):.2f} mm  up {t.get('uprightness', 1):+.2f}  "
+            f"muscles +{t.get('muscle_pos_mean', 0):.2f}/-{t.get('muscle_neg_mean', 0):.2f}  "
+            f"DA {t.get('da_hz', 0):.1f} Hz  OA {t.get('oa_hz', 0):.1f} Hz  5-HT {t.get('ser_hz', 0):.1f} Hz"
+        )
+    return "\n".join(lines)
+
+
+def position_window(fig, geometry: str | None = None) -> None:
+    """Position the matplotlib Tk/Qt window on screen (e.g. '780x960+960+20' for right half)."""
+    if not geometry:
+        return
+    mgr = getattr(fig.canvas, "manager", None)
+    win = getattr(mgr, "window", None)
+    if win is not None and hasattr(win, "wm_geometry"):
+        with contextlib.suppress(RuntimeError, AttributeError, ValueError):
+            win.wm_geometry(geometry)
+
+
 class BrainMap:
     """Dark figure: every neuron as a faint dot, firing neurons glowing by rate."""
 
@@ -126,7 +182,9 @@ class BrainMap:
         self.lit = self.ax.scatter([], [], s=[], c=[], cmap="plasma", vmin=0.0, vmax=np.log10(200.0),
                                    linewidths=0)
         self.text = self.ax.text(0.01, 0.99, "", transform=self.ax.transAxes, color="white",
-                                 va="top", fontsize=10, family="monospace")
+                                 va="top", fontsize=9.5, family="monospace")
+        self.world = self.ax.text(0.01, 0.01, "", transform=self.ax.transAxes, color="#ffd27f",
+                                  va="bottom", fontsize=8.5, family="monospace")
         self.ax.set_title(title, color="white")
         if labels:
             for region, text in LABELS.items():
@@ -136,7 +194,7 @@ class BrainMap:
         self.ax.axis("off")
 
     def update(self, rates_hz: np.ndarray, time_s: float | None = None, min_hz: float = 1.0,
-               awake: bool = True, note: str = "") -> None:
+               awake: bool = True, note: str = "", triggers: dict | None = None) -> None:
         on = np.flatnonzero(rates_hz > min_hz)
         r = rates_hz[on].astype(float)
         self.lit.set_offsets(self.pos[on] if len(on) else np.zeros((0, 2)))
@@ -146,6 +204,7 @@ class BrainMap:
         state = "" if awake else "   (brain still asleep: waiting for birth)"
         extra = "\n" + note if note else ""
         self.text.set_text(f"{label}firing: {len(on):,} / {len(rates_hz):,} neurons{state}{extra}")
+        self.world.set_text(describe_triggers(triggers or {}))
 
 
 def main() -> None:
@@ -155,6 +214,8 @@ def main() -> None:
     ap.add_argument("--watch", type=Path, help="activity file written by a running simulation")
     ap.add_argument("--snapshot", type=Path, help="render this activity file once")
     ap.add_argument("--out", type=Path, default=Path("outputs/brain_map.png"))
+    ap.add_argument("--geometry", type=str, default=None,
+                    help="window geometry WxH+X+Y for side-by-side placement (e.g. 760x920+940+30)")
     a = ap.parse_args()
 
     from noesis.connectome import load_cached
@@ -166,8 +227,8 @@ def main() -> None:
         import matplotlib
         matplotlib.use("Agg")
         m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
-        rates, t, awake, note = read_activity(a.snapshot)
-        m.update(rates, t, awake=awake, note=note)
+        rates, t, awake, note, triggers = read_activity_full(a.snapshot)
+        m.update(rates, t, awake=awake, note=note, triggers=triggers)
         a.out.parent.mkdir(parents=True, exist_ok=True)
         m.fig.savefig(a.out, dpi=150, facecolor="black")
         print("saved", a.out)
@@ -177,6 +238,7 @@ def main() -> None:
     import matplotlib.pyplot as plt
 
     m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
+    position_window(m.fig, a.geometry)
     plt.ion()
     plt.show()
     m.text.set_text(f"waiting for the simulation to write {a.watch} ...")
@@ -185,8 +247,8 @@ def main() -> None:
         try:
             stamp = a.watch.stat().st_mtime
             if stamp != last:
-                rates, t, awake, note = read_activity(a.watch)
-                m.update(rates, t, awake=awake, note=note)
+                rates, t, awake, note, triggers = read_activity_full(a.watch)
+                m.update(rates, t, awake=awake, note=note, triggers=triggers)
                 last = stamp
         except (OSError, ValueError, KeyError, EOFError):
             pass  # file not written yet, or caught mid-replace

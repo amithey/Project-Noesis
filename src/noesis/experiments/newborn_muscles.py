@@ -19,6 +19,7 @@ import numpy as np
 from noesis.balance import BalanceMap
 from noesis.body import BodyParams, CollisionGuard, MuscleModel, make_fly
 from noesis.connectome import corrected_scale, load_all_pairs, load_cached
+from noesis.internal_state import InternalState
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_muscle_matrices
 from noesis.mushroom_body import (
@@ -65,6 +66,8 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--no-senses", action="store_true", help="no leg sensory feedback")
     ap.add_argument("--no-balance", action="store_true", help="no gravity/rotation senses")
+    ap.add_argument("--no-internal-state", action="store_true",
+                    help="no hemolymph/interoceptive internal-state coupling")
     ap.add_argument("--arena", choices=("empty", "habitat"), default="empty",
                     help="habitat = the world with odours, food, light, obstacles (needs noesis.habitat)")
     ap.add_argument("--no-environment-senses", action="store_true", help="habitat visible but not sensed")
@@ -88,9 +91,11 @@ def main() -> None:
     if a.scaled:
         kw["region_scale"] = corrected_scale(a.data, nerve_cord=not a.brain_only)
     cn = load_cached(a.data / "raw", a.data / "processed", **kw)
-    print("brain:", ("BANC corrected (brain FAFB" + ("" if a.brain_only else " + nerve cord MANC") + ")")
-          if a.scaled else "BANC as detected",
-          f"| background {a.bg_hz:g} Hz x {a.bg_weight:g}", flush=True)
+    brain_label = (
+        ("BANC corrected (brain FAFB" + ("" if a.brain_only else " + nerve cord MANC") + ")")
+        if a.scaled else "BANC as detected"
+    )
+    print("brain:", brain_label, f"| background {a.bg_hz:g} Hz x {a.bg_weight:g}", flush=True)
     W, pops = cn.W, populations(cn.neurons)
     if a.plasticity:  # the learning substrate is made of sub-threshold (1-4 synapse) pairs
         pairs = load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons)
@@ -102,7 +107,12 @@ def main() -> None:
     habitat_world = a.arena == "habitat"
     arena = None
     if habitat_world:
-        from noesis.environment_senses import EnvironmentSenses, merge_drive, mouth_position
+        from noesis.environment_senses import (
+            EnvironmentSenses,
+            contact_tastes,
+            merge_drive,
+            mouth_position,
+        )
         from noesis.habitat import habitat_arena
         arena = habitat_arena()
     environmental_input = habitat_world and not a.no_environment_senses
@@ -137,8 +147,11 @@ def main() -> None:
     environment = EnvironmentSenses(cn.neurons, fly.retina, seed=0) if environmental_input else None
     senses = None if a.no_senses else SensoryMap(cn.neurons)
     balance = None if a.no_balance else BalanceMap(cn.neurons)
+    internal = None if a.no_internal_state else InternalState(cn.neurons)
     j = {(leg, d): names.index(f"joint_{leg}{d}") for leg in LEGS for d in ("Coxa", "Femur", "Tibia")}
     leg_of_sensor = np.array([LEGS.index(n.split("/")[-1][:2]) for n in fly.contact_sensor_placements])
+    dn_idx = np.flatnonzero(cn.neurons["Super Class"].eq("descending").to_numpy())
+    leg_mn_idx = np.flatnonzero(cn.neurons["Class"].eq("leg_motor_neuron").to_numpy())
 
     def leg_states(obs):
         ang, vel = obs["joints"][0] - rest, obs["joints"][1]
@@ -146,8 +159,11 @@ def main() -> None:
         return {leg: LegState(ang[j[leg, "Tibia"]], vel[j[leg, "Tibia"]], ang[j[leg, "Coxa"]],
                               ang[j[leg, "Femur"]], load[LEGS.index(leg)]) for leg in LEGS}
 
-    def sensory_drive(obs):
+    triggers: dict = {}
+
+    def sensory_drive(obs, dt_s: float):
         parts = []  # (neuron indices, rates in Hz, event weight)
+        triggers.clear()
         if senses is not None:
             parts.append((senses.idx, senses.drive(leg_states(obs)), 400.0))
         if balance is not None:
@@ -155,14 +171,36 @@ def main() -> None:
             parts.append((balance.idx, balance.drive(
                 np.array([cv[0][2], cv[1][2], cv[2][2]]), obs["fly"][3]), 400.0))
         if environment is not None:
-            rates_env, _ = environment.drive(obs, arena.habitat, mouth_position(sim, fly), sim.curr_time)
+            obs["surface_taste"] = contact_tastes(sim, fly, arena.habitat)
+            rates_env, telemetry = environment.drive(obs, arena.habitat, mouth_position(sim, fly),
+                                                     sim.curr_time)
+            triggers.update(telemetry)
             parts.append((environment.idx, rates_env, 100.0))
+        if internal is not None:
+            effort = float(0.5 * (muscles.a_pos.mean() + muscles.a_neg.mean()))
+            rates_int, int_telemetry = internal.step(
+                rates.rate,
+                dt_s,
+                muscle_effort=effort,
+                taste_sugar=triggers.get("taste_sugar", 0.0),
+                taste_water=triggers.get("taste_water", 0.0),
+                humidity=triggers.get("humidity", 0.5),
+            )
+            triggers.update(int_telemetry)
+            parts.append((internal.idx, rates_int, 150.0))
+        triggers["body_z_mm"] = float(obs["fly"][0][2])
+        triggers["uprightness"] = float(obs["cardinal_vectors"][2][2])
+        triggers["muscle_pos_mean"] = float(muscles.a_pos.mean())
+        triggers["muscle_neg_mean"] = float(muscles.a_neg.mean())
         return merge_drive(parts) if parts and habitat_world else _merge(parts)
 
     viewer = None
     if a.viewer:
         import mujoco.viewer
         viewer = mujoco.viewer.launch_passive(sim.physics.model.ptr, sim.physics.data.ptr)
+        if habitat_world:
+            viewer.cam.lookat[:] = (0.0, 0.0, 0.8)
+            viewer.cam.distance, viewer.cam.elevation = 16.0, -35.0
 
     chunk_ms = 5.0
     phys_per_chunk = round(chunk_ms * 1e-3 / sim.timestep)
@@ -177,7 +215,7 @@ def main() -> None:
                 print(f"t={t:.2f}s  *** the brain wakes ***", flush=True)
                 awake = True
             _, spikes = net.run(chunk_ms, background_hz=a.bg_hz, background_weight=a.bg_weight,
-                                **sensory_drive(obs), **apl_current)
+                                **sensory_drive(obs, chunk_ms * 1e-3), **apl_current)
             if apl is not None:
                 apl_current = apl.current(spikes, chunk_ms)
             if plast is not None:
@@ -185,8 +223,13 @@ def main() -> None:
             command = muscles.step(rates.update(spikes, chunk_ms), chunk_ms)
             if guard is not None:
                 command = guard.filter(obs["joints"][0], command)
+        elif k % 4 == 0:
+            sensory_drive(obs, chunk_ms * 1e-3)
         if a.brain_map is not None and k % 4 == 0:  # every 20 ms of simulated time, asleep too
-            write_activity(a.brain_map, rates.rate, t, awake=awake)
+            dn_hz = float(rates.rate[dn_idx].mean()) if len(dn_idx) else 0.0
+            mn_hz = float(rates.rate[leg_mn_idx].mean()) if len(leg_mn_idx) else 0.0
+            note = f"{brain_label} | DN {dn_hz:4.1f} Hz | leg MN {mn_hz:4.1f} Hz"
+            write_activity(a.brain_map, rates.rate, t, awake=awake, note=note, triggers=triggers)
         try:
             for _ in range(phys_per_chunk):
                 obs, *_ = sim.step({"joints": command, "adhesion": adhesion})
