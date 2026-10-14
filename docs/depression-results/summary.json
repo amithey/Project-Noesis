@@ -1,0 +1,2247 @@
+[
+  {
+    "u": 0.0,
+    "tau_ms": 300.0,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "trials": {
+      "none": {
+        "mn9": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pam": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "ppl1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_early_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_late_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_late_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sugar": {
+        "mn9": [
+          10.5,
+          10.0,
+          12.5
+        ],
+        "pam": [
+          1.01067615658363,
+          1.1245551601423487,
+          1.99288256227758
+        ],
+        "ppl1": [
+          71.3076923076923,
+          82.6923076923077,
+          87.84615384615384
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          65.5
+        ],
+        "pn_off": [
+          0.5215453194650818,
+          0.4962852897473997,
+          59.570579494799404
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          19734,
+          19732,
+          26366
+        ],
+        "recovery_early_active": [
+          14372,
+          15279,
+          21147
+        ],
+        "recovery_late_active": [
+          16890,
+          17411,
+          22241
+        ],
+        "recovery_active": [
+          19028,
+          19612,
+          23680
+        ],
+        "recovery_late_mean_hz": [
+          4.511177667412266,
+          4.169503734313985,
+          8.153858791118525
+        ],
+        "recovery_mean_hz": [
+          4.137651489302549,
+          3.988929749402889,
+          7.927613703858159
+        ]
+      },
+      "water": {
+        "mn9": [
+          2.0,
+          10.0,
+          3.5
+        ],
+        "pam": [
+          1.1281138790035588,
+          1.1921708185053381,
+          1.0569395017793595
+        ],
+        "ppl1": [
+          81.92307692307692,
+          82.38461538461539,
+          79.84615384615384
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.9271916790490342,
+          0.8974739970282318,
+          1.0
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          19596,
+          19466,
+          19870
+        ],
+        "recovery_early_active": [
+          14376,
+          16513,
+          17096
+        ],
+        "recovery_late_active": [
+          18104,
+          17454,
+          16255
+        ],
+        "recovery_active": [
+          19604,
+          18987,
+          18564
+        ],
+        "recovery_late_mean_hz": [
+          3.9579178830041326,
+          4.08947188838761,
+          4.306479129544679
+        ],
+        "recovery_mean_hz": [
+          3.856630144949514,
+          4.154617027460793,
+          4.151034360743577
+        ]
+      },
+      "bitter": {
+        "mn9": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "pam": [
+          2.0569395017793592,
+          0.7615658362989324,
+          0.6512455516014235
+        ],
+        "ppl1": [
+          75.15384615384616,
+          89.07692307692308,
+          76.53846153846153
+        ],
+        "pn_on": [
+          111.07692307692308,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          100.77265973254086,
+          0.4784546805349183,
+          0.48588410104011887
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          24929,
+          20113,
+          19839
+        ],
+        "recovery_early_active": [
+          21680,
+          17418,
+          16241
+        ],
+        "recovery_late_active": [
+          22057,
+          16811,
+          16068
+        ],
+        "recovery_active": [
+          23446,
+          18995,
+          18339
+        ],
+        "recovery_late_mean_hz": [
+          7.947138289671558,
+          3.8653245883408527,
+          4.0824961140387455
+        ],
+        "recovery_mean_hz": [
+          7.843721171222404,
+          4.2023164120256284,
+          3.992417636577321
+        ]
+      },
+      "sugar+bitter": {
+        "mn9": [
+          14.5,
+          2.5,
+          6.0
+        ],
+        "pam": [
+          0.6583629893238434,
+          0.7330960854092526,
+          0.5800711743772242
+        ],
+        "ppl1": [
+          74.38461538461539,
+          77.3076923076923,
+          89.0
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.5735512630014858,
+          0.5408618127786032,
+          0.5408618127786032
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          20674,
+          19926,
+          20341
+        ],
+        "recovery_early_active": [
+          15325,
+          17344,
+          17044
+        ],
+        "recovery_late_active": [
+          16671,
+          16396,
+          17623
+        ],
+        "recovery_active": [
+          18231,
+          18912,
+          19449
+        ],
+        "recovery_late_mean_hz": [
+          3.8318610911020965,
+          4.164271903552337,
+          3.7404177882245895
+        ],
+        "recovery_mean_hz": [
+          4.002249434482062,
+          4.144696768649455,
+          4.094514160063692
+        ]
+      },
+      "odour": {
+        "mn9": [
+          0.0,
+          0.0,
+          3.0
+        ],
+        "pam": [
+          2.900355871886121,
+          2.911032028469751,
+          2.868327402135231
+        ],
+        "ppl1": [
+          93.92307692307692,
+          90.07692307692308,
+          92.84615384615384
+        ],
+        "pn_on": [
+          264.7307692307692,
+          264.3076923076923,
+          262.88461538461536
+        ],
+        "pn_off": [
+          118.50520059435364,
+          118.27488855869242,
+          118.13670133729569
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          25765,
+          26205,
+          25804
+        ],
+        "recovery_early_active": [
+          22427,
+          22606,
+          22545
+        ],
+        "recovery_late_active": [
+          21967,
+          23317,
+          22470
+        ],
+        "recovery_active": [
+          24305,
+          24711,
+          24402
+        ],
+        "recovery_late_mean_hz": [
+          8.217879212950677,
+          8.19299642365192,
+          8.02155918666515
+        ],
+        "recovery_mean_hz": [
+          8.060330338299782,
+          8.170483122922748,
+          7.92198379901682
+        ]
+      }
+    },
+    "verdicts": [
+      [
+        "P1 sugar -> MN9",
+        true,
+        "0.0 -> 11.0 Hz"
+      ],
+      [
+        "P2 water -> MN9",
+        true,
+        "0.0 -> 5.2 Hz"
+      ],
+      [
+        "P3 bitter < half of sugar at MN9",
+        true,
+        "bitter 0.2 vs sugar 11.0 Hz"
+      ],
+      [
+        "P4 sugar+bitter < sugar at MN9",
+        true,
+        "7.7 vs 11.0 Hz"
+      ],
+      [
+        "P5 sugar -> PAM",
+        true,
+        "0.00 -> 1.38 Hz"
+      ],
+      [
+        "P6 bitter -> PPL1 more than sugar",
+        false,
+        "bitter 80.26 vs sugar 80.62 Hz"
+      ],
+      [
+        "P7 odour: own glomeruli > others",
+        true,
+        "on 264.0 vs off 118.3 Hz"
+      ],
+      [
+        "P8 recovery after stimulus",
+        false,
+        "worst: odour 24473 active vs rest 0"
+      ]
+    ]
+  },
+  {
+    "u": 0.1,
+    "tau_ms": 300.0,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "trials": {
+      "none": {
+        "mn9": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pam": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "ppl1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_early_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_late_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_late_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "sugar": {
+        "mn9": [
+          7.5,
+          8.5,
+          10.0
+        ],
+        "pam": [
+          0.02491103202846975,
+          0.03558718861209965,
+          0.02491103202846975
+        ],
+        "ppl1": [
+          7.384615384615385,
+          6.769230769230769,
+          6.6923076923076925
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.0787518573551263,
+          0.08023774145616643,
+          0.07578008915304606
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          11785,
+          11848,
+          11228
+        ],
+        "recovery_early_active": [
+          1190,
+          506,
+          174
+        ],
+        "recovery_late_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_active": [
+          1190,
+          506,
+          174
+        ],
+        "recovery_late_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.01573340410205861,
+          0.005149688491236051,
+          0.0012510899647420102
+        ]
+      },
+      "water": {
+        "mn9": [
+          3.0,
+          4.5,
+          2.0
+        ],
+        "pam": [
+          0.014234875444839857,
+          0.014234875444839857,
+          0.0035587188612099642
+        ],
+        "ppl1": [
+          6.461538461538462,
+          5.769230769230769,
+          4.3076923076923075
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.10549777117384844,
+          0.11738484398216939,
+          0.10549777117384844
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          9231,
+          10199,
+          9024
+        ],
+        "recovery_early_active": [
+          2669,
+          25,
+          7472
+        ],
+        "recovery_late_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_active": [
+          2669,
+          25,
+          7472
+        ],
+        "recovery_late_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.034525028117931025,
+          0.00018324044938140553,
+          0.19710985580872226
+        ]
+      },
+      "bitter": {
+        "mn9": [
+          0.0,
+          1.5,
+          1.0
+        ],
+        "pam": [
+          0.0711743772241993,
+          0.021352313167259787,
+          0.028469750889679714
+        ],
+        "ppl1": [
+          12.307692307692308,
+          7.076923076923077,
+          7.0
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.04606240713224369,
+          0.04309063893016345,
+          0.05052005943536404
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          11542,
+          10626,
+          10591
+        ],
+        "recovery_early_active": [
+          1137,
+          207,
+          67
+        ],
+        "recovery_late_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_active": [
+          1137,
+          207,
+          67
+        ],
+        "recovery_late_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.012637272371131415,
+          0.00388596125412291,
+          0.0004928536224741252
+        ]
+      },
+      "sugar+bitter": {
+        "mn9": [
+          4.0,
+          3.5,
+          4.0
+        ],
+        "pam": [
+          0.028469750889679714,
+          0.028469750889679714,
+          0.02491103202846975
+        ],
+        "ppl1": [
+          7.0,
+          7.461538461538462,
+          7.615384615384615
+        ],
+        "pn_on": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pn_off": [
+          0.05794947994056464,
+          0.06240713224368499,
+          0.0713224368499257
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          12229,
+          11191,
+          12237
+        ],
+        "recovery_early_active": [
+          6983,
+          467,
+          7942
+        ],
+        "recovery_late_active": [
+          0,
+          0,
+          338
+        ],
+        "recovery_active": [
+          6983,
+          467,
+          7989
+        ],
+        "recovery_late_mean_hz": [
+          0.0,
+          0.0,
+          0.008012030683297318
+        ],
+        "recovery_mean_hz": [
+          0.16592106759676992,
+          0.00406288306731875,
+          0.2310030203080967
+        ]
+      },
+      "odour": {
+        "mn9": [
+          4.0,
+          3.0,
+          1.5
+        ],
+        "pam": [
+          0.07473309608540925,
+          0.08540925266903915,
+          0.07829181494661921
+        ],
+        "ppl1": [
+          7.538461538461538,
+          10.384615384615385,
+          5.6923076923076925
+        ],
+        "pn_on": [
+          119.96153846153847,
+          120.8076923076923,
+          120.96153846153847
+        ],
+        "pn_off": [
+          14.401188707280832,
+          15.398216939078752,
+          14.904903417533433
+        ],
+        "rest_active": [
+          0,
+          0,
+          0
+        ],
+        "stim_active": [
+          17246,
+          16647,
+          17108
+        ],
+        "recovery_early_active": [
+          10520,
+          9083,
+          6805
+        ],
+        "recovery_late_active": [
+          0,
+          0,
+          0
+        ],
+        "recovery_active": [
+          10520,
+          9083,
+          6805
+        ],
+        "recovery_late_mean_hz": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.279113116224994,
+          0.28516005105458037,
+          0.1617760422590388
+        ]
+      }
+    },
+    "verdicts": [
+      [
+        "P1 sugar -> MN9",
+        true,
+        "0.0 -> 8.7 Hz"
+      ],
+      [
+        "P2 water -> MN9",
+        true,
+        "0.0 -> 3.2 Hz"
+      ],
+      [
+        "P3 bitter < half of sugar at MN9",
+        true,
+        "bitter 0.8 vs sugar 8.7 Hz"
+      ],
+      [
+        "P4 sugar+bitter < sugar at MN9",
+        true,
+        "3.8 vs 8.7 Hz"
+      ],
+      [
+        "P5 sugar -> PAM",
+        false,
+        "0.00 -> 0.03 Hz"
+      ],
+      [
+        "P6 bitter -> PPL1 more than sugar",
+        true,
+        "bitter 8.79 vs sugar 6.95 Hz"
+      ],
+      [
+        "P7 odour: own glomeruli > others",
+        true,
+        "on 120.6 vs off 14.9 Hz"
+      ],
+      [
+        "P8 recovery after stimulus",
+        false,
+        "worst: odour 8803 active vs rest 0"
+      ]
+    ]
+  },
+  {
+    "u": 0.1,
+    "tau_ms": 1000.0,
+    "seeds": [
+      0
+    ],
+    "trials": {
+      "none": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          0
+        ],
+        "recovery_early_active": [
+          0
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          0
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0
+        ]
+      },
+      "sugar": {
+        "mn9": [
+          5.5
+        ],
+        "pam": [
+          0.021352313167259787
+        ],
+        "ppl1": [
+          4.384615384615385
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.05200594353640416
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          8855
+        ],
+        "recovery_early_active": [
+          129
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          129
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0008466972488658048
+        ]
+      },
+      "water": {
+        "mn9": [
+          1.5
+        ],
+        "pam": [
+          0.0071174377224199285
+        ],
+        "ppl1": [
+          3.8461538461538463
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.06983655274888559
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          8200
+        ],
+        "recovery_early_active": [
+          640
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          640
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.00691890662319445
+        ]
+      },
+      "bitter": {
+        "mn9": [
+          0.5
+        ],
+        "pam": [
+          0.017793594306049824
+        ],
+        "ppl1": [
+          7.384615384615385
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.03268945022288262
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          10725
+        ],
+        "recovery_early_active": [
+          49
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          49
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0003412063540205482
+        ]
+      },
+      "sugar+bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.010676156583629894
+        ],
+        "ppl1": [
+          4.769230769230769
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.03268945022288262
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          10861
+        ],
+        "recovery_early_active": [
+          654
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          654
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.005497213481442166
+        ]
+      },
+      "odour": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.07473309608540925
+        ],
+        "ppl1": [
+          8.461538461538462
+        ],
+        "pn_on": [
+          58.03846153846154
+        ],
+        "pn_off": [
+          7.4799405646359585
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          16071
+        ],
+        "recovery_early_active": [
+          71
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          71
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0004802163501029938
+        ]
+      }
+    },
+    "verdicts": [
+      [
+        "P1 sugar -> MN9",
+        true,
+        "0.0 -> 5.5 Hz"
+      ],
+      [
+        "P2 water -> MN9",
+        false,
+        "0.0 -> 1.5 Hz"
+      ],
+      [
+        "P3 bitter < half of sugar at MN9",
+        true,
+        "bitter 0.5 vs sugar 5.5 Hz"
+      ],
+      [
+        "P4 sugar+bitter < sugar at MN9",
+        true,
+        "0.0 vs 5.5 Hz"
+      ],
+      [
+        "P5 sugar -> PAM",
+        false,
+        "0.00 -> 0.02 Hz"
+      ],
+      [
+        "P6 bitter -> PPL1 more than sugar",
+        true,
+        "bitter 7.38 vs sugar 4.38 Hz"
+      ],
+      [
+        "P7 odour: own glomeruli > others",
+        true,
+        "on 58.0 vs off 7.5 Hz"
+      ],
+      [
+        "P8 recovery after stimulus",
+        false,
+        "worst: sugar+bitter 654 active vs rest 0"
+      ]
+    ]
+  },
+  {
+    "u": 0.3,
+    "tau_ms": 300.0,
+    "seeds": [
+      0
+    ],
+    "trials": {
+      "none": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          0
+        ],
+        "recovery_early_active": [
+          0
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          0
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0
+        ]
+      },
+      "sugar": {
+        "mn9": [
+          2.5
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.5384615384615384
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.01188707280832095
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          5712
+        ],
+        "recovery_early_active": [
+          125
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          125
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.000821422704123542
+        ]
+      },
+      "water": {
+        "mn9": [
+          1.5
+        ],
+        "pam": [
+          0.010676156583629894
+        ],
+        "ppl1": [
+          0.6923076923076923
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.022288261515601784
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          4753
+        ],
+        "recovery_early_active": [
+          5
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          5
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          3.159318092782854e-05
+        ]
+      },
+      "bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.010676156583629894
+        ],
+        "ppl1": [
+          1.9230769230769231
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.01188707280832095
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          6973
+        ],
+        "recovery_early_active": [
+          48
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          48
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0003348877178349825
+        ]
+      },
+      "sugar+bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0071174377224199285
+        ],
+        "ppl1": [
+          2.4615384615384617
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.01634472511144131
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          7571
+        ],
+        "recovery_early_active": [
+          171
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          171
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0011373545134018273
+        ]
+      },
+      "odour": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.010676156583629894
+        ],
+        "ppl1": [
+          2.8461538461538463
+        ],
+        "pn_on": [
+          47.42307692307692
+        ],
+        "pn_off": [
+          4.4799405646359585
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          9185
+        ],
+        "recovery_early_active": [
+          75
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          75
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0005054908948452566
+        ]
+      }
+    },
+    "verdicts": [
+      [
+        "P1 sugar -> MN9",
+        true,
+        "0.0 -> 2.5 Hz"
+      ],
+      [
+        "P2 water -> MN9",
+        false,
+        "0.0 -> 1.5 Hz"
+      ],
+      [
+        "P3 bitter < half of sugar at MN9",
+        true,
+        "bitter 0.0 vs sugar 2.5 Hz"
+      ],
+      [
+        "P4 sugar+bitter < sugar at MN9",
+        true,
+        "0.0 vs 2.5 Hz"
+      ],
+      [
+        "P5 sugar -> PAM",
+        false,
+        "0.00 -> 0.00 Hz"
+      ],
+      [
+        "P6 bitter -> PPL1 more than sugar",
+        true,
+        "bitter 1.92 vs sugar 0.54 Hz"
+      ],
+      [
+        "P7 odour: own glomeruli > others",
+        true,
+        "on 47.4 vs off 4.5 Hz"
+      ],
+      [
+        "P8 recovery after stimulus",
+        false,
+        "worst: sugar+bitter 171 active vs rest 0"
+      ]
+    ]
+  },
+  {
+    "u": 0.3,
+    "tau_ms": 1000.0,
+    "seeds": [
+      0
+    ],
+    "trials": {
+      "none": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          0
+        ],
+        "recovery_early_active": [
+          0
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          0
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0
+        ]
+      },
+      "sugar": {
+        "mn9": [
+          2.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.6153846153846154
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.005943536404160475
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          4354
+        ],
+        "recovery_early_active": [
+          127
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          127
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0008340599764946734
+        ]
+      },
+      "water": {
+        "mn9": [
+          1.5
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          1.6153846153846154
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.020802377414561663
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          4819
+        ],
+        "recovery_early_active": [
+          5
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          5
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          3.159318092782854e-05
+        ]
+      },
+      "bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0035587188612099642
+        ],
+        "ppl1": [
+          1.8461538461538463
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.01188707280832095
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          5419
+        ],
+        "recovery_early_active": [
+          50
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          50
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0003412063540205482
+        ]
+      },
+      "sugar+bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0071174377224199285
+        ],
+        "ppl1": [
+          2.8461538461538463
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.017830609212481426
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          7242
+        ],
+        "recovery_early_active": [
+          163
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          163
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.001080486787731736
+        ]
+      },
+      "odour": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.010676156583629894
+        ],
+        "ppl1": [
+          1.0769230769230769
+        ],
+        "pn_on": [
+          16.923076923076923
+        ],
+        "pn_off": [
+          1.6404160475482912
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          8027
+        ],
+        "recovery_early_active": [
+          69
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          69
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.00046757907773186237
+        ]
+      }
+    },
+    "verdicts": [
+      [
+        "P1 sugar -> MN9",
+        false,
+        "0.0 -> 2.0 Hz"
+      ],
+      [
+        "P2 water -> MN9",
+        false,
+        "0.0 -> 1.5 Hz"
+      ],
+      [
+        "P3 bitter < half of sugar at MN9",
+        true,
+        "bitter 0.0 vs sugar 2.0 Hz"
+      ],
+      [
+        "P4 sugar+bitter < sugar at MN9",
+        true,
+        "0.0 vs 2.0 Hz"
+      ],
+      [
+        "P5 sugar -> PAM",
+        false,
+        "0.00 -> 0.00 Hz"
+      ],
+      [
+        "P6 bitter -> PPL1 more than sugar",
+        true,
+        "bitter 1.85 vs sugar 0.62 Hz"
+      ],
+      [
+        "P7 odour: own glomeruli > others",
+        true,
+        "on 16.9 vs off 1.6 Hz"
+      ],
+      [
+        "P8 recovery after stimulus",
+        false,
+        "worst: sugar+bitter 163 active vs rest 0"
+      ]
+    ]
+  },
+  {
+    "u": 0.6,
+    "tau_ms": 300.0,
+    "seeds": [
+      0
+    ],
+    "trials": {
+      "none": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          0
+        ],
+        "recovery_early_active": [
+          0
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          0
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0
+        ]
+      },
+      "sugar": {
+        "mn9": [
+          1.5
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0029717682020802376
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          3158
+        ],
+        "recovery_early_active": [
+          130
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          130
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0008530158850513706
+        ]
+      },
+      "water": {
+        "mn9": [
+          1.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.008915304606240713
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          631
+        ],
+        "recovery_early_active": [
+          5
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          5
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          3.159318092782854e-05
+        ]
+      },
+      "bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.5384615384615384
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          1524
+        ],
+        "recovery_early_active": [
+          49
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          49
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0003285690816494168
+        ]
+      },
+      "sugar+bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0014858841010401188
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          1918
+        ],
+        "recovery_early_active": [
+          163
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          163
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0010931240601028673
+        ]
+      },
+      "odour": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          1.1538461538461537
+        ],
+        "pn_on": [
+          21.73076923076923
+        ],
+        "pn_off": [
+          2.3566121842496286
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          5837
+        ],
+        "recovery_early_active": [
+          1346
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          1346
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.014652917314326875
+        ]
+      }
+    },
+    "verdicts": [
+      [
+        "P1 sugar -> MN9",
+        false,
+        "0.0 -> 1.5 Hz"
+      ],
+      [
+        "P2 water -> MN9",
+        false,
+        "0.0 -> 1.0 Hz"
+      ],
+      [
+        "P3 bitter < half of sugar at MN9",
+        true,
+        "bitter 0.0 vs sugar 1.5 Hz"
+      ],
+      [
+        "P4 sugar+bitter < sugar at MN9",
+        true,
+        "0.0 vs 1.5 Hz"
+      ],
+      [
+        "P5 sugar -> PAM",
+        false,
+        "0.00 -> 0.00 Hz"
+      ],
+      [
+        "P6 bitter -> PPL1 more than sugar",
+        true,
+        "bitter 0.54 vs sugar 0.00 Hz"
+      ],
+      [
+        "P7 odour: own glomeruli > others",
+        true,
+        "on 21.7 vs off 2.4 Hz"
+      ],
+      [
+        "P8 recovery after stimulus",
+        false,
+        "worst: odour 1346 active vs rest 0"
+      ]
+    ]
+  },
+  {
+    "u": 0.6,
+    "tau_ms": 1000.0,
+    "seeds": [
+      0
+    ],
+    "trials": {
+      "none": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          0
+        ],
+        "recovery_early_active": [
+          0
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          0
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0
+        ]
+      },
+      "sugar": {
+        "mn9": [
+          1.5
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0029717682020802376
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          3058
+        ],
+        "recovery_early_active": [
+          126
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          126
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0008277413403091077
+        ]
+      },
+      "water": {
+        "mn9": [
+          1.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.007429420505200594
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          632
+        ],
+        "recovery_early_active": [
+          5
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          5
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          3.159318092782854e-05
+        ]
+      },
+      "bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.9230769230769231
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0029717682020802376
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          3802
+        ],
+        "recovery_early_active": [
+          49
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          49
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0003348877178349825
+        ]
+      },
+      "sugar+bitter": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.0
+        ],
+        "pn_on": [
+          0.0
+        ],
+        "pn_off": [
+          0.0014858841010401188
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          1902
+        ],
+        "recovery_early_active": [
+          164
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          164
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.0010931240601028673
+        ]
+      },
+      "odour": {
+        "mn9": [
+          0.0
+        ],
+        "pam": [
+          0.0
+        ],
+        "ppl1": [
+          0.46153846153846156
+        ],
+        "pn_on": [
+          8.076923076923077
+        ],
+        "pn_off": [
+          0.8766716196136701
+        ],
+        "rest_active": [
+          0
+        ],
+        "stim_active": [
+          5181
+        ],
+        "recovery_early_active": [
+          68
+        ],
+        "recovery_late_active": [
+          0
+        ],
+        "recovery_active": [
+          68
+        ],
+        "recovery_late_mean_hz": [
+          0.0
+        ],
+        "recovery_mean_hz": [
+          0.00046126044154629666
+        ]
+      }
+    },
+    "verdicts": [
+      [
+        "P1 sugar -> MN9",
+        false,
+        "0.0 -> 1.5 Hz"
+      ],
+      [
+        "P2 water -> MN9",
+        false,
+        "0.0 -> 1.0 Hz"
+      ],
+      [
+        "P3 bitter < half of sugar at MN9",
+        true,
+        "bitter 0.0 vs sugar 1.5 Hz"
+      ],
+      [
+        "P4 sugar+bitter < sugar at MN9",
+        true,
+        "0.0 vs 1.5 Hz"
+      ],
+      [
+        "P5 sugar -> PAM",
+        false,
+        "0.00 -> 0.00 Hz"
+      ],
+      [
+        "P6 bitter -> PPL1 more than sugar",
+        true,
+        "bitter 0.92 vs sugar 0.00 Hz"
+      ],
+      [
+        "P7 odour: own glomeruli > others",
+        true,
+        "on 8.1 vs off 0.9 Hz"
+      ],
+      [
+        "P8 recovery after stimulus",
+        false,
+        "worst: sugar+bitter 164 active vs rest 0"
+      ]
+    ]
+  }
+]
