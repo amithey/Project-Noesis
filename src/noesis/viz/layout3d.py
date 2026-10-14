@@ -43,10 +43,12 @@ FLASH_TAU_S = 0.35
 RATE_MIX = 0.65
 QUIET_FLOOR = 0.14
 
-# Fewer, shorter edges. Long chords across the whole CNS read as fog, not a network.
-BACKBONE_EDGES = 1400
-LIVE_EDGES = 650
-LIVE_SOURCES = 400
+# The resting graph is a hint of connectivity, not the connectome. Long chords and
+# a full edge upload are what make the live window stall and wash out to white.
+BACKBONE_EDGES = 280
+LIVE_EDGES = 90
+LIVE_SOURCES = 48
+QUIET_DRAWN = 6000
 LOCAL_EDGE_LENGTH = 52.0
 BRIDGE_EDGE_LENGTH = 115.0
 
@@ -368,14 +370,69 @@ def rgba_from_glow(base_rgb: np.ndarray, glow: np.ndarray) -> np.ndarray:
     rgb = np.clip(np.asarray(base_rgb, np.float32) * amp, 0.0, 1.0)
     out = np.empty((len(level), 4), np.float32)
     out[:, :3] = rgb
-    out[:, 3] = np.float32(0.30) + np.float32(0.70) * level
+    # Translucent body so a busy neuropil stays a cluster, not one white disk.
+    out[:, 3] = np.float32(0.22) + np.float32(0.50) * level
     return out
 
 
 def point_sizes(glow: np.ndarray) -> np.ndarray:
-    """Pixel size. A spike is a large bright core; quiet neurons stay small dots."""
+    """Pixel size. A spike is a few times a quiet dot, small enough that thousands stay distinct."""
     level = np.clip(np.asarray(glow, np.float32), 0.0, 1.0)
-    return (np.float32(1.5) + np.float32(8.0) * level).astype(np.float32)
+    return (np.float32(1.35) + np.float32(4.2) * level).astype(np.float32)
+
+
+def quiet_display_index(names: np.ndarray, cap: int = QUIET_DRAWN) -> np.ndarray:
+    """Row indices for the dim background cloud.
+
+    Every neuropil keeps a few points, and larger ones keep more, but the total
+    stays at ``cap``. Spiking neurons are drawn separately and are not dropped here.
+    """
+    names = np.asarray(names)
+    n = len(names)
+    if n == 0 or cap <= 0:
+        return np.zeros(0, np.int32)
+    codes, _ = pd.factorize(pd.Series(names), sort=False)
+    counts = np.bincount(codes.astype(np.int32, copy=False))
+    floor = np.minimum(counts, 12)
+    if int(floor.sum()) >= cap or cap >= n:
+        step = max(n // max(cap, 1), 1)
+        return np.arange(0, n, step, dtype=np.int32)[:cap]
+    remain = cap - int(floor.sum())
+    extra_room = counts - floor
+    weight = extra_room.astype(np.float64)
+    extra = np.zeros(len(counts), np.int32)
+    total = float(weight.sum())
+    if total > 0 and remain > 0:
+        raw = weight / total * remain
+        extra = np.minimum(extra_room, np.floor(raw).astype(np.int32))
+        short = remain - int(extra.sum())
+        if short > 0:
+            order = np.argsort(raw - np.floor(raw))[::-1]
+            for code in order:
+                if short <= 0:
+                    break
+                if extra[code] < extra_room[code]:
+                    extra[code] += 1
+                    short -= 1
+    take = floor + extra
+    chosen: list[np.ndarray] = []
+    for code, k in enumerate(take):
+        idx = np.flatnonzero(codes == code)
+        k = int(min(int(k), idx.size))
+        if k <= 0:
+            continue
+        if idx.size > k:
+            idx = idx[np.linspace(0, idx.size - 1, k).astype(np.int32)]
+        chosen.append(idx.astype(np.int32, copy=False))
+    if not chosen:
+        return np.zeros(0, np.int32)
+    return np.concatenate(chosen)
+
+
+def glowing_index(glow: np.ndarray, floor: float = 0.08) -> np.ndarray:
+    """Neurons bright enough to redraw. Quiet ones stay on the static cloud."""
+    level = np.asarray(glow, np.float32)
+    return np.flatnonzero(level >= np.float32(floor)).astype(np.int32, copy=False)
 
 
 def family_colors(names: np.ndarray) -> np.ndarray:
@@ -513,9 +570,6 @@ def backbone_from_csr(
     if rows.size == 0:
         return np.zeros(0, np.int32), np.zeros(0, np.int32)
     same = np.asarray(region_ids)[rows] == np.asarray(region_ids)[cols]
-    lengths = None
-    if positions is not None and (max_length is not None or bridge_length is not None):
-        lengths = _edge_lengths(positions, rows, cols)
     rng = np.random.default_rng(seed)
     within_budget = int(max_edges * within_fraction)
     budgets = (
@@ -525,25 +579,28 @@ def backbone_from_csr(
     chosen: list[np.ndarray] = []
     for mask, budget, limit in budgets:
         idx = np.flatnonzero(mask)
-        if limit is not None and lengths is not None and idx.size:
-            idx = idx[lengths[idx] <= limit]
         if idx.size == 0 or budget <= 0:
+            continue
+        # Keep a strong pool first. Measuring every synapse in a 3-million-edge
+        # cache on the UI thread is what makes the window stall before it draws.
+        pool = max(budget * 24, budget)
+        if idx.size > pool:
+            w = weight[idx]
+            cut = np.partition(w, -pool)[-pool]
+            idx = idx[w >= cut]
+            if idx.size > pool:
+                idx = idx[np.argpartition(weight[idx], -pool)[-pool:]]
+        if limit is not None and positions is not None and idx.size:
+            length = _edge_lengths(positions, rows[idx], cols[idx])
+            idx = idx[length <= limit]
+        if idx.size == 0:
             continue
         if idx.size > budget:
             w = weight[idx]
-            pool = max(budget * 6, budget)
-            if idx.size > pool:
-                cut = np.partition(w, -pool)[-pool]
-                idx = idx[w >= cut]
-                w = weight[idx]
-                if idx.size > pool:
-                    idx = idx[:pool]
-                    w = w[:pool]
-            if idx.size > budget:
-                total = float(w.sum())
-                prob = None if total <= 0.0 else w / total
-                pick = rng.choice(idx.size, size=budget, replace=False, p=prob)
-                idx = idx[pick]
+            total = float(w.sum())
+            prob = None if total <= 0.0 else w / total
+            pick = rng.choice(idx.size, size=budget, replace=False, p=prob)
+            idx = idx[pick]
         chosen.append(np.asarray(idx))
     if not chosen:
         return np.zeros(0, np.int32), np.zeros(0, np.int32)

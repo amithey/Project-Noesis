@@ -30,12 +30,14 @@ from noesis.viz.layout3d import (
     base_colors,
     family_colors,
     format_hud,
+    glowing_index,
     hottest_neurons,
     label_anchors,
     live_synapse_edges,
     neuron_positions_3d,
     point_sizes,
     primary_region,
+    quiet_display_index,
     rgba_from_glow,
     segment_colors,
     segment_positions,
@@ -126,6 +128,13 @@ def _bind():
     import vispy
 
     vispy.use(app="glfw")
+    # GLFW window hints are process-global. MuJoCo/dm_control leave them set
+    # (and the native window client area starts white), so start from defaults
+    # before vispy applies its own.
+    import glfw
+
+    glfw.init()
+    glfw.default_window_hints()
     from vispy import app, scene
     from vispy.util import keys
 
@@ -211,7 +220,10 @@ class NetworkView:
         self.region = region_ids
         self.backbone = self._backbone()
         self._fit_center, self._fit_span = fit_center(self.positions, self.names)
-        kwargs = {"size": size, "bgcolor": "black", "keys": "interactive", "show": False, "title": title}
+        kwargs = {
+            "size": size, "bgcolor": (0.0, 0.0, 0.0, 1.0), "keys": "interactive",
+            "show": False, "title": title,
+        }
         if position is not None:
             kwargs["position"] = position
         self.canvas = scene.SceneCanvas(**kwargs)
@@ -220,8 +232,8 @@ class NetworkView:
         self.hud_view = grid.add_view(row=1, col=0)
         self.view.stretch = (1, 5)
         self.hud_view.stretch = (1, 1)
-        self.view.bgcolor = "black"
-        self.hud_view.bgcolor = "#10141c"
+        self.view.bgcolor = (0.0, 0.0, 0.0, 1.0)
+        self.hud_view.bgcolor = (0.06, 0.08, 0.11, 1.0)
         self.camera = _orbit_camera(scene, keys)(
             fov=45, elevation=24, azimuth=-68, up="+y"
         )
@@ -233,7 +245,9 @@ class NetworkView:
             pos=shell_pos, color=shell_col, connect="segments", width=1.15, method="gl",
             parent=self.view.scene, antialias=True,
         )
-        self.shell_line.set_gl_state(depth_test=False, blend=True)
+        self.shell_line.set_gl_state(
+            depth_test=False, blend=True, blend_func=("src_alpha", "one_minus_src_alpha")
+        )
         back_seg, back_col = _edge_buffers(
             self.positions, self.family, self.backbone[0], self.backbone[1], 0.30, 0.70, mean,
         )
@@ -241,28 +255,40 @@ class NetworkView:
             pos=back_seg, color=back_col, connect="segments", width=1.15, method="gl",
             parent=self.view.scene, antialias=False,
         )
-        self.backbone_line.set_gl_state(depth_test=False, blend=True)
+        self.backbone_line.set_gl_state(
+            depth_test=False, blend=True, blend_func=("src_alpha", "one_minus_src_alpha")
+        )
         seg, col = _hidden_segment(mean)
         self.live_line = scene.visuals.Line(
             pos=seg, color=col, connect="segments", width=2.4, method="gl",
             parent=self.view.scene, antialias=False,
         )
-        self.live_line.set_gl_state(depth_test=False, blend=True)
-        shown = np.zeros(self.n, np.float32)
+        self.live_line.set_gl_state(
+            depth_test=False, blend=True, blend_func=("src_alpha", "one_minus_src_alpha")
+        )
+        # Dim cloud is uploaded once. Only neurons that are actually glowing are
+        # re-sent to the GPU, so a frame does not walk all 158k points.
+        self.quiet_idx = quiet_display_index(self.names)
+        quiet_glow = np.zeros(self.quiet_idx.size, np.float32)
         self.markers = scene.visuals.Markers(parent=self.view.scene)
         self.markers.set_gl_state(
             depth_test=True, blend=True, blend_func=("src_alpha", "one_minus_src_alpha")
         )
         self.markers.set_data(
-            self.positions, face_color=rgba_from_glow(self.base_rgb, shown),
-            size=point_sizes(shown), edge_width=0.0, symbol="o",
+            self.positions[self.quiet_idx],
+            face_color=rgba_from_glow(self.base_rgb[self.quiet_idx], quiet_glow),
+            size=point_sizes(quiet_glow), edge_width=0.0, symbol="o",
+        )
+        self.active = scene.visuals.Markers(parent=self.view.scene)
+        self.active.set_gl_state(
+            depth_test=False, blend=True, blend_func=("src_alpha", "one_minus_src_alpha")
         )
         self.cores = scene.visuals.Markers(parent=self.view.scene)
-        self.cores.set_gl_state(depth_test=False, blend=True)
-        self.cores.set_data(
-            self.positions[:1], face_color=np.zeros((1, 4), np.float32),
-            size=np.array([0.1], np.float32), edge_width=0.0, symbol="o",
+        self.cores.set_gl_state(
+            depth_test=False, blend=True, blend_func=("src_alpha", "one_minus_src_alpha")
         )
+        self._hide_markers(self.active)
+        self._hide_markers(self.cores)
         for text, anchor in label_anchors():
             scene.visuals.Text(
                 text, pos=anchor, color=(0.90, 0.94, 1.0, 1.0), font_size=15,
@@ -279,6 +305,41 @@ class NetworkView:
         self._lock_hud()
         self.canvas.events.key_press.connect(self._on_key)
         self._frame_home()
+        self._warmup_hidden()
+
+    def _warmup_hidden(self) -> None:
+        """Draw once while the window is hidden.
+
+        The native GLFW client area is white until the first buffer swap, and
+        the first draw that rasterizes the HUD font stalls for several seconds.
+        Doing both before ``show`` means the window opens dark and later frames
+        stay near a video rate.
+        """
+        n = 24576
+        pos = np.repeat(self.positions[:1], n, axis=0)
+        blank = np.zeros((n, 4), np.float32)
+        size = np.full(n, 1.0, np.float32)
+        self.active.set_data(pos, face_color=blank, size=size, edge_width=0.0, symbol="o")
+        self.cores.set_data(
+            pos[:4096], face_color=blank[:4096], size=size[:4096], edge_width=0.0, symbol="o",
+        )
+        triggers = {
+            "odor_food": 0.5, "odor_aversive": 0.1, "taste_sugar": 0.2, "taste_water": 0.3,
+            "taste_bitter": 0.4, "vision_mean": 0.2, "temperature_c": 24.0, "humidity": 0.45,
+            "hemolymph_sugar": 0.5, "hemolymph_hydration": 0.7, "hemolymph_oxygen": 0.9,
+            "heart_rate_hz": 4.2, "mn9_hz": 6.0, "dilp_hz": 3.0, "body_z_mm": 1.1,
+            "uprightness": 0.97, "muscle_pos_mean": 0.2, "muscle_neg_mean": 0.2,
+            "da_hz": 2.0, "oa_hz": 3.0, "ser_hz": 1.0,
+        }
+        self.set_hud(format_hud(
+            0.0, self.n, 158262, 158262, False,
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz",
+            triggers,
+        ))
+        self.canvas.set_current()
+        self.canvas._draw_scene()
+        self._hide_markers(self.active)
+        self._hide_markers(self.cores)
 
     def _backbone(self):
         if self.matrix is None or self.matrix.shape[0] != self.n:
@@ -309,26 +370,34 @@ class NetworkView:
             self.camera.elevation = elevation
             self.camera.azimuth = azimuth
 
-    def paint(self, shown: np.ndarray) -> None:
-        level = np.clip(np.asarray(shown, np.float32), 0.0, 1.0)
-        self.markers.set_data(
-            self.positions, face_color=rgba_from_glow(self.base_rgb, level),
-            size=point_sizes(level), edge_width=0.0, symbol="o",
+    def _hide_markers(self, visual) -> None:
+        visual.set_data(
+            self.positions[:1], face_color=np.zeros((1, 4), np.float32),
+            size=np.array([0.1], np.float32), edge_width=0.0, symbol="o",
         )
-        # Every spike in this window gets a sharp core, drawn in front of the cloud.
-        hot = np.flatnonzero(level >= np.float32(0.72))
+
+    def paint(self, shown: np.ndarray) -> None:
+        """Redraw only the glowing neurons. The dim cloud stays on the GPU."""
+        level = np.clip(np.asarray(shown, np.float32), 0.0, 1.0)
+        hot = glowing_index(level)
         if hot.size == 0:
-            self.cores.set_data(
-                self.positions[:1], face_color=np.zeros((1, 4), np.float32),
-                size=np.array([0.1], np.float32), edge_width=0.0, symbol="o",
-            )
+            self._hide_markers(self.active)
+            self._hide_markers(self.cores)
             return
-        color = np.empty((hot.size, 4), np.float32)
-        color[:, :3] = np.clip(self.base_rgb[hot] * np.float32(0.28) + np.float32(0.78), 0.0, 1.0)
+        self.active.set_data(
+            self.positions[hot], face_color=rgba_from_glow(self.base_rgb[hot], level[hot]),
+            size=point_sizes(level[hot]), edge_width=0.0, symbol="o",
+        )
+        core = hot[level[hot] >= np.float32(0.72)]
+        if core.size == 0:
+            self._hide_markers(self.cores)
+            return
+        color = np.empty((core.size, 4), np.float32)
+        color[:, :3] = np.clip(self.base_rgb[core] * np.float32(0.22) + np.float32(0.82), 0.0, 1.0)
         color[:, 3] = 1.0
         self.cores.set_data(
-            self.positions[hot], face_color=color,
-            size=np.full(hot.size, 4.4, np.float32), edge_width=0.0, symbol="o",
+            self.positions[core], face_color=color,
+            size=np.full(core.size, 3.0, np.float32), edge_width=0.0, symbol="o",
         )
 
     def set_live_edges(self, pre: np.ndarray, post: np.ndarray) -> None:
@@ -378,7 +447,7 @@ def apply_activity(view: NetworkView, rates, spikes, time_s, awake, note, trigge
         pre, post = live_synapse_edges(
             view.matrix.indptr, view.matrix.indices, view.matrix.data, sources,
             max_edges=LIVE_EDGES, positions=view.positions, max_length=LOCAL_EDGE_LENGTH,
-            max_long=16, long_length=BRIDGE_EDGE_LENGTH,
+            max_long=8, long_length=BRIDGE_EDGE_LENGTH,
         )
         view.set_live_edges(pre, post)
     n_spiked = int(np.count_nonzero(spikes)) if spikes is not None else 0
@@ -419,35 +488,40 @@ def watch(neurons, positions, matrix, activity: Path, geometry: str | None) -> N
         now = time.perf_counter()
         dt = min(now - state["wall"], 0.25)
         state["wall"] = now
-        fresh = None
         try:
-            stamp = activity.stat().st_mtime_ns
-        except OSError:
-            stamp = state["stamp"]
-        if stamp != state["stamp"]:
+            fresh = None
             try:
-                fresh = read_activity_frame(activity)
-            except (OSError, ValueError, KeyError, EOFError, json_error()):
-                fresh = None
-        if fresh is not None and len(fresh.rates) == view.n:
-            try:
-                apply_activity(
-                    view, fresh.rates, fresh.spikes, fresh.time_s, fresh.awake, fresh.note,
-                    fresh.triggers, dt,
-                )
-                state["stamp"] = stamp
-                state["dirty"] = True
-            except ValueError:
-                view.glow.on_tick(dt)
-        else:
-            shown = view.glow.on_tick(dt)
-            if state["dirty"] or float(shown.max()) > 0.02:
-                view.paint(shown)
-                state["dirty"] = float(shown.max()) > 0.02
+                stamp = activity.stat().st_mtime_ns
+            except OSError:
+                stamp = state["stamp"]
+            if stamp != state["stamp"]:
+                try:
+                    fresh = read_activity_frame(activity)
+                except (OSError, ValueError, KeyError, EOFError, json_error()):
+                    fresh = None
+            if fresh is not None and len(fresh.rates) == view.n:
+                try:
+                    apply_activity(
+                        view, fresh.rates, fresh.spikes, fresh.time_s, fresh.awake, fresh.note,
+                        fresh.triggers, dt,
+                    )
+                    state["stamp"] = stamp
+                    state["dirty"] = True
+                except ValueError:
+                    view.glow.on_tick(dt)
+            else:
+                shown = view.glow.on_tick(dt)
+                if state["dirty"] or float(shown.max()) > 0.02:
+                    view.paint(shown)
+                    state["dirty"] = float(shown.max()) > 0.02
+        except Exception as exc:  # noqa: BLE001 - keep drawing if one frame fails
+            # A failed frame must not kill the draw loop and leave the native
+            # window sitting on its white client area.
+            print("neuron window frame skipped:", exc, flush=True)
         view._lock_hud()
         view.canvas.update()
 
-    view._timer = view.app.Timer(interval=1 / 30, connect=on_timer, start=True)
+    view._timer = view.app.Timer(interval=1 / 12, connect=on_timer, start=True)
     view.app.run()
 
 

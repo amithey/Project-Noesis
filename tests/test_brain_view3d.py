@@ -18,16 +18,20 @@ from noesis.viz.brain_map import (
 )
 from noesis.viz.brain_view3d import parse_window_geometry
 from noesis.viz.layout3d import (
+    BACKBONE_EDGES,
     FLASH_TAU_S,
+    LIVE_EDGES,
     NEUROPILS,
     Glow,
     backbone_from_csr,
     base_colors,
     format_hud,
+    glowing_index,
     live_synapse_edges,
     neuron_positions_3d,
     neuropil_center,
     point_sizes,
+    quiet_display_index,
     rgba_from_glow,
     shell_wireframe,
 )
@@ -238,3 +242,23 @@ def test_window_geometry_and_launchers_default_to_the_3d_view():
     muscles = (root / "src" / "noesis" / "experiments" / "newborn_muscles.py").read_text(encoding="utf-8")
     assert "spike_histogram(pending_spikes, cn.n)" in muscles
     assert "write_activity(" in muscles
+
+
+def test_quiet_cloud_is_capped_and_every_spike_stays_drawable():
+    neurons = _census(per_side=30)
+    names = neurons["Top in/out region"].to_numpy()
+    idx = quiet_display_index(names, cap=2000)
+    assert len(idx) <= 2000
+    drawn = set(names[idx])
+    assert set(names) <= drawn
+    again = quiet_display_index(names, cap=2000)
+    np.testing.assert_array_equal(idx, again)
+    # The live defaults stay small enough that the window is not an edge hairball.
+    assert BACKBONE_EDGES <= 400
+    assert LIVE_EDGES <= 120
+    glow = np.zeros(8, np.float32)
+    glow[1] = 1.0
+    glow[3] = 0.2
+    glow[5] = 0.01
+    hot = glowing_index(glow)
+    assert set(hot.tolist()) == {1, 3}
