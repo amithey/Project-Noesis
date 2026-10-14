@@ -1,0 +1,150 @@
+{
+  "duration_ms": 600.0,
+  "burn_ms": 100.0,
+  "odor_hz": 80.0,
+  "drive_weight": 400.0,
+  "dt_ms": 0.5,
+  "adaptation": 1.0,
+  "background": 0,
+  "nt_overrides": {
+    "APL": "GABA"
+  },
+  "input_sha256": {
+    "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\data\\raw\\neurons.csv": "e69521d87c9579af5d883c0c5d6d829a6fbb57e5635c98f8b7568841894e0967",
+    "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\data\\raw\\connections_princeton.csv": "cbf82584360efcab16ec1d43ea2333dbe661a1d98856bc33dfcdaa10f0589e5f",
+    "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\data\\fafb\\connections_princeton.csv.gz": "445f996bf6c4b1803b9ba186189138a3061ff8623aa94c0abcf38af30a5bd48b"
+  },
+  "pairs": [
+    {
+      "A": [
+        "DA4l",
+        "DL1",
+        "VA7l",
+        "VL1",
+        "VM7v"
+      ],
+      "B": [
+        "D",
+        "DP1l",
+        "VA3",
+        "VA4",
+        "VC1"
+      ]
+    },
+    {
+      "A": [
+        "DC3",
+        "DM1",
+        "DM5",
+        "VA1d",
+        "VM1"
+      ],
+      "B": [
+        "DC1",
+        "DL2d",
+        "DM4",
+        "VC5",
+        "VM7d"
+      ]
+    },
+    {
+      "A": [
+        "DM6",
+        "V",
+        "VA6",
+        "VL2p",
+        "VM2"
+      ],
+      "B": [
+        "DA1",
+        "DL4",
+        "VA7m",
+        "VM4",
+        "VM6"
+      ]
+    },
+    {
+      "A": [
+        "DA4m",
+        "DC2",
+        "DL3",
+        "VC2",
+        "VM5v"
+      ],
+      "B": [
+        "DA2",
+        "DA3",
+        "DL5",
+        "DM3",
+        "VM5d"
+      ]
+    },
+    {
+      "A": [
+        "DC4",
+        "DL2v",
+        "VA1v",
+        "VA5",
+        "VC4"
+      ],
+      "B": [
+        "DP1m",
+        "VA2",
+        "VC3",
+        "VL2a",
+        "VM3"
+      ]
+    }
+  ],
+  "region_scale": {
+    "AL": 1.6190227648634277,
+    "AME": 4.120680096100536,
+    "AMMC": 2.494875889548675,
+    "AOTU": 3.6896224590360225,
+    "ATL": 1.0558487247141601,
+    "AVLP": 2.7326379502618523,
+    "BU": 2.7096203346203347,
+    "CAN": 1.2657843715754868,
+    "CRE": 1.9443301083723634,
+    "EB": 2.5836061049742813,
+    "EPA": 2.0351423923482486,
+    "FB": 2.9007227723482214,
+    "FLA": 1.3253768312943663,
+    "GA": 1.9123505976095618,
+    "GNG": 2.5772443050699576,
+    "GOR": 2.8781793037099392,
+    "IB": 1.8583448520740073,
+    "ICL": 2.204892585248203,
+    "IPS": 2.16999406008691,
+    "LAL": 2.2132393698980026,
+    "LH": 4.713050863018729,
+    "LO": 4.019957406745442,
+    "LOP": 2.5190176327236418,
+    "MB_CA": 2.545515654362663,
+    "MB_ML": 20.0,
+    "MB_PED": 11.78308374930671,
+    "MB_VL": 5.660904864794081,
+    "ME": 3.616001119735704,
+    "NO": 3.447071026914888,
+    "PB": 1.4996671683260014,
+    "PLP": 2.779166040125946,
+    "PRW": 5.049542152578697,
+    "PVLP": 7.319000256004248,
+    "SAD": 10.068564340890536,
+    "SCL": 3.559444124111075,
+    "SIP": 4.20615433869796,
+    "SLP": 6.325363698682306,
+    "SMP": 3.568883242601935,
+    "SPS": 2.6300781140633314,
+    "VES": 1.7011095782888948,
+    "WED": 2.8103841574230746
+  },
+  "edges": 2642964,
+  "populations": {
+    "orn": 3007,
+    "pn": 699,
+    "kc": 4139,
+    "apl": 2
+  },
+  "data": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\data"
+}
