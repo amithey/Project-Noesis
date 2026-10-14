@@ -1,9 +1,10 @@
-"""Map of every downloaded neuron that lights up when the neuron fires.
+"""Rotatable 3-D map of every downloaded neuron, with the real synapses drawn as wires.
 
-The BANC tables carry no 3-D neuron positions, so the default layout is *schematic*: each neuron is
-placed around a hand-placed point for its main brain region (``Top in/out region``), on its own side
-of the body, brain above and nerve cord below -- shaped like the BANC overview, not anatomically exact.
-If a coordinates table is supplied (``--coords`` CSV with ``root_id,x,y,z``), real positions are used.
+The BANC tables carry no 3-D neuron positions, so each neuron sits in a schematic cloud for its
+neuropil (``Top in/out region``), mirrored by side, brain above and nerve cord below. The wires are
+the strongest signed synapses from the downloaded connectome: gold excitatory, blue inhibitory.
+Drag the window to rotate. ``--flat`` keeps the older 2-D schematic. A coordinates CSV
+(``root_id,x,y,z``) replaces the layout with measured positions.
 
 Live use: the simulation writes recent firing rates with ``write_activity``; in another terminal
 
@@ -62,21 +63,51 @@ def neuron_positions(neurons: pd.DataFrame, coords_csv: Path | None = None, seed
         c = pd.read_csv(coords_csv).set_index("root_id")
         xyz = c.reindex(neurons["root_id"])[["x", "y", "z"]].to_numpy(float)
         return np.column_stack([xyz[:, 0], -xyz[:, 1]])  # front view, dorsal up
+    return neuron_positions_3d(neurons, seed=seed)[:, [0, 2]]
+
+
+def neuron_positions_3d(neurons: pd.DataFrame, coords_csv: Path | None = None, seed: int = 0) -> np.ndarray:
+    """(n, 3) positions as (left-right, anterior-posterior, dorsal-ventral).
+
+    The downloaded table has no measured coordinates. Each neuron is placed in a 3-D cloud around
+    its neuropil, mirrored by soma side, with the brain dorsal and the nerve cord ventral. A
+    coordinates CSV (``root_id,x,y,z``) replaces this schematic layout.
+    """
+    if coords_csv is not None and coords_csv.exists():
+        c = pd.read_csv(coords_csv).set_index("root_id")
+        xyz = c.reindex(neurons["root_id"])[["x", "y", "z"]].to_numpy(float)
+        return np.column_stack([xyz[:, 0], xyz[:, 1], xyz[:, 2]])
     rng = np.random.default_rng(seed)
     region = neurons["Top in/out region"].fillna("NO_CONS").str.split(".").str[0].str.upper()
     side = neurons["Soma side"].fillna("").map({"left": -1.0, "right": 1.0})
     side = side.fillna(pd.Series(rng.choice([-1.0, 1.0], len(neurons)), index=neurons.index)).to_numpy()
     counts = region.value_counts()
-    pos = np.zeros((len(neurons), 2))
+    pos = np.zeros((len(neurons), 3))
     for name, idx in region.groupby(region).groups.items():
-        ax, ay = REGION_XY.get(name, (0.6, 0.0))
+        ax, height = REGION_XY.get(name, (0.6, 0.0))
         k = len(idx)
         spread = 0.1 + 0.002 * np.sqrt(counts[name])
-        sx, sy = (spread * 0.6, spread * 1.6) if name in OPTIC else (spread, spread * 0.8)
+        sx = spread * (0.6 if name in OPTIC else 1.0)
         rows = neurons.index.get_indexer(idx)
         pos[rows, 0] = side[rows] * ax + rng.normal(0, sx, k)
-        pos[rows, 1] = ay + rng.normal(0, sy, k)
+        pos[rows, 1] = 0.35 * height + rng.normal(0, spread * 0.7, k)
+        pos[rows, 2] = height + rng.normal(0, spread * 0.8, k)
     return pos
+
+
+def strongest_synapses(weights, limit: int = 8000):
+    """Return presynaptic index, postsynaptic index and sign for the strongest synapses.
+
+    ``weights[i, j]`` is the signed synapse count from i to j. The sample is what the 3-D view
+    draws; the full matrix is about 1.5 million edges and cannot be rotated interactively.
+    """
+    strength = np.abs(np.asarray(weights.data))
+    if strength.size == 0:
+        empty = np.zeros(0, np.int64)
+        return empty, empty, empty.astype(np.float32)
+    pick = np.arange(strength.size) if strength.size <= limit else np.argpartition(strength, -limit)[-limit:]
+    rows = np.repeat(np.arange(weights.shape[0]), np.diff(weights.indptr))
+    return rows[pick].astype(np.int64), weights.indices[pick].astype(np.int64), np.sign(weights.data[pick])
 
 
 def write_activity(path: Path, rates_hz: np.ndarray, time_s: float, awake: bool = True,
@@ -163,24 +194,107 @@ class BrainMap:
         self.world.set_text(describe_triggers(triggers or {}))
 
 
+class BrainVolume:
+    """Rotatable 3-D brain: every neuron is a point, the strongest real synapses are wires.
+
+    Drag the view with the mouse. Gold wires are excitatory synapses and blue wires are
+    inhibitory. A neuron that is firing above the background grows and turns hot.
+    """
+
+    def __init__(self, positions: np.ndarray, pre: np.ndarray, post: np.ndarray, sign: np.ndarray,
+                 title: str = "Noesis 3D brain"):
+        import matplotlib.pyplot as plt
+        from mpl_toolkits.mplot3d.art3d import Line3DCollection
+
+        self.pos = np.asarray(positions, float)
+        self.pre, self.post = np.asarray(pre, np.int64), np.asarray(post, np.int64)
+        self.sign = np.asarray(sign, float)
+        self.fig = plt.figure(figsize=(11, 9), facecolor="black")
+        self.ax = self.fig.add_subplot(111, projection="3d", facecolor="black")
+        for axis in (self.ax.xaxis, self.ax.yaxis, self.ax.zaxis):
+            axis.set_pane_color((0, 0, 0, 1))
+            axis.line.set_color((0, 0, 0, 0))
+            axis.set_ticks([])
+        silent = self.pos if len(self.pos) <= 40000 else self.pos[:: max(1, len(self.pos) // 40000)]
+        self.ax.scatter(silent[:, 0], silent[:, 1], silent[:, 2], s=0.4, c="#2c3350",
+                        alpha=0.35, linewidths=0, depthshade=False)
+        wires = np.stack([self.pos[self.pre], self.pos[self.post]], axis=1) if len(self.pre) else np.zeros((0, 2, 3))
+        self.wires = Line3DCollection(wires, colors=[(0.25, 0.25, 0.3, 0.15)] * len(wires), linewidths=0.4)
+        self.ax.add_collection3d(self.wires)
+        self.lit = self.ax.scatter([], [], [], s=[], c=[], cmap="plasma", vmin=0.0, vmax=np.log10(200.0),
+                                   linewidths=0, depthshade=False)
+        self.text = self.ax.text2D(0.01, 0.98, "", transform=self.ax.transAxes, color="white",
+                                   va="top", fontsize=10, family="monospace")
+        self.world = self.ax.text2D(0.01, 0.02, "", transform=self.ax.transAxes, color="#ffd27f",
+                                    va="bottom", fontsize=9, family="monospace")
+        self.ax.text2D(0.01, 0.90, "drag to rotate   gold = excitatory synapse   blue = inhibitory",
+                       transform=self.ax.transAxes, color="#9aa4c8", va="top", fontsize=8)
+        self.ax.set_title(title, color="white")
+        self.ax.set_box_aspect((1.6, 1.0, 1.8))
+        self.ax.view_init(elev=18, azim=-70)
+        self.ax.set_axis_off()
+
+    def update(self, rates_hz: np.ndarray, time_s: float | None = None, min_hz: float = 12.0,
+               awake: bool = True, triggers: dict | None = None) -> None:
+        on = np.flatnonzero(rates_hz > min_hz)
+        if len(on) > 20000:
+            on = on[np.argpartition(rates_hz[on], -20000)[-20000:]]
+        r = rates_hz[on].astype(float)
+        pts = self.pos[on] if len(on) else np.zeros((0, 3))
+        self.lit._offsets3d = (pts[:, 0], pts[:, 1], pts[:, 2])
+        self.lit.set_array(np.log10(r + 1.0))
+        self.lit.set_sizes(6.0 + 18.0 * np.clip(np.log10(r + 1.0) / 2.3, 0, 1))
+        if len(self.pre):
+            edge = np.maximum(rates_hz[self.pre], rates_hz[self.post])
+            hot = np.clip((edge - min_hz) / 40.0, 0, 1)
+            excite = self.sign >= 0
+            colors = np.zeros((len(edge), 4))
+            colors[:, 0] = np.where(excite, 0.15 + 0.85 * hot, 0.05)
+            colors[:, 1] = np.where(excite, 0.12 + 0.55 * hot, 0.15 + 0.35 * hot)
+            colors[:, 2] = np.where(excite, 0.05, 0.25 + 0.75 * hot)
+            colors[:, 3] = 0.08 + 0.85 * hot
+            self.wires.set_colors(colors)
+            self.wires.set_linewidths(0.3 + 1.4 * hot)
+        label = f"t = {time_s:6.3f} s   " if time_s is not None else ""
+        state = "" if awake else "   (brain still asleep)"
+        self.text.set_text(
+            f"{label}firing: {int(np.count_nonzero(rates_hz > min_hz)):,} / {len(rates_hz):,}"
+            f"   wires: {len(self.pre):,} strongest synapses{state}")
+        self.world.set_text(describe_triggers(triggers or {}))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("--data", type=Path, default=Path("data"))
     ap.add_argument("--coords", type=Path, help="optional CSV with root_id,x,y,z")
     ap.add_argument("--watch", type=Path, help="activity file written by a running simulation")
     ap.add_argument("--snapshot", type=Path, help="render this activity file once")
+    ap.add_argument("--flat", action="store_true", help="2-D schematic instead of the rotatable 3-D network")
     ap.add_argument("--out", type=Path, default=Path("outputs/brain_map.png"))
     a = ap.parse_args()
 
     from noesis.connectome import load_cached
 
-    neurons = load_cached(a.data / "raw", a.data / "processed").neurons
-    pos = neuron_positions(neurons, a.coords)
-    layout = "real coordinates" if a.coords and a.coords.exists() else "schematic layout (not anatomical)"
+    cn = load_cached(a.data / "raw", a.data / "processed")
+    neurons = cn.neurons
+    use_3d = not a.flat
+    layout = "real coordinates" if a.coords and a.coords.exists() else "schematic 3-D anatomy, real synapses"
+    if use_3d:
+        pos3 = neuron_positions_3d(neurons, a.coords)
+        print(f"sampling the strongest synapses out of {cn.W.nnz:,} ...", flush=True)
+        pre, post, sign = strongest_synapses(cn.W, limit=8000)
+        print(f"3-D network: {len(neurons):,} neurons, {len(pre):,} wires. Drag the window to rotate.",
+              flush=True)
+    else:
+        pos3 = pre = post = sign = None
+    pos = neuron_positions(neurons, a.coords) if not use_3d else pos3
     if a.snapshot:
         import matplotlib
         matplotlib.use("Agg")
-        m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
+        if use_3d:
+            m = BrainVolume(pos3, pre, post, sign, f"Noesis brain - {layout}")
+        else:
+            m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
         rates, t, awake, triggers = read_activity(a.snapshot)
         m.update(rates, t, awake=awake, triggers=triggers)
         a.out.parent.mkdir(parents=True, exist_ok=True)
@@ -191,7 +305,10 @@ def main() -> None:
         ap.error("use --watch FILE or --snapshot FILE")
     import matplotlib.pyplot as plt
 
-    m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
+    if use_3d:
+        m = BrainVolume(pos3, pre, post, sign, f"Noesis brain - {layout}")
+    else:
+        m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
     plt.ion()
     plt.show()
     m.text.set_text(f"waiting for the simulation to write {a.watch} ...")

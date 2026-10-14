@@ -7,6 +7,14 @@ True awakening isn't seeing the light. It's realizing the dark you exist in is j
 neurons activates the proboscis motor neuron MN9, as in Shiu et al., *Nature* 2024.
 
 ## Quick start
+
+For the physical fly with experimental learning, a live viewer, video recording,
+and episode metrics, see [the learning laboratory](docs/learning-lab.md).
+On Windows with body dependencies installed: `./Start-Fly.ps1 -Learn -Video`.
+The default [sensory habitat](docs/habitat.md) provides position-dependent odors,
+rendered binocular vision, contact taste, thermal/humidity regions and moving stimuli.
+This is an experiment, not demonstrated learned walking or flight.
+
 ```bash
 python -m venv <venv-dir> && <venv-dir>/Scripts/activate     # keep the venv outside OneDrive
 pip install numpy scipy pandas pyarrow numba pytest ruff flygym networkx

@@ -43,3 +43,21 @@ def test_chunked_run_matches_single_run():
     t1, i1 = b.run(50.0, np.array([0]), 100.0, 100.0)
     t2, i2 = b.run(50.0, np.array([0]), 100.0, 100.0)
     assert np.allclose(ta, np.concatenate([t1, t2])) and np.array_equal(ia, np.concatenate([i1, i2]))
+
+
+def test_wing_and_neck_motor_mappings():
+    rows = [
+        ("wing_motor_neuron", "wing_power_motor_neuron", "left_anterior_dorsal_mesothoracic_nerve", "left", "DVM1a-c"),
+        ("wing_motor_neuron", "wing_power_motor_neuron", "left_posterior_dorsal_mesothoracic_nerve", "left", "DLM1-4"),
+        ("wing_motor_neuron", "wing_steering_motor_neuron", "right_anterior_dorsal_mesothoracic_nerve", "right", "b1"),
+        ("neck_motor_neuron", "neck_yaw_motor_neuron", "left_cervical_nerve", "left", "CvN1"),
+        ("neck_motor_neuron", "neck_pitch_motor_neuron", "left_cervical_nerve", "left", "CvN4"),
+    ]
+    df = pd.DataFrame(rows, columns=["Class", "Sub Class", "Nerve", "Soma side", "Primary Cell Type"])
+    joints = ["joint_LWing", "joint_RWing_yaw", "joint_Head_yaw", "joint_Head"]
+    G = build_motor_matrix(df, joints).toarray()
+    assert np.allclose(G[0], [1.0, -1.0, 0.0, 0.0, 0.0])   # DVM (+1) vs DLM (-1) on left wing
+    assert np.allclose(G[1], [0.0, 0.0, 1.0, 0.0, 0.0])    # right b1 (+1) on right wing yaw
+    assert np.allclose(G[2], [0.0, 0.0, 0.0, 1.0, 0.0])    # left neck yaw (+1)
+    assert np.allclose(G[3], [0.0, 0.0, 0.0, 0.0, 1.0])    # CvN4 neck pitch (+1)
+
