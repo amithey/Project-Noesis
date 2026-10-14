@@ -1,0 +1,2463 @@
+{
+  "expected_before_run": "Before running: synthetic 10 Hz tripod should pass the shuffled spectral null, have negative antagonist correlation and tripod score near 1. Tonic Poisson should fail rhythmicity; co-contraction should correlate positively. Brain hypothesis: tonic/coactive motor output, weak or absent coordinated tripod. Correction may increase firing without restoring gait. Rejecting the stationary Poisson null alone is not evidence of walking.",
+  "settings": {
+    "duration_ms": 3000,
+    "bin_ms": 10,
+    "shuffles": 199,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "dt_ms": 0.5,
+    "da": 1.0,
+    "background_hz": 3.0,
+    "background_weight": 60.0,
+    "burn_in_ms": 0
+  },
+  "scale": {
+    "AL": 1.6190227648634277,
+    "AME": 4.120680096100536,
+    "AMMC": 2.494875889548675,
+    "AOTU": 3.6896224590360225,
+    "ATL": 1.0558487247141601,
+    "AVLP": 2.7326379502618523,
+    "BU": 2.7096203346203347,
+    "CAN": 1.2657843715754868,
+    "CRE": 1.9443301083723634,
+    "EB": 2.5836061049742813,
+    "EPA": 2.0351423923482486,
+    "FB": 2.9007227723482214,
+    "FLA": 1.3253768312943663,
+    "GA": 1.9123505976095618,
+    "GNG": 2.5772443050699576,
+    "GOR": 2.8781793037099392,
+    "IB": 1.8583448520740073,
+    "ICL": 2.204892585248203,
+    "IPS": 2.16999406008691,
+    "LAL": 2.2132393698980026,
+    "LH": 4.713050863018729,
+    "LO": 4.019957406745442,
+    "LOP": 2.5190176327236418,
+    "MB_CA": 2.545515654362663,
+    "MB_ML": 20.0,
+    "MB_PED": 11.78308374930671,
+    "MB_VL": 5.660904864794081,
+    "ME": 3.616001119735704,
+    "NO": 3.447071026914888,
+    "PB": 1.4996671683260014,
+    "PLP": 2.779166040125946,
+    "PRW": 5.049542152578697,
+    "PVLP": 7.319000256004248,
+    "SAD": 10.068564340890536,
+    "SCL": 3.559444124111075,
+    "SIP": 4.20615433869796,
+    "SLP": 6.325363698682306,
+    "SMP": 3.568883242601935,
+    "SPS": 2.6300781140633314,
+    "VES": 1.7011095782888948,
+    "WED": 2.8103841574230746,
+    "VNC_T1_ProNm": 3.4577963672763734,
+    "LegNp_T1": 3.4577963672763734,
+    "VNC_T2_MesoNm": 3.255568054343277,
+    "LegNp_T2": 3.255568054343277,
+    "VNC_T3_MetaNm": 4.369913675070737,
+    "LegNp_T3": 4.369913675070737,
+    "ABDNM": 5.033182577779772,
+    "ANm": 5.033182577779772,
+    "IntTct": 2.444139157621049,
+    "LTct": 8.41801691998853,
+    "VNC_WTct": 6.506794490608346,
+    "WTct_UTct_T2": 6.506794490608346,
+    "VNC_HTct": 4.553822068973327,
+    "HTct_UTct_T3": 4.553822068973327,
+    "VNC_NTct": 3.2675927761061363,
+    "NTct_UTct_T1": 3.2675927761061363,
+    "VNC_AMNp": 7.107160251188491,
+    "VNC_T2_mVAC": 7.033226874165264
+  },
+  "runs": [
+    {
+      "brain": "raw",
+      "seed": 0,
+      "total_spikes": 358521,
+      "motor_spikes": 1811,
+      "motor_neurons": 391,
+      "motor_rate_windows_hz": [
+        0.010230179028132993,
+        0.0,
+        0.010230179028132993,
+        2.608695652173913,
+        3.411764705882353,
+        3.2225063938618925
+      ],
+      "mean_motor_hz": 1.5439045183290707,
+      "pooled_leg_spectra": {
+        "LF": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 2.7936892819202206,
+          "null95_hz2": 0.12112383749812786,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 352,
+          "pool_size": 69
+        },
+        "LM": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 1.439454054165929,
+          "null95_hz2": 0.09764664394278603,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 228,
+          "pool_size": 63
+        },
+        "LH": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 2.0123069169694188,
+          "null95_hz2": 0.11312194374828655,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 273,
+          "pool_size": 63
+        },
+        "RF": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 3.1940317151432027,
+          "null95_hz2": 0.1255286302087621,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 374,
+          "pool_size": 70
+        },
+        "RM": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 5.164443803843885,
+          "null95_hz2": 0.1923175379935942,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 441,
+          "pool_size": 63
+        },
+        "RH": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 0.6467984661378295,
+          "null95_hz2": 0.06212132774453259,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 143,
+          "pool_size": 63
+        }
+      },
+      "antagonists": {
+        "LF_Coxa": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 0.2222222222222222,
+          "antagonist_hz": 0.0
+        },
+        "LF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 14.083333333333334
+        },
+        "LF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.5555555555555556,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Coxa": {
+          "correlation": -0.0071938955481879955,
+          "agonist_size": 2,
+          "antagonist_size": 6,
+          "agonist_hz": 0.16666666666666666,
+          "antagonist_hz": 0.4444444444444444
+        },
+        "LH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 4.666666666666667
+        },
+        "LH_Femur": {
+          "correlation": -0.0255345306812552,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 4.4,
+          "antagonist_hz": 0.041666666666666664
+        },
+        "LH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 4,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 1.5833333333333333,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tibia": {
+          "correlation": -0.03389470582056961,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 1.0,
+          "antagonist_hz": 1.5
+        },
+        "LM_Coxa": {
+          "correlation": -0.03503686771235055,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 13.0,
+          "antagonist_hz": 0.2
+        },
+        "LM_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 5.142857142857143
+        },
+        "LM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 13,
+          "antagonist_size": 1,
+          "agonist_hz": 0.02564102564102564,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tibia": {
+          "correlation": null,
+          "agonist_size": 16,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 6.333333333333333
+        },
+        "RF_Coxa": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 0.2222222222222222,
+          "antagonist_hz": 0.0
+        },
+        "RF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Femur": {
+          "correlation": -0.038511105017248436,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 0.030303030303030304,
+          "antagonist_hz": 14.5
+        },
+        "RF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.05555555555555555,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 3.3333333333333335
+        },
+        "RH_Coxa": {
+          "correlation": -0.01308447786631433,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 0.8333333333333334,
+          "antagonist_hz": 0.2
+        },
+        "RH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 6.666666666666667
+        },
+        "RH_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 0.8333333333333334,
+          "antagonist_hz": 0.0
+        },
+        "RH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 5,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.7272727272727273,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tibia": {
+          "correlation": -0.03154068401450378,
+          "agonist_size": 18,
+          "antagonist_size": 2,
+          "agonist_hz": 0.9444444444444444,
+          "antagonist_hz": 2.5
+        },
+        "RM_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 4,
+          "agonist_hz": 16.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Femur": {
+          "correlation": -0.04173523131005217,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 0.1,
+          "antagonist_hz": 10.80952380952381
+        },
+        "RM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 2,
+          "agonist_hz": 0.09090909090909091,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tibia": {
+          "correlation": 0.23156183536249375,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.19607843137254902,
+          "antagonist_hz": 17.0
+        }
+      },
+      "antagonist_summary": {
+        "valid_joints": 9,
+        "median_correlation": -0.03154068401450378,
+        "positive_joints": 1
+      },
+      "tibia_flexor_phase": {
+        "common_frequency_hz": 0.3333333333333333,
+        "tripod_score": null,
+        "phase_valid": false,
+        "legs": {
+          "LF": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "LM": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 16,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "LH": {
+            "frequency_hz": 0.3333333333333333,
+            "power_hz2": 1.1279756552867453,
+            "null95_hz2": 0.2919575170720965,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 51,
+            "pool_size": 17,
+            "dominant_phase_rad": 1.2672245531073314,
+            "common_phase_rad": 1.2672245531073314
+          },
+          "RF": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "RM": {
+            "frequency_hz": 40.0,
+            "power_hz2": 0.050327450764127146,
+            "null95_hz2": 0.05185360525288271,
+            "p_value": 0.07,
+            "rhythmic": false,
+            "spike_count": 10,
+            "pool_size": 17,
+            "dominant_phase_rad": -0.6283185307179586,
+            "common_phase_rad": 1.8582976926860406
+          },
+          "RH": {
+            "frequency_hz": 0.3333333333333333,
+            "power_hz2": 1.2428126580324355,
+            "null95_hz2": 0.260418896400728,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 51,
+            "pool_size": 18,
+            "dominant_phase_rad": 1.2227322389567434,
+            "common_phase_rad": 1.2227322389567434
+          }
+        }
+      }
+    },
+    {
+      "brain": "raw",
+      "seed": 1,
+      "total_spikes": 1634,
+      "motor_spikes": 11,
+      "motor_neurons": 391,
+      "motor_rate_windows_hz": [
+        0.0,
+        0.0,
+        0.010230179028132993,
+        0.0,
+        0.010230179028132993,
+        0.03580562659846547
+      ],
+      "mean_motor_hz": 0.00937766410912191,
+      "pooled_leg_spectra": {
+        "LF": {
+          "frequency_hz": 11.333333333333334,
+          "power_hz2": 0.0007468085602931228,
+          "null95_hz2": 0.0007468085602931221,
+          "p_value": 0.075,
+          "rhythmic": false,
+          "spike_count": 4,
+          "pool_size": 69
+        },
+        "LM": {
+          "frequency_hz": null,
+          "power_hz2": 0.0,
+          "null95_hz2": 0.0,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 0,
+          "pool_size": 63
+        },
+        "LH": {
+          "frequency_hz": null,
+          "power_hz2": 0.0,
+          "null95_hz2": 0.0,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 0,
+          "pool_size": 63
+        },
+        "RF": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 0.00040812347999543677,
+          "null95_hz2": 0.0004081632653061224,
+          "p_value": 0.215,
+          "rhythmic": false,
+          "spike_count": 3,
+          "pool_size": 70
+        },
+        "RM": {
+          "frequency_hz": 12.0,
+          "power_hz2": 5.598947397889201e-05,
+          "null95_hz2": 5.5989473978892026e-05,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 1,
+          "pool_size": 63
+        },
+        "RH": {
+          "frequency_hz": 22.333333333333332,
+          "power_hz2": 0.0005038561481425145,
+          "null95_hz2": 0.0005039052658100277,
+          "p_value": 0.215,
+          "rhythmic": false,
+          "spike_count": 3,
+          "pool_size": 63
+        }
+      },
+      "antagonists": {
+        "LF_Coxa": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 0.05555555555555555,
+          "antagonist_hz": 0.0
+        },
+        "LF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 0.09090909090909091,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 6,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 4,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 13,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tibia": {
+          "correlation": null,
+          "agonist_size": 16,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Coxa": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Femur": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.125
+        },
+        "RF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.06666666666666667
+        },
+        "RH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.08333333333333333
+        },
+        "RH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 5,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tibia": {
+          "correlation": null,
+          "agonist_size": 18,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 4,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.05555555555555555,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        }
+      },
+      "antagonist_summary": {
+        "valid_joints": 0,
+        "median_correlation": null,
+        "positive_joints": 0
+      },
+      "tibia_flexor_phase": {
+        "common_frequency_hz": null,
+        "tripod_score": null,
+        "phase_valid": false,
+        "legs": {
+          "LF": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "LM": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 16,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "LH": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "RF": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "RM": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "RH": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 18,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          }
+        }
+      }
+    },
+    {
+      "brain": "raw",
+      "seed": 2,
+      "total_spikes": 1642,
+      "motor_spikes": 6,
+      "motor_neurons": 391,
+      "motor_rate_windows_hz": [
+        0.010230179028132993,
+        0.0,
+        0.005115089514066497,
+        0.0,
+        0.015345268542199489,
+        0.0
+      ],
+      "mean_motor_hz": 0.005115089514066497,
+      "pooled_leg_spectra": {
+        "LF": {
+          "frequency_hz": null,
+          "power_hz2": 0.0,
+          "null95_hz2": 0.0,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 0,
+          "pool_size": 69
+        },
+        "LM": {
+          "frequency_hz": 0.6666666666666666,
+          "power_hz2": 5.598947397889199e-05,
+          "null95_hz2": 5.5989473978892026e-05,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 1,
+          "pool_size": 63
+        },
+        "LH": {
+          "frequency_hz": 7.333333333333333,
+          "power_hz2": 5.598947397889201e-05,
+          "null95_hz2": 5.5989473978892026e-05,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 1,
+          "pool_size": 63
+        },
+        "RF": {
+          "frequency_hz": 19.666666666666668,
+          "power_hz2": 0.00040800414151453214,
+          "null95_hz2": 0.00040816326530612257,
+          "p_value": 0.23,
+          "rhythmic": false,
+          "spike_count": 3,
+          "pool_size": 70
+        },
+        "RM": {
+          "frequency_hz": null,
+          "power_hz2": 0.0,
+          "null95_hz2": 0.0,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 0,
+          "pool_size": 63
+        },
+        "RH": {
+          "frequency_hz": 4.333333333333333,
+          "power_hz2": 5.598947397889201e-05,
+          "null95_hz2": 5.5989473978892026e-05,
+          "p_value": 1.0,
+          "rhythmic": false,
+          "spike_count": 1,
+          "pool_size": 63
+        }
+      },
+      "antagonists": {
+        "LF_Coxa": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 6,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 4,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0196078431372549,
+          "antagonist_hz": 0.0
+        },
+        "LM_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 13,
+          "antagonist_size": 1,
+          "agonist_hz": 0.02564102564102564,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tibia": {
+          "correlation": null,
+          "agonist_size": 16,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Coxa": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Femur": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.058823529411764705,
+          "antagonist_hz": 0.0
+        },
+        "RH_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 5,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tibia": {
+          "correlation": null,
+          "agonist_size": 18,
+          "antagonist_size": 2,
+          "agonist_hz": 0.018518518518518517,
+          "antagonist_hz": 0.0
+        },
+        "RM_Coxa": {
+          "correlation": null,
+          "agonist_size": 2,
+          "antagonist_size": 4,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Femur": {
+          "correlation": null,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 11,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        }
+      },
+      "antagonist_summary": {
+        "valid_joints": 0,
+        "median_correlation": null,
+        "positive_joints": 0
+      },
+      "tibia_flexor_phase": {
+        "common_frequency_hz": 19.666666666666668,
+        "tripod_score": null,
+        "phase_valid": false,
+        "legs": {
+          "LF": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "LM": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 16,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "LH": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 0.0007689350249903887,
+            "null95_hz2": 0.0007689350249903891,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 1,
+            "pool_size": 17,
+            "dominant_phase_rad": 2.5970499269675624,
+            "common_phase_rad": 2.178170906488923
+          },
+          "RF": {
+            "frequency_hz": 19.666666666666668,
+            "power_hz2": 0.006917717278274074,
+            "null95_hz2": 0.006920415224913496,
+            "p_value": 0.23,
+            "rhythmic": false,
+            "spike_count": 3,
+            "pool_size": 17,
+            "dominant_phase_rad": -1.870993865633074,
+            "common_phase_rad": -1.870993865633074
+          },
+          "RM": {
+            "frequency_hz": null,
+            "power_hz2": 0.0,
+            "null95_hz2": 0.0,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 0,
+            "pool_size": 17,
+            "dominant_phase_rad": null,
+            "common_phase_rad": null
+          },
+          "RH": {
+            "frequency_hz": 4.666666666666667,
+            "power_hz2": 0.0006858710562414272,
+            "null95_hz2": 0.0006858710562414274,
+            "p_value": 1.0,
+            "rhythmic": false,
+            "spike_count": 1,
+            "pool_size": 18,
+            "dominant_phase_rad": -1.0890854532444618,
+            "common_phase_rad": 0.795870138909414
+          }
+        }
+      }
+    },
+    {
+      "brain": "corrected",
+      "seed": 0,
+      "total_spikes": 3588768,
+      "motor_spikes": 25010,
+      "motor_neurons": 391,
+      "motor_rate_windows_hz": [
+        18.74680306905371,
+        27.498721227621484,
+        20.076726342710998,
+        19.718670076726344,
+        24.915601023017903,
+        16.971867007672635
+      ],
+      "mean_motor_hz": 21.321398124467176,
+      "pooled_leg_spectra": {
+        "LF": {
+          "frequency_hz": 2.3333333333333335,
+          "power_hz2": 12.539483724864414,
+          "null95_hz2": 1.0883866690684911,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2845,
+          "pool_size": 69
+        },
+        "LM": {
+          "frequency_hz": 1.0,
+          "power_hz2": 29.579905802194574,
+          "null95_hz2": 2.1455751117062847,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 4590,
+          "pool_size": 63
+        },
+        "LH": {
+          "frequency_hz": 0.6666666666666666,
+          "power_hz2": 106.89697725130598,
+          "null95_hz2": 2.520114327679775,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 5597,
+          "pool_size": 63
+        },
+        "RF": {
+          "frequency_hz": 1.0,
+          "power_hz2": 9.822278434248839,
+          "null95_hz2": 1.0322055563184118,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2770,
+          "pool_size": 70
+        },
+        "RM": {
+          "frequency_hz": 1.6666666666666667,
+          "power_hz2": 63.34756355331774,
+          "null95_hz2": 2.692219463761167,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 5682,
+          "pool_size": 63
+        },
+        "RH": {
+          "frequency_hz": 2.0,
+          "power_hz2": 52.719165599847216,
+          "null95_hz2": 1.5772712443374692,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 3526,
+          "pool_size": 63
+        }
+      },
+      "antagonists": {
+        "LF_Coxa": {
+          "correlation": -0.18898675563101386,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 21.333333333333332,
+          "antagonist_hz": 11.444444444444445
+        },
+        "LF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur": {
+          "correlation": -0.14465778857542186,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 1.303030303030303,
+          "antagonist_hz": 68.70833333333333
+        },
+        "LF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 25.166666666666668,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tarsus1": {
+          "correlation": -0.04551266264803098,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.5151515151515151,
+          "antagonist_hz": 3.3333333333333335
+        },
+        "LF_Tibia": {
+          "correlation": null,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 1.6274509803921569,
+          "antagonist_hz": 0.0
+        },
+        "LH_Coxa": {
+          "correlation": -0.3011668082380087,
+          "agonist_size": 2,
+          "antagonist_size": 6,
+          "agonist_hz": 56.833333333333336,
+          "antagonist_hz": 32.388888888888886
+        },
+        "LH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 133.66666666666666
+        },
+        "LH_Femur": {
+          "correlation": -0.23077534641935088,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 40.06666666666667,
+          "antagonist_hz": 26.0
+        },
+        "LH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 4,
+          "antagonist_size": 0,
+          "agonist_hz": 9.0,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tarsus1": {
+          "correlation": 0.3036697203441403,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 12.416666666666666,
+          "antagonist_hz": 14.333333333333334
+        },
+        "LH_Tibia": {
+          "correlation": -0.386794736240382,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 26.96078431372549,
+          "antagonist_hz": 78.83333333333333
+        },
+        "LM_Coxa": {
+          "correlation": -0.31462961411475354,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 210.83333333333334,
+          "antagonist_hz": 6.066666666666666
+        },
+        "LM_Femur": {
+          "correlation": -0.22166799947995192,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 5.966666666666667,
+          "antagonist_hz": 82.66666666666667
+        },
+        "LM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 2.8333333333333335,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 13,
+          "antagonist_size": 1,
+          "agonist_hz": 5.641025641025641,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tibia": {
+          "correlation": -0.1970298626380982,
+          "agonist_size": 16,
+          "antagonist_size": 2,
+          "agonist_hz": 14.770833333333334,
+          "antagonist_hz": 50.0
+        },
+        "RF_Coxa": {
+          "correlation": -0.22681801094294873,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 15.666666666666666,
+          "antagonist_hz": 10.666666666666666
+        },
+        "RF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.6666666666666666
+        },
+        "RF_Femur": {
+          "correlation": -0.25318208396945324,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 6.575757575757576,
+          "antagonist_hz": 64.58333333333333
+        },
+        "RF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 19.38888888888889,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tarsus1": {
+          "correlation": -0.09558132444442395,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 1.8611111111111112,
+          "antagonist_hz": 7.333333333333333
+        },
+        "RF_Tibia": {
+          "correlation": -0.03522770927126743,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 0.47058823529411764,
+          "antagonist_hz": 10.833333333333334
+        },
+        "RH_Coxa": {
+          "correlation": -0.26159946326014705,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 53.5,
+          "antagonist_hz": 19.533333333333335
+        },
+        "RH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 70.33333333333333
+        },
+        "RH_Femur": {
+          "correlation": -0.15505154061482246,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 28.666666666666668,
+          "antagonist_hz": 9.458333333333334
+        },
+        "RH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 5,
+          "antagonist_size": 0,
+          "agonist_hz": 8.333333333333334,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tarsus1": {
+          "correlation": 0.2995053191954239,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 10.030303030303031,
+          "antagonist_hz": 11.666666666666666
+        },
+        "RH_Tibia": {
+          "correlation": -0.19347193644387314,
+          "agonist_size": 18,
+          "antagonist_size": 2,
+          "agonist_hz": 17.425925925925927,
+          "antagonist_hz": 30.333333333333332
+        },
+        "RM_Coxa": {
+          "correlation": -0.40198235107016594,
+          "agonist_size": 2,
+          "antagonist_size": 4,
+          "agonist_hz": 129.83333333333334,
+          "antagonist_hz": 33.833333333333336
+        },
+        "RM_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RM_Femur": {
+          "correlation": -0.2289725315179573,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 3.8333333333333335,
+          "antagonist_hz": 94.66666666666667
+        },
+        "RM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 17.333333333333332,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tarsus1": {
+          "correlation": -0.1362181725283854,
+          "agonist_size": 11,
+          "antagonist_size": 2,
+          "agonist_hz": 9.030303030303031,
+          "antagonist_hz": 4.666666666666667
+        },
+        "RM_Tibia": {
+          "correlation": 0.2637036617559049,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 11.294117647058824,
+          "antagonist_hz": 187.83333333333334
+        }
+      },
+      "antagonist_summary": {
+        "valid_joints": 22,
+        "median_correlation": -0.19525089954098568,
+        "positive_joints": 3
+      },
+      "tibia_flexor_phase": {
+        "common_frequency_hz": 0.6666666666666666,
+        "tripod_score": null,
+        "phase_valid": false,
+        "legs": {
+          "LF": {
+            "frequency_hz": 2.3333333333333335,
+            "power_hz2": 1.5326202763513264,
+            "null95_hz2": 0.5098492770118305,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 83,
+            "pool_size": 17,
+            "dominant_phase_rad": -2.9087437049423794,
+            "common_phase_rad": -0.5821293510246194
+          },
+          "LM": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 164.0796000908934,
+            "null95_hz2": 5.093612470778475,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 709,
+            "pool_size": 16,
+            "dominant_phase_rad": -2.5635883537301427,
+            "common_phase_rad": -1.2368183363648342
+          },
+          "LH": {
+            "frequency_hz": 0.6666666666666666,
+            "power_hz2": 488.1952785961499,
+            "null95_hz2": 8.655311439154891,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 1375,
+            "pool_size": 17,
+            "dominant_phase_rad": 2.895130667158509,
+            "common_phase_rad": 2.895130667158509
+          },
+          "RF": {
+            "frequency_hz": 0.6666666666666666,
+            "power_hz2": 0.2323422324359426,
+            "null95_hz2": 0.14001911131984648,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 24,
+            "pool_size": 17,
+            "dominant_phase_rad": -0.9104083555389507,
+            "common_phase_rad": -0.9104083555389507
+          },
+          "RM": {
+            "frequency_hz": 2.3333333333333335,
+            "power_hz2": 20.511335296338547,
+            "null95_hz2": 3.670298945885234,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 576,
+            "pool_size": 17,
+            "dominant_phase_rad": -2.7718246111912634,
+            "common_phase_rad": 2.4733075871697894
+          },
+          "RH": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 353.4359521121523,
+            "null95_hz2": 5.255195302364898,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 941,
+            "pool_size": 18,
+            "dominant_phase_rad": -0.3968658214984703,
+            "common_phase_rad": 3.1187845633980036
+          }
+        }
+      }
+    },
+    {
+      "brain": "corrected",
+      "seed": 1,
+      "total_spikes": 3214204,
+      "motor_spikes": 22757,
+      "motor_neurons": 391,
+      "motor_rate_windows_hz": [
+        12.751918158567776,
+        17.381074168797955,
+        20.046035805626598,
+        21.943734015345267,
+        23.514066496163682,
+        20.767263427109974
+      ],
+      "mean_motor_hz": 19.40068201193521,
+      "pooled_leg_spectra": {
+        "LF": {
+          "frequency_hz": 2.0,
+          "power_hz2": 13.285088437884768,
+          "null95_hz2": 1.0454283956017554,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2841,
+          "pool_size": 69
+        },
+        "LM": {
+          "frequency_hz": 1.3333333333333333,
+          "power_hz2": 47.091780188544526,
+          "null95_hz2": 1.9601159336332183,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 4547,
+          "pool_size": 63
+        },
+        "LH": {
+          "frequency_hz": 0.3333333333333333,
+          "power_hz2": 70.50710665052863,
+          "null95_hz2": 1.9701729418140592,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 4505,
+          "pool_size": 63
+        },
+        "RF": {
+          "frequency_hz": 1.3333333333333333,
+          "power_hz2": 14.609515437933936,
+          "null95_hz2": 1.022272463971962,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2840,
+          "pool_size": 70
+        },
+        "RM": {
+          "frequency_hz": 1.3333333333333333,
+          "power_hz2": 43.044235749031934,
+          "null95_hz2": 2.366671478657474,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 5402,
+          "pool_size": 63
+        },
+        "RH": {
+          "frequency_hz": 2.3333333333333335,
+          "power_hz2": 16.92850045889246,
+          "null95_hz2": 1.1687603147922618,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2622,
+          "pool_size": 63
+        }
+      },
+      "antagonists": {
+        "LF_Coxa": {
+          "correlation": -0.2097349395095406,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 11.38888888888889,
+          "antagonist_hz": 21.72222222222222
+        },
+        "LF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur": {
+          "correlation": -0.1948308252925348,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 3.5757575757575757,
+          "antagonist_hz": 62.958333333333336
+        },
+        "LF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 27.77777777777778,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tarsus1": {
+          "correlation": -0.04152198899342059,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.3939393939393939,
+          "antagonist_hz": 3.6666666666666665
+        },
+        "LF_Tibia": {
+          "correlation": -0.03199647347193075,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 1.7647058823529411,
+          "antagonist_hz": 0.3333333333333333
+        },
+        "LH_Coxa": {
+          "correlation": -0.3763961351683182,
+          "agonist_size": 2,
+          "antagonist_size": 6,
+          "agonist_hz": 72.0,
+          "antagonist_hz": 37.5
+        },
+        "LH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 130.66666666666666
+        },
+        "LH_Femur": {
+          "correlation": -0.19229081554098906,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 34.8,
+          "antagonist_hz": 21.041666666666668
+        },
+        "LH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 4,
+          "antagonist_size": 0,
+          "agonist_hz": 7.333333333333333,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tarsus1": {
+          "correlation": 0.27934018193208454,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 8.805555555555555,
+          "antagonist_hz": 12.666666666666666
+        },
+        "LH_Tibia": {
+          "correlation": -0.24073272356985326,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 11.843137254901961,
+          "antagonist_hz": 68.33333333333333
+        },
+        "LM_Coxa": {
+          "correlation": -0.3545448062067386,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 178.83333333333334,
+          "antagonist_hz": 16.266666666666666
+        },
+        "LM_Femur": {
+          "correlation": -0.18973147397225548,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 4.866666666666666,
+          "antagonist_hz": 76.80952380952381
+        },
+        "LM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 8.11111111111111,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tarsus1": {
+          "correlation": null,
+          "agonist_size": 13,
+          "antagonist_size": 1,
+          "agonist_hz": 5.461538461538462,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tibia": {
+          "correlation": -0.1508700225001718,
+          "agonist_size": 16,
+          "antagonist_size": 2,
+          "agonist_hz": 18.0,
+          "antagonist_hz": 31.333333333333332
+        },
+        "RF_Coxa": {
+          "correlation": -0.2091475819839087,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 14.444444444444445,
+          "antagonist_hz": 16.27777777777778
+        },
+        "RF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.3333333333333333
+        },
+        "RF_Femur": {
+          "correlation": -0.27182699022455814,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 9.606060606060606,
+          "antagonist_hz": 53.708333333333336
+        },
+        "RF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 23.38888888888889,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tarsus1": {
+          "correlation": -0.0885790039882325,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 2.1944444444444446,
+          "antagonist_hz": 8.333333333333334
+        },
+        "RF_Tibia": {
+          "correlation": -0.061415244574037804,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 1.8235294117647058,
+          "antagonist_hz": 10.333333333333334
+        },
+        "RH_Coxa": {
+          "correlation": -0.289944037566747,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 35.333333333333336,
+          "antagonist_hz": 29.4
+        },
+        "RH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 27.666666666666668
+        },
+        "RH_Femur": {
+          "correlation": -0.12992219540812475,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 18.666666666666668,
+          "antagonist_hz": 10.5
+        },
+        "RH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 5,
+          "antagonist_size": 0,
+          "agonist_hz": 17.933333333333334,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tarsus1": {
+          "correlation": 0.013885000440446911,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 9.212121212121213,
+          "antagonist_hz": 14.666666666666666
+        },
+        "RH_Tibia": {
+          "correlation": -0.05001424661657084,
+          "agonist_size": 18,
+          "antagonist_size": 2,
+          "agonist_hz": 5.87037037037037,
+          "antagonist_hz": 23.333333333333332
+        },
+        "RM_Coxa": {
+          "correlation": -0.316959371183942,
+          "agonist_size": 2,
+          "antagonist_size": 4,
+          "agonist_hz": 77.16666666666667,
+          "antagonist_hz": 40.583333333333336
+        },
+        "RM_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.3333333333333333
+        },
+        "RM_Femur": {
+          "correlation": -0.2261229502780632,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 5.466666666666667,
+          "antagonist_hz": 89.66666666666667
+        },
+        "RM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 19.666666666666668,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tarsus1": {
+          "correlation": -0.07127895384407375,
+          "agonist_size": 11,
+          "antagonist_size": 2,
+          "agonist_hz": 9.454545454545455,
+          "antagonist_hz": 3.5
+        },
+        "RM_Tibia": {
+          "correlation": 0.09396627623000312,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 12.176470588235293,
+          "antagonist_hz": 174.0
+        }
+      },
+      "antagonist_summary": {
+        "valid_joints": 23,
+        "median_correlation": -0.18973147397225548,
+        "positive_joints": 3
+      },
+      "tibia_flexor_phase": {
+        "common_frequency_hz": 1.3333333333333333,
+        "tripod_score": null,
+        "phase_valid": false,
+        "legs": {
+          "LF": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 1.0501543927749901,
+            "null95_hz2": 0.5521923968050457,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 90,
+            "pool_size": 17,
+            "dominant_phase_rad": 2.997836820807193,
+            "common_phase_rad": 2.997836820807193
+          },
+          "LM": {
+            "frequency_hz": 0.6666666666666666,
+            "power_hz2": 240.96101101112907,
+            "null95_hz2": 5.908341011143556,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 864,
+            "pool_size": 16,
+            "dominant_phase_rad": -1.9037559257689523,
+            "common_phase_rad": 2.47094043882076
+          },
+          "LH": {
+            "frequency_hz": 2.3333333333333335,
+            "power_hz2": 146.22794892458083,
+            "null95_hz2": 3.6334516366493856,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 604,
+            "pool_size": 17,
+            "dominant_phase_rad": 2.4198212548383355,
+            "common_phase_rad": 2.8916995228073676
+          },
+          "RF": {
+            "frequency_hz": 0.3333333333333333,
+            "power_hz2": 4.758446497409611,
+            "null95_hz2": 0.5571660012684941,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 93,
+            "pool_size": 17,
+            "dominant_phase_rad": -0.8713800349287384,
+            "common_phase_rad": -2.975661041944513
+          },
+          "RM": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 19.97406546637682,
+            "null95_hz2": 3.789997815145823,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 621,
+            "pool_size": 17,
+            "dominant_phase_rad": 2.3053316072335797,
+            "common_phase_rad": 2.3053316072335797
+          },
+          "RH": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 46.36143216086924,
+            "null95_hz2": 1.6656943548239458,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 317,
+            "pool_size": 18,
+            "dominant_phase_rad": 2.6256992991394092,
+            "common_phase_rad": 2.6256992991394092
+          }
+        }
+      }
+    },
+    {
+      "brain": "corrected",
+      "seed": 2,
+      "total_spikes": 1924343,
+      "motor_spikes": 21950,
+      "motor_neurons": 391,
+      "motor_rate_windows_hz": [
+        16.235294117647058,
+        20.971867007672635,
+        21.0690537084399,
+        18.89002557544757,
+        15.012787723785166,
+        20.097186700767264
+      ],
+      "mean_motor_hz": 18.712702472293266,
+      "pooled_leg_spectra": {
+        "LF": {
+          "frequency_hz": 2.0,
+          "power_hz2": 15.222573975499282,
+          "null95_hz2": 0.9207624075772818,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2414,
+          "pool_size": 69
+        },
+        "LM": {
+          "frequency_hz": 2.0,
+          "power_hz2": 60.42042253052145,
+          "null95_hz2": 1.717012687005864,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 3839,
+          "pool_size": 63
+        },
+        "LH": {
+          "frequency_hz": 1.3333333333333333,
+          "power_hz2": 101.87962337518618,
+          "null95_hz2": 2.616674096417943,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 5896,
+          "pool_size": 63
+        },
+        "RF": {
+          "frequency_hz": 2.0,
+          "power_hz2": 16.041331334119473,
+          "null95_hz2": 0.9344690999798286,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2470,
+          "pool_size": 70
+        },
+        "RM": {
+          "frequency_hz": 1.6666666666666667,
+          "power_hz2": 33.58262757193481,
+          "null95_hz2": 2.107050860660846,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 4700,
+          "pool_size": 63
+        },
+        "RH": {
+          "frequency_hz": 3.0,
+          "power_hz2": 31.18935134328571,
+          "null95_hz2": 1.145637422039258,
+          "p_value": 0.005,
+          "rhythmic": true,
+          "spike_count": 2631,
+          "pool_size": 63
+        }
+      },
+      "antagonists": {
+        "LF_Coxa": {
+          "correlation": -0.1343400448070186,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 4.611111111111111,
+          "antagonist_hz": 43.22222222222222
+        },
+        "LF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "LF_Femur": {
+          "correlation": -0.13716486745506107,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 8.272727272727273,
+          "antagonist_hz": 20.0
+        },
+        "LF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 30.666666666666668,
+          "antagonist_hz": 0.0
+        },
+        "LF_Tarsus1": {
+          "correlation": -0.03742876419405821,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 0.2727272727272727,
+          "antagonist_hz": 4.333333333333333
+        },
+        "LF_Tibia": {
+          "correlation": -0.054039009105649745,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 4.254901960784314,
+          "antagonist_hz": 1.5
+        },
+        "LH_Coxa": {
+          "correlation": -0.39317532009756145,
+          "agonist_size": 2,
+          "antagonist_size": 6,
+          "agonist_hz": 79.33333333333333,
+          "antagonist_hz": 32.27777777777778
+        },
+        "LH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 113.33333333333333
+        },
+        "LH_Femur": {
+          "correlation": -0.1953753724827898,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 8.3,
+          "antagonist_hz": 71.04166666666667
+        },
+        "LH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 4,
+          "antagonist_size": 0,
+          "agonist_hz": 15.333333333333334,
+          "antagonist_hz": 0.0
+        },
+        "LH_Tarsus1": {
+          "correlation": 0.4911001207010779,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 11.055555555555555,
+          "antagonist_hz": 14.333333333333334
+        },
+        "LH_Tibia": {
+          "correlation": -0.33686449537595314,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 32.01960784313726,
+          "antagonist_hz": 47.833333333333336
+        },
+        "LM_Coxa": {
+          "correlation": -0.3171448160135749,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 125.33333333333333,
+          "antagonist_hz": 19.8
+        },
+        "LM_Femur": {
+          "correlation": -0.1685409490954725,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 8.033333333333333,
+          "antagonist_hz": 33.714285714285715
+        },
+        "LM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 12.38888888888889,
+          "antagonist_hz": 0.0
+        },
+        "LM_Tarsus1": {
+          "correlation": -0.049822524145991004,
+          "agonist_size": 13,
+          "antagonist_size": 1,
+          "agonist_hz": 6.230769230769231,
+          "antagonist_hz": 1.3333333333333333
+        },
+        "LM_Tibia": {
+          "correlation": -0.24677860633997878,
+          "agonist_size": 16,
+          "antagonist_size": 2,
+          "agonist_hz": 24.083333333333332,
+          "antagonist_hz": 32.833333333333336
+        },
+        "RF_Coxa": {
+          "correlation": -0.11497899159266166,
+          "agonist_size": 6,
+          "antagonist_size": 6,
+          "agonist_hz": 6.722222222222222,
+          "antagonist_hz": 30.61111111111111
+        },
+        "RF_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 0.0
+        },
+        "RF_Femur": {
+          "correlation": -0.015436462285265542,
+          "agonist_size": 11,
+          "antagonist_size": 8,
+          "agonist_hz": 13.424242424242424,
+          "antagonist_hz": 6.625
+        },
+        "RF_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 45.5,
+          "antagonist_hz": 0.0
+        },
+        "RF_Tarsus1": {
+          "correlation": -0.15688579466900496,
+          "agonist_size": 12,
+          "antagonist_size": 1,
+          "agonist_hz": 3.0277777777777777,
+          "antagonist_hz": 17.666666666666668
+        },
+        "RF_Tibia": {
+          "correlation": -0.08313589377370431,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 1.0980392156862746,
+          "antagonist_hz": 26.5
+        },
+        "RH_Coxa": {
+          "correlation": -0.29298816944885353,
+          "agonist_size": 2,
+          "antagonist_size": 5,
+          "agonist_hz": 32.833333333333336,
+          "antagonist_hz": 27.533333333333335
+        },
+        "RH_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 2.6666666666666665
+        },
+        "RH_Femur": {
+          "correlation": -0.12182484742408378,
+          "agonist_size": 10,
+          "antagonist_size": 8,
+          "agonist_hz": 11.166666666666666,
+          "antagonist_hz": 18.0
+        },
+        "RH_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 5,
+          "antagonist_size": 0,
+          "agonist_hz": 16.333333333333332,
+          "antagonist_hz": 0.0
+        },
+        "RH_Tarsus1": {
+          "correlation": -0.016201889250436304,
+          "agonist_size": 11,
+          "antagonist_size": 1,
+          "agonist_hz": 5.454545454545454,
+          "antagonist_hz": 6.0
+        },
+        "RH_Tibia": {
+          "correlation": -0.13501856147472063,
+          "agonist_size": 18,
+          "antagonist_size": 2,
+          "agonist_hz": 11.574074074074074,
+          "antagonist_hz": 29.666666666666668
+        },
+        "RM_Coxa": {
+          "correlation": -0.19523835759409883,
+          "agonist_size": 2,
+          "antagonist_size": 4,
+          "agonist_hz": 9.333333333333334,
+          "antagonist_hz": 100.75
+        },
+        "RM_Coxa_roll": {
+          "correlation": null,
+          "agonist_size": 0,
+          "antagonist_size": 1,
+          "agonist_hz": 0.0,
+          "antagonist_hz": 3.3333333333333335
+        },
+        "RM_Femur": {
+          "correlation": -0.1675203562138613,
+          "agonist_size": 10,
+          "antagonist_size": 7,
+          "agonist_hz": 17.666666666666668,
+          "antagonist_hz": 16.904761904761905
+        },
+        "RM_Femur_roll": {
+          "correlation": null,
+          "agonist_size": 6,
+          "antagonist_size": 0,
+          "agonist_hz": 48.666666666666664,
+          "antagonist_hz": 0.0
+        },
+        "RM_Tarsus1": {
+          "correlation": -0.13204737316642579,
+          "agonist_size": 11,
+          "antagonist_size": 2,
+          "agonist_hz": 12.93939393939394,
+          "antagonist_hz": 9.166666666666666
+        },
+        "RM_Tibia": {
+          "correlation": 0.17061418482907312,
+          "agonist_size": 17,
+          "antagonist_size": 2,
+          "agonist_hz": 7.921568627450981,
+          "antagonist_hz": 124.83333333333333
+        }
+      },
+      "antagonist_summary": {
+        "valid_joints": 24,
+        "median_correlation": -0.13467930314086962,
+        "positive_joints": 2
+      },
+      "tibia_flexor_phase": {
+        "common_frequency_hz": 1.3333333333333333,
+        "tripod_score": null,
+        "phase_valid": false,
+        "legs": {
+          "LF": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 13.65960519634436,
+            "null95_hz2": 1.2782929995588548,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 217,
+            "pool_size": 17,
+            "dominant_phase_rad": -0.05982850718097409,
+            "common_phase_rad": -0.05982850718097409
+          },
+          "LM": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 294.23703761445864,
+            "null95_hz2": 7.934962968126305,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 1156,
+            "pool_size": 16,
+            "dominant_phase_rad": 2.3155551389053466,
+            "common_phase_rad": 2.3155551389053466
+          },
+          "LH": {
+            "frequency_hz": 1.3333333333333333,
+            "power_hz2": 569.4682885400416,
+            "null95_hz2": 10.083881525241043,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 1633,
+            "pool_size": 17,
+            "dominant_phase_rad": -2.091927643574919,
+            "common_phase_rad": -2.091927643574919
+          },
+          "RF": {
+            "frequency_hz": 3.0,
+            "power_hz2": 1.1306877139936857,
+            "null95_hz2": 0.3265006786404729,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 56,
+            "pool_size": 17,
+            "dominant_phase_rad": -0.1526095867202422,
+            "common_phase_rad": 2.2466943431049784
+          },
+          "RM": {
+            "frequency_hz": 5.0,
+            "power_hz2": 13.87502685883014,
+            "null95_hz2": 2.438959116518939,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 404,
+            "pool_size": 17,
+            "dominant_phase_rad": -2.723487953077269,
+            "common_phase_rad": -1.1647488740337237
+          },
+          "RH": {
+            "frequency_hz": 0.6666666666666666,
+            "power_hz2": 150.8924762357221,
+            "null95_hz2": 3.4016395423719565,
+            "p_value": 0.005,
+            "rhythmic": true,
+            "spike_count": 625,
+            "pool_size": 18,
+            "dominant_phase_rad": 1.8962217112575228,
+            "common_phase_rad": -2.4370160040785964
+          }
+        }
+      }
+    }
+  ]
+}
