@@ -1,0 +1,17 @@
+[
+  {
+    "seed": 0,
+    "spikes": 5240,
+    "exact_legacy_equal": true
+  },
+  {
+    "seed": 1,
+    "spikes": 5375,
+    "exact_legacy_equal": true
+  },
+  {
+    "seed": 2,
+    "spikes": 5320,
+    "exact_legacy_equal": true
+  }
+]
