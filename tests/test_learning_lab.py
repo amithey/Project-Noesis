@@ -105,6 +105,7 @@ def lab_environment(monkeypatch, tmp_path):
     state.args = lab.parser().parse_args([
         "--output", str(tmp_path), "--seconds", "0.025", "--birth", "0.005",
         "--no-senses", "--learn", "--seed", "7", "--arena", "empty",
+        "--body-model", "legacy", "--motor-exploration", "0",
     ])
     return state
 
@@ -218,3 +219,51 @@ def test_viewer_close_records_interruption_and_releases_resources(lab_environmen
     assert viewer.syncs == 2 and viewer.closed
     assert viewer.cam.distance == 22 and viewer.cam.elevation == -50
     assert env.simulations[0].closed
+
+
+def test_muscle_path_routes_neural_rates_and_records_actual_motion(lab_environment, monkeypatch):
+    env = lab_environment
+    env.args.body_model = 'muscles'
+    env.args.motor_exploration = .5
+    env.args.brain_map = env.args.output / 'live.npz'
+    env.cn = Connectome(pd.DataFrame({
+        'root_id': [1, 2], 'Class': ['other', 'leg_motor_neuron'],
+        'Sub Class': ['other', 'front_leg_motor_neuron'],
+        'Primary Cell Type': ['PAM_test', 'tibia_flexor'],
+        'Soma side': ['left', 'left'], 'Nerve': ['', 'left_leg_nerve'],
+    }), env.cn.W)
+    calls = []
+
+    class Muscles:
+        def __init__(self, gp, gn, names):
+            self.a_pos, self.a_neg = np.zeros(len(names)), np.zeros(len(names))
+            calls.append(self)
+
+        def step(self, rates, dt_ms):
+            assert rates[1] > 0 and dt_ms == 5
+            self.a_pos[:] = .5
+            return np.full(len(self.a_pos), .25)
+
+    monkeypatch.setattr(lab, 'make_fly', lambda params, **kw: sys.modules['flygym'].Fly(**kw))
+    monkeypatch.setattr(lab, 'MuscleModel', Muscles)
+    monkeypatch.setattr(lab, 'build_muscle_matrices', lambda neurons, names: (
+        sparse.csr_matrix(np.tile([0, 1], (len(names), 1))),
+        sparse.csr_matrix((len(names), 2))))
+    summary, _ = lab.run_episode(env.cn, env.args, 0, None)
+    assert calls and summary['body_model'] == 'muscles'
+    assert summary['motor_exploration_mv_ms'] == .5
+    np.testing.assert_array_equal(env.networks[0].last_drive['current_idx'], [1])
+    assert abs(env.networks[0].last_drive['current_mv_per_ms'][0]) < .5
+    with (env.args.output / 'episode_000.csv').open(newline='') as f:
+        rows = list(csv.DictReader(f))
+    # Fake physical joints deliberately stay still despite nonzero muscle commands.
+    # Diagnostics must expose the distinction instead of claiming movement.
+    assert float(rows[-1]['command_offset_rad']) > 0
+    assert float(rows[-1]['joint_speed_rad_s']) == 0
+    assert float(rows[-1]['pam_hz']) > 0
+    assert float(rows[-1]['muscle_pos']) == .5
+    from noesis.viz.brain_map import read_activity
+    _, _, awake, status = read_activity(env.args.brain_map)
+    assert awake and status['learning']
+    assert status['brain'] == 'corrected'
+    assert status['motor_hz'] > 0 and status['joint_speed_rad_s'] == 0

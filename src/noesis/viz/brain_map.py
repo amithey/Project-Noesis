@@ -142,10 +142,17 @@ def read_activity(path: Path) -> tuple[np.ndarray, float, bool, dict]:
 
 
 def describe_triggers(t: dict) -> str:
-    """Two-line summary of what the habitat is doing to the senses (empty outside the habitat)."""
+    """Summarize measured motor/training status and habitat sensory input."""
     if not t:
         return ""
-    return (f"smell: food {t.get('odor_food', 0):.2f}  aversive {t.get('odor_aversive', 0):.2f}   "
+    status = ""
+    if "motor_hz" in t:
+        status = (f"training {'ON' if t.get('learning') else 'off'} | {t.get('brain', '')} | "
+                  f"motor {t['motor_hz']:.1f} Hz | leg motion {t.get('joint_speed_rad_s', 0):.2f} rad/s | "
+                  f"PAM {t.get('pam_hz', 0):.1f} / PPL1 {t.get('ppl1_hz', 0):.1f} Hz\n")
+        if "environment_driven_neurons" not in t:
+            return status.strip()
+    return status + (f"smell: food {t.get('odor_food', 0):.2f}  aversive {t.get('odor_aversive', 0):.2f}   "
             f"taste: sugar {t.get('taste_sugar', 0):.1f}  water {t.get('taste_water', 0):.1f}  "
             f"bitter {t.get('taste_bitter', 0):.1f}\n"
             f"light {t.get('vision_mean', 0):.2f}   temperature {t.get('temperature_c', 0):.1f} C   "

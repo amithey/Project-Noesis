@@ -23,3 +23,13 @@ def test_strongest_synapses_keep_the_real_signed_edges():
     pre, post, sign = strongest_synapses(weights, limit=2)
     pairs = set(zip(pre.tolist(), post.tolist(), sign.tolist()))
     assert pairs == {(0, 1, 1.0), (1, 2, -1.0)}
+
+
+def test_live_training_status_displays_measured_motion_without_fake_habitat():
+    from noesis.viz.brain_map import describe_triggers
+    status = describe_triggers({'learning': True, 'brain': 'corrected', 'motor_hz': 25.,
+                                'joint_speed_rad_s': 2.1, 'pam_hz': 1., 'ppl1_hz': 4.})
+    assert 'training ON' in status
+    assert 'leg motion 2.10 rad/s' in status
+    assert 'smell' not in status
+    assert describe_triggers({}) == ''

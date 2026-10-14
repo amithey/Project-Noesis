@@ -20,17 +20,25 @@ python -m venv .venv
 .\Start-Fly.ps1 -Learn -Video -Seconds 3 -Episodes 3
 ```
 
+The launcher now enables training by default (three episodes), uses the
+FAFB/MANC-corrected brain, and routes leg motor pools through the antagonistic
+muscle model with activation dynamics and joint limits. `-Learn:$false` freezes
+weights and disables motor exploration by default. `-Brain raw` selects the
+uncorrected connectivity control. `-Data` and `-Python` override auto-detected
+shared data and the body environment. Source data and its processed caches remain
+read-only; any missing caches are built inside the run directory.
+
 The launcher opens the live MuJoCo viewer. Simulation may be much slower than
 real time, particularly when recording. Close the viewer to stop after saving
 the current episode. Every run gets a new directory beneath `outputs/`.
-Without `-Learn`, weights are frozen. Camera controls are MuJoCo's standard
+The Python CLI remains frozen unless `--learn` is supplied; the PowerShell launcher supplies it by default. Camera controls are MuJoCo's standard
 mouse controls. By default the fly lives in a sensory habitat with physical walls,
 obstacles, coloured landmarks, food, water, and autonomous visual/odor changes.
 See [the habitat](habitat.md) for sensory routing, controls and model assumptions.
-Adhesion is held enabled, as in the original newborn model. Flight is not implemented.
+Foot adhesion releases at most two feet according to commanded femur lift; the remaining feet keep adhesion. Flight is not implemented.
 
 The shared world now explicitly uses an infinite collision plane at z=0 and
-gravity (0, 0, -9810) mm/s², equivalent to Earth's 9.81 m/s². All fly geometries
+gravity (0, 0, -9810) mm/sÂ², equivalent to Earth's 9.81 m/sÂ². All fly geometries
 (including head, thorax, abdomen and wings) collide with the floor. Previously
 FlyGym's default only enabled leg-floor collisions, allowing the body to sink
 when tilted. Both `newborn` and `learning_lab` use this configuration. Floor
@@ -55,6 +63,36 @@ $env:PYTHONPATH = 'src'
 Raw CSVs are read from `data/raw/`, falling back to `downloaded file/` when
 necessary; the existing processed cache is reused. Do not mix a cache with
 different source tables or neurotransmitter-sign assumptions.
+
+## Sensorimotor connection
+
+The training path uses the same standing posture, bounded joint ranges, tissue
+damping and muscle activation dynamics as `noesis.body`, starting above the
+floor rather than interpenetrating it. Motor spikes feed per-neuron rate traces,
+then mean agonist/antagonist muscle pools and joint equilibrium targets. Measured
+joint angles, velocities and contact forces feed leg afferents on the next control
+step; body tilt and rotation feed balance afferents. The habitat additionally
+supplies binocular vision, odor, contact taste/touch, temperature and humidity
+signals through the existing sensory mappings.
+
+Training has explicit bounded stochastic exploration currents into annotated leg
+motor pools (default amplitude 1.5 mV/ms, OU time constant 100 ms). This is an
+assumed training aid, not a downloaded gait circuit or a learned joint trajectory.
+`--motor-exploration 0` disables it. Frozen checkpoint evaluation defaults to
+zero exploration. Any comparison of learning on/off must match exploration,
+brain scaling, body model, seed, duration and sensory settings.
+
+CSV telemetry now separates commanded offsets from measured joint speed and
+records every leg, muscle activation, mapped motor rates and PAM/PPL1/MBON/KC
+firing. These are neural readouts, not measurements of subjective emotion or
+thought. Reinforcement still uses the explicit artificial body reward below;
+recorded dopamine rates are not silently substituted for that reward.
+
+Each episode also saves leg-motor spike times and `.gait.json`: shuffled-null
+spectra, antagonist correlations and a gated tripod phase score. The last
+incomplete 10 ms bin is excluded; recordings under 40 ms return `too_short`.
+A valid common-frequency score is required before discussing a tripod pattern;
+movement or a significant single-leg spectrum alone does not establish walking.
 
 ## What learns
 
@@ -98,7 +136,7 @@ the original frozen network on the same seeds and duration:
 
 Compare `mean_reward`, `mean_uprightness`, forward displacement and completion
 status across matched seeds. Weight changes or leg movement alone are not proof
-of improvement. The current experiment has not established learned walking.
+of improvement. The current experiment has not established learned walking. See [brain/body connection validation](findings-brain-body.md) for the repaired-path controls and measured movement.
 It has no aerodynamic wing model and cannot establish learned flight. Calibration
 of joint signs, sensory gains and neural dynamics remains a prerequisite for
 interpreting failed or successful training.
