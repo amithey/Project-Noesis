@@ -1,0 +1,137 @@
+{
+  "training_only": true,
+  "frozen_acceptance_not_completed": true,
+  "summary": {
+    "episode": 0,
+    "seed": 5,
+    "status": "completed",
+    "learning": true,
+    "standing_fraction": 0.9313131313131313,
+    "leg_step_cycles": {
+      "LF": 15,
+      "LM": 16,
+      "LH": 13,
+      "RF": 5,
+      "RM": 12,
+      "RH": 4
+    },
+    "obstacle_contact_seconds": 0.0,
+    "obstacle_response_seconds": null,
+    "obstacle_observation_complete": false,
+    "arena": "quiet",
+    "imported_weights_from": "outputs\\birth-cycle-v10\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+    "external_senses": true,
+    "wall_seconds": 818.0149999999994,
+    "simulated_seconds": 5.0,
+    "awake_samples": 990,
+    "mean_reward": -0.5499108501601361,
+    "mean_uprightness": 0.8627270768688182,
+    "forward_displacement_mm": 8.480209589004517,
+    "mean_motor_hz": 31.059729874981514,
+    "mean_joint_speed_rad_s": 2.41699770297667,
+    "per_leg_mean_speed_rad_s": {
+      "LF": 2.5169358563844604,
+      "LM": 2.352977325549029,
+      "LH": 2.6948762098647125,
+      "RF": 2.5600237617739525,
+      "RM": 2.3454636633095114,
+      "RH": 2.0317093975164675
+    },
+    "motor_exploration_mv_ms": 1.5,
+    "body_model": "muscles",
+    "brain": "corrected",
+    "learning_rule": "perturbation",
+    "reward_mode": "grounded",
+    "normalize_reward_error": true,
+    "reward_objective": "support-slip-v2",
+    "wing_mode": "neural",
+    "adhesion_mode": "geometry",
+    "heading_forward_distance_mm": 10.547023673559018,
+    "mean_supporting_feet": 2.3181818181818183,
+    "mean_stance_slip_mm_s": 15.694965209608588,
+    "gait_metrics": "outputs\\birth-cycle-v11\\cycle_000\\train-0\\attempt_0000\\episode_000.gait.json",
+    "tripod_score": null,
+    "checkpoint": "outputs\\birth-cycle-v11\\cycle_000\\train-0\\attempt_0000\\episode_000.npz"
+  },
+  "weight_metrics": {
+    "plastic_edges": 73594,
+    "changed_since_prior": 35968,
+    "mean_relative_change_from_original": 0.003940101051696518,
+    "max_relative_change_from_original": 0.07242427054941862,
+    "mean_absolute_relative_update": 0.001157454839229291,
+    "signs_preserved": true,
+    "within_50_percent_bounds": true
+  },
+  "unchanged_source_sha256": "fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd",
+  "best_validated_checkpoint": null,
+  "status": "training_in_progress",
+  "next_training_seed": 6,
+  "pending_training_seed": 7,
+  "validation_and_heldout_completed": false,
+  "reward_saturation": {
+    "diagnostic_only": true,
+    "reward_unchanged": true,
+    "runs": {
+      "original": {
+        "all": {
+          "samples": 990,
+          "mean_reward": -0.5500006876060805,
+          "reward_floor_fraction": 0.26464646464646463,
+          "mean_slip": 15.839121633508721
+        },
+        "upright": {
+          "samples": 913,
+          "mean_reward": -0.5407758286968114,
+          "reward_floor_fraction": 0.25191675794085433,
+          "mean_slip": 15.696145565184496
+        },
+        "fallen": {
+          "samples": 3,
+          "mean_reward": -1.0,
+          "reward_floor_fraction": 1.0,
+          "mean_slip": 34.57481239329775
+        }
+      },
+      "candidate": {
+        "all": {
+          "samples": 990,
+          "mean_reward": -0.6525617056925597,
+          "reward_floor_fraction": 0.23535353535353534,
+          "mean_slip": 10.257231171639003
+        },
+        "upright": {
+          "samples": 476,
+          "mean_reward": -0.5170139591677331,
+          "reward_floor_fraction": 0.25210084033613445,
+          "mean_slip": 14.752629271910154
+        },
+        "fallen": {
+          "samples": 454,
+          "mean_reward": -0.7713210667428955,
+          "reward_floor_fraction": 0.1696035242290749,
+          "mean_slip": 3.838741554256133
+        }
+      },
+      "training": {
+        "all": {
+          "samples": 3990,
+          "mean_reward": -0.7028827071709333,
+          "reward_floor_fraction": 0.2736842105263158,
+          "mean_slip": 9.629330167585904
+        },
+        "upright": {
+          "samples": 1547,
+          "mean_reward": -0.5314510091592272,
+          "reward_floor_fraction": 0.24628312863606983,
+          "mean_slip": 15.255837222458332
+        },
+        "fallen": {
+          "samples": 2338,
+          "mean_reward": -0.810323167495975,
+          "reward_floor_fraction": 0.2754491017964072,
+          "mean_slip": 5.2744840660959635
+        }
+      }
+    }
+  }
+}
