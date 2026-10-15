@@ -11,3 +11,37 @@ def test_hard_deadline_stops_native_or_python_work_without_false_completion():
         'guard=WallBudget(time.monotonic()+.1); guard.__enter__(); time.sleep(5)')],
         check=False, env=env, timeout=3, capture_output=True)
     assert result.returncode == 124
+
+
+
+def test_absolute_deadline_jump_exits_without_waiting_another_hour(monkeypatch):
+    import threading
+
+    from noesis import wall_budget as budget
+    clock = [100.]
+    exited = threading.Event()
+    calls = []
+    restored = []
+    monkeypatch.setattr(budget.time, 'monotonic', lambda: clock[0])
+    monkeypatch.setattr(budget.os, '_exit', lambda code: (calls.append(code), exited.set()))
+    monkeypatch.setattr(budget, '_hold_system_awake', lambda: lambda: restored.append(True))
+    with budget.WallBudget(3700.):
+        clock[0] = 4000.  # A suspended clock jumped past the absolute deadline.
+        assert exited.wait(1.)
+    assert calls == [124] and restored == [True]
+
+
+def test_scoped_sleep_request_is_released_even_on_episode_failure(monkeypatch):
+    import time
+
+    import pytest
+
+    from noesis import wall_budget as budget
+    events = []
+    def hold():
+        events.append('hold')
+        return lambda: events.append('release')
+    monkeypatch.setattr(budget, '_hold_system_awake', hold)
+    with pytest.raises(RuntimeError), budget.WallBudget(time.monotonic()+10.):
+        raise RuntimeError('episode failed')
+    assert events == ['hold', 'release']

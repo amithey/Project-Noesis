@@ -110,3 +110,29 @@ def test_skating_cannot_earn_progress_and_persistent_obstacle_contact_costs_rewa
     assert planted['grounded_progress'] > 0
     assert skating['grip_factor'] < .1
     assert obstacle['reward'] < planted['reward']
+
+
+def test_ground_support_is_rewarded_over_upright_airborne_translation():
+    from noesis.embodied_metrics import locomotion_reward
+    stationary = ([0, 0, .8], [0, 0, .8], 1., np.zeros(3), .01, [1, 0, 0])
+    planted = locomotion_reward(*stationary, np.ones(6), np.zeros((6, 3)))
+    two_feet = locomotion_reward(*stationary, [1, 1, 0, 0, 0, 0], np.zeros((6, 3)))
+    airborne = locomotion_reward(*stationary, np.zeros(6), np.zeros((6, 3)))
+    assert planted['reward'] > two_feet['reward'] > airborne['reward']
+    assert planted['standing_quality'] > 0 and airborne['standing_quality'] == 0
+
+
+def test_more_slip_still_costs_reward_above_previous_saturation_threshold():
+    from noesis.embodied_metrics import locomotion_reward
+    args = ([0, 0, .8], [.01, 0, .8], 1., np.zeros(3), .01, [1, 0, 0], np.ones(6))
+    less = locomotion_reward(*args, np.tile([6., 0, 0], (6, 1)))
+    more = locomotion_reward(*args, np.tile([10., 0, 0], (6, 1)))
+    assert less['reward'] > more['reward']
+
+
+def test_slip_bursts_do_not_earn_more_than_equal_mean_steady_slip():
+    from noesis.embodied_metrics import locomotion_reward
+    args = ([0, 0, .8], [0, 0, .8], 1., np.zeros(3), .01, [1, 0, 0], np.ones(6))
+    def score(speed):
+        return locomotion_reward(*args, np.tile([speed, 0, 0], (6, 1)))['reward']
+    assert (score(3.)+score(7.))/2 == pytest.approx(score(5.))

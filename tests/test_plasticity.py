@@ -209,3 +209,93 @@ def test_bad_perturbation_does_not_mutate(perturbation):
         learner.update([0], 5, 1, perturbation=perturbation)
     np.testing.assert_array_equal(learner.net.data, original)
     assert not learner.activity.any() and learner.reward_baseline == 0
+
+
+@pytest.mark.parametrize('seed', [13, 14, 15])
+def test_normalized_credit_learns_small_delayed_reward_without_tonic_or_unrelated_credit(seed):
+    rng = np.random.default_rng(seed)
+    noise = rng.choice([-1., 1.], (2000, 2))
+    rewards = np.r_[np.zeros(10), .01*noise[:-10, 0]]
+    results = []
+    for normalize in (False, True):
+        net = LIFNetwork(sparse.csr_matrix([[0., 0., 4., 4.], [0., 0., -2., -2.],
+                                          [0., 0., 0., 0.], [0., 0., 0., 0.]]))
+        learner = MotorPlasticity(net, [2, 3], rule='perturbation', learning_rate=.2,
+                                 tau_eligibility_ms=100., normalize_reward_error=normalize)
+        for action, reward in zip(noise, rewards, strict=True):
+            learner.update([0, 1], 5., reward, perturbation=action)
+        relative = net.data[learner.edge_indices]/learner.initial_weights
+        target = net.indices[learner.edge_indices] == 2
+        results.append((np.abs(relative[target]-1).mean(), np.abs(relative[~target]-1).mean()))
+        assert relative[0] > 1 and relative[2] < 1
+        assert np.all((relative >= .5) & (relative <= 1.5))
+    assert results[0][0] < .002
+    assert results[1][0] > .03 and results[1][1] < .015
+    assert results[1][0] > 10*results[0][0]
+
+
+def test_normalization_checkpoint_continuation_and_explicit_old_weight_import(tmp_path):
+    first = MotorPlasticity(network(), [2], rule='perturbation', learning_rate=.2,
+                            tau_eligibility_ms=100., normalize_reward_error=True)
+    first.update([0, 1], 5., .01, perturbation=[1.])
+    path = tmp_path/'normalized.npz'
+    first.save(path)
+    second = MotorPlasticity(network(), [2], rule='perturbation', learning_rate=.2,
+                             tau_eligibility_ms=100., normalize_reward_error=True)
+    second.load(path, restore_traces=True)
+    assert first.reward_variance == second.reward_variance > 0
+    first.update([0], 5., -.03, perturbation=[-.2])
+    second.update([0], 5., -.03, perturbation=[-.2])
+    np.testing.assert_array_equal(first.net.data, second.net.data)
+    old = MotorPlasticity(network(), [2], rule='perturbation', learning_rate=.2,
+                          tau_eligibility_ms=100.)
+    old_path = tmp_path/'old.npz'
+    old.update([0], 5., .3, perturbation=[1.]); old.save(old_path)
+    with pytest.raises(ValueError, match='mismatch'):
+        second.load(old_path)
+    second.load(old_path, weights_only=True)
+    np.testing.assert_array_equal(old.net.data, second.net.data)
+    assert second.reward_baseline == second.reward_variance == 0
+    assert not second.activity.any() and not second.eligibility.any()
+
+
+def test_weight_only_import_still_rejects_wrong_topology_signs_and_bounds(tmp_path):
+    old = MotorPlasticity(network(), [2], rule='perturbation')
+    path = tmp_path/'weights.npz'; old.save(path)
+    with np.load(path) as data:
+        original = {k: data[k].copy() for k in data.files}
+    for key, value in [('weights', -original['weights']),
+                       ('weights', 2*original['weights']), ('topology', np.array('wrong'))]:
+        invalid = dict(original); invalid[key] = value
+        np.savez(path, **invalid)
+        target = MotorPlasticity(network(), [2], rule='perturbation', normalize_reward_error=True)
+        before = target.net.data.copy()
+        with pytest.raises(ValueError):
+            target.load(path, weights_only=True)
+        np.testing.assert_array_equal(target.net.data, before)
+        assert target.reward_baseline == target.reward_variance == 0
+
+
+def test_normalization_cannot_credit_zero_reward_or_missing_exploration():
+    for reward, perturbation in [(0., [1.]), (.01, None)]:
+        learner = MotorPlasticity(network(), [2], rule='perturbation', normalize_reward_error=True)
+        before = learner.net.data.copy()
+        for _ in range(100):
+            learner.update([0, 1], 5., reward, perturbation=perturbation)
+        np.testing.assert_array_equal(learner.net.data, before)
+
+
+@pytest.mark.parametrize('variance', [float('nan'), -.1, 4.1])
+def test_invalid_normalization_state_cannot_mutate_network_or_learner(tmp_path, variance):
+    source = MotorPlasticity(network(), [2], rule='perturbation', normalize_reward_error=True)
+    path = tmp_path/'normalized.npz'; source.save(path)
+    with np.load(path) as data:
+        payload = {k: data[k].copy() for k in data.files}
+    payload['reward_variance'] = np.array(variance)
+    np.savez(path, **payload)
+    target = MotorPlasticity(network(), [2], rule='perturbation', normalize_reward_error=True)
+    before = target.net.data.copy()
+    with pytest.raises(ValueError):
+        target.load(path, restore_traces=True)
+    np.testing.assert_array_equal(before, target.net.data)
+    assert target.reward_variance == target.reward_baseline == 0

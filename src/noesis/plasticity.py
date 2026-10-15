@@ -41,11 +41,15 @@ class MotorPlasticity:
     ``learning_rate`` is fractional initial-weight change per second at maximal
     eligibility and reward error. Checkpoints restore learning state and selected
     weights, not membrane state, body state, simulation time, or random generators.
-    Network topology must remain fixed during this object's lifetime.
+    With normalization enabled, the raw prediction error is divided by its
+    two-second RMS estimate (floor 0.01) and clipped to [-1, 1]. The learning
+    rate then applies to that unitless signal; the reward baseline stays in raw
+    reward units. Network topology must remain fixed throughout.
     """
 
     def __init__(self, net, motor_indices, learning_rate=0.02,
-                 tau_eligibility_ms=500.0, max_change=0.5, rule="hebbian"):
+                 tau_eligibility_ms=500.0, max_change=0.5, rule="hebbian",
+                 normalize_reward_error=False):
         params = np.array([learning_rate, tau_eligibility_ms, max_change], dtype=float)
         if not np.isfinite(params).all():
             raise ValueError("learning parameters must be finite")
@@ -55,6 +59,12 @@ class MotorPlasticity:
             raise ValueError("network weights must be finite floating-point values")
         if rule not in ("hebbian", "perturbation"):
             raise ValueError("unknown motor learning rule")
+        if not isinstance(normalize_reward_error, (bool, np.bool_)):
+            raise TypeError("normalize_reward_error must be boolean")
+        if normalize_reward_error and rule != "perturbation":
+            raise ValueError("reward normalization requires perturbation learning")
+        self.normalize_reward_error = bool(normalize_reward_error)
+        self.reward_variance = 0.0
         self.rule = rule
         self.net = net
         self.learning_rate, self.tau_eligibility_ms, self.max_change = params
@@ -99,7 +109,12 @@ class MotorPlasticity:
         elif perturbation is not None:
             raise ValueError("perturbation requires the perturbation learning rule")
         reward = float(np.clip(reward, -1, 1))
-        error = reward - self.reward_baseline
+        raw_error = reward - self.reward_baseline
+        error = raw_error
+        if self.normalize_reward_error:
+            self.reward_variance += -np.expm1(-dt_ms / 2000.0) * (
+                raw_error * raw_error - self.reward_variance)
+            error = float(np.clip(raw_error / max(.01, np.sqrt(self.reward_variance)), -1, 1))
         active = np.isin(self.neurons, spikes)
         alpha = -np.expm1(-dt_ms / 100.0)
         if self.rule == "hebbian":
@@ -134,10 +149,10 @@ class MotorPlasticity:
         relative = np.clip(relative + delta, 1 - self.max_change, 1 + self.max_change)
         new = self.initial_weights * relative
         self.net.data[self.edge_indices] = new
-        self.reward_baseline += -np.expm1(-dt_ms / 2000.0) * error
+        self.reward_baseline += -np.expm1(-dt_ms / 2000.0) * raw_error
         return {
             "reward": reward, "reward_baseline": float(self.reward_baseline),
-            "prediction_error": float(error),
+            "prediction_error": float(raw_error), "learning_signal": float(error),
             "changed_edges": int(np.count_nonzero(new != old)),
             **self.metrics(),
         }
@@ -153,6 +168,9 @@ class MotorPlasticity:
         changes = np.divide(difference, initial, out=np.zeros_like(initial), where=initial > 0)
         return {
             "plastic_edges": len(self.edge_indices),
+            "reward_variance": float(self.reward_variance),
+            "reward_error_scale": float(max(.01, np.sqrt(self.reward_variance)))
+            if self.normalize_reward_error else 1.0,
             "mean_relative_change": float(np.mean(changes)) if len(changes) else 0.0,
             "max_relative_change": float(np.max(changes)) if len(changes) else 0.0,
         }
@@ -161,7 +179,9 @@ class MotorPlasticity:
         """Write a pickle-free NPZ checkpoint at the exact requested path."""
         with Path(path).open("wb") as handle:
             np.savez_compressed(
-                handle, version=np.array(1 if self.rule == "hebbian" else 2),
+                handle, version=np.array(3 if self.normalize_reward_error else 1 if self.rule == "hebbian" else 2),
+                normalize_reward_error=np.array(self.normalize_reward_error),
+                reward_variance=np.array(self.reward_variance),
                 rule=np.array(self.rule), topology=np.array(self._topology),
                 motor_indices=self.motor_indices, initial_weights=self.initial_weights,
                 parameters=np.array([self.learning_rate, self.tau_eligibility_ms, self.max_change]),
@@ -169,48 +189,62 @@ class MotorPlasticity:
                 eligibility=self.eligibility, reward_baseline=np.array(self.reward_baseline),
             )
 
-    def load(self, path: str | Path, restore_traces: bool = False):
-        """Restore only after validating topology, initial weights, rule, and bounds.
+    def load(self, path: str | Path, restore_traces: bool = False, *, weights_only=False):
+        """Validate before restoring; explicit weight transfer may cross learning rules.
 
-        Construct this object from the original network weights before loading.
-        By default traces and baseline reset for a fresh brain/body episode.
-        Set ``restore_traces=True`` only when also restoring the surrounding state.
-        Invalid or incompatible checkpoints leave network and learner unchanged.
+        Topology, motor identities, original weights, signs and current magnitude
+        bounds are checked even for weights-only imports. Normal loading also
+        checks learning configuration and state. Fresh episodes reset all traces,
+        the raw reward baseline and normalization statistics.
         """
+        if weights_only and restore_traces:
+            raise ValueError("weights-only import cannot restore traces")
         try:
             with np.load(path, allow_pickle=False) as checkpoint:
-                expected = {
-                    "version": np.array(1 if self.rule == "hebbian" else 2), "topology": np.array(self._topology),
-                    "motor_indices": self.motor_indices, "initial_weights": self.initial_weights,
-                    "parameters": np.array([
-                        self.learning_rate, self.tau_eligibility_ms, self.max_change]),
-                }
+                version = checkpoint["version"]
+                if version.shape != () or version.dtype.kind not in "iu" or int(version) not in (1, 2, 3):
+                    raise ValueError("unsupported checkpoint version")
+                expected = {"topology": np.array(self._topology),
+                            "motor_indices": self.motor_indices,
+                            "initial_weights": self.initial_weights}
+                if not weights_only:
+                    expected.update(version=np.array(3 if self.normalize_reward_error
+                                    else 1 if self.rule == "hebbian" else 2),
+                                    parameters=np.array([self.learning_rate,
+                                        self.tau_eligibility_ms, self.max_change]))
                 for key, value in expected.items():
                     if not np.array_equal(checkpoint[key], value):
                         raise ValueError(f"checkpoint mismatch: {key}")
                 stored_rule = str(checkpoint["rule"]) if "rule" in checkpoint else "hebbian"
-                if stored_rule != self.rule:
-                    raise ValueError("checkpoint mismatch: learning rule")
+                normalized = bool(checkpoint["normalize_reward_error"]) if "normalize_reward_error" in checkpoint else False
+                if not weights_only and (stored_rule != self.rule or normalized != self.normalize_reward_error):
+                    raise ValueError("checkpoint mismatch: learning rule or normalization")
                 weights = checkpoint["weights"].copy()
-                activity = checkpoint["activity"].copy()
-                eligibility = checkpoint["eligibility"].copy()
-                baseline = checkpoint["reward_baseline"].copy()
-                for value, shape in (
-                    (weights, self.initial_weights.shape), (activity, self.activity.shape),
-                    (eligibility, self.eligibility.shape), (baseline, ())
-                ):
-                    if value.shape != shape or not np.isfinite(value).all():
-                        raise ValueError("invalid checkpoint state")
+                if weights.shape != self.initial_weights.shape or not np.isfinite(weights).all():
+                    raise ValueError("invalid checkpoint state")
                 if (np.any(np.sign(weights) != np.sign(self.initial_weights))
                         or np.any(np.abs(weights) < self._lower)
-                        or np.any(np.abs(weights) > self._upper)
-                        or np.any((activity < 0) | (activity > 1))
-                        or np.any((eligibility < (-1 if self.rule == "perturbation" else 0)) | (eligibility > 1))
-                        or not -1 <= float(baseline) <= 1):
+                        or np.any(np.abs(weights) > self._upper)):
                     raise ValueError("checkpoint state exceeds learning bounds")
-        except (KeyError, TypeError) as error:
+                activity, eligibility = np.zeros_like(self.activity), np.zeros_like(self.eligibility)
+                baseline, variance = 0., 0.
+                if not weights_only:
+                    activity = checkpoint["activity"].copy()
+                    eligibility = checkpoint["eligibility"].copy()
+                    baseline = checkpoint["reward_baseline"].copy()
+                    variance = checkpoint["reward_variance"].copy() if self.normalize_reward_error or "reward_variance" in checkpoint else np.array(0.)
+                    for value, shape in ((activity, self.activity.shape),
+                                         (eligibility, self.eligibility.shape), (baseline, ()), (variance, ())):
+                        if value.shape != shape or not np.isfinite(value).all():
+                            raise ValueError("invalid checkpoint state")
+                    if (np.any((activity < 0) | (activity > 1))
+                            or np.any((eligibility < (-1 if self.rule == "perturbation" else 0)) | (eligibility > 1))
+                            or not -1 <= float(baseline) <= 1 or not 0 <= float(variance) <= 4):
+                        raise ValueError("checkpoint state exceeds learning bounds")
+        except (KeyError, TypeError, OverflowError) as error:
             raise ValueError("invalid plasticity checkpoint") from error
         self.net.data[self.edge_indices] = weights
         self.activity[:] = activity if restore_traces else 0
         self.eligibility[:] = eligibility if restore_traces else 0
         self.reward_baseline = float(baseline) if restore_traces else 0.0
+        self.reward_variance = float(variance) if restore_traces else 0.0

@@ -321,3 +321,21 @@ def test_explicit_weight_transfer_preserves_experience_across_body_interface_fix
     with np.load(checkpoint) as old, np.load(saved) as new:
         assert new['weights'][0] >= old['weights'][0]
     assert json.loads(saved.with_suffix('.model.json').read_text())['body_interface'] == 'isolated-joint-lists-v2'
+
+
+def test_normalized_training_then_frozen_evaluation_keeps_weights_and_scale_frozen(lab_environment):
+    env = lab_environment
+    env.args.learning_rule = 'perturbation'
+    env.args.learning_rate = .2
+    env.args.normalize_reward_error = True
+    summary, checkpoint = lab.run_episode(env.cn, env.args, 0, None)
+    assert summary['normalize_reward_error']
+    env.args.learn = False
+    evaluation, saved = lab.run_episode(env.cn, env.args, 1, checkpoint)
+    with np.load(checkpoint) as before, np.load(saved) as after:
+        assert int(after['version']) == 3
+        np.testing.assert_array_equal(before['weights'], after['weights'])
+        assert float(after['reward_variance']) == 0
+        assert float(after['reward_baseline']) == 0
+        assert not after['eligibility'].any()
+    assert not evaluation['learning'] and evaluation['motor_exploration_mv_ms'] == 0

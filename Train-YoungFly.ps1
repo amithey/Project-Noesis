@@ -1,6 +1,8 @@
 param(
     [switch]$Resume,
     [switch]$Video,
+    [switch]$NormalizeRewardError,
+    [switch]$EarlyReject,
     [ValidateRange(1, 3600)][int]$WallSeconds = 3600,
     [ValidateRange(0.051, 3600)][double]$Seconds = 5,
     [ValidateRange(1, 10000)][int]$Episodes = 3,
@@ -39,6 +41,8 @@ try {
     if ($Resume) { $trainingArguments += '--resume' }
     if ($ImportWeights) { $trainingArguments += @('--import-weights', $ImportWeights) }
     if ($Video) { $trainingArguments += '--video' }
+    if ($NormalizeRewardError) { $trainingArguments += '--normalize-reward-error' }
+    if ($EarlyReject) { $trainingArguments += '--early-reject' }
     & $Python @trainingArguments
     if ($LASTEXITCODE -eq 124) {
         Write-Host 'Wall budget reached. Resume replays the interrupted episode from its start.'

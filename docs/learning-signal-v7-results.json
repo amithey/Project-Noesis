@@ -1,0 +1,547 @@
+{
+  "goal_complete": false,
+  "v6_quiet_rejection": {
+    "decision": {
+      "accepted": false,
+      "reason": "candidate did not pass all behavioral criteria",
+      "checks": [
+        {
+          "seed": 10,
+          "complete": true,
+          "standing": false,
+          "cycles": true,
+          "forward": true,
+          "slip": false,
+          "reward": true
+        },
+        {
+          "seed": 11,
+          "complete": true,
+          "standing": true,
+          "cycles": true,
+          "forward": true,
+          "slip": false,
+          "reward": true
+        }
+      ]
+    },
+    "remaining_controls_not_completed": true,
+    "weights_retained": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+    "old_source_archive": "outputs/protocol-v6-source/src",
+    "new_reward_rescore_is_diagnostic_only": true,
+    "rescored_quiet_controls": [
+      {
+        "job": "validation-quiet-original-10",
+        "old_mean_reward": -0.048037473805982014,
+        "support_slip_v2_mean_reward": -0.22080360609854865
+      },
+      {
+        "job": "validation-quiet-original-11",
+        "old_mean_reward": -0.05798589518608482,
+        "support_slip_v2_mean_reward": -0.24809755245822274
+      },
+      {
+        "job": "validation-quiet-candidate-10",
+        "old_mean_reward": -0.03957511851629641,
+        "support_slip_v2_mean_reward": -0.2604615146451309
+      },
+      {
+        "job": "validation-quiet-candidate-11",
+        "old_mean_reward": -0.0305614944084124,
+        "support_slip_v2_mean_reward": -0.24410509335849553
+      }
+    ]
+  },
+  "weak_reward_probe": {
+    "diagnostic_only": true,
+    "simulated_seconds": 10,
+    "delay_ms": 50.0,
+    "reward_amplitude": 0.01,
+    "learning_rate": 0.2,
+    "eligibility_ms": 100.0,
+    "topology_and_signs_preserved": true,
+    "records": [
+      {
+        "seed": 13,
+        "rule": "current",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.0006356166715306699,
+        "irrelevant_mean_abs_change": 6.201604817679396e-06,
+        "excitatory_ratio": 1.0006356166715298,
+        "inhibitory_ratio": 0.9993643833284684
+      },
+      {
+        "seed": 13,
+        "rule": "current",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 1.3912239715418995e-05,
+        "irrelevant_mean_abs_change": 0.00011772402037935059,
+        "excitatory_ratio": 1.000013912239717,
+        "inhibitory_ratio": 0.9999860877602861
+      },
+      {
+        "seed": 13,
+        "rule": "current",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 13,
+        "rule": "normalized_prototype",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.06423299189493697,
+        "irrelevant_mean_abs_change": 0.0004001329061382175,
+        "excitatory_ratio": 1.0642329918949367,
+        "inhibitory_ratio": 0.9357670081050627
+      },
+      {
+        "seed": 13,
+        "rule": "normalized_prototype",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 0.001308846369277139,
+        "irrelevant_mean_abs_change": 0.011578400620465945,
+        "excitatory_ratio": 1.0013088463692796,
+        "inhibitory_ratio": 0.9986911536307254
+      },
+      {
+        "seed": 13,
+        "rule": "normalized_prototype",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 14,
+        "rule": "current",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.0006017410787456656,
+        "irrelevant_mean_abs_change": 3.337215059079357e-05,
+        "excitatory_ratio": 1.0006017410787456,
+        "inhibitory_ratio": 0.9993982589212542
+      },
+      {
+        "seed": 14,
+        "rule": "current",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 9.069094034763747e-05,
+        "irrelevant_mean_abs_change": 3.180730720087066e-05,
+        "excitatory_ratio": 0.9999093090596549,
+        "inhibitory_ratio": 1.0000906909403502
+      },
+      {
+        "seed": 14,
+        "rule": "current",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 14,
+        "rule": "normalized_prototype",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.060657016435742006,
+        "irrelevant_mean_abs_change": 0.0034595020135484433,
+        "excitatory_ratio": 1.060657016435744,
+        "inhibitory_ratio": 0.93934298356426
+      },
+      {
+        "seed": 14,
+        "rule": "normalized_prototype",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 0.008361148804789442,
+        "irrelevant_mean_abs_change": 0.0035344216695306074,
+        "excitatory_ratio": 0.9916388511952086,
+        "inhibitory_ratio": 1.0083611488047874
+      },
+      {
+        "seed": 14,
+        "rule": "normalized_prototype",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 15,
+        "rule": "current",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.00044345512099924767,
+        "irrelevant_mean_abs_change": 9.46040331465392e-05,
+        "excitatory_ratio": 1.0004434551210006,
+        "inhibitory_ratio": 0.9995565448790021
+      },
+      {
+        "seed": 15,
+        "rule": "current",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 3.962063497420232e-05,
+        "irrelevant_mean_abs_change": 2.7630733446415423e-05,
+        "excitatory_ratio": 1.0000396206349729,
+        "inhibitory_ratio": 0.9999603793650245
+      },
+      {
+        "seed": 15,
+        "rule": "current",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 15,
+        "rule": "normalized_prototype",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.04443127094701399,
+        "irrelevant_mean_abs_change": 0.010003458039882729,
+        "excitatory_ratio": 1.0444312709470163,
+        "inhibitory_ratio": 0.9555687290529883
+      },
+      {
+        "seed": 15,
+        "rule": "normalized_prototype",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 0.004082076324349926,
+        "irrelevant_mean_abs_change": 0.0029962811083945606,
+        "excitatory_ratio": 1.0040820763243503,
+        "inhibitory_ratio": 0.9959179236756505
+      },
+      {
+        "seed": 15,
+        "rule": "normalized_prototype",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 16,
+        "rule": "current",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.0005488474039875291,
+        "irrelevant_mean_abs_change": 2.1685241567592772e-05,
+        "excitatory_ratio": 1.000548847403987,
+        "inhibitory_ratio": 0.9994511525960119
+      },
+      {
+        "seed": 16,
+        "rule": "current",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 3.409312480384674e-05,
+        "irrelevant_mean_abs_change": 9.576686234691323e-06,
+        "excitatory_ratio": 0.9999659068751936,
+        "inhibitory_ratio": 1.0000340931248013
+      },
+      {
+        "seed": 16,
+        "rule": "current",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 16,
+        "rule": "normalized_prototype",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.05591213350002794,
+        "irrelevant_mean_abs_change": 0.0029480312755971183,
+        "excitatory_ratio": 1.0559121335000303,
+        "inhibitory_ratio": 0.9440878664999744
+      },
+      {
+        "seed": 16,
+        "rule": "normalized_prototype",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 0.0045717165167541984,
+        "irrelevant_mean_abs_change": 0.000380905162092271,
+        "excitatory_ratio": 0.995428283483247,
+        "inhibitory_ratio": 1.0045717165167554
+      },
+      {
+        "seed": 16,
+        "rule": "normalized_prototype",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 17,
+        "rule": "current",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.00038059920910687994,
+        "irrelevant_mean_abs_change": 7.254853189087029e-06,
+        "excitatory_ratio": 1.0003805992091064,
+        "inhibitory_ratio": 0.9996194007908926
+      },
+      {
+        "seed": 17,
+        "rule": "current",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 3.29413533233236e-05,
+        "irrelevant_mean_abs_change": 5.701041877059776e-05,
+        "excitatory_ratio": 0.9999670586466756,
+        "inhibitory_ratio": 1.0000329413533222
+      },
+      {
+        "seed": 17,
+        "rule": "current",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      },
+      {
+        "seed": 17,
+        "rule": "normalized_prototype",
+        "control": "causal",
+        "relevant_mean_abs_change": 0.03950743001685092,
+        "irrelevant_mean_abs_change": 0.0020676442938181716,
+        "excitatory_ratio": 1.0395074300168505,
+        "inhibitory_ratio": 0.9604925699831487
+      },
+      {
+        "seed": 17,
+        "rule": "normalized_prototype",
+        "control": "shuffled",
+        "relevant_mean_abs_change": 0.002716313596418052,
+        "irrelevant_mean_abs_change": 0.0052260629405673775,
+        "excitatory_ratio": 0.9972836864035793,
+        "inhibitory_ratio": 1.0027163135964154
+      },
+      {
+        "seed": 17,
+        "rule": "normalized_prototype",
+        "control": "zero",
+        "relevant_mean_abs_change": 0.0,
+        "irrelevant_mean_abs_change": 0.0,
+        "excitatory_ratio": 1.0,
+        "inhibitory_ratio": 1.0
+      }
+    ]
+  },
+  "v7_report_snapshot": {
+    "schema": 3,
+    "settings": {
+      "data": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\data",
+      "output": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v7",
+      "import_weights": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+      "normalize_reward_error": true,
+      "early_reject": true,
+      "episodes": 1,
+      "seconds": 10.0,
+      "evaluation_seconds": 5.0,
+      "depression_u": 0.0,
+      "dynamics_report": null,
+      "seed": 0,
+      "validation_seeds": [
+        10,
+        11
+      ],
+      "heldout_seeds": [
+        200,
+        201,
+        202
+      ],
+      "learning_rate": 0.2,
+      "source_sha256": "859566b8f48dabcaf936f4c098b7475c5aa38ddf1c5ca87a4191cac1da128d78"
+    },
+    "cycle": 0,
+    "jobs": [],
+    "attempts": [
+      {
+        "id": "train-0",
+        "stage": "training",
+        "model": "candidate",
+        "seed": 0,
+        "arena": "quiet",
+        "start_checkpoint": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+        "output": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v7\\cycle_000\\train-0\\attempt_0000",
+        "status": "wall_budget",
+        "summary": {
+          "episode": 0,
+          "seed": 0,
+          "status": "wall_budget",
+          "learning": true,
+          "standing_fraction": 0.9424778761061947,
+          "leg_step_cycles": {
+            "LF": 5,
+            "LM": 8,
+            "LH": 6,
+            "RF": 0,
+            "RM": 2,
+            "RH": 8
+          },
+          "obstacle_contact_seconds": 0.0,
+          "obstacle_response_seconds": null,
+          "obstacle_observation_complete": false,
+          "arena": "quiet",
+          "imported_weights_from": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+          "external_senses": true,
+          "wall_seconds": 11098.86,
+          "simulated_seconds": 2.31,
+          "awake_samples": 452,
+          "mean_reward": -0.2096592288107437,
+          "mean_uprightness": 0.8881932387573529,
+          "forward_displacement_mm": -2.0739364624023438,
+          "mean_motor_hz": 32.14542446677407,
+          "mean_joint_speed_rad_s": 2.3524672261117834,
+          "per_leg_mean_speed_rad_s": {
+            "LF": 2.3295064854674634,
+            "LM": 2.275714234704465,
+            "LH": 2.7831858756531656,
+            "RF": 2.533104786468027,
+            "RM": 1.9427346928061637,
+            "RH": 2.2505572624174897
+          },
+          "motor_exploration_mv_ms": 1.5,
+          "body_model": "muscles",
+          "brain": "corrected",
+          "learning_rule": "perturbation",
+          "reward_mode": "grounded",
+          "normalize_reward_error": true,
+          "reward_objective": "support-slip-v2",
+          "wing_mode": "neural",
+          "adhesion_mode": "geometry",
+          "heading_forward_distance_mm": 2.010942021009315,
+          "mean_supporting_feet": 1.8938053097345133,
+          "mean_stance_slip_mm_s": 5.751538789664822,
+          "gait_metrics": "outputs\\birth-cycle-v7\\cycle_000\\train-0\\attempt_0000\\episode_000.gait.json",
+          "tripod_score": null,
+          "checkpoint": "outputs\\birth-cycle-v7\\cycle_000\\train-0\\attempt_0000\\episode_000.npz"
+        },
+        "source_sha256": "417fed7be66d60e7d4fcebb4d3d7dd6e689903ebfd7e64b95a55667317ecfb78"
+      },
+      {
+        "id": "train-0",
+        "stage": "training",
+        "model": "candidate",
+        "seed": 0,
+        "arena": "quiet",
+        "start_checkpoint": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+        "output": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v7\\cycle_000\\train-0\\attempt_0001",
+        "status": "running"
+      }
+    ],
+    "cycles": [
+      {
+        "cycle": 0,
+        "wall_seconds": 11116.032,
+        "completed_jobs": 0,
+        "total_jobs": 26
+      }
+    ],
+    "last_training_checkpoint": null,
+    "best_validated_checkpoint": null,
+    "decision": {
+      "accepted": false,
+      "reason": "incomplete controls; no promotion"
+    },
+    "status": "pending",
+    "region_scale": {
+      "AL": 1.6190227648634277,
+      "AME": 4.120680096100536,
+      "AMMC": 2.494875889548675,
+      "AOTU": 3.6896224590360225,
+      "ATL": 1.0558487247141601,
+      "AVLP": 2.7326379502618523,
+      "BU": 2.7096203346203347,
+      "CAN": 1.2657843715754868,
+      "CRE": 1.9443301083723634,
+      "EB": 2.5836061049742813,
+      "EPA": 2.0351423923482486,
+      "FB": 2.9007227723482214,
+      "FLA": 1.3253768312943663,
+      "GA": 1.9123505976095618,
+      "GNG": 2.5772443050699576,
+      "GOR": 2.8781793037099392,
+      "IB": 1.8583448520740073,
+      "ICL": 2.204892585248203,
+      "IPS": 2.16999406008691,
+      "LAL": 2.2132393698980026,
+      "LH": 4.713050863018729,
+      "LO": 4.019957406745442,
+      "LOP": 2.5190176327236418,
+      "MB_CA": 2.545515654362663,
+      "MB_ML": 20.0,
+      "MB_PED": 11.78308374930671,
+      "MB_VL": 5.660904864794081,
+      "ME": 3.616001119735704,
+      "NO": 3.447071026914888,
+      "PB": 1.4996671683260014,
+      "PLP": 2.779166040125946,
+      "PRW": 5.049542152578697,
+      "PVLP": 7.319000256004248,
+      "SAD": 10.068564340890536,
+      "SCL": 3.559444124111075,
+      "SIP": 4.20615433869796,
+      "SLP": 6.325363698682306,
+      "SMP": 3.568883242601935,
+      "SPS": 2.6300781140633314,
+      "VES": 1.7011095782888948,
+      "WED": 2.8103841574230746,
+      "VNC_T1_ProNm": 3.4577963672763734,
+      "LegNp_T1": 3.4577963672763734,
+      "VNC_T2_MesoNm": 3.255568054343277,
+      "LegNp_T2": 3.255568054343277,
+      "VNC_T3_MetaNm": 4.369913675070737,
+      "LegNp_T3": 4.369913675070737,
+      "ABDNM": 5.033182577779772,
+      "ANm": 5.033182577779772,
+      "IntTct": 2.444139157621049,
+      "LTct": 8.41801691998853,
+      "VNC_WTct": 6.506794490608346,
+      "WTct_UTct_T2": 6.506794490608346,
+      "VNC_HTct": 4.553822068973327,
+      "HTct_UTct_T3": 4.553822068973327,
+      "VNC_NTct": 3.2675927761061363,
+      "NTct_UTct_T1": 3.2675927761061363,
+      "VNC_AMNp": 7.107160251188491,
+      "VNC_T2_mVAC": 7.033226874165264
+    },
+    "runtime_source_migrations": [
+      {
+        "utc": "2026-10-15T16:04:51.201583+00:00",
+        "before": "417fed7be66d60e7d4fcebb4d3d7dd6e689903ebfd7e64b95a55667317ecfb78",
+        "after": "859566b8f48dabcaf936f4c098b7475c5aa38ddf1c5ca87a4191cac1da128d78",
+        "changed_files": [
+          "wall_budget.py"
+        ],
+        "reason": "absolute watchdog plus scoped Windows system-awake request; all neural/body/reward/learning sources byte-identical",
+        "completed_jobs_reused": 0,
+        "partial_weights_reused": false,
+        "episode_replay_checkpoint": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz"
+      }
+    ]
+  },
+  "test_results": {
+    "pytest_passed": 181,
+    "ruff": "passed"
+  },
+  "completed_v7_training_jobs": 0,
+  "promoted_model": null,
+  "runtime_pause_evidence": {
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "enter_event_id": 506,
+    "exit_event_id": 507,
+    "enter_local": "2026-10-15 16:05:08",
+    "exit_local": "2026-10-15 18:55:55",
+    "reason": "Austerity Battery Drain Budget Exceeded",
+    "incomplete_attempt_wall_seconds": 11098.86,
+    "incomplete_simulated_seconds": 2.31,
+    "partial_weights_reused": false
+  }
+}

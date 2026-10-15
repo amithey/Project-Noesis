@@ -95,10 +95,17 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     grip = float(np.clip(1 - slip / (abs(speed) + .1), 0, 1))
     progress *= grip
     obstacle_cost = float(np.clip(obstacle_contact_seconds, 0, 1))
-    slip_cost = float(np.clip(slip / 5, 0, 1))
+    # Match the mean-slip criterion: keep this cost linear instead of rewarding
+    # a few large slip bursts through a concave/saturating penalty. Only the
+    # final total reward is bounded, so high sliding continues to cost credit.
+    slip_cost = slip / 5
+    posture_quality = float(np.clip((uprightness - .5) / .4, 0, 1))
+    support_quality = float(min(support.sum() / 3, 1))
+    standing_quality = posture_quality * support_quality if .3 <= base['height_mm'] <= 1.5 else 0.
     fallen = uprightness < .5 or base['height_mm'] < .3
-    reward = float(np.clip(.1 * max(uprightness, 0) + .75 * progress - .6 * fallen
-                           - .05 * base['effort'] - .15 * slip_cost - .2 * obstacle_cost, -1, 1))
+    reward = float(np.clip(.25 * standing_quality + .5 * progress - .6 * fallen
+                           - .05 * base['effort'] - .3 * slip_cost - .2 * obstacle_cost, -1, 1))
     return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
             'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
-            'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost}
+            'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,
+            'standing_quality': standing_quality}

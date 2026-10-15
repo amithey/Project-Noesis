@@ -77,6 +77,8 @@ def main():
     ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--import-weights', type=Path,
                     help='start a new protocol with compatible learned weights from an earlier model')
+    ap.add_argument('--normalize-reward-error', action='store_true')
+    ap.add_argument('--early-reject', action='store_true', help='reject failed quiet validation before consuming further controls')
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--seconds', type=float, default=5.)
     ap.add_argument('--evaluation-seconds', type=float, default=5.)
@@ -120,6 +122,7 @@ def main():
         ap.error('output must be outside read-only source data')
     template = lab.parser().parse_args(['--data', str(args.data), '--output', str(args.output/'probe'),
         '--seconds', str(args.seconds), '--learning-rate', str(args.learning_rate), '--arena', 'quiet', '--depression-u', str(args.depression_u), '--learn'])
+    template.normalize_reward_error = args.normalize_reward_error
     lab.validate_args(lab.parser(), template)
     # Reject resuming under changed source code, model parameters or evaluation protocol.
     digest = hashlib.sha256()
@@ -139,7 +142,7 @@ def main():
         for attempt in report['attempts']:
             if attempt['status'] == 'running':
                 attempt['status'] = 'interrupted'
-        if report['status'] == 'completed':
+        if report['status'] in ('completed', 'rejected_validation'):
             report.setdefault('history', []).append({k: report[k] for k in
                 ('cycle', 'jobs', 'decision', 'last_training_checkpoint', 'best_validated_checkpoint')})
             report.update(cycle=report['cycle']+1, jobs=[], decision=None, validation_decision=None, status='pending')
@@ -157,6 +160,7 @@ def main():
         report['region_scale'] = scale
         jobs = build_jobs(args.episodes, args.seed, args.validation_seeds, args.heldout_seeds)
         done = {j['id'] for j in report['jobs']}
+        rejected = None
         for job in jobs:
             if job['id'] in done:
                 continue
@@ -201,12 +205,24 @@ def main():
                 report['validation_decision']['obstacle_passed'] = obstacle_decision(
                     validation_trials('obstacle', 'candidate'), validation_trials('obstacle', 'ablated'))
                 # Persist before any held-out trial is observed.
+            if args.early_reject and job['stage'] == 'validation' and job['arena'] == 'quiet' and job['model'] == 'candidate' and summary['status'] == 'completed':
+                original = next(j['summary'] for j in report['jobs'] if j['stage'] == 'validation'
+                                and j['arena'] == 'quiet' and j['model'] == 'original' and j['seed'] == job['seed'])
+                check = promotion_decision([original], [summary])
+                if not check['accepted']:
+                    rejected = check
+                    # Persist rejection before a hard deadline can interrupt finalization.
+                    report['status'] = 'rejected_validation'
+                    report['decision'] = {'accepted': False, 'reason': 'completed quiet validation failed; remaining controls not claimed complete', 'quiet_check': check}
             atomic_json(report_path, report)
             print(json.dumps(dict(job=job['id'], **summary)), flush=True)
-            if summary['status'] != 'completed':
+            if rejected is not None or summary['status'] != 'completed':
                 break
         complete = len(report['jobs']) == len(jobs)
-        if complete:
+        if rejected is not None:
+            report['decision'] = {'accepted': False, 'reason': 'completed quiet validation failed; remaining controls not claimed complete', 'quiet_check': rejected}
+            report['status'] = 'rejected_validation'
+        elif complete:
             decisions = {}
             for stage in ('validation', 'heldout'):
                 def trials(arena, model, stage=stage):

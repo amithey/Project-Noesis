@@ -95,3 +95,41 @@ def test_translation_without_leg_cycles_fails_promotion():
     for r in candidate:
         r['leg_step_cycles'] = {'LF': 0, 'RF': 0}
     assert not promotion_decision(baseline, candidate)['accepted']
+
+
+def test_early_rejection_does_not_claim_unrun_controls_and_resume_continues_training(monkeypatch, tmp_path):
+    import json
+
+    from noesis.experiments import train_validate as tv
+    calls = []
+    failing = [True]
+    def episode(cn, args, index, checkpoint, *, deadline):
+        calls.append((args.seed, args.learn, checkpoint, args.normalize_reward_error))
+        summary = trials(reward=.3, slip=.1)[0].copy()
+        summary.update(seed=args.seed, learning=args.learn, motor_exploration_mv_ms=args.motor_exploration,
+                       obstacle_observation_complete=True, obstacle_response_seconds=.2,
+                       obstacle_contact_seconds=.4 if args.no_environment_senses else .1)
+        if not args.learn and checkpoint is None:
+            summary.update(mean_reward=.2, mean_stance_slip_mm_s=.2)
+        if failing[0] and not args.learn and checkpoint:
+            summary['standing_fraction'] = .8
+        saved = args.output/'episode_000.npz'; saved.write_bytes(b'fake-checkpoint')
+        return summary, saved
+    monkeypatch.setattr(tv, 'load_training_brain', lambda *a: (None, {}))
+    monkeypatch.setattr(tv.lab, 'run_episode', episode)
+    output = tmp_path/'run'
+    argv = ['train_validate', '--data', str(tmp_path/'data'), '--output', str(output),
+            '--episodes', '1', '--early-reject', '--normalize-reward-error']
+    monkeypatch.setattr('sys.argv', argv); tv.main()
+    first = json.loads((output/'report.json').read_text())
+    assert first['status'] == 'rejected_validation' and len(first['jobs']) == 4
+    assert not first['decision']['accepted'] and first['best_validated_checkpoint'] is None
+    assert not any(j['stage'] == 'heldout' or j['arena'] == 'obstacle' for j in first['jobs'])
+    last = first['last_training_checkpoint']; count = len(calls)
+    failing[0] = False
+    monkeypatch.setattr('sys.argv', argv+['--resume']); tv.main()
+    second = json.loads((output/'report.json').read_text())
+    assert calls[count][1:3] == (True, last)
+    assert second['status'] == 'completed' and len(second['jobs']) == 26
+    assert second['decision']['accepted']
+    assert all(c[3] for c in calls)

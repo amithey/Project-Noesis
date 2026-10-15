@@ -79,6 +79,7 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--checkpoint', type=Path, help='load learned weights for evaluation/training')
     ap.add_argument('--import-weights', action='store_true',
                     help='explicitly transfer compatible synaptic weights across body model versions')
+    ap.add_argument('--normalize-reward-error', action='store_true')
     ap.add_argument('--learning-rate', type=float, default=0.2)
     ap.add_argument('--learning-rule', choices=('perturbation', 'hebbian'), default='perturbation')
     ap.add_argument('--reward-mode', choices=('grounded', 'legacy'), default='grounded')
@@ -100,6 +101,8 @@ def parser() -> argparse.ArgumentParser:
 
 
 def validate_args(ap, args):
+    if args.normalize_reward_error and args.learning_rule != 'perturbation':
+        ap.error('reward normalization requires perturbation learning')
     if args.depression_u not in (0., .03, .1):
         ap.error('--depression-u must be 0, .03 or .1')
     if not args.learn and args.motor_exploration not in (None, 0.):
@@ -206,12 +209,14 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         leg_motor_ids = np.flatnonzero(cn.neurons['Class'].eq('leg_motor_neuron')) if 'Class' in cn.neurons else np.unique(G.indices)
         plasticity = MotorPlasticity(net, np.unique(G.indices),
                                     learning_rate=args.learning_rate, rule=args.learning_rule,
+                                    normalize_reward_error=args.normalize_reward_error,
                                     tau_eligibility_ms=100 if args.learning_rule == "perturbation" else 500)
         context = {name: getattr(args, name) for name in (
             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
             'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
-        context.update(schema=5, body_interface='isolated-joint-lists-v2',
+        context.update(schema=6, reward_objective='support-slip-v2' if args.reward_mode == 'grounded' else 'legacy-body-v1',
+                       normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
                        motor_interface='mirrored-leg-rotations-v1',
                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
                        actuated_joints=names,
@@ -222,7 +227,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             if (not args.import_weights and metadata.exists()
                     and json.loads(metadata.read_text(encoding='utf-8')) != context):
                 raise ValueError('checkpoint model context mismatch')
-            plasticity.load(checkpoint)
+            plasticity.load(checkpoint, weights_only=args.import_weights)
         tracker = RateTracker(cn.n, tau_ms=25.0)
         senses = None if args.no_senses else SensoryMap(cn.neurons)
         balance = (None if (args.no_senses or args.no_balance)
@@ -355,7 +360,10 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                              x_mm=float(pos[0]), y_mm=float(pos[1]), z_mm=float(pos[2]),
                              spikes=len(spikes), **score, **neural, **motion,
                              **env_telemetry,
-                             weight_change=learning['mean_relative_change']))
+                             weight_change=learning['mean_relative_change'],
+                             reward_prediction_error=learning.get('prediction_error', 0.),
+                             learning_signal=learning.get('learning_signal', 0.),
+                             reward_error_scale=learning.get('reward_error_scale', 1.)))
             if args.brain_map is not None and k % 4 == 0:
                 write_activity(args.brain_map, tracker.rate, t, awake=awake,
                                triggers={**env_telemetry, **neural, **motion,
@@ -425,6 +433,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                'motor_exploration_mv_ms': amplitude,
                'body_model': args.body_model, 'brain': args.brain,
                'learning_rule': args.learning_rule, 'reward_mode': args.reward_mode,
+               'normalize_reward_error': args.normalize_reward_error,
+               'reward_objective': context['reward_objective'],
                'wing_mode': args.wing_mode, 'adhesion_mode': args.adhesion_mode,
                'heading_forward_distance_mm': float(sum(r['forward_speed_mm_s'] * chunk_ms / 1000 for r in awake_rows)),
                'mean_supporting_feet': float(np.mean([r['supporting_feet'] for r in awake_rows])) if awake_rows and args.reward_mode == 'grounded' else None,
