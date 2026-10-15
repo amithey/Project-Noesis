@@ -69,6 +69,11 @@ def enable_wing_and_head_joints(fly) -> None:
         return
     import numpy as np
 
+    # FlyGym copies actuated_joints, but retains its monitored_joints default list.
+    # Extending that shared list changes the next Fly's constructor defaults,
+    # so later episodes silently get different head/wing servo gains and damping.
+    fly.actuated_joints = list(fly.actuated_joints)
+    fly.monitored_joints = list(fly.monitored_joints)
     wing_joints = []
     for side in ("L", "R"):
         wb = fly.model.find("body", f"{side}Wing")

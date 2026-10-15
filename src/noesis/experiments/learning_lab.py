@@ -77,6 +77,8 @@ def parser() -> argparse.ArgumentParser:
                     help='bounded motor current mV/ms; default 1.5 training, 0 frozen')
     ap.add_argument('--learn', action='store_true', help='enable experimental synaptic updates')
     ap.add_argument('--checkpoint', type=Path, help='load learned weights for evaluation/training')
+    ap.add_argument('--import-weights', action='store_true',
+                    help='explicitly transfer compatible synaptic weights across body model versions')
     ap.add_argument('--learning-rate', type=float, default=0.2)
     ap.add_argument('--learning-rule', choices=('perturbation', 'hebbian'), default='perturbation')
     ap.add_argument('--reward-mode', choices=('grounded', 'legacy'), default='grounded')
@@ -209,11 +211,15 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
             'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
-        context.update(schema=3, contact='tarsal-ground-only', neural_dt_ms=.5,
+        context.update(schema=4, body_interface='isolated-joint-lists-v2',
+                       body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
+                       actuated_joints=names,
+                       contact='tarsal-ground-only', neural_dt_ms=.5,
                        eligibility_ms=100 if args.learning_rule == 'perturbation' else 500)
         if checkpoint:
             metadata = Path(checkpoint).with_suffix('.model.json')
-            if metadata.exists() and json.loads(metadata.read_text(encoding='utf-8')) != context:
+            if (not args.import_weights and metadata.exists()
+                    and json.loads(metadata.read_text(encoding='utf-8')) != context):
                 raise ValueError('checkpoint model context mismatch')
             plasticity.load(checkpoint)
         tracker = RateTracker(cn.n, tau_ms=25.0)
@@ -401,6 +407,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
     awake_rows = [r for r in rows if r['awake']]
     summary = {'episode': episode, 'seed': seed, 'status': status, 'learning': args.learn,
                **behavior_summary(rows), 'arena': args.arena,
+               'imported_weights_from': str(checkpoint) if checkpoint and args.import_weights else None,
                'external_senses': environmental_input,
                'wall_seconds': time.monotonic() - start,
                'simulated_seconds': rows[-1]['time_s'] if rows else 0,

@@ -1,5 +1,11 @@
 # Young fly: brain-only learning protocol
 
+**Physical-pilot update:** a subsequent body-construction audit found that head/wing
+extension mutated FlyGym's shared monitored-joint defaults. This changed servo gains
+and damping in later episodes. The physical v2/v3/v4 measurements below are historical
+and do not validate a trained model. See the repeatability correction and v5 run below.
+The neural-only depression screen is unaffected by this body-construction defect.
+
 Implemented on `codex/brain-body-feedback`, in the isolated managed worktree.
 The connectome edge set and signs remain unchanged; selected incoming motor weights
 can change by at most 50%. There is no gait clock, CPG, scripted tripod sequence,
@@ -186,3 +192,51 @@ Machine-readable measurements: `docs/young-fly-results.json`. Live ledger:
 `outputs/excitatory-screen-v1/report.json`. Outputs were also copied to the primary
 checkout under `outputs/young-fly-v4-artifacts` for preservation. Video framing is
 fixed; the fly partly exits the left edge during the backward, unstable episode.
+
+
+## Continuation: stable body construction and longer training
+
+A repeated original-weight, seed-10 episode first disagreed at the physical level
+before the brain woke. Model inspection isolated the cause: identical recompilations
+had a maximum damping difference of 0.98 and actuator-gain difference of 30.0.
+`enable_wing_and_head_joints` appended to `fly.monitored_joints`, which referenced
+FlyGym's shared `preprogrammed.all_leg_dofs` default list. Later Fly constructors
+therefore treated the extra joints as default actuators and assigned different
+head/wing servos. The controller now takes independent copies of both joint lists
+before extending them. No learned or scripted leg sequence was added.
+
+A new real-MuJoCo regression compares damping, gains, biases, stiffness and 200
+pre-neural settling steps across independent bodies, and checks idempotent extension
+and unmodified FlyGym defaults. Two actual 0.15-second brain/body episodes with seed
+10 now match exactly for position, spikes, motor firing, vision and ground loads;
+the corresponding v4 repetitions differed. These short repetitions verify this
+construction fix, not five-second walking success. All 160 tests and Ruff passed.
+
+The affected v4 continuation was stopped after preserving its artifacts. Its first
+five-second original-weight control had standing fraction 0.9414, forward projection
+6.6391 mm and stance slip 6.0081 mm/s. It is diagnostic evidence only: later bodies
+in that process were different from first bodies in resumed processes. The ledger
+is explicitly invalidated and no candidate is promoted from it.
+
+Synaptic experience remains available. `train_validate --import-weights <checkpoint>`
+starts a **new** protocol with compatible weights, recording the source checkpoint.
+Topology, original signs, 50% bounds and learning-rule parameters remain checked.
+Each newly saved checkpoint records body interface v2, body parameters and joint
+names; ordinary loads reject mismatched model metadata. `learning_lab` requires an
+explicit `--import-weights` switch for this deliberate model transfer.
+
+`outputs/birth-cycle-v5` imports the last v4 training weights and trains one ten-second
+quiet-floor episode, instead of resetting after 1.2 seconds. It then runs the same
+frozen validation seeds 10/11 and held-out seeds 200/201/202, including obstacle
+controls. Its current invocation has a 3,600-wall-second budget. This is ongoing
+work toward verified standing and basic walking; no walking success is yet claimed.
+
+To resume that exact protocol after its current process finishes:
+
+```powershell
+$env:PYTHONPATH='src'
+python -u -m noesis.experiments.train_validate --data <existing-data> --output outputs/birth-cycle-v5 --episodes 1 --seconds 10 --wall-seconds 3600 --import-weights outputs/birth-cycle-v4/cycle_000/train-2/attempt_0002/episode_000.npz --video --resume
+```
+
+Do not launch a duplicate while the current invocation is live. The active process
+and report, rather than a log timestamp alone, determine whether a resume is needed.

@@ -75,6 +75,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--data', type=Path, required=True)
     ap.add_argument('--output', type=Path, required=True)
+    ap.add_argument('--import-weights', type=Path,
+                    help='start a new protocol with compatible learned weights from an earlier model')
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--seconds', type=float, default=5.)
     ap.add_argument('--evaluation-seconds', type=float, default=5.)
@@ -103,6 +105,8 @@ def main():
                 or screen['settings']['lif_sha256'] != hashlib.sha256(Path(lif.__file__).read_bytes()).hexdigest()
                 or not any(d['u'] == args.depression_u and d['accepted'] for d in screen['decisions'])):
             ap.error('depression has not passed the current sensory/recovery gate')
+    if args.import_weights is not None and not args.import_weights.is_file():
+        ap.error('import-weights checkpoint does not exist')
     train_seeds = set(range(args.seed, args.seed + args.episodes))
     validation, heldout = set(args.validation_seeds), set(args.heldout_seeds)
     if (args.episodes < 1 or not validation or not heldout or train_seeds & validation
@@ -164,12 +168,15 @@ def main():
             case.learn = job['stage'] == 'training'
             case.seconds = args.seconds if case.learn else 5.
             case.motor_exploration = 1.5 if case.learn else 0.
+            case.import_weights = (args.import_weights is not None
+                                   and report['last_training_checkpoint'] is None and case.learn)
             case.no_environment_senses = job['model'] == 'ablated'
             case.video = args.video
             case.output = args.output/f"cycle_{report['cycle']:03d}"/job['id']/f"attempt_{len(report['attempts']):04d}"
             case.output.mkdir(parents=True, exist_ok=True)
-            weights = None if job['model'] == 'original' else report['last_training_checkpoint']
-            attempt = dict(**job, start_checkpoint=weights, output=str(case.output.resolve()), status='running')
+            weights = None if job['model'] == 'original' else (
+                report['last_training_checkpoint'] or args.import_weights)
+            attempt = dict(**job, start_checkpoint=str(weights) if weights is not None else None, output=str(case.output.resolve()), status='running')
             report['attempts'].append(attempt)
             atomic_json(report_path, report)
             try:

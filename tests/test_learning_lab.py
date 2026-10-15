@@ -306,3 +306,18 @@ def test_checkpoint_rejects_changed_dynamics_before_loading_weights(lab_environm
     env.args.depression_u = .03
     with pytest.raises(ValueError, match='context mismatch'):
         lab.run_episode(env.cn, env.args, 1, checkpoint)
+
+
+def test_explicit_weight_transfer_preserves_experience_across_body_interface_fix(lab_environment):
+    env = lab_environment
+    _, checkpoint = lab.run_episode(env.cn, env.args, 0, None)
+    metadata = checkpoint.with_suffix('.model.json')
+    context = json.loads(metadata.read_text())
+    context['body_interface'] = 'older-body-model'
+    metadata.write_text(json.dumps(context))
+    env.args.import_weights = True
+    summary, saved = lab.run_episode(env.cn, env.args, 1, checkpoint)
+    assert summary['imported_weights_from'] == str(checkpoint)
+    with np.load(checkpoint) as old, np.load(saved) as new:
+        assert new['weights'][0] >= old['weights'][0]
+    assert json.loads(saved.with_suffix('.model.json').read_text())['body_interface'] == 'isolated-joint-lists-v2'

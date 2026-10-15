@@ -918,7 +918,7 @@
     ]
   },
   "tests": {
-    "pytest_passed": 158,
+    "pytest_passed": 160,
     "ruff": "passed",
     "powershell_parser": "passed"
   },
@@ -2035,5 +2035,31 @@
       "pilot_complete": true,
       "selected_checkpoint": null
     }
+  },
+  "physical_pilots_validated": false,
+  "physical_pilot_invalidation_reason": "shared monitored-joint defaults changed head/wing damping and servo gains between episodes",
+  "body_reproducibility_fix": {
+    "interface": "isolated-joint-lists-v2",
+    "old_max_damping_difference": 0.98,
+    "old_max_actuator_gain_difference": 30.0,
+    "actual_repeated_episode_seconds": 0.15,
+    "post_fix_exact_columns": [
+      "x_mm",
+      "y_mm",
+      "z_mm",
+      "spikes",
+      "motor_hz",
+      "vision_mean",
+      "LF_ground_load"
+    ],
+    "regression_test": "tests/test_world.py::test_extending_head_and_wings_keeps_independent_episode_bodies_identical"
+  },
+  "continuation": {
+    "output": "outputs/birth-cycle-v5",
+    "training_episode_seconds": 10.0,
+    "training_episodes": 1,
+    "wall_budget_seconds": 3600,
+    "imported_weights": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v4\\cycle_000\\train-2\\attempt_0002\\episode_000.npz",
+    "status": "running; walking not verified"
   }
 }
