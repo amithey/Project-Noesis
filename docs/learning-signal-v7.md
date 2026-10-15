@@ -117,18 +117,18 @@ Ruff and the PowerShell launcher parser passed.
 ## Current run
 
 `outputs/birth-cycle-v7/report.json` is authoritative. The resumed ten-second
-quiet-floor training episode completed. Matched frozen validation is now live
-within the same 3600-wall-second budget.
+quiet-floor training episode completed. Its first frozen candidate validation finished and failed the slip criterion.
+The next bounded cycle is running; the completed rejection is retained below.
 The behavior and promotion criteria are unchanged. Resume only once its process
 is terminal:
 
 ```powershell
 $env:PYTHONPATH='src'
-python -u -m noesis.experiments.train_validate --data <existing-data> --output outputs/birth-cycle-v7 --episodes 1 --seconds 10 --wall-seconds 3600 --import-weights outputs/birth-cycle-v6/cycle_000/train-0/attempt_0000/episode_000.npz --normalize-reward-error --early-reject --video --resume
+python -u -m noesis.experiments.train_validate --data <existing-data> --output outputs/birth-cycle-v7 --episodes 1 --seconds 10 --seed 1 --wall-seconds 3600 --import-weights outputs/birth-cycle-v6/cycle_000/train-0/attempt_0000/episode_000.npz --normalize-reward-error --early-reject --video --resume
 ```
 
 The dedicated PowerShell launcher exposes `-NormalizeRewardError` and `-EarlyReject`
-along with `-Resume`, `-ImportWeights`, `-Seconds`, `-Episodes` and `-WallSeconds`.
+along with `-Resume`, `-ImportWeights`, `-Seconds`, `-Episodes`, `-Seed` and `-WallSeconds`.
 Machine-readable evidence: `docs/learning-signal-v7-results.json`.
 
 
@@ -145,4 +145,39 @@ All 462 CSV rows corresponding to the incomplete 2.31-second attempt match the
 prefix of the completed replay exactly, including neural firing, physical motion,
 reward and learning telemetry. This directly confirms start-of-episode replay
 rather than continuation from partial weights, despite the guard-only source
-migration. No model has been promoted; frozen validation is the next evidence.
+migration. No model has been promoted; completed frozen validation is reported below.
+
+
+### Frozen seed-10 rejection and next cycle
+
+The completed five-second frozen candidate had standing fraction 0.939394,
+heading progress 4.179929 mm, stance slip 6.411587 mm/s, and physical cycle counts
+LF=8, LM=18, LH=18, RF=0, RM=8, RH=20. The matched original had standing fraction
+0.833333 and slip 5.425919 mm/s. Standing, distance and four-leg cycle criteria
+passed, but slip failed: acceptance requires <=4.340735 mm/s. Mean reward also
+failed to improve. This is an improvement in measured standing, not verified walking.
+Candidate seed 11, obstacles and heldout tests were not run after this mandatory
+failure, and are not counted complete. The five-second failure video and all traces
+remain in `cycle_000/validation-quiet-candidate-10/attempt_0004`.
+
+After confirming the process exited, `scripts/continue_young_fly.py` prepared
+cycle 1 with training seed 1 and the last complete v7 training checkpoint. It
+retains the rejected cycle and its settings in history, and advances training
+seeds while skipping reserved validation/test seeds. The source fingerprint,
+model context, checkpoint topology/configuration, complete original weight arrays,
+five-second traces, summary artifacts and data/runtime manifest are checked before
+reusing ONLY the two immutable original quiet controls. Artifact SHA256 hashes
+are recorded and checked on subsequent continuations. No candidate, obstacle or
+heldout result is reused. A dry run is available. Preparation is refused if the
+previous process has not been explicitly verified terminal.
+
+Fifteen focused continuation and training-protocol tests passed, including partial,
+changed-source, changed-runtime, tampered-artifact, trained-original and active-run
+rejections, preservation of last/best checkpoints, and reserved-seed exclusion.
+Ruff passed for src, tests and scripts. The earlier full suite passed 181 tests.
+
+Reproduction for this cycle uses the existing report settings with `--seed 1`
+and `--resume`; the import-weights argument remains the v6 initialization path,
+while actual continued training loads the report's last complete v7 checkpoint.
+Each invocation retains the 3600-second absolute wall limit. Default launchers
+remain unchanged until full behavioral and obstacle validation passes.
