@@ -1,9 +1,10 @@
-"""Rotatable 3-D map of every downloaded neuron, with the real synapses drawn as wires.
+"""Rotatable 3-D view of the strongest downloaded connections and their neurons.
 
-The BANC tables carry no 3-D neuron positions, so each neuron sits in a schematic cloud for its
-neuropil (``Top in/out region``), mirrored by side, brain above and nerve cord below. The wires are
-the strongest signed synapses from the downloaded connectome: gold excitatory, blue inhibitory.
-Drag the window to rotate. ``--flat`` keeps the older 2-D schematic. A coordinates CSV
+The default layout follows schematic neuropil anatomy; ``--network-layout`` instead spreads
+neurons by their real connections. The tables carry no measured 3-D positions. Faint blue edges are
+solid for excitatory and dotted for inhibitory. Click a node to inspect its incoming/outgoing edges and direction
+arrows; Escape restores the overview. ``--edges`` controls how many connections are shown.
+Drag to rotate, scroll to zoom. ``--flat`` keeps the older 2-D schematic. A coordinates CSV
 (``root_id,x,y,z``) replaces the layout with measured positions.
 
 Live use: the simulation writes recent firing rates with ``write_activity``; in another terminal
@@ -194,96 +195,241 @@ class BrainMap:
         self.world.set_text(describe_triggers(triggers or {}))
 
 
+def prepare_matplotlib_toolkits() -> None:
+    """Select matching toolkits before pyplot imports and registers 3-D axes."""
+    import matplotlib
+    import mpl_toolkits
+
+    toolkit_dir = Path(matplotlib.__file__).resolve().parent.parent / "mpl_toolkits"
+    if (toolkit_dir / "mplot3d").is_dir():
+        mpl_toolkits.__path__ = [str(toolkit_dir)] + [
+            p for p in mpl_toolkits.__path__ if Path(p).resolve() != toolkit_dir
+        ]
+
+
+def network_positions(positions, pre, post):
+    """Spread the displayed graph by its real edges, without inventing connections."""
+    import networkx as nx
+
+    graph = nx.Graph()
+    graph.add_edges_from(zip(pre.tolist(), post.tolist()))
+    result = np.array(positions, dtype=float, copy=True)
+    if len(graph):
+        layout = nx.spring_layout(graph, dim=3, seed=7, iterations=20, scale=5)
+        for node, point in layout.items():
+            result[node] = point
+    return result
+
+
+def compact_anatomy_positions(neurons: pd.DataFrame, seed: int = 0) -> np.ndarray:
+    """Bounded schematic neuropil volumes; display geometry, not measured morphology."""
+    rng = np.random.default_rng(seed)
+    regions = neurons["Top in/out region"].fillna("NO_CONS").str.split(".").str[0].str.upper()
+    sides = neurons["Soma side"].map({"left": -1., "right": 1.}).fillna(0).to_numpy()
+    sides = np.where(sides == 0, rng.choice([-1., 1.], len(neurons)), sides)
+    result = np.zeros((len(neurons), 3))
+    for region, indices in regions.groupby(regions).groups.items():
+        rows = neurons.index.get_indexer(indices)
+        x, z = REGION_XY.get(region, (.7, .5))
+        unit = rng.normal(size=(len(rows), 3))
+        unit /= np.linalg.norm(unit, axis=1, keepdims=True)
+        unit *= rng.random((len(rows), 1)) ** (1 / 3)
+        if region in OPTIC:
+            center, radius = (2.65, 0., .9), (1.2, .65, .58)
+        elif z < -2.:
+            center, radius = (.28 * x, 0., -1.8 + .85 * (z + 2.8)), (.48, .5, .55)
+        else:
+            center, radius = (.48 * x, 0., 1.05 + .25 * z), (.65, .65, .53)
+        result[rows] = unit * radius + center
+        result[rows, 0] = sides[rows] * result[rows, 0]
+    return result
+
+
 class BrainVolume:
     """Rotatable 3-D brain: every neuron is a point, the strongest real synapses are wires.
 
-    Drag the view with the mouse. Gold wires are excitatory synapses and blue wires are
-    inhibitory. A neuron that is firing above the background grows and turns hot.
+    The reference-inspired portrait view uses small muted anatomical points and warm
+    white activity. Drag to rotate; clicking reveals a neuron's real displayed edges.
     """
 
     def __init__(self, positions: np.ndarray, pre: np.ndarray, post: np.ndarray, sign: np.ndarray,
-                 title: str = "Noesis 3D brain"):
+                 title: str = "Noesis 3D brain", root_ids=None, anatomical_context=False,
+                 context_nodes=None):
+        prepare_matplotlib_toolkits()
         import matplotlib.pyplot as plt
         from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
         self.pos = np.asarray(positions, float)
         self.pre, self.post = np.asarray(pre, np.int64), np.asarray(post, np.int64)
         self.sign = np.asarray(sign, float)
-        self.fig = plt.figure(figsize=(11, 9), facecolor="black")
-        self.ax = self.fig.add_subplot(111, projection="3d", facecolor="black")
+        self.root_ids = root_ids
+        self.selected = None
+        self.focus_arrows = None
+        self.rates = np.zeros(len(self.pos))
+        self.nodes = np.unique(np.concatenate([self.pre, self.post]))
+        self.degree = np.bincount(np.concatenate([self.pre, self.post]), minlength=len(self.pos))
+        self.fig = plt.figure(figsize=(7, 11), facecolor="#0b1312")
+        self.ax = self.fig.add_axes([0.0, 0.10, 1., 0.76], projection="3d", facecolor="#0b1312")
+        self.ax.computed_zorder = False
+        self.fig.text(0.06, 0.955, "N E U R A L   A C T I V I T Y", color="#7f9692", size=8)
+        self.fig.text(0.06, 0.927, f"{len(self.pos):,} neurons", color="#e1e9e5", size=19, weight="bold")
+        self.fig.text(0.06, 0.908, f"{len(self.pre):,} displayed connections · schematic anatomy",
+                      color="#7f918e", size=8)
+        self.info = self.fig.text(0.55, 0.895, "", color="#a8b8b3", size=8, va="top", linespacing=1.4)
+        self.info.set_visible(False)
         for axis in (self.ax.xaxis, self.ax.yaxis, self.ax.zaxis):
             axis.set_pane_color((0, 0, 0, 1))
             axis.line.set_color((0, 0, 0, 0))
             axis.set_ticks([])
-        silent = self.pos if len(self.pos) <= 40000 else self.pos[:: max(1, len(self.pos) // 40000)]
-        self.ax.scatter(silent[:, 0], silent[:, 1], silent[:, 2], s=0.4, c="#2c3350",
-                        alpha=0.35, linewidths=0, depthshade=False)
+        if anatomical_context:
+            # Dim context establishes the whole CNS shape without hiding real edges.
+            indices = np.arange(len(self.pos)) if context_nodes is None else np.asarray(context_nodes)
+            context = self.pos[indices[::max(1, len(indices) // 40000)]]
+            self.ax.scatter(*context.T, s=.35, c="#7e9798", alpha=.32,
+                            linewidths=0, depthshade=False, zorder=0)
+        pts = self.pos[self.nodes]
+        self.node_dots = self.ax.scatter(pts[:, 0], pts[:, 1], pts[:, 2],
+                        s=.6, c="#779194",
+                        linewidths=0,
+                        depthshade=False, picker=5, zorder=3)
         wires = np.stack([self.pos[self.pre], self.pos[self.post]], axis=1) if len(self.pre) else np.zeros((0, 2, 3))
-        self.wires = Line3DCollection(wires, colors=[(0.25, 0.25, 0.3, 0.15)] * len(wires), linewidths=0.4)
+        self.wires = Line3DCollection(wires, linewidths=0.35, zorder=2)
+        if len(self.sign):
+            self.wires.set_linestyle(["solid" if s >= 0 else "dotted" for s in self.sign])
         self.ax.add_collection3d(self.wires)
-        self.lit = self.ax.scatter([], [], [], s=[], c=[], cmap="plasma", vmin=0.0, vmax=np.log10(200.0),
-                                   linewidths=0, depthshade=False)
-        self.text = self.ax.text2D(0.01, 0.98, "", transform=self.ax.transAxes, color="white",
-                                   va="top", fontsize=10, family="monospace")
-        self.world = self.ax.text2D(0.01, 0.02, "", transform=self.ax.transAxes, color="#ffd27f",
-                                    va="bottom", fontsize=9, family="monospace")
-        self.ax.text2D(0.01, 0.90, "drag to rotate   gold = excitatory synapse   blue = inhibitory",
-                       transform=self.ax.transAxes, color="#9aa4c8", va="top", fontsize=8)
-        self.ax.set_title(title, color="white")
-        self.ax.set_box_aspect((1.6, 1.0, 1.8))
-        self.ax.view_init(elev=18, azim=-70)
+        self.glow_outer = self.ax.scatter([], [], [], s=[], c="#d4ded1", alpha=.025,
+                                          linewidths=0, depthshade=False, zorder=4)
+        self.glow_inner = self.ax.scatter([], [], [], s=[], c="#e7e5cd", alpha=.065,
+                                          linewidths=0, depthshade=False, zorder=5)
+        self.lit = self.ax.scatter([], [], [], s=[], c="#f2f0dc",
+                                   linewidths=0, depthshade=False, zorder=6)
+        self.text = self.fig.text(0.06, 0.065, "", color="#9baba6", size=8)
+        self.world = self.fig.text(0.06, 0.035, "", color="#6f827e", size=7)
+        if anatomical_context:
+            self.ax.set_proj_type("ortho")
+            self.ax.set_xlim(-4.6, 4.6)
+            self.ax.set_ylim(-1.4, 1.4)
+            self.ax.set_zlim(-5.4, 2.5)
+        self.ax.set_box_aspect((1.15, .35, 1.) if anatomical_context else (1.2, 1., 1.1), zoom=1.3)
+        self.ax.view_init(elev=0 if anatomical_context else 18, azim=-90 if anatomical_context else -70)
         self.ax.set_axis_off()
+        self.fig.canvas.manager.set_window_title(title)
+        self.fig.canvas.mpl_connect("pick_event", self._pick)
+        self.fig.canvas.mpl_connect("key_press_event", self._key)
+        self.fig.canvas.mpl_connect("scroll_event", self._scroll)
+        self.update(self.rates)
+
+    def _pick(self, event):
+        if event.artist is self.node_dots and len(event.ind):
+            self.selected = int(self.nodes[event.ind[0]])
+            self._style_connections()
+            self.fig.canvas.draw_idle()
+
+    def _key(self, event):
+        if event.key == "escape":
+            self.selected = None
+            self._style_connections()
+            self.fig.canvas.draw_idle()
+
+    def _scroll(self, event):
+        if event.inaxes is self.ax:
+            factor = .85 if event.button == "up" else 1 / .85
+            for get_limits, set_limits in ((self.ax.get_xlim3d, self.ax.set_xlim3d),
+                                          (self.ax.get_ylim3d, self.ax.set_ylim3d),
+                                          (self.ax.get_zlim3d, self.ax.set_zlim3d)):
+                lo, hi = get_limits()
+                center, radius = (lo + hi) / 2, (hi - lo) * factor / 2
+                set_limits(center - radius, center + radius)
+            self.fig.canvas.draw_idle()
+
+    def _style_connections(self):
+        if self.focus_arrows is not None:
+            self.focus_arrows.remove()
+            self.focus_arrows = None
+        colors = np.tile([.43, .57, .56, .035], (len(self.sign), 1))
+        widths = np.full(len(self.sign), .22)
+        node_colors = np.tile([.46, .57, .58, .32], (len(self.nodes), 1))
+        if self.selected is not None:
+            self.info.set_visible(True)
+            incident = (self.pre == self.selected) | (self.post == self.selected)
+            colors[~incident, 3] = .006
+            colors[incident, 3] = .60
+            widths[incident] = .9
+            neighbors = np.unique(np.concatenate([self.pre[incident], self.post[incident]]))
+            starts = self.pos[self.pre[incident]]
+            delta = self.pos[self.post[incident]] - starts
+            arrow_starts = starts + .55 * delta
+            if len(starts):
+                self.focus_arrows = self.ax.quiver(*arrow_starts.T, *(.18 * delta).T,
+                    color=colors[incident], arrow_length_ratio=.65, linewidth=.7)
+            node_colors[~np.isin(self.nodes, neighbors), 3] = .025
+            node_colors[self.nodes == self.selected] = [.45, .62, .85, .6]
+            identifier = self.root_ids[self.selected] if self.root_ids is not None else self.selected
+            self.info.set_text(f"NEURON {identifier}\nDisplayed incoming: {np.count_nonzero(self.post == self.selected)}\nDisplayed outgoing: {np.count_nonzero(self.pre == self.selected)}\nFiring: {self.rates[self.selected]:.1f} Hz")
+        else:
+            self.info.set_visible(False)
+        self.wires.set_colors(colors)
+        self.wires.set_linewidths(widths)
+        self.node_dots.set_facecolors(node_colors)
 
     def update(self, rates_hz: np.ndarray, time_s: float | None = None, min_hz: float = 12.0,
                awake: bool = True, triggers: dict | None = None) -> None:
-        on = np.flatnonzero(rates_hz > min_hz)
-        if len(on) > 20000:
-            on = on[np.argpartition(rates_hz[on], -20000)[-20000:]]
+        self.rates = np.asarray(rates_hz)
+        on = np.flatnonzero(rates_hz > min_hz) if awake else np.zeros(0, dtype=int)
+        if len(on) > 2000:
+            on = on[np.argpartition(rates_hz[on], -2000)[-2000:]]
         r = rates_hz[on].astype(float)
         pts = self.pos[on] if len(on) else np.zeros((0, 3))
-        self.lit._offsets3d = (pts[:, 0], pts[:, 1], pts[:, 2])
-        self.lit.set_array(np.log10(r + 1.0))
-        self.lit.set_sizes(6.0 + 18.0 * np.clip(np.log10(r + 1.0) / 2.3, 0, 1))
-        if len(self.pre):
-            edge = np.maximum(rates_hz[self.pre], rates_hz[self.post])
-            hot = np.clip((edge - min_hz) / 40.0, 0, 1)
-            excite = self.sign >= 0
-            colors = np.zeros((len(edge), 4))
-            colors[:, 0] = np.where(excite, 0.15 + 0.85 * hot, 0.05)
-            colors[:, 1] = np.where(excite, 0.12 + 0.55 * hot, 0.15 + 0.35 * hot)
-            colors[:, 2] = np.where(excite, 0.05, 0.25 + 0.75 * hot)
-            colors[:, 3] = 0.08 + 0.85 * hot
-            self.wires.set_colors(colors)
-            self.wires.set_linewidths(0.3 + 1.4 * hot)
+        intensity = np.clip((r - min_hz) / 100., 0, 1)
+        for artist, sizes in ((self.glow_outer, 3 + 9 * intensity),
+                              (self.glow_inner, 1 + 3 * intensity),
+                              (self.lit, .4 + 1.7 * intensity)):
+            artist._offsets3d = (pts[:, 0], pts[:, 1], pts[:, 2])
+            artist.set_sizes(sizes)
+        self._style_connections()
         label = f"t = {time_s:6.3f} s   " if time_s is not None else ""
         state = "" if awake else "   (brain still asleep)"
         self.text.set_text(
-            f"{label}firing: {int(np.count_nonzero(rates_hz > min_hz)):,} / {len(rates_hz):,}"
-            f"   wires: {len(self.pre):,} strongest synapses{state}")
+            f"{label}Active: {int(np.count_nonzero(rates_hz > min_hz)):,} · 0—200+ Hz{state}")
         self.world.set_text(describe_triggers(triggers or {}))
 
 
 def main() -> None:
+    prepare_matplotlib_toolkits()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("--data", type=Path, default=Path("data"))
     ap.add_argument("--coords", type=Path, help="optional CSV with root_id,x,y,z")
     ap.add_argument("--watch", type=Path, help="activity file written by a running simulation")
+    ap.add_argument("--ready-file", type=Path, help="signal that the live window has rendered")
     ap.add_argument("--snapshot", type=Path, help="render this activity file once")
     ap.add_argument("--flat", action="store_true", help="2-D schematic instead of the rotatable 3-D network")
+    ap.add_argument("--anatomy", action="store_true", help="use schematic anatomical positions (the default)")
+    ap.add_argument("--network-layout", action="store_true", help="spread nodes by connectivity instead of the default anatomy")
+    ap.add_argument("--edges", type=int, default=1800, help="number of strongest real connections to display")
     ap.add_argument("--out", type=Path, default=Path("outputs/brain_map.png"))
     a = ap.parse_args()
+    if a.edges < 1:
+        ap.error("--edges must be positive")
 
     from noesis.connectome import load_cached
 
     cn = load_cached(a.data / "raw", a.data / "processed")
     neurons = cn.neurons
+    context_nodes = np.flatnonzero(~neurons["Top in/out region"].fillna("NO_CONS").str.upper().str.startswith("NO_CONS"))
     use_3d = not a.flat
     layout = "real coordinates" if a.coords and a.coords.exists() else "schematic 3-D anatomy, real synapses"
     if use_3d:
         pos3 = neuron_positions_3d(neurons, a.coords)
+        if not a.coords and (not a.network_layout or a.anatomy):
+            pos3 = compact_anatomy_positions(neurons)
         print(f"sampling the strongest synapses out of {cn.W.nnz:,} ...", flush=True)
-        pre, post, sign = strongest_synapses(cn.W, limit=8000)
-        print(f"3-D network: {len(neurons):,} neurons, {len(pre):,} wires. Drag the window to rotate.",
+        pre, post, sign = strongest_synapses(cn.W, limit=a.edges)
+        if a.network_layout and not a.anatomy and not a.coords:
+            print("arranging neurons by their connections ...", flush=True)
+            pos3 = network_positions(pos3, pre, post)
+            layout = "connection layout, real synapses"
+        print(f"3-D network: {len(np.unique(np.concatenate([pre, post]))):,} visible neurons, "
+              f"{len(pre):,} connections; {len(neurons):,} total. Click a node to inspect.",
               flush=True)
     else:
         pos3 = pre = post = sign = None
@@ -292,13 +438,15 @@ def main() -> None:
         import matplotlib
         matplotlib.use("Agg")
         if use_3d:
-            m = BrainVolume(pos3, pre, post, sign, f"Noesis brain - {layout}")
+            m = BrainVolume(pos3, pre, post, sign, f"Noesis brain - {layout}", neurons["root_id"].to_numpy(),
+                            anatomical_context=not a.network_layout or a.anatomy or bool(a.coords),
+                            context_nodes=context_nodes)
         else:
             m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
         rates, t, awake, triggers = read_activity(a.snapshot)
         m.update(rates, t, awake=awake, triggers=triggers)
         a.out.parent.mkdir(parents=True, exist_ok=True)
-        m.fig.savefig(a.out, dpi=150, facecolor="black")
+        m.fig.savefig(a.out, dpi=150, facecolor=m.fig.get_facecolor())
         print("saved", a.out)
         return
     if not a.watch:
@@ -306,12 +454,18 @@ def main() -> None:
     import matplotlib.pyplot as plt
 
     if use_3d:
-        m = BrainVolume(pos3, pre, post, sign, f"Noesis brain - {layout}")
+        m = BrainVolume(pos3, pre, post, sign, f"Noesis brain - {layout}", neurons["root_id"].to_numpy(),
+                        anatomical_context=not a.network_layout or a.anatomy or bool(a.coords),
+                        context_nodes=context_nodes)
     else:
         m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
     plt.ion()
     plt.show()
-    m.text.set_text(f"waiting for the simulation to write {a.watch} ...")
+    m.text.set_text("Network ready · waiting for live simulation activity")
+    m.fig.canvas.draw()
+    plt.pause(0.1)
+    if a.ready_file:
+        a.ready_file.write_text("ready", encoding="utf-8")
     last = 0.0
     while plt.fignum_exists(m.fig.number):
         try:

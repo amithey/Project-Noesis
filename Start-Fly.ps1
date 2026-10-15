@@ -19,10 +19,29 @@ try {
     $runName = 'outputs/lab-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fff')
     $env:PYTHONPATH = Join-Path $PSScriptRoot 'src'
     # Outside OneDrive so the fly process and the map window can share the file.
-    $liveMap = Join-Path $env:TEMP 'noesis_live_activity.npz'
-    Start-Process -FilePath $pythonPath -ArgumentList @(
-        '-m', 'noesis.viz.brain_map', '--watch', $liveMap
-    ) -WorkingDirectory $PSScriptRoot
+    $liveMap = Join-Path $env:TEMP ('noesis_live_' + [guid]::NewGuid().ToString('N') + '.npz')
+    $readyMap = $liveMap + '.ready'
+    New-Item -ItemType Directory -Path 'outputs' -Force | Out-Null
+    $mapLog = Join-Path $PSScriptRoot ($runName + '-brain.log')
+    $mapError = Join-Path $PSScriptRoot ($runName + '-brain-error.log')
+    $mapProcess = Start-Process -FilePath $pythonPath -ArgumentList @(
+        '-u', '-m', 'noesis.viz.brain_map',
+        '--watch', ('"' + $liveMap + '"'), '--ready-file', ('"' + $readyMap + '"')
+    ) -WorkingDirectory $PSScriptRoot -WindowStyle Hidden -PassThru `
+      -RedirectStandardOutput $mapLog -RedirectStandardError $mapError
+    Write-Host 'Loading the 3-D neuron network window...'
+    $mapDeadline = (Get-Date).AddSeconds(60)
+    while (-not (Test-Path -LiteralPath $readyMap)) {
+        $mapProcess.Refresh()
+        if ($mapProcess.HasExited) {
+            throw "Brain window failed: $(Get-Content -LiteralPath $mapError -Raw)"
+        }
+        if ((Get-Date) -gt $mapDeadline) {
+            throw "Brain window has not finished opening. See $mapLog and $mapError"
+        }
+        Start-Sleep -Milliseconds 200
+    }
+    Write-Host '3-D neuron network window is ready.'
     $flyArguments = @('-m', 'noesis.experiments.learning_lab', '--viewer',
                       '--brain-map', $liveMap,
                       '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture),

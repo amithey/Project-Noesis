@@ -20,7 +20,24 @@ python -m venv .venv
 .\Start-Fly.ps1 -Learn -Video -Seconds 3 -Episodes 3
 ```
 
-The launcher opens the live MuJoCo viewer. Simulation may be much slower than
+The launcher opens the live MuJoCo viewer and a separate 3-D network window showing the 1,800 strongest
+real connections, with schematic positions based on the neurons' annotated brain and nerve-cord regions.
+These are not measured anatomical coordinates. The default portrait view follows the
+visual reference: a wide compact brain above the separate nerve cord, dark background,
+tiny grey-blue anatomical points and small warm-white activity highlights. The bounded
+neuropil volumes are schematic, not reconstructed neuron morphology. Up to about 40,000
+context points describe the shape; entries annotated NO_CONS are excluded from this
+context layer. Real displayed edges remain very faint until a neuron is selected.
+Edges remain faint even when their neurons fire
+(solid for excitatory, dotted for inhibitory);
+neurons firing above 12 Hz receive a layered halo whose size increases with firing rate.
+At most the 2,000 most active neurons glow per frame to keep the viewer responsive.
+Connections remain visible when neurons are silent. Click a neuron to highlight its
+displayed incoming/outgoing connections and direction arrows; Escape restores the overview.
+Drag to rotate and scroll to zoom. The displayed graph is a subset; the simulation still
+uses the full network. The standalone brain-map CLI accepts `--edges 3000` for a denser
+view or `--network-layout` for a layout based on connectivity instead of anatomy.
+Simulation may be much slower than
 real time, particularly when recording. Close the viewer to stop after saving
 the current episode. Every run gets a new directory beneath `outputs/`.
 Without `-Learn`, weights are frozen. Camera controls are MuJoCo's standard
