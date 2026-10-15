@@ -7,6 +7,7 @@ param(
     [ValidateRange(0.051, 3600)][double]$Seconds = 5,
     [ValidateRange(1, 10000)][int]$Episodes = 3,
     [ValidateRange(0, 4294967295)][long]$Seed = 0,
+    [ValidateSet('graded', 'quiet', 'obstacle')][string]$TrainingArena = 'graded',
     [string]$Output = 'outputs/young-fly',
     [string]$ImportWeights,
     [string]$Data,
@@ -38,7 +39,8 @@ try {
     $env:PYTHONPATH = Join-Path $PSScriptRoot 'src'
     $trainingArguments = @('-u', '-m', 'noesis.experiments.train_validate',
         '--data', $Data, '--output', $Output, '--wall-seconds', $WallSeconds,
-        '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture), '--episodes', $Episodes, '--seed', $Seed)
+        '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture), '--episodes', $Episodes, '--seed', $Seed,
+        '--training-arena', $TrainingArena)
     if ($Resume) { $trainingArguments += '--resume' }
     if ($ImportWeights) { $trainingArguments += @('--import-weights', $ImportWeights) }
     if ($Video) { $trainingArguments += '--video' }

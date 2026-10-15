@@ -59,9 +59,13 @@ def obstacle_decision(candidate, ablated):
                for a, b in zip(candidate, ablated, strict=True))
 
 
-def build_jobs(episodes, seed, validation, heldout):
+def build_jobs(episodes, seed, validation, heldout, training_arena='graded'):
+    """Choose training scenes while retaining every frozen evaluation case."""
+    if training_arena not in ('graded', 'quiet', 'obstacle'):
+        raise ValueError('unknown training arena')
     jobs = [{'id': f'train-{i}', 'stage': 'training', 'model': 'candidate', 'seed': seed+i,
-                 'arena': 'quiet' if i < max(1, episodes//2) else 'obstacle'} for i in range(episodes)]
+                 'arena': training_arena if training_arena != 'graded' else (
+                     'quiet' if i < max(1, episodes//2) else 'obstacle')} for i in range(episodes)]
     for stage, seeds in [('validation', validation), ('heldout', heldout)]:
         for arena, models in [('quiet', ('original', 'candidate')),
                               ('obstacle', ('original', 'candidate', 'ablated'))]:
@@ -80,6 +84,8 @@ def main():
     ap.add_argument('--normalize-reward-error', action='store_true')
     ap.add_argument('--early-reject', action='store_true', help='reject failed quiet validation before consuming further controls')
     ap.add_argument('--episodes', type=int, default=3)
+    ap.add_argument('--training-arena', choices=('graded', 'quiet', 'obstacle'), default='graded',
+                    help='training scenes only; frozen quiet/obstacle controls remain mandatory')
     ap.add_argument('--seconds', type=float, default=5.)
     ap.add_argument('--evaluation-seconds', type=float, default=5.)
     ap.add_argument('--wall-seconds', type=float, default=3600.)
@@ -158,7 +164,8 @@ def main():
     with WallBudget(deadline):
         cn, scale = load_training_brain(args.data, args.output/'cache')
         report['region_scale'] = scale
-        jobs = build_jobs(args.episodes, args.seed, args.validation_seeds, args.heldout_seeds)
+        jobs = build_jobs(args.episodes, args.seed, args.validation_seeds, args.heldout_seeds,
+                          args.training_arena)
         done = {j['id'] for j in report['jobs']}
         rejected = None
         for job in jobs:
