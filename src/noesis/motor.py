@@ -26,14 +26,16 @@ WING_JOINTS = (
 )
 HEAD_JOINTS = ("joint_Head_yaw", "joint_Head", "joint_Head_roll")
 
+# Positive Coxa coordinates retract the coxa; anterior/protractor muscles
+# therefore use negative coordinates. Existing roll/yaw couplings remain.
 # MuJoCo Femur coordinates increase anatomical extension; Tibia coordinates
 # increase flexion. These signs are checked against physical segment angles.
 # muscle -> list of (joint dof, sign)
 MUSCLE_JOINT: dict[str, list[tuple[str, int]]] = {
-    "sternal_anterior_rotator": [("Coxa", +1), ("Coxa_yaw", +1)],
-    "sternal_posterior_rotator": [("Coxa", -1), ("Coxa_yaw", -1)],
-    "tergopleural_promotor": [("Coxa", +1)],
-    "pleural_remotor_abductor": [("Coxa", -1), ("Coxa_roll", +1)],
+    "sternal_anterior_rotator": [("Coxa", -1), ("Coxa_yaw", +1)],
+    "sternal_posterior_rotator": [("Coxa", +1), ("Coxa_yaw", -1)],
+    "tergopleural_promotor": [("Coxa", -1)],
+    "pleural_remotor_abductor": [("Coxa", +1), ("Coxa_roll", +1)],
     "sternal_adductor": [("Coxa_roll", -1)],
     "trochanter_flexor": [("Femur", -1)],
     "accessory_trochanter_flexor": [("Femur", -1)],

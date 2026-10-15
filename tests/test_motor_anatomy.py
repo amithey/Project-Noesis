@@ -65,3 +65,37 @@ def test_named_muscle_moves_the_anatomical_joint_in_its_named_direction(
     mj.mj_kinematics(model, data)
     after = np.array([interior_angle(mj, model, data, fly_name, leg, dof) for leg in LEGS])
     assert np.all(direction*(after-before) > 1e-5), dict(zip(LEGS, after-before, strict=True))
+
+
+@pytest.mark.parametrize(('muscle', 'direction', 'segment', 'axis'), [
+    ('sternal_anterior_rotator', 1, 'Femur', 'forward'),
+    ('sternal_posterior_rotator', -1, 'Femur', 'forward'),
+    ('tergopleural_promotor', 1, 'Femur', 'forward'),
+    ('pleural_remotor_abductor', -1, 'Femur', 'forward'),
+    ('tarsus_depressor', -1, 'Tarsus5', 'vertical'),
+    ('tarsus_levator', 1, 'Tarsus5', 'vertical'),
+])
+def test_named_muscle_moves_the_segment_in_its_named_direction(
+        anatomy_skeleton, muscle, direction, segment, axis):
+    cells = []
+    for leg in LEGS:
+        side = 'left' if leg[0] == 'L' else 'right'
+        level = {'F': 'front', 'M': 'middle', 'H': 'hind'}[leg[1]]
+        cells.append(('leg_motor_neuron', level+'_leg_motor_neuron',
+                      side+'_leg_nerve', side, muscle))
+    neurons = pd.DataFrame(cells, columns=['Class', 'Sub Class', 'Nerve', 'Soma side', 'Primary Cell Type'])
+    gp, gn = build_muscle_matrices(neurons, list(JOINTS))
+    np.testing.assert_array_equal(build_motor_matrix(neurons, list(JOINTS)).toarray(), (gp-gn).toarray())
+    muscles = MuscleModel(gp, gn, list(JOINTS))
+    mj, model, data, qadr, fly_name = anatomy_skeleton
+    segment_ids = [mj.mj_name2id(model, mj.mjtObj.mjOBJ_BODY, f'{fly_name}/{leg}{segment}') for leg in LEGS]
+    assert min(segment_ids) >= 0
+    data.qpos[qadr] = muscles.stand
+    mj.mj_kinematics(model, data)
+    before = data.xpos[segment_ids].copy()
+    thorax = mj.mj_name2id(model, mj.mjtObj.mjOBJ_BODY, f'{fly_name}/Thorax')
+    vector = data.xmat[thorax].reshape(3, 3)[:, 0].copy() if axis == 'forward' else np.array([0., 0., 1.])
+    data.qpos[qadr] = muscles.step(np.full(6, 5.), 10.)
+    mj.mj_kinematics(model, data)
+    displacement = (data.xpos[segment_ids]-before)@vector
+    assert np.all(direction*displacement > 1e-5), dict(zip(LEGS, displacement, strict=True))

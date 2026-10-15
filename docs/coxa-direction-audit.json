@@ -1,5 +1,5 @@
 {
-  "status": "tested_candidate_not_applied",
+  "status": "applied_after_v8_terminal_rejection",
   "current_protocol": "outputs/birth-cycle-v8/report.json",
   "current_source_sha256": "e781c5f9e9c00d318594f939922679b36f75897b3d53cdb574aaea9638957a66",
   "candidate_source_sha256": "d6178c27c836871612233fa5ed7e88ebb6ec274050ce5eaf58cb54a061d8ddb7",
@@ -202,5 +202,111 @@
       "tripod_score": null,
       "checkpoint": "outputs\\birth-cycle-v8\\cycle_000\\validation-quiet-original-11\\attempt_0002\\episode_000.npz"
     }
-  ]
+  ],
+  "v8_final_decision": {
+    "accepted": false,
+    "reason": "completed quiet validation failed; remaining controls not claimed complete",
+    "quiet_check": {
+      "accepted": false,
+      "reason": "candidate did not pass all behavioral criteria",
+      "checks": [
+        {
+          "seed": 10,
+          "complete": true,
+          "standing": true,
+          "cycles": true,
+          "forward": false,
+          "slip": false,
+          "reward": true
+        }
+      ]
+    }
+  },
+  "v8_last_training_checkpoint": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v8\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+  "completed_v8_candidate": {
+    "episode": 0,
+    "seed": 10,
+    "status": "completed",
+    "learning": false,
+    "standing_fraction": 0.9868686868686869,
+    "leg_step_cycles": {
+      "LF": 19,
+      "LM": 18,
+      "LH": 21,
+      "RF": 12,
+      "RM": 13,
+      "RH": 14
+    },
+    "obstacle_contact_seconds": 0.0,
+    "obstacle_response_seconds": null,
+    "obstacle_observation_complete": false,
+    "arena": "quiet",
+    "imported_weights_from": null,
+    "external_senses": true,
+    "wall_seconds": 407.4380000000019,
+    "simulated_seconds": 5.0,
+    "awake_samples": 990,
+    "mean_reward": -0.39142511365170357,
+    "mean_uprightness": 0.9329474538263648,
+    "forward_displacement_mm": -6.475627183914185,
+    "mean_motor_hz": 31.11340939884861,
+    "mean_joint_speed_rad_s": 2.2904496745027676,
+    "per_leg_mean_speed_rad_s": {
+      "LF": 2.198816112918083,
+      "LM": 2.285274338210472,
+      "LH": 2.739778790449855,
+      "RF": 2.245792049184592,
+      "RM": 2.2522699694440824,
+      "RH": 2.020766776604484
+    },
+    "motor_exploration_mv_ms": 0.0,
+    "body_model": "muscles",
+    "brain": "corrected",
+    "learning_rule": "perturbation",
+    "reward_mode": "grounded",
+    "normalize_reward_error": true,
+    "reward_objective": "support-slip-v2",
+    "wing_mode": "neural",
+    "adhesion_mode": "geometry",
+    "heading_forward_distance_mm": -1.0156204256972396,
+    "mean_supporting_feet": 2.793939393939394,
+    "mean_stance_slip_mm_s": 11.248534964308657,
+    "gait_metrics": "outputs\\birth-cycle-v8\\cycle_000\\validation-quiet-candidate-10\\attempt_0003\\episode_000.gait.json",
+    "tripod_score": null,
+    "checkpoint": "outputs\\birth-cycle-v8\\cycle_000\\validation-quiet-candidate-10\\attempt_0003\\episode_000.npz"
+  },
+  "installed_focused_suite": {
+    "passed": 25,
+    "failed": 0,
+    "log": "outputs/anatomical-audit-v8/installed-v9-focused-regression.log"
+  },
+  "active_protocol": {
+    "report": "outputs/birth-cycle-v9/report.json",
+    "settings": {
+      "data": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\data",
+      "output": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v9",
+      "import_weights": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v8\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+      "normalize_reward_error": true,
+      "early_reject": true,
+      "episodes": 1,
+      "seconds": 20.0,
+      "evaluation_seconds": 5.0,
+      "depression_u": 0.0,
+      "dynamics_report": null,
+      "seed": 3,
+      "validation_seeds": [
+        10,
+        11
+      ],
+      "heldout_seeds": [
+        200,
+        201,
+        202
+      ],
+      "learning_rate": 0.2,
+      "source_sha256": "d6178c27c836871612233fa5ed7e88ebb6ec274050ce5eaf58cb54a061d8ddb7"
+    },
+    "wall_seconds": 3600,
+    "promotion_verified": false
+  }
 }

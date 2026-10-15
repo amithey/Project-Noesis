@@ -154,12 +154,15 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         body_options['spawn_pos'] = (0.0, 0.0, 0.2)
         fly = Fly(init_pose=_initial_pose(flygym), **body_options)
     enable_wing_and_head_joints(fly)
-    camera_args = {'camera_parameters': {'name': 'habitat_camera', 'mode': 'fixed',
-                    'pos': (0.5, -5.0, 3.8), 'euler': (0.92, 0, 0), 'fovy': 45},
-                   'window_size': (960, 640)} if enriched else {}
-    camera = Camera(attachment_point=arena.root_element.worldbody if enriched else fly.model.worldbody,
-                    camera_name='camera_left', targeted_fly_names=[] if enriched else fly.name,
-                    play_speed=0.1, fps=30, **camera_args) if args.video else None
+    camera = None
+    if args.video:
+        if enriched:
+            from noesis.recording import make_follow_camera
+            camera = make_follow_camera(fly, arena)
+        else:
+            camera = Camera(attachment_point=fly.model.worldbody,
+                            camera_name='camera_left', targeted_fly_names=[fly.name],
+                            play_speed=.1, fps=30, timestamp_text=True)
     sim = SingleFlySimulation(fly=fly, cameras=[camera] if camera else [], timestep=1e-4,
                               arena=arena, gravity=GRAVITY)
     configure_floor_contacts(sim)
@@ -217,7 +220,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
         context.update(schema=6, reward_objective='support-slip-v2' if args.reward_mode == 'grounded' else 'legacy-body-v1',
                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
-                       motor_interface='anatomical-flexion-v2',
+                       motor_interface='anatomical-coxa-flexion-v3',
                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
                        actuated_joints=names,
                        contact='tarsal-ground-only', neural_dt_ms=.5,

@@ -1,8 +1,7 @@
 # Coxa direction audit and corrected-body training progress
 
-The goal remains unverified. The active v8 protocol uses the corrected proximal
-flexion/extension interface and is now measuring its frozen original controls.
-Its source remains fixed at `e781c5f9e9c00d318594f939922679b36f75897b3d53cdb574aaea9638957a66`.
+The goal remains unverified. The v8 protocol completed and was rejected. It used the corrected proximal
+flexion/extension interface; its archived source fingerprint is `e781c5f9e9c00d318594f939922679b36f75897b3d53cdb574aaea9638957a66`.
 
 ## Completed training, not acceptance
 
@@ -57,10 +56,9 @@ The portable patch is `docs/patches/coxa-direction.patch`; `git apply --check
 --ignore-space-change` passed. It includes the motor correction, an external recording-camera helper, and
 physical direction and real-rendering regression cases. The exact tested source is preserved separately in
 `outputs/protocol-v9-candidate/src/noesis`, and current v8 source is archived in
-`outputs/protocol-v8-source/src/noesis`. The patch is not applied to the live run.
-After the active bounded protocol is terminal, apply the tested correction,
-explicitly import the last complete training weights with reset traces, and use a
-new output directory. Previous-body controls cannot validate the new interface.
+`outputs/protocol-v8-source/src/noesis`. The patch was applied only after the v8 session exited with rejection.
+The new protocol explicitly imports the last complete training weights with reset
+traces and uses a new output directory. Previous-body controls cannot validate the new interface.
 Original and candidate frozen tests remain five seconds, with the same reserved
 validation and heldout seeds and all existing promotion gates.
 
@@ -85,4 +83,38 @@ camera transforms, sensory arrays and last-observation arrays remain exactly
 unchanged after rendering. The distant flipped frame was visually inspected.
 The complete combined source passes 204 tests and Ruff with the staged source
 root declared for import classification. The original motor-only candidate had
-already passed 203 tests. Live v8 source remains unchanged until its run is terminal.
+already passed 203 tests. The installed source is byte-identical to the complete tested candidate. After
+installation, 25 focused motor, real-render and episode integration tests and
+default project Ruff also passed.
+
+
+## Completed frozen rejection and active v9 training
+
+Frozen seed 10 under the v8 body: candidate standing fraction 0.986869 versus
+original 0.864646; all six legs have at least two physical cycles. Candidate
+heading-relative forward motion is -1.015620 mm and slip is 11.248535 mm/s,
+versus original slip 12.099534 mm/s. Slip reduction is 7.033%, below
+the required 20%; candidate slip must be <=9.679627 mm/s. Standing, cycles and
+reward pass, while forward progression and slip fail. Candidate seed 11, obstacle
+and heldout controls were not run and are not counted complete. No model was promoted.
+
+The terminal v8 session and complete last training checkpoint were verified before
+installing the tested correction. `outputs/birth-cycle-v9/report.json` is now
+authoritative for the active model. Training seed 3 uses a twenty-second episode
+and explicit weights-only import from
+`birth-cycle-v8/cycle_000/train-0/attempt_0000/episode_000.npz`. The longer training
+horizon accumulates more experience before each matched evaluation; evaluation
+remains five seconds, with validation 10/11 and heldout 200/201/202. The existing
+3600-second absolute budget, restart-from-episode-start semantics and full promotion
+gates remain unchanged. Original controls will be recomputed for this body interface.
+
+Resume only after its process is terminal, preserving all settings:
+
+```powershell
+$env:PYTHONPATH='src'
+python -u -m noesis.experiments.train_validate --data <existing-data> --output outputs/birth-cycle-v9 --episodes 1 --seconds 20 --seed 3 --wall-seconds 3600 --import-weights outputs/birth-cycle-v8/cycle_000/train-0/attempt_0000/episode_000.npz --normalize-reward-error --early-reject --video --resume
+```
+
+The primary checkout's normal launcher remains unchanged. Interface tests establish
+correct directions and faithful recording; only full frozen physical evaluations
+can establish standing and useful forward walking.
