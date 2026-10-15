@@ -3,8 +3,9 @@
 FlyWire labels every leg motor neuron with the muscle it drives (``Primary Cell Type``), the
 leg (``Sub Class``) and the side (``Nerve``). Each muscle is assigned to one joint degree of
 freedom with a sign (agonist +, antagonist -). This table is a *modelling assumption* from
-leg anatomy, not something stored in the connectome; NeuroMechFly's sign conventions are
-checked only by eye. Muscles not listed (e.g. the TTMn jump muscle) are ignored.
+leg anatomy, not something stored in the connectome. Right-side roll/yaw coordinates
+are reflected according to the actual skeleton; homologous activation is checked
+against MuJoCo forward kinematics. Muscles not listed (e.g. the TTMn jump muscle) are ignored.
 
 When wing (``joint_LWing*``, ``joint_RWing*``) or neck (``joint_Head*``) joints are included
 in ``joint_names``, ``build_motor_matrix`` and ``build_muscle_matrices`` also map FlyWire's
@@ -165,6 +166,17 @@ def _extra_joint_entries(neurons: pd.DataFrame, col: dict[str, int]) -> list[tup
     return entries
 
 
+def _leg_joint_direction(leg: str, dof: str, direction: int) -> int:
+    """The anatomical table uses left-leg coordinates; right roll/yaw axes reflect.
+
+    Equal homologous activation must produce mirrored physical foot positions.
+    Flexion/extension coordinates (Coxa, Femur, Tibia, Tarsus1) keep their signs.
+    This changes the muscle/body interpretation, never a connectome synapse.
+    """
+    reflected = leg.startswith('R') and dof in ('Coxa_roll', 'Coxa_yaw', 'Femur_roll')
+    return -direction if reflected else direction
+
+
 def build_motor_matrix(neurons: pd.DataFrame, joint_names: list[str]) -> sparse.csr_matrix:
     """(n_joints x n_neurons) matrix; ``G @ rates_hz`` = mean agonist minus antagonist rate."""
     col = {name: k for k, name in enumerate(joint_names)}
@@ -173,6 +185,7 @@ def build_motor_matrix(neurons: pd.DataFrame, joint_names: list[str]) -> sparse.
     rows, cols, vals = [], [], []
     for r in table.itertuples():
         for dof, sign in MUSCLE_JOINT.get(r.muscle, ()):
+            sign = _leg_joint_direction(r.leg, dof, sign)
             j = col.get(f"joint_{r.leg}{dof}")
             if j is not None:
                 rows.append(j)
@@ -204,6 +217,7 @@ def build_muscle_matrices(
     pools: dict[tuple[int, int], list[int]] = {}
     for r in table.itertuples():
         for dof, sign in MUSCLE_JOINT.get(r.muscle, ()):
+            sign = _leg_joint_direction(r.leg, dof, sign)
             j = col.get(f"joint_{r.leg}{dof}")
             if j is not None:
                 pools.setdefault((j, sign), []).append(r.idx)

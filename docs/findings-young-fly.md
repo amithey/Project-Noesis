@@ -240,3 +240,56 @@ python -u -m noesis.experiments.train_validate --data <existing-data> --output o
 
 Do not launch a duplicate while the current invocation is live. The active process
 and report, rather than a log timestamp alone, determine whether a resume is needed.
+
+
+## Continuation: reflected right-leg rotational coordinates
+
+The v5 quiet-floor training episode completed ten simulated seconds. Recorded
+standing fraction was 0.9171, heading-relative progress 3.4333 mm, and physical
+stance/lift/stance cycle counts LF=17, LM=26, LH=33, RF=11, RM=12, RH=33. Mean stance
+slip remained high at 6.6259 mm/s. Mean absolute synaptic change was 0.00013797
+(relative to original magnitudes), maximum 0.00323573, well within the 50% bound.
+These training measurements are not a frozen walking verdict.
+
+A further independent geometric audit found an output-coordinate defect. The
+anatomical muscle table was applied with identical angular signs on both sides,
+but the actual body and its reference kinematics reflect Coxa_roll, Coxa_yaw and
+Femur_roll on the right. Equal homologous motor activation therefore produced
+unmirrored physical feet:
+
+| Muscle | Old mean left/right reflection error, mm | Corrected error, mm |
+|---|---:|---:|
+| sternal_anterior_rotator | 0.61364 | 0 |
+| pleural_remotor_abductor | 0.75737 | 0 |
+| sternal_adductor | 0.75737 | 0 |
+| femur_reductor | 0.99698 | 0 |
+| tibia_flexor (unchanged control) | 0 | 0 |
+
+Both `build_motor_matrix` and `build_muscle_matrices` now reflect the right-side
+roll/yaw coordinates. Coxa/Femur/Tibia/Tarsus1 flexion coordinates retain their
+signs. This corrects the motor-neuron-to-muscle/body interpretation; connectome
+synaptic signs, topology and learned magnitudes are not changed. Five new tests
+activate homologous synthetic motor pools and check the actual MuJoCo skeleton's
+foot positions. Before the correction, four tests failed and the flexor control
+passed. After correction all five passed. Full suite: 165 passed; Ruff passed.
+
+The v5 evaluation was stopped only after its ten-second training checkpoint was
+complete. Its experience was explicitly imported into `outputs/birth-cycle-v6`,
+which uses checkpoint model schema 5 and `motor_interface=mirrored-leg-rotations-v1`.
+The v6 invocation trains ten quiet-floor seconds and then runs the unchanged
+five-second frozen control protocol, with a 3,600-wall-second budget. It is live
+at this snapshot; the requested standing/basic-walking goal is not complete.
+
+A separate 0.3-second frozen audit measured real tangential contact-point velocity
+using MuJoCo contact Jacobians. Mean contact-point slip was 4.9996 mm/s, compared
+with 4.1712 mm/s for the existing distal-foot-origin proxy. Thus substantial slip
+is real, not eliminated by changing the measurement point. No slip threshold or
+acceptance criterion was weakened. The birth pose was also checked by forward
+kinematics: all six distal feet are below the thorax and left/right symmetric.
+
+Resume v6 only after its live invocation ends, retaining its import provenance:
+
+```powershell
+$env:PYTHONPATH='src'
+python -u -m noesis.experiments.train_validate --data <existing-data> --output outputs/birth-cycle-v6 --episodes 1 --seconds 10 --wall-seconds 3600 --import-weights outputs/birth-cycle-v5/cycle_000/train-0/attempt_0000/episode_000.npz --video --resume
+```

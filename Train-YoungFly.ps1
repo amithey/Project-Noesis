@@ -5,6 +5,7 @@ param(
     [ValidateRange(0.051, 3600)][double]$Seconds = 5,
     [ValidateRange(1, 10000)][int]$Episodes = 3,
     [string]$Output = 'outputs/young-fly',
+    [string]$ImportWeights,
     [string]$Data,
     [string]$Python
 )
@@ -36,6 +37,7 @@ try {
         '--data', $Data, '--output', $Output, '--wall-seconds', $WallSeconds,
         '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture), '--episodes', $Episodes)
     if ($Resume) { $trainingArguments += '--resume' }
+    if ($ImportWeights) { $trainingArguments += @('--import-weights', $ImportWeights) }
     if ($Video) { $trainingArguments += '--video' }
     & $Python @trainingArguments
     if ($LASTEXITCODE -eq 124) {

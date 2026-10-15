@@ -211,7 +211,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
             'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
-        context.update(schema=4, body_interface='isolated-joint-lists-v2',
+        context.update(schema=5, body_interface='isolated-joint-lists-v2',
+                       motor_interface='mirrored-leg-rotations-v1',
                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
                        actuated_joints=names,
                        contact='tarsal-ground-only', neural_dt_ms=.5,
