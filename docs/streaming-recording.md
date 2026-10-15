@@ -76,3 +76,34 @@ four-trial report is the evidence. The recording-memory fix is independent of it
 Machine-readable evidence: `docs/streaming-recording-results.json`. Exact source,
 regression logs and the unchanged old model are under `outputs/streaming-recording-audit-v9`
 and `outputs/protocol-v9-buffered-video-source/src/noesis`.
+
+
+## Completed replay and continued learning
+
+The archived-source replay completed all five seconds. Every field of all 43 rows
+from the interrupted 0.215-second attempt matches the beginning of the complete
+1000-row trace exactly. No partial learning state or physical continuation was used.
+Candidate seed 10 has standing fraction 0.827273, heading-relative forward motion
+8.963751 mm, and stance slip 17.838475 mm/s. All six legs meet the cycle count, and
+forward distance passes; standing, slip and reward fail. Original seed 10 stands
+0.92 of the measurement window, advances 8.32 mm and slips 15.84 mm/s. Candidate
+seed 11, obstacles and heldout tests were not run after this mandatory rejection.
+No model was promoted.
+
+The v9 protocol is terminal and retained. `outputs/birth-cycle-v10/report.json`
+is the active new protocol, using current streaming source, training seed 4,
+twenty-second training, explicit import of v9's last complete training weights,
+and newly measured five-second original/candidate controls. All previous gates,
+learning/exploration limits and the 3600-second wall budget remain unchanged.
+
+Resume v10 only after its process is terminal, using current source:
+
+```powershell
+$env:PYTHONPATH='src'
+python -u -m noesis.experiments.train_validate --data <existing-data> --output outputs/birth-cycle-v10 --episodes 1 --seconds 20 --seed 4 --wall-seconds 3600 --import-weights outputs/birth-cycle-v9/cycle_000/train-0/attempt_0000/episode_000.npz --normalize-reward-error --early-reject --video --resume
+```
+
+Once its original controls finish, compare their complete physical/neural traces
+with v9's original controls as an additional closed-loop check of recording-only
+equivalence. This supplements, rather than replaces, the new matched acceptance
+checks. Training is still in progress; standing and useful walking remain unproven.
