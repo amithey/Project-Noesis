@@ -1,7 +1,7 @@
 # V11 short quiet-floor training progress
 
-Status: two five-second training births completed; seed 7 is live and
-frozen evaluations remain pending. No validated model exists or has been deployed.
+Status: all three five-second training births completed; original seed-10
+frozen quiet-floor control is live. Candidate/obstacle/heldout evaluation is pending. No validated model exists or has been deployed.
 The run uses source fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd,
 imports complete v10 training weights and preserves all 25 frozen test cases.
 
@@ -68,3 +68,22 @@ learning/exploration and are not matched frozen evidence of improvement.
 The complete second checkpoint passed sign and 50% magnitude-bound checks; it
 is the last-training checkpoint used by seed 7. Best-validated weights remain null.
 All frozen validation, obstacle controls and held-out tests remain pending.
+
+## Third completed birth: seed 7
+
+Seed 7 completed five seconds in 820.1 wall seconds. Standing fraction was 14.55%,
+heading-integrated motion 8.38 mm, mean stance slip 7.88 mm/s and mean reward
+-0.78829. It fell early and did not recover; the lower all-window slip is not
+evidence of better walking. The full failure is retained in the CSV and video.
+A frame at approximately two simulated seconds was exported for review.
+
+Across the three different training seeds, standing was 93.13%, 58.59% and 14.55%.
+This demonstrates inconsistent standing in the short curriculum. Because both
+seed and weights change, it does not isolate a causal degradation from learning.
+The subsequent matched frozen original/candidate controls are still necessary.
+
+The final complete training checkpoint passed sign and 50% bound checks. Source
+fingerprint was reverified unchanged. Best-validated weights remain null. The
+runner has started original seed-10 quiet-floor control with learning=False and
+exploration off. It must finish required controls across bounded resume cycles
+before promotion. The separately tested standing-first reward remains unapplied.
