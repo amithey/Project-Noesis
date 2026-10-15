@@ -1,0 +1,124 @@
+{
+  "diagnostic_only": true,
+  "official_acceptance_unchanged": true,
+  "runs": {
+    "v9-original-10": {
+      "csv": "outputs\\birth-cycle-v9\\cycle_000\\validation-quiet-original-10\\attempt_0001\\episode_000.csv",
+      "awake_rows": 990,
+      "standing_fraction": 0.9222222222222223,
+      "official_cycles": {
+        "LF": 14,
+        "LM": 11,
+        "LH": 11,
+        "RF": 6,
+        "RM": 12,
+        "RH": 3
+      },
+      "cycles_within_unbroken_upright_segments": {
+        "LF": 8,
+        "LM": 4,
+        "LH": 6,
+        "RF": 4,
+        "RM": 7,
+        "RH": 1
+      },
+      "upright_segment_count": 12,
+      "all_heading_forward_mm": 8.319021932396975,
+      "upright_heading_forward_mm": 7.173608108757373,
+      "upright_with_3_supports_forward_mm": 0.21617860976319123,
+      "upright_slip_mm_s": 15.696145565184496,
+      "any_foot_supported_slip_mm_s": 16.18238433144854,
+      "all_samples_slip_mm_s": 15.839121633508721
+    },
+    "v9-candidate-10": {
+      "csv": "outputs\\birth-cycle-v9\\cycle_000\\validation-quiet-candidate-10\\attempt_0004\\episode_000.csv",
+      "awake_rows": 990,
+      "standing_fraction": 0.8272727272727273,
+      "official_cycles": {
+        "LF": 13,
+        "LM": 18,
+        "LH": 11,
+        "RF": 7,
+        "RM": 13,
+        "RH": 4
+      },
+      "cycles_within_unbroken_upright_segments": {
+        "LF": 6,
+        "LM": 8,
+        "LH": 4,
+        "RF": 2,
+        "RM": 6,
+        "RH": 0
+      },
+      "upright_segment_count": 15,
+      "all_heading_forward_mm": 8.963751215369246,
+      "upright_heading_forward_mm": 8.042434402960572,
+      "upright_with_3_supports_forward_mm": 1.8118113086003087,
+      "upright_slip_mm_s": 17.98037072487844,
+      "any_foot_supported_slip_mm_s": 18.150143975853478,
+      "all_samples_slip_mm_s": 17.838474836874173
+    },
+    "v10-original-10": {
+      "csv": "outputs\\birth-cycle-v10\\cycle_000\\validation-quiet-original-10\\attempt_0001\\episode_000.csv",
+      "awake_rows": 990,
+      "standing_fraction": 0.9222222222222223,
+      "official_cycles": {
+        "LF": 14,
+        "LM": 11,
+        "LH": 11,
+        "RF": 6,
+        "RM": 12,
+        "RH": 3
+      },
+      "cycles_within_unbroken_upright_segments": {
+        "LF": 8,
+        "LM": 4,
+        "LH": 6,
+        "RF": 4,
+        "RM": 7,
+        "RH": 1
+      },
+      "upright_segment_count": 12,
+      "all_heading_forward_mm": 8.319021932396975,
+      "upright_heading_forward_mm": 7.173608108757373,
+      "upright_with_3_supports_forward_mm": 0.21617860976319123,
+      "upright_slip_mm_s": 15.696145565184496,
+      "any_foot_supported_slip_mm_s": 16.18238433144854,
+      "all_samples_slip_mm_s": 15.839121633508721
+    },
+    "v10-candidate-10": {
+      "csv": "outputs\\birth-cycle-v10\\cycle_000\\validation-quiet-candidate-10\\attempt_0003\\episode_000.csv",
+      "awake_rows": 990,
+      "standing_fraction": 0.4808080808080808,
+      "official_cycles": {
+        "LF": 8,
+        "LM": 7,
+        "LH": 6,
+        "RF": 11,
+        "RM": 9,
+        "RH": 17
+      },
+      "cycles_within_unbroken_upright_segments": {
+        "LF": 4,
+        "LM": 6,
+        "LH": 4,
+        "RF": 3,
+        "RM": 4,
+        "RH": 2
+      },
+      "upright_segment_count": 6,
+      "all_heading_forward_mm": 11.534673751972436,
+      "upright_heading_forward_mm": 5.020661806725856,
+      "upright_with_3_supports_forward_mm": 1.0492509893293456,
+      "upright_slip_mm_s": 14.752629271910154,
+      "any_foot_supported_slip_mm_s": 12.475010884425814,
+      "all_samples_slip_mm_s": 10.257231171639003
+    }
+  },
+  "interpretation": "Contiguous upright-segment counts restart after every posture/height failure, so they are conservative diagnostics. Signed progress is integrated with measured thorax heading. No support-slip reward, official criterion, brain, body, sensory state or source fingerprint was changed.",
+  "v10_relative_reductions": {
+    "all_samples": 0.35241161669349497,
+    "upright_only": 0.06011133684738179,
+    "any_foot_supported": 0.22909933240294422
+  }
+}
