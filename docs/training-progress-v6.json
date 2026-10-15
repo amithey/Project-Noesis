@@ -1,0 +1,160 @@
+{
+  "snapshot_utc": "2026-10-15T11:54:34.136658+00:00",
+  "goal": "verified leg-supported standing and basic walking",
+  "goal_complete": false,
+  "active_protocol": "outputs/birth-cycle-v6/report.json",
+  "completed_jobs": [
+    {
+      "id": "train-0",
+      "stage": "training",
+      "model": "candidate",
+      "seed": 0,
+      "arena": "quiet",
+      "summary": {
+        "episode": 0,
+        "seed": 0,
+        "status": "completed",
+        "learning": true,
+        "standing_fraction": 0.936180904522613,
+        "leg_step_cycles": {
+          "LF": 28,
+          "LM": 34,
+          "LH": 33,
+          "RF": 4,
+          "RM": 12,
+          "RH": 36
+        },
+        "obstacle_contact_seconds": 0.0,
+        "obstacle_response_seconds": null,
+        "obstacle_observation_complete": false,
+        "arena": "quiet",
+        "imported_weights_from": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v5\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+        "external_senses": true,
+        "wall_seconds": 1015.6720000000005,
+        "simulated_seconds": 10.0,
+        "awake_samples": 1990,
+        "mean_reward": -0.03664865487145509,
+        "mean_uprightness": 0.8932350708911168,
+        "forward_displacement_mm": -3.333862781524658,
+        "mean_motor_hz": 29.914889624123095,
+        "mean_joint_speed_rad_s": 2.345627229477293,
+        "per_leg_mean_speed_rad_s": {
+          "LF": 2.240956716157084,
+          "LM": 2.164455883556874,
+          "LH": 2.932398983147276,
+          "RF": 2.450036055426202,
+          "RM": 2.0827969472462207,
+          "RH": 2.203118799948812
+        },
+        "motor_exploration_mv_ms": 1.5,
+        "body_model": "muscles",
+        "brain": "corrected",
+        "learning_rule": "perturbation",
+        "reward_mode": "grounded",
+        "wing_mode": "neural",
+        "adhesion_mode": "geometry",
+        "heading_forward_distance_mm": 2.7802853882473815,
+        "mean_supporting_feet": 1.8628140703517588,
+        "mean_stance_slip_mm_s": 6.547608478659501,
+        "gait_metrics": "outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.gait.json",
+        "tripod_score": null,
+        "checkpoint": "outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz"
+      }
+    },
+    {
+      "id": "validation-quiet-original-10",
+      "stage": "validation",
+      "arena": "quiet",
+      "model": "original",
+      "seed": 10,
+      "summary": {
+        "episode": 0,
+        "seed": 10,
+        "status": "completed",
+        "learning": false,
+        "standing_fraction": 0.8333333333333334,
+        "leg_step_cycles": {
+          "LF": 12,
+          "LM": 16,
+          "LH": 15,
+          "RF": 2,
+          "RM": 5,
+          "RH": 17
+        },
+        "obstacle_contact_seconds": 0.0,
+        "obstacle_response_seconds": null,
+        "obstacle_observation_complete": false,
+        "arena": "quiet",
+        "imported_weights_from": null,
+        "external_senses": true,
+        "wall_seconds": 416.8590000000004,
+        "simulated_seconds": 5.0,
+        "awake_samples": 990,
+        "mean_reward": -0.048037473805982014,
+        "mean_uprightness": 0.8488696146191973,
+        "forward_displacement_mm": 0.1792544424533844,
+        "mean_motor_hz": 29.796708637900068,
+        "mean_joint_speed_rad_s": 2.2632286933937458,
+        "per_leg_mean_speed_rad_s": {
+          "LF": 2.106241564166666,
+          "LM": 2.2407360800588974,
+          "LH": 2.8290701934785556,
+          "RF": 2.459870661162969,
+          "RM": 1.9605602953921666,
+          "RH": 1.982893332568082
+        },
+        "motor_exploration_mv_ms": 0.0,
+        "body_model": "muscles",
+        "brain": "corrected",
+        "learning_rule": "perturbation",
+        "reward_mode": "grounded",
+        "wing_mode": "neural",
+        "adhesion_mode": "geometry",
+        "heading_forward_distance_mm": 2.7147119896822662,
+        "mean_supporting_feet": 1.8313131313131312,
+        "mean_stance_slip_mm_s": 5.425919290412094,
+        "gait_metrics": "outputs\\birth-cycle-v6\\cycle_000\\validation-quiet-original-10\\attempt_0001\\episode_000.gait.json",
+        "tripod_score": null,
+        "checkpoint": "outputs\\birth-cycle-v6\\cycle_000\\validation-quiet-original-10\\attempt_0001\\episode_000.npz"
+      }
+    }
+  ],
+  "pending_official_jobs": 24,
+  "last_training_checkpoint": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v6\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+  "best_validated_checkpoint": null,
+  "performance_audits": [
+    {
+      "name": "control-only observation without per-step forward synchronization",
+      "seconds": 0.3,
+      "all_csv_columns_exact": false,
+      "adopted": false
+    },
+    {
+      "name": "control-only observation with original per-step forward synchronization",
+      "seconds": 0.3,
+      "all_csv_columns_exact": true,
+      "wall_seconds": 45.468,
+      "reference_wall_seconds": 43.0,
+      "adopted": false,
+      "reason": "no speed gain established; keep the validated stepping path"
+    },
+    {
+      "name": "single-thread retinal kernels; original stepping path",
+      "seconds": 0.3,
+      "all_csv_columns_exact": true,
+      "wall_seconds": 35.578,
+      "reference_wall_seconds": 43.0,
+      "adopted_in_live_protocol": false,
+      "note": "short cold-start timing only; full candidate diagnostic running separately"
+    }
+  ],
+  "standalone_frozen_diagnostic": {
+    "output": "outputs/candidate10-single-thread-v6",
+    "seed": 10,
+    "seconds": 5,
+    "learning": false,
+    "motor_exploration": 0.0,
+    "numba_threads": 1,
+    "promotable_on_its_own": false
+  }
+}
