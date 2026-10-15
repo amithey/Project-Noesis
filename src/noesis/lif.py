@@ -5,6 +5,8 @@ State per neuron: membrane potential ``v`` and synaptic input ``g`` (both mV).
 (``a`` is optional spike-frequency adaptation, off by default.)
 A presynaptic spike adds ``w_syn * W[i, j]`` mV to ``g_j`` after ``delay``.
 External drive adds ``weight`` synapse-equivalents per Poisson event.
+Optional short-term depression scales recurrent transmission by a recovering
+presynaptic resource (``depression_u=0`` disables it). External drive is unaffected.
 
 ``LIFNetwork`` keeps its state between ``run`` calls so a body simulation can advance it
 in lockstep; ``simulate`` is the one-shot convenience wrapper.
@@ -33,6 +35,10 @@ class LIFParams:
     # that decays with ``tau_a``; steady-state it is da * rate * tau_a. 0 disables it.
     da: float = 0.0         # mV per spike
     tau_a: float = 200.0    # ms
+    # Opt-in normalized presynaptic resource depression; U=0 preserves legacy dynamics.
+    depression_u: float = 0.0
+    depression_tau_ms: float = 300.0
+    depression_excitatory_only: bool = True
 
 
 @nb.njit(cache=True)
@@ -50,9 +56,22 @@ def _add(g, in_act, act, nact, j, val):
 
 
 @nb.njit(cache=True)
+def depression_event(resource, last_step, step, dt, utilization, tau_ms):
+    """Exact inter-event recovery; return transmission fraction and depleted state.
+
+    Normalized resting efficacy remains one: baseline weights already include
+    release probability. Fly ORN->PN depression: Kazama & Wilson 2008,
+    https://doi.org/10.1016/j.neuron.2008.02.030. Whole-brain use is an assumption.
+    """
+    recovered = 1.0 - (1.0 - resource) * np.exp(-(step - last_step) * dt / tau_ms)
+    return recovered, recovered * (1.0 - utilization)
+
+
+@nb.njit(cache=True)
 def _run(indptr, indices, data, v, g, adapt, refr, ring, ring_n, act, in_act, nact, step0, n_steps,
          stim_idx, stim_p, stim_w, bg_mean, bg_w, cur_idx, cur_val,
-         v_rest, v_th, dv_k, dg_k, ref_steps, w_syn, da_inc, da_k):
+         v_rest, v_th, dv_k, dg_k, ref_steps, w_syn, da_inc, da_k,
+         resources, last_release, dep_u, dep_tau_ms, dt, excitatory_only):
     n = v.shape[0]
     delay_steps = ring.shape[0]
     out_t = np.empty(1 << 16, np.int64)
@@ -69,8 +88,13 @@ def _run(indptr, indices, data, v, g, adapt, refr, ring, ring_n, act, in_act, na
         # deliver spikes emitted `delay_steps` ago (slot holds exactly those)
         for k in range(ring_n[slot]):
             pre = ring[slot, k]
+            efficacy = 1.0
+            if dep_u > 0.0:
+                efficacy, resources[pre] = depression_event(
+                    resources[pre], last_release[pre], step, dt, dep_u, dep_tau_ms)
+                last_release[pre] = step
             for e in range(indptr[pre], indptr[pre + 1]):
-                _add(g, in_act, act, nact, indices[e], data[e] * w_syn)
+                _add(g, in_act, act, nact, indices[e], data[e] * w_syn * (efficacy if (not excitatory_only or data[e] > 0) else 1.0))
         ring_n[slot] = 0
         for k in range(cur_idx.shape[0]):  # continuous (graded) input, mV per step
             _add(g, in_act, act, nact, cur_idx[k], cur_val[k])
@@ -121,12 +145,19 @@ class LIFNetwork:
 
     def __init__(self, W: sparse.csr_matrix, params: LIFParams | None = None, seed: int = 0):
         self.p = params or LIFParams()
+        if not np.isfinite(self.p.depression_u) or not 0 <= self.p.depression_u <= 1:
+            raise ValueError('depression_u must be finite and within [0, 1]')
+        if not np.isfinite(self.p.depression_tau_ms) or self.p.depression_tau_ms <= 0:
+            raise ValueError('depression_tau_ms must be finite and positive')
         self.indptr = W.indptr.astype(np.int64)
         self.indices = W.indices.astype(np.int64)
         self.data = W.data.astype(np.float64)
         self.n = W.shape[0]
         self.v = np.full(self.n, self.p.v_rest)
         self.g = np.zeros(self.n)
+        # Lazy recovery at delivery events; preserve state across run() boundaries.
+        self.resources = np.ones(self.n)
+        self.last_release = np.zeros(self.n, np.int64)
         self.adapt = np.zeros(self.n)
         self.refr = np.zeros(self.n, np.int32)
         delay_steps = max(1, round(self.p.delay / self.p.dt))
@@ -169,6 +200,7 @@ class LIFNetwork:
             background_hz * self.n * p.dt * 1e-3, background_weight, cidx, cval,
             p.v_rest, p.v_th, p.dt / p.tau_m, float(np.exp(-p.dt / p.tau_syn)),
             round(p.t_ref / p.dt), p.w_syn, p.da, float(np.exp(-p.dt / p.tau_a)),
+            self.resources, self.last_release, p.depression_u, p.depression_tau_ms, p.dt, p.depression_excitatory_only,
         )
         self.step += n_steps
         return t * p.dt, i

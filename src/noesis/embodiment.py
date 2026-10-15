@@ -53,6 +53,7 @@ class MotorExploration:
             raise ValueError("exploration time constant must be finite and positive")
         self.amplitude, self.tau = amplitude_mv_ms, tau_ms
         self.rng = np.random.default_rng(seed)
+        self.innovation = np.empty(0)
         if amplitude_mv_ms == 0:
             self.idx = np.empty(0, dtype=np.int64)
             self.pool = np.empty(0, dtype=np.int64)
@@ -66,6 +67,7 @@ class MotorExploration:
         self.pool = np.concatenate([np.full(len(g), k) for k, (_, g) in enumerate(groups)]) \
             if groups else np.empty(0, dtype=np.int64)
         self.state = np.zeros(len(groups))
+        self.innovation = np.zeros(len(self.idx))
 
     def step(self, dt_ms):
         if not np.isfinite(dt_ms) or dt_ms <= 0:
@@ -73,10 +75,22 @@ class MotorExploration:
         if not len(self.idx):
             return {}
         decay = np.exp(-dt_ms / self.tau)
-        self.state = decay * self.state + np.sqrt(1 - decay**2) * self.rng.normal(
-            size=len(self.state))
+        noise = self.rng.normal(size=len(self.state))
+        self.innovation = np.tanh(noise[self.pool])
+        self.state = decay * self.state + np.sqrt(1 - decay**2) * noise
         return {"current_idx": self.idx,
                 "current_mv_per_ms": self.amplitude * np.tanh(self.state[self.pool])}
+
+
+    def credit(self, motor_indices):
+        """Bounded innovations aligned to learner motors; zeros for unperturbed pools."""
+        result = np.zeros(len(motor_indices))
+        if len(self.idx):
+            slots = np.searchsorted(motor_indices, self.idx)
+            valid = slots < len(motor_indices)
+            valid[valid] &= np.asarray(motor_indices)[slots[valid]] == self.idx[valid]
+            result[slots[valid]] = self.innovation[valid]
+        return result
 
 
 class BrainReadout:

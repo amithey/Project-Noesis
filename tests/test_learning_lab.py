@@ -106,6 +106,7 @@ def lab_environment(monkeypatch, tmp_path):
         "--output", str(tmp_path), "--seconds", "0.025", "--birth", "0.005",
         "--no-senses", "--learn", "--seed", "7", "--arena", "empty",
         "--body-model", "legacy", "--motor-exploration", "0",
+        "--learning-rule", "hebbian", "--learning-rate", "0.02", "--reward-mode", "legacy", "--adhesion-mode", "legacy",
     ])
     return state
 
@@ -267,3 +268,41 @@ def test_muscle_path_routes_neural_rates_and_records_actual_motion(lab_environme
     assert awake and status['learning']
     assert status['brain'] == 'corrected'
     assert status['motor_hz'] > 0 and status['joint_speed_rad_s'] == 0
+
+
+def test_new_learning_and_grounded_reward_path_runs_without_phantom_exploration(lab_environment):
+    env = lab_environment
+    env.args.learning_rule = 'perturbation'
+    env.args.reward_mode = 'grounded'
+    env.args.wing_mode = 'neural'
+    # No exploration: this must freeze weights even with positive body reward.
+    summary, checkpoint = lab.run_episode(env.cn, env.args, 0, None)
+    assert summary['learning_rule'] == 'perturbation'
+    assert summary['mean_supporting_feet'] == 0
+    with np.load(checkpoint) as stored:
+        np.testing.assert_array_equal(stored['weights'], stored['initial_weights'])
+
+
+def test_deadline_episode_is_partial_and_cannot_claim_completion(lab_environment):
+    env = lab_environment
+    summary, checkpoint = lab.run_episode(env.cn, env.args, 0, None, deadline=0.)
+    assert summary['status'] == 'wall_budget'
+    assert summary['simulated_seconds'] == 0
+    assert checkpoint.exists() and env.simulations[0].closed
+
+
+def test_frozen_episode_rejects_accidental_exploration(lab_environment):
+    env = lab_environment
+    env.args.learn = False
+    env.args.motor_exploration = 1.5
+    with pytest.raises(ValueError, match='exploration disabled'):
+        lab.run_episode(env.cn, env.args, 0, None)
+    assert env.simulations[0].closed
+
+
+def test_checkpoint_rejects_changed_dynamics_before_loading_weights(lab_environment):
+    env = lab_environment
+    _, checkpoint = lab.run_episode(env.cn, env.args, 0, None)
+    env.args.depression_u = .03
+    with pytest.raises(ValueError, match='context mismatch'):
+        lab.run_episode(env.cn, env.args, 1, checkpoint)

@@ -73,3 +73,40 @@ def test_inputs_are_not_modified():
     body_reward(previous, current, 1, velocity, 0.1)
     for actual, expected in zip((previous, current, velocity), originals, strict=True):
         np.testing.assert_array_equal(actual, expected)
+
+
+def test_grounded_reward_rejects_airborne_translation_and_penalizes_sliding():
+    from noesis.embodied_metrics import locomotion_reward
+    def run(loads, feet):
+        return locomotion_reward([0, 0, .8], [.5, 0, .8], 1, [0], .1,
+                                 [1, 0, 0], loads, feet)
+    stationary = np.zeros((6, 3))
+    supported = run(np.ones(6), stationary)
+    airborne = run(np.zeros(6), stationary)
+    sliding = run(np.ones(6), np.tile([5, 0, 0], (6, 1)))
+    assert supported['reward'] > airborne['reward']
+    assert airborne['grounded_progress'] == 0
+    assert supported['supporting_feet'] == 6
+    assert sliding['reward'] < supported['reward']
+    assert sliding['stance_slip_mm_s'] == 5
+
+
+def test_grounded_reward_tracks_thorax_heading_not_fixed_world_axis():
+    from noesis.embodied_metrics import locomotion_reward
+    r = locomotion_reward([0, 0, .8], [0, .5, .8], 1, [0], .1,
+                          [0, 1, 0], np.ones(6), np.zeros((6, 3)))
+    assert r['forward_speed_mm_s'] == 5 and r['grounded_progress'] == .5
+    with pytest.raises(ValueError):
+        locomotion_reward([0, 0, .8], [0, 0, .8], 1, [0], .1,
+                          [0, 1, 0], [-1] * 6, np.zeros((6, 3)))
+
+
+def test_skating_cannot_earn_progress_and_persistent_obstacle_contact_costs_reward():
+    from noesis.embodied_metrics import locomotion_reward
+    args = ([0, 0, .8], [.01, 0, .8], 1., np.zeros(3), .01, [1, 0, 0], np.ones(6))
+    planted = locomotion_reward(*args, np.zeros((6, 3)))
+    skating = locomotion_reward(*args, np.tile([1, 0, 0], (6, 1)))
+    obstacle = locomotion_reward(*args, np.zeros((6, 3)), 1.)
+    assert planted['grounded_progress'] > 0
+    assert skating['grip_factor'] < .1
+    assert obstacle['reward'] < planted['reward']

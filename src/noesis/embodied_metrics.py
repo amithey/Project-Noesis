@@ -62,3 +62,43 @@ def body_reward(
         "height_mm": height,
         "effort": effort,
     }
+
+
+def locomotion_reward(previous_position, position, uprightness, joint_velocity, dt_seconds,
+                      heading, leg_loads, foot_velocity, obstacle_contact_seconds=0.):
+    """Artificial grounded-forward objective with a measured stance-slip penalty.
+
+    Uses horizontal thorax heading, >=3 force-bearing legs, and leg joint effort.
+    The 1e-5 force threshold and 5 mm/s slip scale are explicit assumptions.
+    This contact gate rejects airborne translation; it does not certify gait.
+    """
+    base = body_reward(previous_position, position, uprightness, joint_velocity, dt_seconds)
+    heading = np.asarray(heading, float)
+    loads = np.asarray(leg_loads, float)
+    feet = np.asarray(foot_velocity, float)
+    if (heading.shape != (3,) or loads.shape != (6,) or feet.shape != (6, 3)
+            or not all(np.isfinite(x).all() for x in (heading, loads, feet))
+            or np.any(loads < 0)):
+        raise ValueError("heading, nonnegative leg loads and foot velocities must be finite")
+    norm = np.linalg.norm(heading[:2])
+    direction = heading[:2] / norm if norm > 1e-12 else np.zeros(2)
+    speed = float((np.asarray(position)[:2] - np.asarray(previous_position)[:2]) @ direction
+                  / dt_seconds)
+    if not np.isfinite(speed):
+        raise ValueError("nonfinite forward speed")
+    support = loads > 1e-5
+    grounded = support.sum() >= 3 and .3 <= base['height_mm'] <= 1.5 and uprightness >= .7
+    progress = float(np.clip(speed / 10, -1, 1)) if grounded and abs(speed) <= 30 else 0.
+    slip = float(np.mean(np.linalg.norm(feet[support, :2], axis=1))) if support.any() else 0.
+    if not np.isfinite(obstacle_contact_seconds) or obstacle_contact_seconds < 0:
+        raise ValueError("obstacle contact duration must be finite and nonnegative")
+    grip = float(np.clip(1 - slip / (abs(speed) + .1), 0, 1))
+    progress *= grip
+    obstacle_cost = float(np.clip(obstacle_contact_seconds, 0, 1))
+    slip_cost = float(np.clip(slip / 5, 0, 1))
+    fallen = uprightness < .5 or base['height_mm'] < .3
+    reward = float(np.clip(.1 * max(uprightness, 0) + .75 * progress - .6 * fallen
+                           - .05 * base['effort'] - .15 * slip_cost - .2 * obstacle_cost, -1, 1))
+    return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
+            'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
+            'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost}

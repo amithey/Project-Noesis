@@ -66,3 +66,13 @@ def test_gait_report_skips_short_recording_and_handles_partial_bin():
     assert report['analysis_duration_ms'] == 40
     assert report['pooled_leg_spectra']['LF']['spike_count'] == 4
     assert report['tibia_flexor_phase']['tripod_score'] is None
+
+
+def test_motor_credit_is_aligned_and_zero_before_exploration():
+    exploration = MotorExploration(neurons(), 1.5, seed=4)
+    assert not exploration.credit(np.array([0, 1, 2, 3])).any()
+    exploration.step(5)
+    credit = exploration.credit(np.array([0, 1, 2, 3]))
+    assert credit[0] == credit[1] and credit[3] == 0
+    assert np.abs(credit).max() <= 1
+    assert not MotorExploration(neurons(), 0).credit(np.array([0, 1])).any()

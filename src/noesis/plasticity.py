@@ -7,7 +7,12 @@ eligibility trace, and a scalar reward broadcast. It does not implement dopamine
 STDP, or claim that the animal learns this way. Positive reward prediction error
 strengthens the *magnitude* of coactive excitatory AND inhibitory connections.
 
-Activity is binary per update window, so results depend on the chosen window size.
+The optional ``perturbation`` rule instead uses a normalized presynaptic rate
+trace times the signed motor exploration innovation, with weight sign conversion.
+It is an action-credit heuristic, not a proven policy gradient or a biological
+model. The caller must provide the actual bounded exploration innovations.
+
+Legacy activity is binary per update window, so results depend on the window size.
 Reward is clipped to [-1, 1]. Learned magnitudes remain within ``max_change`` of
 their initial values. This is an exploratory controller, not proof of learning to
 walk or fly; that requires held-out evaluation against a frozen-weight baseline.
@@ -40,7 +45,7 @@ class MotorPlasticity:
     """
 
     def __init__(self, net, motor_indices, learning_rate=0.02,
-                 tau_eligibility_ms=500.0, max_change=0.5):
+                 tau_eligibility_ms=500.0, max_change=0.5, rule="hebbian"):
         params = np.array([learning_rate, tau_eligibility_ms, max_change], dtype=float)
         if not np.isfinite(params).all():
             raise ValueError("learning parameters must be finite")
@@ -48,6 +53,9 @@ class MotorPlasticity:
             raise ValueError("require rate >= 0, tau > 0, and 0 <= max_change < 1")
         if net.data.dtype.kind != "f" or not np.isfinite(net.data).all():
             raise ValueError("network weights must be finite floating-point values")
+        if rule not in ("hebbian", "perturbation"):
+            raise ValueError("unknown motor learning rule")
+        self.rule = rule
         self.net = net
         self.learning_rate, self.tau_eligibility_ms, self.max_change = params
         self.motor_indices = np.unique(_indices(motor_indices, net.n, "motor_indices"))
@@ -59,6 +67,7 @@ class MotorPlasticity:
         self.neurons = np.unique(np.concatenate((pre, post)))
         self._pre = np.searchsorted(self.neurons, pre)
         self._post = np.searchsorted(self.neurons, post)
+        self._post_motor = np.searchsorted(self.motor_indices, post)
         self.activity = np.zeros(len(self.neurons))
         self.eligibility = np.zeros(len(self.edge_indices))
         self.reward_baseline = 0.0
@@ -72,7 +81,7 @@ class MotorPlasticity:
             digest.update(np.asarray(array, dtype="<i8").tobytes())
         self._topology = digest.hexdigest()
 
-    def update(self, spike_idx, dt_ms, reward):
+    def update(self, spike_idx, dt_ms, reward, *, perturbation=None):
         """Apply a frame's spikes and reward; return JSON-compatible metrics.
 
         Per-step work is proportional to selected edges/neurons plus input spikes,
@@ -82,13 +91,31 @@ class MotorPlasticity:
         if not np.isfinite(dt_ms) or dt_ms <= 0 or not np.isfinite(reward):
             raise ValueError("dt_ms must be finite and positive; reward must be finite")
         spikes = _indices(spike_idx, self.net.n, "spike_idx")
+        if self.rule == "perturbation":
+            perturbation = np.zeros(len(self.motor_indices)) if perturbation is None else np.asarray(perturbation, float)
+            if (perturbation.shape != self.motor_indices.shape or not np.isfinite(perturbation).all()
+                    or np.any(np.abs(perturbation) > 1)):
+                raise ValueError("perturbation must match motor_indices and lie in [-1, 1]")
+        elif perturbation is not None:
+            raise ValueError("perturbation requires the perturbation learning rule")
         reward = float(np.clip(reward, -1, 1))
         error = reward - self.reward_baseline
         active = np.isin(self.neurons, spikes)
         alpha = -np.expm1(-dt_ms / 100.0)
-        self.activity += alpha * (active - self.activity)
+        if self.rule == "hebbian":
+            self.activity += alpha * (active - self.activity)
+        else:
+            # Presynaptic rate trace normalized at 50 Hz, rather than multiplying
+            # two tiny 5 ms spike probabilities as in the legacy rule.
+            rate = np.bincount(spikes, minlength=self.net.n)[self.neurons] * (1000 / dt_ms / 50)
+            self.activity = np.clip((1 - alpha) * self.activity + alpha * rate, 0, 1)
         alpha_e = -np.expm1(-dt_ms / self.tau_eligibility_ms)
         coactivity = self.activity[self._pre] * self.activity[self._post]
+        if self.rule == "perturbation":
+            # A rewarded positive motor perturbation credits excitatory input
+            # and reduces inhibitory magnitude; a negative perturbation reverses it.
+            coactivity = (self.activity[self._pre] * perturbation[self._post_motor]
+                          * np.sign(self.initial_weights))
         self.eligibility += alpha_e * (coactivity - self.eligibility)
         old = self.net.data[self.edge_indices].copy()
         # Clip the dimensionless increment before multiplication to avoid overflow
@@ -134,7 +161,8 @@ class MotorPlasticity:
         """Write a pickle-free NPZ checkpoint at the exact requested path."""
         with Path(path).open("wb") as handle:
             np.savez_compressed(
-                handle, version=np.array(1), topology=np.array(self._topology),
+                handle, version=np.array(1 if self.rule == "hebbian" else 2),
+                rule=np.array(self.rule), topology=np.array(self._topology),
                 motor_indices=self.motor_indices, initial_weights=self.initial_weights,
                 parameters=np.array([self.learning_rate, self.tau_eligibility_ms, self.max_change]),
                 weights=self.net.data[self.edge_indices], activity=self.activity,
@@ -152,7 +180,7 @@ class MotorPlasticity:
         try:
             with np.load(path, allow_pickle=False) as checkpoint:
                 expected = {
-                    "version": np.array(1), "topology": np.array(self._topology),
+                    "version": np.array(1 if self.rule == "hebbian" else 2), "topology": np.array(self._topology),
                     "motor_indices": self.motor_indices, "initial_weights": self.initial_weights,
                     "parameters": np.array([
                         self.learning_rate, self.tau_eligibility_ms, self.max_change]),
@@ -160,6 +188,9 @@ class MotorPlasticity:
                 for key, value in expected.items():
                     if not np.array_equal(checkpoint[key], value):
                         raise ValueError(f"checkpoint mismatch: {key}")
+                stored_rule = str(checkpoint["rule"]) if "rule" in checkpoint else "hebbian"
+                if stored_rule != self.rule:
+                    raise ValueError("checkpoint mismatch: learning rule")
                 weights = checkpoint["weights"].copy()
                 activity = checkpoint["activity"].copy()
                 eligibility = checkpoint["eligibility"].copy()
@@ -174,7 +205,7 @@ class MotorPlasticity:
                         or np.any(np.abs(weights) < self._lower)
                         or np.any(np.abs(weights) > self._upper)
                         or np.any((activity < 0) | (activity > 1))
-                        or np.any((eligibility < 0) | (eligibility > 1))
+                        or np.any((eligibility < (-1 if self.rule == "perturbation" else 0)) | (eligibility > 1))
                         or not -1 <= float(baseline) <= 1):
                     raise ValueError("checkpoint state exceeds learning bounds")
         except (KeyError, TypeError) as error:

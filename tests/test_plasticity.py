@@ -141,3 +141,71 @@ def test_empty_motor_set_is_valid():
     result = learner.update([0, 1], 100, 1)
     assert result["plastic_edges"] == 0
     assert result["max_relative_change"] == 0
+
+
+def test_perturbation_reward_credits_excitation_and_disinhibition():
+    net = network()
+    learner = MotorPlasticity(net, [2], rule='perturbation', learning_rate=1)
+    learner.update([0, 1], 100, 1, perturbation=[1.])
+    assert net.data[learner.edge_indices][0] > 4
+    assert abs(net.data[learner.edge_indices][1]) < 2
+    assert np.array_equal(np.sign(net.data[learner.edge_indices]), [1, -1])
+    assert (learner.eligibility > 0).any() and (learner.eligibility < 0).any()
+
+
+def test_perturbation_without_exploration_cannot_credit_tonic_activity():
+    net = network()
+    original = net.data.copy()
+    learner = MotorPlasticity(net, [2], rule='perturbation')
+    for _ in range(100):
+        learner.update([0, 1, 2], 5, 1)
+    np.testing.assert_array_equal(net.data, original)
+
+
+@pytest.mark.parametrize('tau_ms', [50., 100.])
+def test_delayed_action_reward_changes_relevant_motor_not_unrelated_motor(tau_ms):
+    # Fixed delayed-reward bandit: only motor 2's exploration predicts reward.
+    # Motor 3 sees identical presynaptic activity but unrelated exploration.
+    net = LIFNetwork(sparse.csr_matrix(np.array([
+        [0., 0., 4., 4.], [0., 0., -2., -2.],
+        [0., 0., 0., 0.], [0., 0., 0., 0.],
+    ])))
+    learner = MotorPlasticity(net, [2, 3], rule='perturbation', learning_rate=.2,
+                             tau_eligibility_ms=tau_ms)
+    rng = np.random.default_rng(13)
+    noise = rng.choice([-1., 1.], (2000, 2))
+    for k, action in enumerate(noise):
+        reward = noise[k - 5, 0] if k >= 5 else 0
+        learner.update([0, 1], 5, reward, perturbation=action)
+    learned = net.data[learner.edge_indices] / learner.initial_weights
+    targets = net.indices[learner.edge_indices]
+    relevant = np.abs(learned[targets == 2] - 1).mean()
+    irrelevant = np.abs(learned[targets == 3] - 1).mean()
+    assert relevant > .05 and irrelevant < .04
+    assert learned[0] > 1 and learned[2] < 1
+
+
+def test_signed_eligibility_checkpoint_transfer_and_rule_mismatch(tmp_path):
+    a, b = network(), network()
+    first = MotorPlasticity(a, [2], rule='perturbation')
+    first.update([0, 1], 100, 1, perturbation=[1.])
+    path = tmp_path / 'perturbed.npz'
+    first.save(path)
+    second = MotorPlasticity(b, [2], rule='perturbation')
+    second.load(path, restore_traces=True)
+    assert np.any(second.eligibility < 0)
+    first.update([0], 5, -.5, perturbation=[-.2])
+    second.update([0], 5, -.5, perturbation=[-.2])
+    np.testing.assert_array_equal(a.data, b.data)
+    with pytest.raises(ValueError, match='mismatch'):
+        MotorPlasticity(network(), [2]).load(path)
+
+
+@pytest.mark.parametrize('perturbation', [[1., 0.], [np.nan], [1.01]])
+def test_bad_perturbation_does_not_mutate(perturbation):
+    learner = MotorPlasticity(network(), [2], rule='perturbation')
+    original = learner.net.data.copy()
+    with pytest.raises(ValueError):
+        learner.update([0], 5, 1, perturbation=perturbation)
+    np.testing.assert_array_equal(learner.net.data, original)
+    assert not learner.activity.any() and learner.reward_baseline == 0

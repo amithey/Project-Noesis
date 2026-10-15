@@ -16,9 +16,11 @@ from pathlib import Path
 
 import numpy as np
 
+from noesis.adhesion import FootAdhesion
 from noesis.balance import BalanceMap
+from noesis.behavior_metrics import behavior_summary
 from noesis.body import BodyParams, MuscleModel, make_fly
-from noesis.embodied_metrics import body_reward
+from noesis.embodied_metrics import body_reward, locomotion_reward
 from noesis.embodiment import BrainReadout, MotorExploration, gait_report, load_training_brain
 from noesis.environment_senses import (
     EnvironmentSenses,
@@ -27,11 +29,13 @@ from noesis.environment_senses import (
     merge_drive,
     mouth_position,
 )
+from noesis.ground_contact import ground_contacts
 from noesis.habitat import Habitat, habitat_arena
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_motor_matrix, build_muscle_matrices
 from noesis.plasticity import MotorPlasticity
 from noesis.sensory import LEGS, LegState, SensoryMap
+from noesis.training_scene import training_arena
 from noesis.viz.brain_map import write_activity
 from noesis.world import (
     CONTACT_SOLREF,
@@ -73,14 +77,19 @@ def parser() -> argparse.ArgumentParser:
                     help='bounded motor current mV/ms; default 1.5 training, 0 frozen')
     ap.add_argument('--learn', action='store_true', help='enable experimental synaptic updates')
     ap.add_argument('--checkpoint', type=Path, help='load learned weights for evaluation/training')
-    ap.add_argument('--learning-rate', type=float, default=0.02)
+    ap.add_argument('--learning-rate', type=float, default=0.2)
+    ap.add_argument('--learning-rule', choices=('perturbation', 'hebbian'), default='perturbation')
+    ap.add_argument('--reward-mode', choices=('grounded', 'legacy'), default='grounded')
+    ap.add_argument('--wing-mode', choices=('neural', 'legacy'), default='neural')
+    ap.add_argument('--adhesion-mode', choices=('geometry', 'legacy'), default='geometry')
     ap.add_argument('--viewer', action='store_true', help='open interactive MuJoCo window')
     ap.add_argument('--brain-map', type=Path, help='publish live firing rates for the brain-map window')
     ap.add_argument('--video', action='store_true', help='record each episode as MP4')
     ap.add_argument('--no-senses', action='store_true')
     ap.add_argument('--no-balance', action='store_true')
     ap.add_argument('--sensory-weight', type=float, default=400.0)
-    ap.add_argument('--arena', choices=('habitat', 'empty'), default='habitat')
+    ap.add_argument('--arena', choices=('habitat', 'empty', 'quiet', 'obstacle'), default='habitat')
+    ap.add_argument('--depression-u', type=float, default=0.)
     ap.add_argument('--no-environment-senses', action='store_true', help='world remains visible, sensory input disabled')
     ap.add_argument('--environment-weight', type=float, default=100.0)
     ap.add_argument('--vision-hz', type=float, default=20.0)
@@ -89,6 +98,10 @@ def parser() -> argparse.ArgumentParser:
 
 
 def validate_args(ap, args):
+    if args.depression_u not in (0., .03, .1):
+        ap.error('--depression-u must be 0, .03 or .1')
+    if not args.learn and args.motor_exploration not in (None, 0.):
+        ap.error('evaluation requires exploration disabled')
     if args.episodes < 1:
         ap.error('--episodes must be positive')
     if not np.isfinite(args.seconds) or args.seconds <= 0:
@@ -110,16 +123,17 @@ def validate_args(ap, args):
         ap.error('--output must be a new or empty directory')
 
 
-def run_episode(cn, args, episode, checkpoint):
+def run_episode(cn, args, episode, checkpoint, *, deadline=None):
     import flygym
     from flygym import Camera, Fly, PhysicsError, SingleFlySimulation, preprogrammed
 
     chunk_ms = 5.0
     seed = args.seed + episode
-    enriched = args.arena == 'habitat'
+    enriched = args.arena != 'empty'
     environmental_input = enriched and not args.no_environment_senses
-    arena = habitat_arena() if enriched else floor_arena()
-    net = LIFNetwork(cn.W, LIFParams(dt=0.5, da=1.0), seed=seed)
+    arena = (training_arena(args.arena == 'obstacle') if args.arena in ('quiet', 'obstacle')
+             else habitat_arena() if enriched else floor_arena())
+    net = LIFNetwork(cn.W, LIFParams(dt=0.5, da=1.0, depression_u=args.depression_u), seed=seed)
     body_options = { 'control': 'position', 'enable_adhesion': True,
               'floor_collisions': FLOOR_COLLISIONS,
               'contact_solref': CONTACT_SOLREF,
@@ -156,6 +170,7 @@ def run_episode(cn, args, episode, checkpoint):
         target = rest.copy()
         names = list(fly.actuated_joints)
         G = build_motor_matrix(cn.neurons, names)
+        foot_adhesion = FootAdhesion(sim.physics, fly, names) if args.adhesion_mode == 'geometry' else None
         wing_mask = np.array([n.startswith(('joint_LWing', 'joint_RWing')) for n in names])
         gain_vec = np.full(len(names), 0.35)
         lo_vec = rest - 0.8
@@ -181,13 +196,25 @@ def run_episode(cn, args, episode, checkpoint):
         amplitude = args.motor_exploration
         if amplitude is None:
             amplitude = 1.5 if args.learn else 0.0
+        if not args.learn and amplitude != 0:
+            raise ValueError('evaluation requires motor exploration disabled')
         exploration = MotorExploration(cn.neurons, amplitude, seed=seed)
         readout = BrainReadout(cn.neurons, np.unique(G.indices))
         rates_hz = np.zeros(cn.n)
         leg_motor_ids = np.flatnonzero(cn.neurons['Class'].eq('leg_motor_neuron')) if 'Class' in cn.neurons else np.unique(G.indices)
         plasticity = MotorPlasticity(net, np.unique(G.indices),
-                                    learning_rate=args.learning_rate)
+                                    learning_rate=args.learning_rate, rule=args.learning_rule,
+                                    tau_eligibility_ms=100 if args.learning_rule == "perturbation" else 500)
+        context = {name: getattr(args, name) for name in (
+            'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
+            'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
+            'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
+        context.update(schema=3, contact='tarsal-ground-only', neural_dt_ms=.5,
+                       eligibility_ms=100 if args.learning_rule == 'perturbation' else 500)
         if checkpoint:
+            metadata = Path(checkpoint).with_suffix('.model.json')
+            if metadata.exists() and json.loads(metadata.read_text(encoding='utf-8')) != context:
+                raise ValueError('checkpoint model context mismatch')
             plasticity.load(checkpoint)
         tracker = RateTracker(cn.n, tau_ms=25.0)
         senses = None if args.no_senses else SensoryMap(cn.neurons)
@@ -199,17 +226,21 @@ def run_episode(cn, args, episode, checkpoint):
                 json.dumps(environment.coverage(), indent=2), encoding='utf-8')
         joints = {(leg, dof): names.index(f'joint_{leg}{dof}')
                   for leg in LEGS for dof in ('Coxa', 'Femur', 'Tibia')}
-        sensor_legs = np.array([LEGS.index(n.split('/')[-1][:2])
-                               for n in fly.contact_sensor_placements])
         if args.viewer:
             viewer = launch_viewer(sim, enriched=enriched)
         print(f'Episode {episode}: {cn.n:,} entries, {G.nnz} motor mappings; '
               f'learning={args.learn}, seed={seed}', flush=True)
         awake_origin = None
+        obstacle_duration = 0.
         for k in range(int(np.ceil(args.seconds * 1000 / chunk_ms))):
+            if deadline is not None and time.monotonic() >= deadline:
+                status = 'wall_budget'
+                break
             t = k * chunk_ms / 1000
             awake = t >= args.birth
             previous = obs['fly'][0].copy()
+            previous_feet = obs['end_effectors'].copy()
+            heading = obs['cardinal_vectors'][0].copy()
             spikes = np.empty(0, dtype=np.int32)
             env_telemetry = {}
             env_rates = None
@@ -223,8 +254,7 @@ def run_episode(cn, args, episode, checkpoint):
                 if awake_origin is None:
                     awake_origin = previous.copy()
                 drive_parts = []
-                forces = np.linalg.norm(obs['contact_forces'], axis=1)
-                loads = np.bincount(sensor_legs, weights=forces, minlength=6)
+                loads, _ = ground_contacts(sim, fly)
                 if senses is not None:
                     angles = obs['joints'][0] - rest
                     velocity = obs['joints'][1]
@@ -252,7 +282,7 @@ def run_episode(cn, args, episode, checkpoint):
                 desired = np.clip(rest + gain_vec * np.tanh(net_drive / 25.0), lo_vec, hi_vec)
                 if muscles is not None:
                     desired[leg_rows] = muscles.step(rates_hz, chunk_ms)
-                if wing_mask.any():
+                if wing_mask.any() and args.wing_mode == 'legacy':
                     # Asynchronous flight power & steering muscles elevate and stroke the wings
                     stroke = 0.5 + 0.5 * np.sin(2.0 * np.pi * 25.0 * t)
                     for side, sgn in (('L', 1.0), ('R', -1.0)):
@@ -273,6 +303,8 @@ def run_episode(cn, args, episode, checkpoint):
                 if len(swinging) > 2:
                     swinging = swinging[np.argpartition(lift[swinging], -2)[-2:]]
                 adhesion[swinging] = 0
+                if foot_adhesion is not None:
+                    adhesion = foot_adhesion.command(target)
             try:
                 for _ in range(round(chunk_ms / 1000 / sim.timestep)):
                     obs, *_ = sim.step({'joints': target, 'adhesion': adhesion})
@@ -284,11 +316,22 @@ def run_episode(cn, args, episode, checkpoint):
             score = body_reward(previous, obs['fly'][0],
                                 float(np.clip(obs['cardinal_vectors'][2][2], -1, 1)),
                                 obs['joints'][1], chunk_ms / 1000)
-            learning = plasticity.update(spikes, chunk_ms, score['reward']) \
+            loads, obstacle_force = ground_contacts(sim, fly)
+            obstacle_duration = obstacle_duration + chunk_ms / 1000 if obstacle_force > 1e-5 else 0.
+            if args.reward_mode == 'grounded':
+                foot_velocity = (obs['end_effectors'] - previous_feet) / (chunk_ms / 1000)
+                score = locomotion_reward(previous, obs['fly'][0],
+                    float(np.clip(obs['cardinal_vectors'][2][2], -1, 1)),
+                    obs['joints'][1][leg_rows], chunk_ms / 1000, heading, loads, foot_velocity, obstacle_duration)
+            credit = {'perturbation': exploration.credit(plasticity.motor_indices)} \
+                if args.learning_rule == 'perturbation' else {}
+            learning = plasticity.update(spikes, chunk_ms, score['reward'], **credit) \
                 if awake and args.learn else plasticity.metrics()
             pos = obs['fly'][0]
             neural = readout.rates(rates_hz)
             motion = {
+                'obstacle_force': obstacle_force,
+                'yaw_rad': float(np.arctan2(obs['cardinal_vectors'][0][1], obs['cardinal_vectors'][0][0])),
                 'joint_speed_rad_s': float(np.mean(np.abs(obs['joints'][1][leg_rows]))),
                 'joint_offset_rad': float(np.mean(np.abs(obs['joints'][0][leg_rows] - rest[leg_rows]))),
                 'command_offset_rad': float(np.mean(np.abs(target[leg_rows] - rest[leg_rows]))),
@@ -296,7 +339,9 @@ def run_episode(cn, args, episode, checkpoint):
                 'muscle_pos': float(muscles.a_pos.mean()) if muscles else 0.0,
                 'muscle_neg': float(muscles.a_neg.mean()) if muscles else 0.0,
             }
-            for leg in LEGS:
+            for li, leg in enumerate(LEGS):
+                motion[f'{leg}_ground_load'] = float(loads[li])
+                motion[f'{leg}_foot_z_mm'] = float(obs['end_effectors'][li, 2])
                 mine = [i for i in leg_rows if names[i].startswith(f'joint_{leg}')]
                 motion[f'{leg}_speed_rad_s'] = float(np.mean(np.abs(obs['joints'][1][mine])))
             rows.append(dict(time_s=t + chunk_ms / 1000, awake=int(awake),
@@ -322,6 +367,7 @@ def run_episode(cn, args, episode, checkpoint):
                     status = 'viewer_closed'
                     break
         plasticity.save(prefix.with_suffix('.npz'))
+        prefix.with_suffix('.model.json').write_text(json.dumps(context, indent=2), encoding='utf-8')
         if camera:
             camera.save_video(prefix.with_suffix('.mp4'))
         if environment:
@@ -354,6 +400,8 @@ def run_episode(cn, args, episode, checkpoint):
     prefix.with_suffix('.gait.json').write_text(json.dumps(gait, indent=2), encoding='utf-8')
     awake_rows = [r for r in rows if r['awake']]
     summary = {'episode': episode, 'seed': seed, 'status': status, 'learning': args.learn,
+               **behavior_summary(rows), 'arena': args.arena,
+               'external_senses': environmental_input,
                'wall_seconds': time.monotonic() - start,
                'simulated_seconds': rows[-1]['time_s'] if rows else 0,
                'awake_samples': len(awake_rows),
@@ -368,6 +416,11 @@ def run_episode(cn, args, episode, checkpoint):
                'per_leg_mean_speed_rad_s': {leg: float(np.mean([r[f'{leg}_speed_rad_s'] for r in awake_rows])) for leg in LEGS} if awake_rows else {},
                'motor_exploration_mv_ms': amplitude,
                'body_model': args.body_model, 'brain': args.brain,
+               'learning_rule': args.learning_rule, 'reward_mode': args.reward_mode,
+               'wing_mode': args.wing_mode, 'adhesion_mode': args.adhesion_mode,
+               'heading_forward_distance_mm': float(sum(r['forward_speed_mm_s'] * chunk_ms / 1000 for r in awake_rows)),
+               'mean_supporting_feet': float(np.mean([r['supporting_feet'] for r in awake_rows])) if awake_rows and args.reward_mode == 'grounded' else None,
+               'mean_stance_slip_mm_s': float(np.mean([r['stance_slip_mm_s'] for r in awake_rows])) if awake_rows and args.reward_mode == 'grounded' else None,
                'gait_metrics': str(prefix.with_suffix('.gait.json')),
                'tripod_score': gait.get('tibia_flexor_phase', {}).get('tripod_score'),
                'checkpoint': str(prefix.with_suffix('.npz'))}
@@ -393,7 +446,7 @@ def main():
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(neuron_table_entries=cn.n, synaptic_pairs=cn.W.nnz,
                   model='LIF + assumed motor/sensory mappings + experimental motor plasticity',
-                  flight=False, reward='artificial upright forward-motion objective',
+                  flight=False, reward='contact-gated forward motion and stance slip' if args.reward_mode == 'grounded' else 'legacy upright forward-motion objective',
                   gravity_mm_s2=GRAVITY, floor_z_mm=0.0, floor_collisions=FLOOR_COLLISIONS,
                   contact_solref=CONTACT_SOLREF,
                   floor_contact_margin_mm=FLOOR_CONTACT_MARGIN_MM,
