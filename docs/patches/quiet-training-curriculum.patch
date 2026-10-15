@@ -1,0 +1,132 @@
+--- a/src/noesis/experiments/train_validate.py
++++ b/src/noesis/experiments/train_validate.py
+@@ -59,9 +59,13 @@
+                for a, b in zip(candidate, ablated, strict=True))
+ 
+ 
+-def build_jobs(episodes, seed, validation, heldout):
++def build_jobs(episodes, seed, validation, heldout, training_arena='graded'):
++    """Choose training scenes while retaining every frozen evaluation case."""
++    if training_arena not in ('graded', 'quiet', 'obstacle'):
++        raise ValueError('unknown training arena')
+     jobs = [{'id': f'train-{i}', 'stage': 'training', 'model': 'candidate', 'seed': seed+i,
+-                 'arena': 'quiet' if i < max(1, episodes//2) else 'obstacle'} for i in range(episodes)]
++                 'arena': training_arena if training_arena != 'graded' else (
++                     'quiet' if i < max(1, episodes//2) else 'obstacle')} for i in range(episodes)]
+     for stage, seeds in [('validation', validation), ('heldout', heldout)]:
+         for arena, models in [('quiet', ('original', 'candidate')),
+                               ('obstacle', ('original', 'candidate', 'ablated'))]:
+@@ -80,6 +84,8 @@
+     ap.add_argument('--normalize-reward-error', action='store_true')
+     ap.add_argument('--early-reject', action='store_true', help='reject failed quiet validation before consuming further controls')
+     ap.add_argument('--episodes', type=int, default=3)
++    ap.add_argument('--training-arena', choices=('graded', 'quiet', 'obstacle'), default='graded',
++                    help='training scenes only; frozen quiet/obstacle controls remain mandatory')
+     ap.add_argument('--seconds', type=float, default=5.)
+     ap.add_argument('--evaluation-seconds', type=float, default=5.)
+     ap.add_argument('--wall-seconds', type=float, default=3600.)
+@@ -158,7 +164,8 @@
+     with WallBudget(deadline):
+         cn, scale = load_training_brain(args.data, args.output/'cache')
+         report['region_scale'] = scale
+-        jobs = build_jobs(args.episodes, args.seed, args.validation_seeds, args.heldout_seeds)
++        jobs = build_jobs(args.episodes, args.seed, args.validation_seeds, args.heldout_seeds,
++                          args.training_arena)
+         done = {j['id'] for j in report['jobs']}
+         rejected = None
+         for job in jobs:
+--- a/Train-YoungFly.ps1
++++ b/Train-YoungFly.ps1
+@@ -7,6 +7,7 @@
+     [ValidateRange(0.051, 3600)][double]$Seconds = 5,
+     [ValidateRange(1, 10000)][int]$Episodes = 3,
+     [ValidateRange(0, 4294967295)][long]$Seed = 0,
++    [ValidateSet('graded', 'quiet', 'obstacle')][string]$TrainingArena = 'graded',
+     [string]$Output = 'outputs/young-fly',
+     [string]$ImportWeights,
+     [string]$Data,
+@@ -38,7 +39,8 @@
+     $env:PYTHONPATH = Join-Path $PSScriptRoot 'src'
+     $trainingArguments = @('-u', '-m', 'noesis.experiments.train_validate',
+         '--data', $Data, '--output', $Output, '--wall-seconds', $WallSeconds,
+-        '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture), '--episodes', $Episodes, '--seed', $Seed)
++        '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture), '--episodes', $Episodes, '--seed', $Seed,
++        '--training-arena', $TrainingArena)
+     if ($Resume) { $trainingArguments += '--resume' }
+     if ($ImportWeights) { $trainingArguments += @('--import-weights', $ImportWeights) }
+     if ($Video) { $trainingArguments += '--video' }
+--- /dev/null
++++ b/tests/test_training_curriculum.py
+@@ -0,0 +1,72 @@
++"""Training curricula change experience allocation, never frozen acceptance cases."""
++import json
++
++import pytest
++
++from noesis.experiments import train_validate as tv
++
++
++@pytest.mark.parametrize(('arena', 'expected'), [
++    ('graded', ['quiet', 'obstacle', 'obstacle']),
++    ('quiet', ['quiet', 'quiet', 'quiet']),
++    ('obstacle', ['obstacle', 'obstacle', 'obstacle']),
++])
++def test_training_scene_choice_preserves_complete_frozen_matrix(arena, expected):
++    reference = tv.build_jobs(3, 5, [10, 11], [200, 201, 202])
++    jobs = tv.build_jobs(3, 5, [10, 11], [200, 201, 202], arena)
++    assert [j['arena'] for j in jobs if j['stage']=='training'] == expected
++    assert [j['seed'] for j in jobs if j['stage']=='training'] == [5, 6, 7]
++    assert [j for j in jobs if j['stage']!='training'] == reference[3:]
++    assert len(reference[3:]) == 25
++
++
++def test_invalid_training_scene_rejected():
++    with pytest.raises(ValueError, match='training arena'):
++        tv.build_jobs(3, 5, [10, 11], [200], 'empty')
++
++
++def test_short_quiet_episodes_chain_full_weights_and_replay_interrupted_episode(monkeypatch, tmp_path):
++    calls, interrupted = [], [True]
++    def episode(cn, args, index, checkpoint, *, deadline):
++        calls.append((args.seed, args.arena, args.learn, args.seconds,
++                      args.motor_exploration, checkpoint, args.no_environment_senses))
++        summary = {'seed': args.seed, 'status': 'completed', 'simulated_seconds': 5.,
++            'learning': args.learn, 'motor_exploration_mv_ms': args.motor_exploration,
++            'mean_reward': .2 if checkpoint is None else .3, 'mean_uprightness': .95,
++            'standing_fraction': .95, 'mean_stance_slip_mm_s': .2 if checkpoint is None else .1,
++            'leg_step_cycles': {'LF': 2, 'LM': 2, 'LH': 2, 'RF': 2},
++            'heading_forward_distance_mm': 1.1, 'obstacle_observation_complete': True,
++            'obstacle_response_seconds': .2,
++            'obstacle_contact_seconds': .4 if args.no_environment_senses else .1}
++        if args.learn and args.seed == 7 and interrupted[0]:
++            summary.update(status='wall_budget', simulated_seconds=2.)
++            interrupted[0] = False
++        saved = args.output/'episode_000.npz'
++        saved.write_bytes(b'fake-checkpoint')
++        return summary, saved
++    monkeypatch.setattr(tv, 'load_training_brain', lambda *a: (None, {}))
++    monkeypatch.setattr(tv.lab, 'run_episode', episode)
++    output = tmp_path/'run'
++    argv = ['train_validate', '--data', str(tmp_path/'data'), '--output', str(output),
++            '--episodes', '3', '--seconds', '5', '--seed', '5', '--training-arena', 'quiet']
++    monkeypatch.setattr('sys.argv', argv)
++    tv.main()
++    first = json.loads((output/'report.json').read_text())
++    assert first['status']=='pending' and len(first['jobs'])==2
++    assert first['best_validated_checkpoint'] is None
++    last_full = first['last_training_checkpoint']
++    assert last_full == str((output/'cycle_000/train-1/attempt_0001/episode_000.npz').resolve())
++    assert calls[2][5] == last_full
++    monkeypatch.setattr('sys.argv', argv+['--resume'])
++    tv.main()
++    second = json.loads((output/'report.json').read_text())
++    assert calls[2] == calls[3]
++    training = [call for call in calls if call[2]]
++    assert [call[:5] for call in training] == [
++        (5, 'quiet', True, 5., 1.5), (6, 'quiet', True, 5., 1.5),
++        (7, 'quiet', True, 5., 1.5), (7, 'quiet', True, 5., 1.5)]
++    frozen = [call for call in calls if not call[2]]
++    assert len(frozen)==25 and all(call[3:5]==(5., 0.) for call in frozen)
++    assert any(call[1]=='obstacle' and call[6] for call in frozen)
++    assert second['status']=='completed' and second['decision']['accepted']
++    assert second['best_validated_checkpoint']==second['last_training_checkpoint']

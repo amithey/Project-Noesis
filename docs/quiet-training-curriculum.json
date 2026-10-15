@@ -1,0 +1,145 @@
+{
+  "status": "tested_not_applied",
+  "active_protocol": "outputs/birth-cycle-v10/report.json",
+  "active_source_sha256": "82258af3338a8c0104fb40da1ffbf15003ca7c2926cc59d2fca4c609f283d392",
+  "candidate_source_sha256": "fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd",
+  "changed_model_source_files": [
+    "experiments/train_validate.py"
+  ],
+  "full_regression": {
+    "passed": 213,
+    "failed": 0
+  },
+  "focused_regression": {
+    "passed": 11,
+    "failed": 0
+  },
+  "powershell_parser_passed": true,
+  "frozen_cases_preserved": 25,
+  "default_training_arena": "graded",
+  "proposed_floor_training": {
+    "episodes": 3,
+    "seconds_per_episode": 5,
+    "seeds": [
+      5,
+      6,
+      7
+    ]
+  },
+  "learning_reward_neural_body_and_acceptance_changed": false,
+  "behavioral_improvement_verified": false,
+  "live_memory_samples": [
+    {
+      "utc": "2026-10-15T22:16:58.7257702Z",
+      "attempt": "running",
+      "workingSetBytes": 1219592192,
+      "job": "train-0",
+      "trainingComplete": false,
+      "status": "pending",
+      "latest": "  t=9.60s upright=-0.65 reward=-0.872 spikes=7598 motor=37.3Hz legs=2.25rad/s wall=667.0s smell=0.00 light=0.36 temp=24.0",
+      "privateBytes": 3500294144
+    },
+    {
+      "status": "pending",
+      "workingSetBytes": 1219575808,
+      "latest": "  t=10.20s upright=-0.78 reward=-0.902 spikes=8038 motor=25.0Hz legs=2.41rad/s wall=710.2s smell=0.00 light=0.35 temp=24.0",
+      "privateBytes": 3495976960,
+      "attempt": "running",
+      "utc": "2026-10-15T22:17:52.7921088Z",
+      "trainingComplete": false,
+      "job": "train-0"
+    },
+    {
+      "job": "train-0",
+      "workingSetBytes": 1220919296,
+      "attempt": "running",
+      "status": "pending",
+      "trainingComplete": false,
+      "privateBytes": 3498205184,
+      "utc": "2026-10-15T22:18:49.5369758Z",
+      "latest": "  t=11.20s upright=-0.45 reward=-0.604 spikes=7869 motor=29.4Hz legs=2.11rad/s wall=777.2s smell=0.00 light=0.34 temp=24.0"
+    },
+    {
+      "privateBytes": 3498205184,
+      "job": "train-0",
+      "workingSetBytes": 1221455872,
+      "attempt": "running",
+      "latest": "  t=12.00s upright=-0.54 reward=-0.872 spikes=8068 motor=19.5Hz legs=2.73rad/s wall=832.3s smell=0.00 light=0.34 temp=24.0",
+      "utc": "2026-10-15T22:19:43.7300670Z",
+      "trainingComplete": false,
+      "status": "pending"
+    },
+    {
+      "utc": "2026-10-15T22:20:39.0270212Z",
+      "privateBytes": 3501588480,
+      "attempt": "running",
+      "trainingComplete": false,
+      "latest": "  t=12.60s upright=-0.91 reward=-1.000 spikes=8165 motor=35.4Hz legs=3.18rad/s wall=875.7s smell=0.00 light=0.32 temp=24.0",
+      "workingSetBytes": 1224085504,
+      "job": "train-0",
+      "status": "pending"
+    },
+    {
+      "status": "pending",
+      "privateBytes": 3505905664,
+      "latest": "  t=13.40s upright=-0.85 reward=-1.000 spikes=6979 motor=37.7Hz legs=2.96rad/s wall=937.9s smell=0.00 light=0.34 temp=24.0",
+      "utc": "2026-10-15T22:21:34.0916654Z",
+      "trainingComplete": false,
+      "attempt": "running",
+      "job": "train-0",
+      "workingSetBytes": 1224642560
+    }
+  ],
+  "completed_v10_training": {
+    "episode": 0,
+    "seed": 4,
+    "status": "completed",
+    "learning": true,
+    "standing_fraction": 0.387719298245614,
+    "leg_step_cycles": {
+      "LF": 21,
+      "LM": 28,
+      "LH": 26,
+      "RF": 41,
+      "RM": 36,
+      "RH": 40
+    },
+    "obstacle_contact_seconds": 0.0,
+    "obstacle_response_seconds": null,
+    "obstacle_observation_complete": false,
+    "arena": "quiet",
+    "imported_weights_from": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v9\\cycle_000\\train-0\\attempt_0000\\episode_000.npz",
+    "external_senses": true,
+    "wall_seconds": 1416.125,
+    "simulated_seconds": 20.0,
+    "awake_samples": 3990,
+    "mean_reward": -0.7028827071709333,
+    "mean_uprightness": 0.00045736197540933326,
+    "forward_displacement_mm": -11.389631032943726,
+    "mean_motor_hz": 29.8393693478599,
+    "mean_joint_speed_rad_s": 2.3028921720975624,
+    "per_leg_mean_speed_rad_s": {
+      "LF": 2.3915650649178297,
+      "LM": 2.241680673175587,
+      "LH": 2.6286133806807057,
+      "RF": 2.2209980954726536,
+      "RM": 2.2093920478508586,
+      "RH": 2.1251037698565867
+    },
+    "motor_exploration_mv_ms": 1.5,
+    "body_model": "muscles",
+    "brain": "corrected",
+    "learning_rule": "perturbation",
+    "reward_mode": "grounded",
+    "normalize_reward_error": true,
+    "reward_objective": "support-slip-v2",
+    "wing_mode": "neural",
+    "adhesion_mode": "geometry",
+    "heading_forward_distance_mm": 33.45528339927688,
+    "mean_supporting_feet": 1.5776942355889725,
+    "mean_stance_slip_mm_s": 9.629330167585904,
+    "gait_metrics": "outputs\\birth-cycle-v10\\cycle_000\\train-0\\attempt_0000\\episode_000.gait.json",
+    "tripod_score": null,
+    "checkpoint": "outputs\\birth-cycle-v10\\cycle_000\\train-0\\attempt_0000\\episode_000.npz"
+  }
+}
