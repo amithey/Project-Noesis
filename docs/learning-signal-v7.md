@@ -117,7 +117,8 @@ Ruff and the PowerShell launcher parser passed.
 ## Current run
 
 `outputs/birth-cycle-v7/report.json` is authoritative. The resumed ten-second
-quiet-floor training episode is currently live with a 3600-wall-second budget.
+quiet-floor training episode completed. Matched frozen validation is now live
+within the same 3600-wall-second budget.
 The behavior and promotion criteria are unchanged. Resume only once its process
 is terminal:
 
@@ -129,3 +130,19 @@ python -u -m noesis.experiments.train_validate --data <existing-data> --output o
 The dedicated PowerShell launcher exposes `-NormalizeRewardError` and `-EarlyReject`
 along with `-Resume`, `-ImportWeights`, `-Seconds`, `-Episodes` and `-WallSeconds`.
 Machine-readable evidence: `docs/learning-signal-v7-results.json`.
+
+
+### Completed resumed training
+
+The ten-second v7 training episode completed with standing fraction 0.91005,
+heading-relative motion 4.06655 mm, stance slip 6.23448 mm/s and cycle counts
+LF=23, LM=30, LH=31, RF=5, RM=13, RH=36. Exploration was active; these are training
+measurements, not acceptance results. The normalized checkpoint has mean absolute
+relative change 0.00118183 (0.118%) and maximum 0.01821271 (1.821%). Every selected
+weight retains its original sign and stays within the 50% bound.
+
+All 462 CSV rows corresponding to the incomplete 2.31-second attempt match the
+prefix of the completed replay exactly, including neural firing, physical motion,
+reward and learning telemetry. This directly confirms start-of-episode replay
+rather than continuation from partial weights, despite the guard-only source
+migration. No model has been promoted; frozen validation is the next evidence.
