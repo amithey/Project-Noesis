@@ -1,0 +1,68 @@
+{
+  "diagnostic_only": true,
+  "no_candidate_behavior_observed": true,
+  "acceptance_unchanged": true,
+  "runs": {
+    "v10-original-10": {
+      "source": "outputs\\birth-cycle-v10\\cycle_000\\validation-quiet-original-10\\attempt_0001\\episode_000.csv",
+      "samples": 990,
+      "old_formula_matches_all_saved_rewards": true,
+      "old_upright_floor_fraction": 0.25191675794085433,
+      "candidate_upright_floor_fraction": 0.0,
+      "old_mean_upright_reward": -0.5407758286968114,
+      "candidate_mean_upright_reward": 0.17057054765553328
+    },
+    "v10-candidate-10": {
+      "source": "outputs\\birth-cycle-v10\\cycle_000\\validation-quiet-candidate-10\\attempt_0003\\episode_000.csv",
+      "samples": 990,
+      "old_formula_matches_all_saved_rewards": true,
+      "old_upright_floor_fraction": 0.25210084033613445,
+      "candidate_upright_floor_fraction": 0.0,
+      "old_mean_upright_reward": -0.5170139591677331,
+      "candidate_mean_upright_reward": 0.2296835648809648
+    },
+    "v10-training-4": {
+      "source": "outputs\\birth-cycle-v10\\cycle_000\\train-0\\attempt_0000\\episode_000.csv",
+      "samples": 3990,
+      "old_formula_matches_all_saved_rewards": true,
+      "old_upright_floor_fraction": 0.24628312863606983,
+      "candidate_upright_floor_fraction": 0.0,
+      "old_mean_upright_reward": -0.5314510091592272,
+      "candidate_mean_upright_reward": 0.24055272071834397
+    },
+    "v11-training-5": {
+      "source": "outputs\\birth-cycle-v11\\cycle_000\\train-0\\attempt_0000\\episode_000.csv",
+      "samples": 990,
+      "old_formula_matches_all_saved_rewards": true,
+      "old_upright_floor_fraction": 0.2646420824295011,
+      "candidate_upright_floor_fraction": 0.0,
+      "old_mean_upright_reward": -0.5399386473721756,
+      "candidate_mean_upright_reward": 0.2104104071917285
+    },
+    "v11-training-6": {
+      "source": "outputs\\birth-cycle-v11\\cycle_000\\train-1\\attempt_0001\\episode_000.csv",
+      "samples": 990,
+      "old_formula_matches_all_saved_rewards": true,
+      "old_upright_floor_fraction": 0.35172413793103446,
+      "candidate_upright_floor_fraction": 0.0,
+      "old_mean_upright_reward": -0.5820721819586485,
+      "candidate_mean_upright_reward": 0.2450371411588037
+    }
+  },
+  "active_source_sha256": "fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd",
+  "candidate_source_sha256": "6f6b31dbe85d7ff21e00cdb5c6fbe10aadc417d8d3d45316fdff9107e88b5ef3",
+  "status": "tested_not_applied",
+  "full_regression": {
+    "passed": 227,
+    "failed": 0,
+    "ruff": "passed"
+  },
+  "focused_regression": {
+    "passed": 42,
+    "failed": 0
+  },
+  "active_run": "outputs/birth-cycle-v11/report.json",
+  "candidate_reward_objective": "standing-first-linear-slip-v3",
+  "portable_patch": "docs/patches/standing-first-reward.patch",
+  "neural_body_sensory_and_acceptance_changed": false
+}

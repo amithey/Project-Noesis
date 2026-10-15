@@ -1,0 +1,74 @@
+--- a/src/noesis/embodied_metrics.py
++++ b/src/noesis/embodied_metrics.py
+@@ -102,9 +102,12 @@
+     posture_quality = float(np.clip((uprightness - .5) / .4, 0, 1))
+     support_quality = float(min(support.sum() / 3, 1))
+     standing_quality = posture_quality * support_quality if .3 <= base['height_mm'] <= 1.5 else 0.
+-    fallen = uprightness < .5 or base['height_mm'] < .3
+-    reward = float(np.clip(.25 * standing_quality + .5 * progress - .6 * fallen
+-                           - .05 * base['effort'] - .3 * slip_cost - .2 * obstacle_cost, -1, 1))
++    # Standing-first candidate: preserve a linear measured slip cost while
++    # reducing its scale tenfold so typical upright sliding cannot dominate
++    # the support/posture signal. Continuous support loss also costs reward.
++    # Physical standing, gait, mean-slip and obstacle acceptance stay separate.
++    reward = float(np.clip(.75 * standing_quality + .5 * progress - .6 * (1 - standing_quality)
++                           - .05 * base['effort'] - .03 * slip_cost - .2 * obstacle_cost, -1, 1))
+     return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
+             'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
+             'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,
+--- a/src/noesis/experiments/learning_lab.py
++++ b/src/noesis/experiments/learning_lab.py
+@@ -218,7 +218,7 @@
+             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
+             'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
+             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
+-        context.update(schema=6, reward_objective='support-slip-v2' if args.reward_mode == 'grounded' else 'legacy-body-v1',
++        context.update(schema=6, reward_objective='standing-first-linear-slip-v3' if args.reward_mode == 'grounded' else 'legacy-body-v1',
+                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
+                        motor_interface='anatomical-coxa-flexion-v3',
+                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
+--- /dev/null
++++ b/tests/test_posture_reward.py
+@@ -0,0 +1,42 @@
++import importlib.util
++from pathlib import Path
++
++import numpy as np
++import pytest
++
++from noesis.embodied_metrics import locomotion_reward
++
++
++@pytest.mark.parametrize('up', [.7, .8, 1.])
++@pytest.mark.parametrize('slip', [0., 16., 60., 100.])
++def test_stationary_supported_posture_beats_unsupported_fall_in_observed_quiet_range(up, slip):
++    args=([0,0,.8],[0,0,.8],up,np.array([10.,-10.]),.005,[1,0,0])
++    standing=locomotion_reward(*args,np.ones(6),np.tile([slip,0,0],(6,1)))
++    fallen=locomotion_reward([0,0,.2],[0,0,.2],-1.,np.zeros(2),.005,[1,0,0],np.zeros(6),np.zeros((6,3)))
++    assert standing['reward']>fallen['reward']
++
++
++def test_penalty_remains_linear_for_equal_mean_slip_and_strictly_orders_sliding():
++    args=([0,0,.8],[0,0,.8],1.,np.zeros(3),.005,[1,0,0],np.ones(6))
++    def reward(slip):
++        return locomotion_reward(*args,np.tile([slip,0,0],(6,1)))['reward']
++    assert (reward(3.)+reward(7.))/2==pytest.approx(reward(5.))
++    values=[reward(s) for s in (0.,.1,3.,7.,16.,30.,60.,100.)]
++    assert np.all(np.diff(values)<0)
++
++
++def test_candidate_changes_only_reward_on_random_physical_samples():
++    spec=importlib.util.spec_from_file_location('unchanged_reward',Path('src/noesis/embodied_metrics.py'))
++    unchanged=importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(unchanged)
++    rng=np.random.default_rng(81)
++    for _ in range(1000):
++        previous=np.array([0.,0.,.8]);position=previous+rng.uniform(-.1,.1,size=3)
++        args=(previous,position,rng.uniform(-1,1),rng.uniform(-20,20,size=42),.005,
++              rng.normal(size=3),rng.uniform(0,1,size=6)*(rng.random(6)>.4),
++              rng.uniform(-100,100,size=(6,3)),rng.uniform(0,1.3))
++        reference=unchanged.locomotion_reward(*args)
++        candidate=locomotion_reward(*args)
++        assert set(reference)==set(candidate)
++        assert {k:v for k,v in reference.items() if k!='reward'}=={k:v for k,v in candidate.items() if k!='reward'}
++        assert -1<=candidate['reward']<=1
