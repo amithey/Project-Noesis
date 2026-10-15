@@ -1,0 +1,90 @@
+{
+  "status": "tested_candidate_not_applied",
+  "current_protocol": "outputs/birth-cycle-v8/report.json",
+  "current_source_sha256": "e781c5f9e9c00d318594f939922679b36f75897b3d53cdb574aaea9638957a66",
+  "candidate_source_sha256": "81e68f7945a434fb994097fc33709d0f3a9ad9822f4823c30595823ce04f2913",
+  "changed_source_files": [
+    "experiments/learning_lab.py",
+    "motor.py"
+  ],
+  "patch": "docs/patches/coxa-direction.patch",
+  "motor_interface": "anatomical-coxa-flexion-v3",
+  "coxa_groups": [
+    "sternal_anterior_rotator",
+    "sternal_posterior_rotator",
+    "tergopleural_promotor",
+    "pleural_remotor_abductor"
+  ],
+  "before_fix_direction_tests": {
+    "failed": 4,
+    "passed": 2
+  },
+  "candidate_full_suite": {
+    "passed": 203,
+    "failed": 0,
+    "log": "outputs/anatomical-audit-v8/full-regression-candidate-v9.log"
+  },
+  "tarsus_directions_changed": false,
+  "roll_yaw_couplings_changed": false,
+  "neural_topology_weights_learning_reward_and_acceptance_changed": false,
+  "behavioral_improvement_verified": false,
+  "primary_reference": "https://faculty.washington.edu/tuthill/docs/azevedo24_appendix.pdf",
+  "completed_v8_training": {
+    "episode": 0,
+    "seed": 2,
+    "status": "completed",
+    "learning": true,
+    "standing_fraction": 0.9773869346733668,
+    "leg_step_cycles": {
+      "LF": 30,
+      "LM": 30,
+      "LH": 34,
+      "RF": 25,
+      "RM": 28,
+      "RH": 26
+    },
+    "obstacle_contact_seconds": 0.0,
+    "obstacle_response_seconds": null,
+    "obstacle_observation_complete": false,
+    "arena": "quiet",
+    "imported_weights_from": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v7\\cycle_001\\train-0\\attempt_0005\\episode_000.npz",
+    "external_senses": true,
+    "wall_seconds": 902.9219999999987,
+    "simulated_seconds": 10.0,
+    "awake_samples": 1990,
+    "mean_reward": -0.4519776618289643,
+    "mean_uprightness": 0.9382237122586025,
+    "forward_displacement_mm": 2.7088615894317627,
+    "mean_motor_hz": 31.169209184197495,
+    "mean_joint_speed_rad_s": 2.389092288963759,
+    "per_leg_mean_speed_rad_s": {
+      "LF": 2.4154052338558225,
+      "LM": 2.258874997451677,
+      "LH": 2.93278144243075,
+      "RF": 2.3129273382188686,
+      "RM": 2.346004589613359,
+      "RH": 2.0685600868646223
+    },
+    "motor_exploration_mv_ms": 1.5,
+    "body_model": "muscles",
+    "brain": "corrected",
+    "learning_rule": "perturbation",
+    "reward_mode": "grounded",
+    "normalize_reward_error": true,
+    "reward_objective": "support-slip-v2",
+    "wing_mode": "neural",
+    "adhesion_mode": "geometry",
+    "heading_forward_distance_mm": 0.27293983002201294,
+    "mean_supporting_feet": 2.8391959798994977,
+    "mean_stance_slip_mm_s": 12.337648628290339,
+    "gait_metrics": "outputs\\birth-cycle-v8\\cycle_000\\train-0\\attempt_0000\\episode_000.gait.json",
+    "tripod_score": null,
+    "checkpoint": "outputs\\birth-cycle-v8\\cycle_000\\train-0\\attempt_0000\\episode_000.npz"
+  },
+  "completed_v8_training_weight_audit": {
+    "mean_relative_weight_change": 0.002216207760853779,
+    "max_relative_weight_change": 0.04501323492569547,
+    "signs_preserved": true,
+    "fifty_percent_bounds_preserved": true
+  }
+}

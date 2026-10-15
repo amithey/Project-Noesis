@@ -1,0 +1,74 @@
+--- a/src/noesis/motor.py
++++ b/src/noesis/motor.py
+@@ -26,14 +26,16 @@
+ )
+ HEAD_JOINTS = ("joint_Head_yaw", "joint_Head", "joint_Head_roll")
+ 
++# Positive Coxa coordinates retract the coxa; anterior/protractor muscles
++# therefore use negative coordinates. Existing roll/yaw couplings remain.
+ # MuJoCo Femur coordinates increase anatomical extension; Tibia coordinates
+ # increase flexion. These signs are checked against physical segment angles.
+ # muscle -> list of (joint dof, sign)
+ MUSCLE_JOINT: dict[str, list[tuple[str, int]]] = {
+-    "sternal_anterior_rotator": [("Coxa", +1), ("Coxa_yaw", +1)],
+-    "sternal_posterior_rotator": [("Coxa", -1), ("Coxa_yaw", -1)],
+-    "tergopleural_promotor": [("Coxa", +1)],
+-    "pleural_remotor_abductor": [("Coxa", -1), ("Coxa_roll", +1)],
++    "sternal_anterior_rotator": [("Coxa", -1), ("Coxa_yaw", +1)],
++    "sternal_posterior_rotator": [("Coxa", +1), ("Coxa_yaw", -1)],
++    "tergopleural_promotor": [("Coxa", -1)],
++    "pleural_remotor_abductor": [("Coxa", +1), ("Coxa_roll", +1)],
+     "sternal_adductor": [("Coxa_roll", -1)],
+     "trochanter_flexor": [("Femur", -1)],
+     "accessory_trochanter_flexor": [("Femur", -1)],
+--- a/src/noesis/experiments/learning_lab.py
++++ b/src/noesis/experiments/learning_lab.py
+@@ -217,7 +217,7 @@
+             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
+         context.update(schema=6, reward_objective='support-slip-v2' if args.reward_mode == 'grounded' else 'legacy-body-v1',
+                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
+-                       motor_interface='anatomical-flexion-v2',
++                       motor_interface='anatomical-coxa-flexion-v3',
+                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
+                        actuated_joints=names,
+                        contact='tarsal-ground-only', neural_dt_ms=.5,
+--- a/tests/test_motor_anatomy.py
++++ b/tests/test_motor_anatomy.py
+@@ -65,3 +65,37 @@
+     mj.mj_kinematics(model, data)
+     after = np.array([interior_angle(mj, model, data, fly_name, leg, dof) for leg in LEGS])
+     assert np.all(direction*(after-before) > 1e-5), dict(zip(LEGS, after-before, strict=True))
++
++
++@pytest.mark.parametrize(('muscle', 'direction', 'segment', 'axis'), [
++    ('sternal_anterior_rotator', 1, 'Femur', 'forward'),
++    ('sternal_posterior_rotator', -1, 'Femur', 'forward'),
++    ('tergopleural_promotor', 1, 'Femur', 'forward'),
++    ('pleural_remotor_abductor', -1, 'Femur', 'forward'),
++    ('tarsus_depressor', -1, 'Tarsus5', 'vertical'),
++    ('tarsus_levator', 1, 'Tarsus5', 'vertical'),
++])
++def test_named_muscle_moves_the_segment_in_its_named_direction(
++        anatomy_skeleton, muscle, direction, segment, axis):
++    cells = []
++    for leg in LEGS:
++        side = 'left' if leg[0] == 'L' else 'right'
++        level = {'F': 'front', 'M': 'middle', 'H': 'hind'}[leg[1]]
++        cells.append(('leg_motor_neuron', level+'_leg_motor_neuron',
++                      side+'_leg_nerve', side, muscle))
++    neurons = pd.DataFrame(cells, columns=['Class', 'Sub Class', 'Nerve', 'Soma side', 'Primary Cell Type'])
++    gp, gn = build_muscle_matrices(neurons, list(JOINTS))
++    np.testing.assert_array_equal(build_motor_matrix(neurons, list(JOINTS)).toarray(), (gp-gn).toarray())
++    muscles = MuscleModel(gp, gn, list(JOINTS))
++    mj, model, data, qadr, fly_name = anatomy_skeleton
++    segment_ids = [mj.mj_name2id(model, mj.mjtObj.mjOBJ_BODY, f'{fly_name}/{leg}{segment}') for leg in LEGS]
++    assert min(segment_ids) >= 0
++    data.qpos[qadr] = muscles.stand
++    mj.mj_kinematics(model, data)
++    before = data.xpos[segment_ids].copy()
++    thorax = mj.mj_name2id(model, mj.mjtObj.mjOBJ_BODY, f'{fly_name}/Thorax')
++    vector = data.xmat[thorax].reshape(3, 3)[:, 0].copy() if axis == 'forward' else np.array([0., 0., 1.])
++    data.qpos[qadr] = muscles.step(np.full(6, 5.), 10.)
++    mj.mj_kinematics(model, data)
++    displacement = (data.xpos[segment_ids]-before)@vector
++    assert np.all(direction*displacement > 1e-5), dict(zip(LEGS, displacement, strict=True))
