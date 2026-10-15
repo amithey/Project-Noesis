@@ -217,7 +217,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
         context.update(schema=6, reward_objective='support-slip-v2' if args.reward_mode == 'grounded' else 'legacy-body-v1',
                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
-                       motor_interface='mirrored-leg-rotations-v1',
+                       motor_interface='anatomical-flexion-v2',
                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
                        actuated_joints=names,
                        contact='tarsal-ground-only', neural_dt_ms=.5,

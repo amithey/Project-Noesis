@@ -118,7 +118,7 @@ Ruff and the PowerShell launcher parser passed.
 
 `outputs/birth-cycle-v7/report.json` is authoritative. The resumed ten-second
 quiet-floor training episode completed. Its first frozen candidate validation finished and failed the slip criterion.
-The next bounded cycle is running; the completed rejection is retained below.
+Both bounded cycles are now completed and rejected; see the anatomical motor-direction audit for the next protocol.
 The behavior and promotion criteria are unchanged. Resume only once its process
 is terminal:
 
@@ -181,3 +181,10 @@ and `--resume`; the import-weights argument remains the v6 initialization path,
 while actual continued training loads the report's last complete v7 checkpoint.
 Each invocation retains the 3600-second absolute wall limit. Default launchers
 remain unchanged until full behavioral and obstacle validation passes.
+
+
+Cycle 1 also completed and failed frozen standing, heading progress and slip.
+Its full measurements are retained in the machine-readable evidence. A physical
+regression then identified reversed proximal flexion/extension signs; the separately
+tested correction is described in `docs/anatomical-motor-correction.md`. The old
+protocol is preserved and must not be resumed under the new source fingerprint.
