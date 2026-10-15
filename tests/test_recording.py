@@ -7,12 +7,15 @@ from noesis.recording import make_follow_camera
 from noesis.world import floor_arena
 
 
-def test_follow_camera_keeps_body_visible_without_mutating_body_or_observations(tmp_path):
+@pytest.mark.parametrize('stream', [False, True])
+def test_follow_camera_keeps_body_visible_without_mutating_body_or_observations(tmp_path, stream):
     flygym = pytest.importorskip('flygym')
     mj = pytest.importorskip('mujoco')
     fly = make_fly(body_proxies=False, enable_vision=True, vision_refresh_rate=20)
     arena = floor_arena()
-    camera = make_follow_camera(fly, arena, window_size=(320, 240))
+    destination = tmp_path/'tracked.mp4' if stream else None
+    camera = make_follow_camera(fly, arena, window_size=(320, 240), output_path=destination)
+    expected_frames = []
     sim = flygym.SingleFlySimulation(fly=fly, cameras=[camera], timestep=1e-4, arena=arena)
     try:
         sim.reset(seed=0)
@@ -40,6 +43,7 @@ def test_follow_camera_keeps_body_visible_without_mutating_body_or_observations(
             eye_rotations = data.cam_xmat[other_cameras].copy()
             frame = camera.render(sim.physics, 0., sim.curr_time, [fly.last_obs])
             assert frame.shape == (240, 320, 3)
+            expected_frames.append(frame.copy())
             # The fly's eyes/body have red/brown pixels; gray floor is excluded.
             visible = (frame[..., 0].astype(float) > 1.3*frame[..., 1]) & (frame[..., 0] > 100)
             assert visible.sum() > 100
@@ -62,5 +66,18 @@ def test_follow_camera_keeps_body_visible_without_mutating_body_or_observations(
             # Keep actual frames for visual inspection when run outside pytest cleanup.
             import imageio.v2 as imageio
             imageio.imwrite(tmp_path/f'camera-{index}.png', frame)
+        if stream:
+            camera.save_video(destination)
+            assert camera.retained_frame_count == 0
+            assert camera.encoded_frame_count == len(expected_frames)
+            reference = tmp_path/'reference.mp4'
+            with imageio.get_writer(reference, fps=30) as writer:
+                for image in expected_frames:
+                    writer.append_data(image)
+            with imageio.get_reader(destination) as encoded, imageio.get_reader(reference) as baseline:
+                assert encoded.count_frames() == baseline.count_frames() == len(expected_frames)
+                for index in range(len(expected_frames)):
+                    np.testing.assert_array_equal(encoded.get_data(index), baseline.get_data(index))
     finally:
+        camera.close()
         sim.close()

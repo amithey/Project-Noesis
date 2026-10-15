@@ -158,7 +158,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
     if args.video:
         if enriched:
             from noesis.recording import make_follow_camera
-            camera = make_follow_camera(fly, arena)
+            camera = make_follow_camera(fly, arena, output_path=args.output / f'episode_{episode:03d}.mp4')
         else:
             camera = Camera(attachment_point=fly.model.worldbody,
                             camera_name='camera_left', targeted_fly_names=[fly.name],
@@ -403,7 +403,11 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
     finally:
         if viewer:
             viewer.close()
-        sim.close()
+        try:
+            if camera is not None and hasattr(camera, 'close'):
+                camera.close()
+        finally:
+            sim.close()
 
     if rows:
         with prefix.with_suffix('.csv').open('w', newline='', encoding='utf-8') as f:
