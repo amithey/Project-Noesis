@@ -47,15 +47,15 @@ assumptions, not newly validated anatomy. No new claw model or coupling is intro
 The new regression activates each named pool, evaluates both motor matrix APIs and
 the muscle model, and measures physical coxa displacement in the thorax frame.
 Before correction, four coxa cases fail while both tarsal direction controls pass.
-The separately corrected snapshot passes **203 tests** and Ruff, including the
+The separately corrected snapshot passes **204 tests** and Ruff, including the
 preceding proximal flexion, bilateral reflection, reward, sensing, checkpoint and
 resumable training tests. Its source fingerprint is
-`81e68f7945a434fb994097fc33709d0f3a9ad9822f4823c30595823ce04f2913`.
+`d6178c27c836871612233fa5ed7e88ebb6ec274050ce5eaf58cb54a061d8ddb7`.
 These are interface tests, not behavioral evidence.
 
 The portable patch is `docs/patches/coxa-direction.patch`; `git apply --check
---ignore-space-change` passed. It includes only two source files and the six new
-physical regression cases. The exact tested source is preserved separately in
+--ignore-space-change` passed. It includes the motor correction, an external recording-camera helper, and
+physical direction and real-rendering regression cases. The exact tested source is preserved separately in
 `outputs/protocol-v9-candidate/src/noesis`, and current v8 source is archived in
 `outputs/protocol-v8-source/src/noesis`. The patch is not applied to the live run.
 After the active bounded protocol is terminal, apply the tested correction,
@@ -66,3 +66,23 @@ validation and heldout seeds and all existing promotion gates.
 
 Machine-readable evidence: `docs/coxa-direction-audit.json`. Full regression log,
 physical audit script and raw diagnostics: `outputs/anatomical-audit-v8`.
+
+
+## Recording repair
+
+Visual inspection of the v8 training video's true midpoint found the body mostly
+outside the frame. The enriched-world camera is fixed; completed original seed 10
+also moves about 8.9 mm in world x and leaves that view. These clips are retained
+as imperfect recordings, not presented as complete visual evidence of gait.
+
+The staged candidate now follows fly x/y from the external recording camera,
+keeps a fixed world orientation and floor-relative height, and includes simulated
+time and 0.1x playback labels. It changes no eye camera or sensory channel.
+The real MuJoCo regression checks visibility near the origin, at (15,-8) mm and
+at (-20,10) mm with a flipped body; red/brown body pixels remain in view. The
+full integration state, qpos/qvel/controls, accelerations and warm starts, eye
+camera transforms, sensory arrays and last-observation arrays remain exactly
+unchanged after rendering. The distant flipped frame was visually inspected.
+The complete combined source passes 204 tests and Ruff with the staged source
+root declared for import classification. The original motor-only candidate had
+already passed 203 tests. Live v8 source remains unchanged until its run is terminal.

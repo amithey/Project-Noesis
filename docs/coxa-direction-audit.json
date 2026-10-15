@@ -2,10 +2,11 @@
   "status": "tested_candidate_not_applied",
   "current_protocol": "outputs/birth-cycle-v8/report.json",
   "current_source_sha256": "e781c5f9e9c00d318594f939922679b36f75897b3d53cdb574aaea9638957a66",
-  "candidate_source_sha256": "81e68f7945a434fb994097fc33709d0f3a9ad9822f4823c30595823ce04f2913",
+  "candidate_source_sha256": "d6178c27c836871612233fa5ed7e88ebb6ec274050ce5eaf58cb54a061d8ddb7",
   "changed_source_files": [
     "experiments/learning_lab.py",
-    "motor.py"
+    "motor.py",
+    "recording.py"
   ],
   "patch": "docs/patches/coxa-direction.patch",
   "motor_interface": "anatomical-coxa-flexion-v3",
@@ -20,9 +21,9 @@
     "passed": 2
   },
   "candidate_full_suite": {
-    "passed": 203,
+    "passed": 204,
     "failed": 0,
-    "log": "outputs/anatomical-audit-v8/full-regression-candidate-v9.log"
+    "log": "outputs/anatomical-audit-v8/full-regression-candidate-v9-camera.log"
   },
   "tarsus_directions_changed": false,
   "roll_yaw_couplings_changed": false,
@@ -86,5 +87,120 @@
     "max_relative_weight_change": 0.04501323492569547,
     "signs_preserved": true,
     "fifty_percent_bounds_preserved": true
-  }
+  },
+  "recording_camera": {
+    "external_only": true,
+    "follows_position": true,
+    "world_orientation_fixed": true,
+    "full_integration_state_unchanged": true,
+    "eye_camera_transforms_and_observations_unchanged": true,
+    "distant_and_fallen_body_visible": true,
+    "real_render_regression_passed": true
+  },
+  "completed_original_controls": [
+    {
+      "episode": 0,
+      "seed": 10,
+      "status": "completed",
+      "learning": false,
+      "standing_fraction": 0.8646464646464647,
+      "leg_step_cycles": {
+        "LF": 12,
+        "LM": 12,
+        "LH": 18,
+        "RF": 12,
+        "RM": 13,
+        "RH": 16
+      },
+      "obstacle_contact_seconds": 0.0,
+      "obstacle_response_seconds": null,
+      "obstacle_observation_complete": false,
+      "arena": "quiet",
+      "imported_weights_from": null,
+      "external_senses": true,
+      "wall_seconds": 455.1399999999994,
+      "simulated_seconds": 5.0,
+      "awake_samples": 990,
+      "mean_reward": -0.4847964258256568,
+      "mean_uprightness": 0.776924804180409,
+      "forward_displacement_mm": -8.887414693832397,
+      "mean_motor_hz": 31.155141423926736,
+      "mean_joint_speed_rad_s": 2.3704428376573503,
+      "per_leg_mean_speed_rad_s": {
+        "LF": 2.3292259993577242,
+        "LM": 2.195327440355763,
+        "LH": 3.0618723499353484,
+        "RF": 2.219732922812303,
+        "RM": 2.3383755997575895,
+        "RH": 2.078122727106316
+      },
+      "motor_exploration_mv_ms": 0.0,
+      "body_model": "muscles",
+      "brain": "corrected",
+      "learning_rule": "perturbation",
+      "reward_mode": "grounded",
+      "normalize_reward_error": true,
+      "reward_objective": "support-slip-v2",
+      "wing_mode": "neural",
+      "adhesion_mode": "geometry",
+      "heading_forward_distance_mm": -0.5699595494427149,
+      "mean_supporting_feet": 2.6666666666666665,
+      "mean_stance_slip_mm_s": 12.099533691365291,
+      "gait_metrics": "outputs\\birth-cycle-v8\\cycle_000\\validation-quiet-original-10\\attempt_0001\\episode_000.gait.json",
+      "tripod_score": null,
+      "checkpoint": "outputs\\birth-cycle-v8\\cycle_000\\validation-quiet-original-10\\attempt_0001\\episode_000.npz"
+    },
+    {
+      "episode": 0,
+      "seed": 11,
+      "status": "completed",
+      "learning": false,
+      "standing_fraction": 0.9878787878787879,
+      "leg_step_cycles": {
+        "LF": 18,
+        "LM": 15,
+        "LH": 20,
+        "RF": 12,
+        "RM": 14,
+        "RH": 15
+      },
+      "obstacle_contact_seconds": 0.0,
+      "obstacle_response_seconds": null,
+      "obstacle_observation_complete": false,
+      "arena": "quiet",
+      "imported_weights_from": null,
+      "external_senses": true,
+      "wall_seconds": 445.1880000000019,
+      "simulated_seconds": 5.0,
+      "awake_samples": 990,
+      "mean_reward": -0.48609719794465,
+      "mean_uprightness": 0.9358727567123645,
+      "forward_displacement_mm": 2.602994918823242,
+      "mean_motor_hz": 31.471141836814727,
+      "mean_joint_speed_rad_s": 2.3480148708579516,
+      "per_leg_mean_speed_rad_s": {
+        "LF": 2.206581782993644,
+        "LM": 2.3051704415919807,
+        "LH": 2.946780455022147,
+        "RF": 2.097558261935759,
+        "RM": 2.508072004685498,
+        "RH": 2.0239262369546025
+      },
+      "motor_exploration_mv_ms": 0.0,
+      "body_model": "muscles",
+      "brain": "corrected",
+      "learning_rule": "perturbation",
+      "reward_mode": "grounded",
+      "normalize_reward_error": true,
+      "reward_objective": "support-slip-v2",
+      "wing_mode": "neural",
+      "adhesion_mode": "geometry",
+      "heading_forward_distance_mm": -3.434430634600727,
+      "mean_supporting_feet": 2.8313131313131312,
+      "mean_stance_slip_mm_s": 13.568784174636926,
+      "gait_metrics": "outputs\\birth-cycle-v8\\cycle_000\\validation-quiet-original-11\\attempt_0002\\episode_000.gait.json",
+      "tripod_score": null,
+      "checkpoint": "outputs\\birth-cycle-v8\\cycle_000\\validation-quiet-original-11\\attempt_0002\\episode_000.npz"
+    }
+  ]
 }
