@@ -36,3 +36,21 @@ and outputs/motor-balance-audit-v11/first-completed-training.json. A preserved
 copy with video, checkpoint, CSV and source lives in primary-checkout
 outputs/young-fly-v11-progress. Training has not met the goal until quiet standing,
 walking/slip, obstacle response and held-out gates all pass without exploration.
+
+## Measured foot support
+
+A contact-state raster was generated from every saved 5 ms sample and visually
+checked. It shows force-bearing contacts (green), unloaded clearance >0.05 mm
+(blue), uprightness with every out-of-standing interval shaded, heading-integrated
+progress and raw stance-slip bursts. The complete plot covers the full awake
+window, including poor posture and high-slip bursts.
+
+Per-leg loaded-foot fractions in the first training episode were LF64.7%,
+LM37.8%, LH41.7%, RF18.6%, RM62.5%, RH6.5%. Thus the measured cycle count does
+not mean the legs share support evenly. In particular, the right hind leg is
+mostly unloaded. This describes one learning-on seed; it does not establish a
+causal mapping defect or a learned improvement. No target timing or support
+sequence was fed back into the controller.
+
+Reproducible driver: outputs/motor-balance-audit-v11/plot_first_contacts.py;
+plot: first-training-contacts.png; data: first-training-contact-statistics.json.

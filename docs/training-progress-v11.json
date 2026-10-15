@@ -133,5 +133,43 @@
         }
       }
     }
-  }
+  },
+  "first_training_contact_statistics": {
+    "training_only": true,
+    "source": "outputs\\birth-cycle-v11\\cycle_000\\train-0\\attempt_0000\\episode_000.csv",
+    "standing_fraction": 0.9313131313131313,
+    "legs": {
+      "LF": {
+        "stance_fraction": 0.6474747474747474,
+        "clear_lift_fraction": 0.3525252525252525,
+        "stance_while_upright_fraction": 0.6854663774403471
+      },
+      "LM": {
+        "stance_fraction": 0.37777777777777777,
+        "clear_lift_fraction": 0.6222222222222222,
+        "stance_while_upright_fraction": 0.38286334056399135
+      },
+      "LH": {
+        "stance_fraction": 0.4171717171717172,
+        "clear_lift_fraction": 0.5828282828282828,
+        "stance_while_upright_fraction": 0.4002169197396963
+      },
+      "RF": {
+        "stance_fraction": 0.18585858585858586,
+        "clear_lift_fraction": 0.8141414141414142,
+        "stance_while_upright_fraction": 0.19956616052060738
+      },
+      "RM": {
+        "stance_fraction": 0.6252525252525253,
+        "clear_lift_fraction": 0.3747474747474748,
+        "stance_while_upright_fraction": 0.6247288503253796
+      },
+      "RH": {
+        "stance_fraction": 0.06464646464646465,
+        "clear_lift_fraction": 0.9353535353535354,
+        "stance_while_upright_fraction": 0.06941431670281996
+      }
+    }
+  },
+  "contact_plot": "outputs/motor-balance-audit-v11/first-training-contacts.png"
 }
