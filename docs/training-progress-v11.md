@@ -1,6 +1,6 @@
 # V11 short quiet-floor training progress
 
-Status: first five-second training birth completed; seed 6 is live, seed 7 and
+Status: two five-second training births completed; seed 7 is live and
 frozen evaluations remain pending. No validated model exists or has been deployed.
 The run uses source fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd,
 imports complete v10 training weights and preserves all 25 frozen test cases.
@@ -54,3 +54,17 @@ sequence was fed back into the controller.
 
 Reproducible driver: outputs/motor-balance-audit-v11/plot_first_contacts.py;
 plot: first-training-contacts.png; data: first-training-contact-statistics.json.
+
+## Second completed birth: seed 6
+
+Seed 6 completed five seconds in 791.4 wall seconds. Standing fraction was 58.59%,
+heading-integrated motion 8.77 mm, mean stance slip 15.05 mm/s and mean reward
+-0.68911. It fell late in the episode and did not recover before the endpoint.
+The full failure remains in its saved video and CSV; a frame around four simulated
+seconds is preserved. This demonstrates that the first birth's high standing
+fraction is not consistent stability across training seeds. These trials retain
+learning/exploration and are not matched frozen evidence of improvement.
+
+The complete second checkpoint passed sign and 50% magnitude-bound checks; it
+is the last-training checkpoint used by seed 7. Best-validated weights remain null.
+All frozen validation, obstacle controls and held-out tests remain pending.
