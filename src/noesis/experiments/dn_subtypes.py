@@ -64,6 +64,11 @@ def main() -> None:
     ap.add_argument("--glom-per-odour", type=int, default=5)
     ap.add_argument("--sets", type=int, default=4)
     ap.add_argument("--reps", type=int, default=3)
+    ap.add_argument("--equalize", action="store_true",
+                    help="subsample left/right receptors of each odour set to the same count")
+    ap.add_argument("--shuffle-sides", action="store_true",
+                    help="control: split each odour set's receptors into random 'left'/'right' halves "
+                         "of the true sizes, ignoring real side")
     ap.add_argument("--n-perm", type=int, default=5000)
     ap.add_argument("--settle-ms", type=float, default=200.0)
     ap.add_argument("--stim-ms", type=float, default=500.0)
@@ -87,8 +92,16 @@ def main() -> None:
         trials = []
         for k, gl in enumerate(sets):
             orn = np.concatenate([glom[g]["orn"] for g in gl])
+            halves = {s: orn[side[orn] == s] for s in ("left", "right")}
+            rng_k = np.random.default_rng(1000 + k)
+            if a.shuffle_sides:
+                mixed = rng_k.permutation(orn)
+                halves = {"left": mixed[:len(halves["left"])], "right": mixed[len(halves["left"]):]}
+            if a.equalize:
+                m = min(len(halves["left"]), len(halves["right"]))
+                halves = {s: rng_k.choice(v, size=m, replace=False) for s, v in halves.items()}
             for s_i, s in enumerate(("left", "right")):
-                drive = orn[side[orn] == s]
+                drive = halves[s]
                 for rep in range(a.reps):
                     counts = present(W, pops, drive, seed=900 + 100 * k + 10 * s_i + rep, **kw)
                     full = np.zeros(cn.n)
