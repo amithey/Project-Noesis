@@ -229,3 +229,16 @@ of the training-only termination change, not a candidate learning improvement.
 The generated dated progress report now includes completed frozen evaluations
 separately from training. Original seed 11 is running; candidate, obstacle and
 held-out proof remain pending. No model has been promoted.
+
+## Both frozen original controls complete and exactly preserved
+
+Original seed 11 completed the full five-second evaluation: standing 94.949%,
+mean stance slip 16.222 mm/s. Both original controls now match their V12
+references exactly: 1,000 observation rows each and 43,490/43,958 motor spikes
+for seeds 10/11, including event times and neural duration. Learning, exploration
+and training-fall termination were disabled. Original weights and zero learner
+traces are verified. This proves frozen-control compatibility, not walking.
+
+The final seed-42 trained checkpoint is now undergoing frozen candidate seed-10
+evaluation. No candidate has been promoted. The dated current-progress.md
+remains the source for the latest completed-case snapshot.
