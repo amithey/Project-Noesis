@@ -171,3 +171,27 @@ retained; original seed 11 is replaying from birth in a new attempt directory.
 Its partial video/CSV/checkpoint are retained separately. No original/candidate
 comparison has yet completed for V14, no held-out seed has been observed and no
 best-validated checkpoint exists. Source is unchanged during this family.
+
+## Both original-weight quiet validation controls completed
+
+The seed-11 replay completed five seconds: standing 92.42%, mean stance slip
+14.100 mm/s, mean reward +0.20985, mean supporting feet 2.454. Its physical cycle
+counts are LF 18 / LM 20 / LH 10 / RF 7 / RM 12 / RH 7. This is original-weight
+behavior, not an effect of learning or a validated candidate.
+
+Exact replay verification passes: all 53 CSV rows from the interrupted 0.265 s
+attempt and all 1,927 recorded motor spike events match the completed prefix.
+Neural durations are 215 ms partial and 4,950 ms complete, matching awake samples;
+new events begin after the partial duration. The partial attempt remains separate
+and incomplete. `seed-11-replay-equivalence.json` and
+`check_seed_11_replay.py` preserve the proof.
+
+Both full original controls pass the frozen audit: zero exploration, learning
+false, exact original weights and zero learner activity/eligibility/baseline/
+variance traces. Their standing differs sharply (seed 10: 21.52%; seed 11: 92.42%),
+so a successful-looking single trajectory does not establish robust behavior.
+
+The current job is validation-quiet-candidate-10, loading the final complete
+seed-22 training checkpoint. Learning and motor exploration are off. No candidate
+validation result, obstacle result or held-out result is claimed yet. The source
+and all behavioral thresholds remain unchanged; no model has been promoted.
