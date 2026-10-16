@@ -167,3 +167,32 @@ the partial duration. Original weights and learning traces remain unchanged.
 The 4.90-second attempt stays separately marked incomplete. Five of six original-
 weight conditions are complete; the legacy seed-16 baseline is still pending.
 No direction hypothesis has been selected for training or promoted.
+
+## Final development decision and return to learning
+
+All six five-second original-weight cases completed; every checkpoint retains
+original weights and zero learning traces. Legacy seed 16 stood for only 32.02%,
+with 8.549 mm/s all-window slip and an unrecovered fall. Its low slip is not a
+walking improvement. The full six-case result is preserved, including failures.
+
+| Encoding | Standing seed 15 | Standing seed 16 | Worst seed | Mean standing |
+| --- | ---: | ---: | ---: | ---: |
+| Legacy | 90.30% | 32.02% | 32.02% | 61.16% |
+| Typed resistance | 78.69% | 68.79% | 68.79% | 73.74% |
+| Typed reversed | 87.47% | 50.51% | 50.51% | 68.99% |
+
+Typed resistance is selected only as the next TRAINING hypothesis: it maximizes
+the worst-seed standing fraction, with mean standing as tie-breaker. It improves
+seed 16 but worsens seed 15. None reaches 90% in both seeds, neither direction is
+physiologically verified, and annotation conflicts remain unresolved. No model
+was promoted. Selection is recorded before new training in
+proprioception-screen-audit-v13/decision.json.
+
+V14 starts six five-second quiet-floor births with fresh seeds 17..22, importing
+the complete final V12 learned weights and resetting traces under context 7.
+Learning rate 0.2, eligibility 100 ms, bounded motor exploration 1.5 mV/ms, signed
+connectome topology and 50% weight bounds remain unchanged. It provides more
+training births than preceding three-episode batches. Validation 10/11 and
+held-out 200/201/202 remain reserved, five seconds, learning/exploration off.
+All standing, cycles, progress, slip, obstacle and ablation gates are unchanged.
+The normal primary-checkout launch remains unchanged.
