@@ -58,3 +58,31 @@ response within one second and reduced sustained contact versus external-senses
 ablation retaining joint/balance feedback. All evaluations remain five seconds.
 Latest-training and best-validated weights stay separate. Normal launch remains
 unchanged until every required control and video review passes.
+
+## First actual terminal birth verified
+
+V16 seed 25 ended after 3.615 simulated seconds with termination_reason=training_fall.
+The read-only runtime audit reconstructed the sustained-fall timer from every
+saved awake observation: the first 100 ms threshold occurs on the final row.
+The failure-transition reward is negative and is included before checkpoint save.
+The next seed-26 attempt starts from exactly that completed checkpoint.
+
+The 723 body rows contain 713 awake chunks; motor-spike duration is exactly
+3,565 ms, matching the awake chunks. Original weight references, topology and
+connection signs are unchanged. Maximum weight change from original is 15.289%,
+mean fractional change 0.00682346; 35,241 selected edges changed since the imported
+V14 checkpoint. All remain inside the 50% bound. No partial state was imported.
+
+Observed training-only metrics over this shortened episode: standing fraction
+87.38%, mean supporting feet 2.288, stance slip 16.753 mm/s, cycles LF 11 / LM 11 /
+LH 9 / RF 6 / RM 6 / RH 1. These are not five-second standing or walking results:
+exploration was active, the birth ended in failure and slip remains substantial.
+No behavioral success is claimed and best-validated weights remain absent.
+
+The runtime auditor checks exact source/protocol, checkpoint start/end chain,
+context encoding, original references/signs/bounds, actual body/neural durations,
+every terminal event and full-horizon frozen cases when they exist. It does not
+edit source, brain state, checkpoints, acceptance thresholds or promotion state.
+Evidence: outputs/protocol-v16-terminal-training-candidate/audit_runtime.py and
+runtime-audit.json; full first episode CSV/checkpoint/video are preserved under
+outputs/birth-cycle-v16 and the main checkout's young-fly-v16-progress folder.
