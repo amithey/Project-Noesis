@@ -82,3 +82,27 @@ Same 8 pre-specified groups, 4 odour sets × 3 repeats, 5,000 random same-sized 
   steering cells no longer carry it. Any steering read-out on the calibrated network would have to be
   *learned* from the data (e.g. a linear decoder over descending-neuron rates, fitted on some trials and tested on
   others), not taken from the literature.
+
+## 4. A learned linear read-out of side on unseen odours (`experiments/dn_decoder.py`, `g_I = 12`)
+60 trials: 10 disjoint odour sets (5 glomeruli each) × {left receptors only, right receptors only} × 3 networks
+with different seeds; ORN weight 400, 500 ms windows. Dual-form ridge classifier on log(1 + rate), standardised
+on training trials only, evaluated **leave-one-odour-set-out** (the test odour was never in training). Null:
+side labels shuffled within each odour set, whole evaluation repeated 500 times (p floor = 0.002).
+
+| Features | n features | held-out accuracy, ridge λ = 0.01 / 0.1 / 1 per feature | label-shuffle null | p |
+|---|---|---|---|---|
+| Descending neurons | 1,316 | 0.783 / 0.800 / 0.850 | 0.50 ± 0.07 | 0.002 |
+| Projection neurons | 699 | 0.800 / 0.833 / 0.867 | 0.50 ± 0.06-0.07 | 0.002 |
+| Random non-sensory, non-descending neurons | 1,316 | 0.900 / 0.883 / 0.833 | 0.50 ± 0.07 | 0.002 |
+
+- **Which side an odour came from is linearly decodable from descending-neuron rates on odours never seen in
+  training (78-85% versus 50% chance), far beyond the shuffle null.**
+- **It is not special to descending neurons.** Random central neurons decode side equally well or better
+  (83-90%), and so do projection neurons. The information is spread through the network (consistent with
+  ipsilateral drive raising activity across one hemisphere), not concentrated in the output cells; the earlier
+  literature-picked DNa group is therefore not the right read-out, but the network does preserve side.
+- Limits: 60 trials, 10 odour sets, one weight, one network calibration; the three ridge strengths were fixed
+  in advance and are all reported; no confidence interval on accuracy was computed (6 trials per held-out set,
+  per-set accuracies are in `outputs/dn_decoder.json`); 500 ms windows, whereas the agent acts every 50 ms; the
+  decoder is trained on labelled side, so it is a trained interface to the network, not the network steering
+  by itself.
