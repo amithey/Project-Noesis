@@ -23,7 +23,12 @@ from noesis.drives import HomeostaticState
 from noesis.embodiment import load_training_brain
 from noesis.experiments.mb_conditioning import _run
 from noesis.lif import LIFNetwork, LIFParams
-from noesis.mushroom_body import DopamineGatedPlasticity, populations, with_weak_pathway_edges
+from noesis.mushroom_body import (
+    DopamineGatedPlasticity,
+    GradedAPL,
+    populations,
+    with_weak_pathway_edges,
+)
 
 STATES = {"fed": 1.0, "hungry": 0.2}
 
@@ -45,26 +50,30 @@ def paired_effect(sugar: list, none: list) -> dict:
             "negative_in": int((diff < 0).sum())}
 
 
-def run_one(W, pops, odor, sugar_idx, state: str, reward: bool, seed: int, a) -> dict:
+def run_one(W, pops, odor, sugar_idx, state: str, reward: str, seed: int, a) -> dict:
     net = LIFNetwork(W, LIFParams(dt=0.5, da=1.0), seed=seed)
     plast = DopamineGatedPlasticity(net, pops, eta=a.eta)
+    apl = GradedAPL(net, pops, gain=a.apl_gain) if a.apl_gain > 0 else None
 
     def test():
         out = {}
         for name, idx in odor.items():
-            (_, mbon, _), _ = _run(net, plast, pops, a.test_ms, idx, a.odor_hz, 400.0, learn=False)
+            (_, mbon, _), _ = _run(net, plast, pops, a.test_ms, idx, a.odor_hz, 400.0, learn=False, apl=apl)
             out[name] = mbon
-            _run(net, plast, pops, 300.0, None, 0.0, 0.0, learn=False)
+            _run(net, plast, pops, 300.0, None, 0.0, 0.0, learn=False, apl=apl)
         return out
 
     before = test()
-    if reward:
+    if reward == "sugar":
         gain = HomeostaticState(energy=STATES[state]).sensory_gain("sugar")
         idx = np.concatenate([odor["A"], sugar_idx])
         rate = np.concatenate([np.full(len(odor["A"]), a.odor_hz), np.full(len(sugar_idx), a.sugar_hz * gain)])
+    elif reward == "direct":  # positive control: optogenetic-style dopamine-neuron drive, state-independent
+        idx = np.concatenate([odor["A"], pops.dan])
+        rate = np.concatenate([np.full(len(odor["A"]), a.odor_hz), np.full(len(pops.dan), 60.0)])
     else:
         idx, rate = odor["A"], np.full(len(odor["A"]), a.odor_hz)
-    (_, _, dan), _ = _run(net, plast, pops, a.train_ms, idx, rate, 400.0, learn=True)
+    (_, _, dan), _ = _run(net, plast, pops, a.train_ms, idx, rate, 400.0, learn=True, apl=apl)
     after = test()
     return {"before": before, "after": after, "index": learning_index(before, after),
             "train_dan_hz": float(dan), "weight_fraction": float(plast.mean_weight_fraction)}
@@ -81,6 +90,7 @@ def main() -> None:
     ap.add_argument("--eta", type=float, default=5e-4)
     ap.add_argument("--odor-hz", type=float, default=80.0)
     ap.add_argument("--sugar-hz", type=float, default=200.0)
+    ap.add_argument("--apl-gain", type=float, default=1024.0)
     ap.add_argument("--glomeruli", type=int, default=5)
     a = ap.parse_args()
 
@@ -95,17 +105,19 @@ def main() -> None:
         types = np.random.default_rng(seed).permutation(np.unique(glom[glom != "?"]))
         odor = {n: pops.orn[np.isin(glom, types[i * a.glomeruli:(i + 1) * a.glomeruli])]
                 for i, n in enumerate("AB")}
-        for state in STATES:
-            for reward in (True, False):
-                key = f"{state}/{'sugar' if reward else 'none'}"
-                r = run_one(W, pops, odor, sugar_idx, state, reward, seed, a)
-                results.setdefault(key, []).append(r)
-                print(f"seed {seed} {key:12s} index {r['index']} | MBON A {r['before']['A']:.2f}->{r['after']['A']:.2f} "
-                      f"B {r['before']['B']:.2f}->{r['after']['B']:.2f} | DAN {r['train_dan_hz']:.2f} Hz "
-                      f"| weights {r['weight_fraction']:.4f}", flush=True)
-    summary = {s: paired_effect([r["index"] for r in results[f"{s}/sugar"]],
-                                [r["index"] for r in results[f"{s}/none"]]) for s in STATES}
-    print("sugar minus no-reward learning index (paired by seed):", json.dumps(summary))
+        for state, reward in (("fed", "sugar"), ("fed", "none"), ("hungry", "sugar"), ("hungry", "none"),
+                              ("fed", "direct")):
+            key = f"{state}/{reward}"
+            r = run_one(W, pops, odor, sugar_idx, state, reward, seed, a)
+            results.setdefault(key, []).append(r)
+            print(f"seed {seed} {key:12s} index {r['index']} | MBON A {r['before']['A']:.2f}->{r['after']['A']:.2f} "
+                  f"B {r['before']['B']:.2f}->{r['after']['B']:.2f} | DAN {r['train_dan_hz']:.2f} Hz "
+                  f"| weights {r['weight_fraction']:.4f}", flush=True)
+    idx_of = lambda key: [r["index"] for r in results[key]]
+    summary = {s: paired_effect(idx_of(f"{s}/sugar"), idx_of(f"{s}/none")) for s in STATES}
+    summary["direct_dopamine_vs_none (fed)"] = paired_effect(idx_of("fed/direct"), idx_of("fed/none"))
+    summary["hungry_sugar_vs_fed_sugar"] = paired_effect(idx_of("hungry/sugar"), idx_of("fed/sugar"))
+    print("paired-by-seed learning-index differences:", json.dumps(summary))
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps({"runs": results, "summary": summary}, indent=1), encoding="utf-8")
 
