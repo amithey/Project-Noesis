@@ -32,7 +32,7 @@ structured arrangement possible.
 | Measure (ORN weight 400 / 100) | g_I = 1 (earlier) | g_I = 4 | g_I = 12 |
 |---|---|---|---|
 | PN own vs other glomeruli, Hz (typical) | 160-400 vs ≈ 120 | 57-259 vs ≈ 40 | 90-185 vs 8-22 |
-| Glomeruli with own-PN rate above random sets (p < 0.05), of 10 | 6 / 5 | 5 / 3 | 7 / 5 |
+| Glomeruli with own-PN rate above random sets (p < 0.05), of 10 | 7 / 6 | 5 / 3 | 6 / 5 |
 | KC active fraction | 25.8% / 27.2% | 12.8% / 12.8% | 9.6% / 8.0% |
 | KC within vs between-odour Jaccard | 0.89 vs 0.74 / 0.80 vs 0.72 | 0.88 vs 0.70 / 0.81 vs 0.69 | 0.83 vs 0.58 / 0.69 vs 0.57 |
 | KC identity index (null sd) | +0.143 (0.037) / +0.084 | +0.180 (0.043) / +0.123 | +0.254 (0.062) / +0.119 |
@@ -43,7 +43,7 @@ structured arrangement possible.
 
 What changed:
 - Non-targeted PNs drop from ≈ 120 Hz to ≈ 8-22 Hz at g_I = 12, so the olfactory response is far more local to the
-  stimulated glomerulus, and the Kenyon-cell code is sparser (≈ 9% active) with less overlap between odours
+  stimulated glomerulus (the *number* of glomeruli with a significant own-PN excess does not increase: 6 versus 7), and the Kenyon-cell code is sparser (≈ 9% active) with less overlap between odours
   (0.58 versus 0.74 between-odour Jaccard) and a larger identity index (+0.25 versus +0.14).
 - Descending neurons now carry a side-specific *pattern* at g_I = 12 (side identity index ≈ +0.22, p = 0.01-0.02),
   which was absent at g_I = 1, and a trend toward odour identity at weight 100 (p = 0.056). The population mean
@@ -52,7 +52,7 @@ What changed:
 - Several glomeruli lose their response at g_I = 12 (e.g. DL1, DP1m: own PN 1-5 Hz), so some channels are silenced.
 
 ## Limits
-Two to four noise sources are uncontrolled: one network seed per trial, 10 glomeruli, 4 odours × 2 repeats
+Uncontrolled or weak points: one network seed per trial, 10 glomeruli, 4 odours × 2 repeats
 (3 for DN), no multiple-comparison correction across the table, a single stimulus protocol, and an
 inhibition factor applied uniformly (it also scales the APL synapses that the graded APL reads, so
 `apl_gain` was not re-calibrated). An inhibition factor of 12 is a large departure from the measured
