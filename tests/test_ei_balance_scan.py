@@ -25,4 +25,4 @@ def test_response_label_boundaries():
 
 def test_widest_good_run_is_consecutive_in_background_order():
     pts = [{"bg_hz": h, "good": g} for h, g in [(3, True), (1, True), (2, False), (5, True), (8, True), (12, True)]]
-    assert widest_good_run(pts) == 3
+    assert widest_good_run(pts) == 4
