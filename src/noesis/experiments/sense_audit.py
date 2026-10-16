@@ -71,14 +71,16 @@ def readout_groups(neurons: pd.DataFrame) -> dict[str, np.ndarray]:
             "pn": where(neurons["Class"].fillna("").eq("antennal_lobe_projection_neuron"))}
 
 
-def trial(W, drive: np.ndarray, seed: int, rest_ms: float, stim_ms: float, rate_hz: float, weight: float):
+def trial(W, drive: np.ndarray, seed: int, rest_ms: float, stim_ms: float, rate_hz: float, weight: float,
+          background_hz: float = 0.0, background_weight: float = 50.0):
     """Return per-neuron stimulus-window rate (Hz) after a rest window on a fresh network."""
     net = LIFNetwork(W, LIFParams(dt=0.5, da=1.0), seed=seed)
-    net.run(rest_ms)
+    bg = {"background_hz": background_hz, "background_weight": background_weight}
+    net.run(rest_ms, **bg)
     if len(drive):
-        _, spikes = net.run(stim_ms, drive, rate_hz, weight)
+        _, spikes = net.run(stim_ms, drive, rate_hz, weight, **bg)
     else:
-        _, spikes = net.run(stim_ms)
+        _, spikes = net.run(stim_ms, **bg)
     return np.bincount(spikes, minlength=W.shape[0]) / (stim_ms * 1e-3)
 
 
@@ -87,13 +89,16 @@ def _mean_over_seeds(W, drive, seeds, **kw) -> np.ndarray:
 
 
 def audit(cn, seeds: list[int], min_delta_hz: float, rate_hz: float, weight: float,
-          rest_ms: float, stim_ms: float, channels=CHANNELS) -> dict:
+          rest_ms: float, stim_ms: float, channels=CHANNELS, background_hz: float = 0.0,
+          background_weight: float = 50.0) -> dict:
     groups, read = channel_groups(cn.neurons), readout_groups(cn.neurons)
-    kw = {"rest_ms": rest_ms, "stim_ms": stim_ms, "rate_hz": rate_hz, "weight": weight}
+    kw = {"rest_ms": rest_ms, "stim_ms": stim_ms, "rate_hz": rate_hz, "weight": weight,
+          "background_hz": background_hz, "background_weight": background_weight}
     base = _mean_over_seeds(cn.W, np.zeros(0, np.int64), seeds, **kw)
     all_orn = np.unique(np.concatenate([g[s] for g in groups.values() for s in g]))
     rng = np.random.default_rng(0)
-    report = {"seeds": seeds, "rate_hz": rate_hz, "weight": weight,
+    report = {"seeds": seeds, "rate_hz": rate_hz, "weight": weight, "background_hz": background_hz,
+              "background_weight": background_weight,
               "baseline": {k: float(base[v].mean()) for k, v in read.items()}, "channels": {}}
     for channel in channels:
         entry = {"n_left": len(groups[channel]["left"]), "n_right": len(groups[channel]["right"])}
@@ -135,6 +140,8 @@ def main() -> None:
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--rate", type=float, default=80.0)
     ap.add_argument("--weight", type=float, default=400.0)
+    ap.add_argument("--background-hz", type=float, default=0.0)
+    ap.add_argument("--background-weight", type=float, default=50.0)
     ap.add_argument("--rest-ms", type=float, default=300.0)
     ap.add_argument("--stim-ms", type=float, default=700.0)
     ap.add_argument("--min-delta-hz", type=float, default=2.0)
@@ -144,7 +151,7 @@ def main() -> None:
     cn, _ = load_training_brain(a.data, a.cache, a.brain)
     print(f"brain={a.brain} neurons={cn.n} synaptic pairs={cn.W.nnz}", flush=True)
     report = audit(cn, list(range(a.seeds)), a.min_delta_hz, a.rate, a.weight, a.rest_ms, a.stim_ms,
-                   tuple(a.channels.split(",")))
+                   tuple(a.channels.split(",")), a.background_hz, a.background_weight)
     report["brain"] = a.brain
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(report, indent=1), encoding="utf-8")
