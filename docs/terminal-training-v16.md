@@ -97,3 +97,22 @@ The second birth's 90.476% standing fraction applies only to this shortened,
 exploratory training episode; it is not a five-second standing success. Mean
 stance slip remains 13.204 mm/s and RH has one physical cycle. No frozen V16
 candidate evaluation has run and no best-validated checkpoint exists.
+
+## First full five-second V16 training birth
+
+Seed 27 completed its full five-second horizon, with 990 awake samples and
+95.556% standing. The runtime audit confirms no sustained-fall terminal event
+occurred, every checkpoint link matches and topology/original references/signs
+remain fixed. Maximum weight change is 15.601%, within the 50% bound; 36,265
+selected edges changed since the previous birth.
+
+Physical cycles are LF 12 / LM 15 / LH 12 / RF 14 / RM 14 / RH 4. Mean supporting
+feet is 2.523, mean stance slip 15.754 mm/s, mean reward +0.25518 and heading-forward
+translation 4.612 mm. These are exploratory training observations with learning
+and 1.5 mV/ms exploration active. Slip remains substantial, tripod score is absent
+and no matched original-weight or frozen candidate comparison has been made for
+this checkpoint. The full-duration standing result does not establish a learning
+improvement or basic walking. The full video is preserved without truncation.
+
+Three of 18 planned training births are complete. Seed 28 is learning from the
+seed-27 checkpoint; best-validated remains absent. Source and criteria are fixed.
