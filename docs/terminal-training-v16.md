@@ -86,3 +86,14 @@ edit source, brain state, checkpoints, acceptance thresholds or promotion state.
 Evidence: outputs/protocol-v16-terminal-training-candidate/audit_runtime.py and
 runtime-audit.json; full first episode CSV/checkpoint/video are preserved under
 outputs/birth-cycle-v16 and the main checkout's young-fly-v16-progress folder.
+
+## Second terminal birth verified; third learning birth running
+
+Seed 26 ended with a training terminal fall at 2.255 simulated seconds (441 awake
+chunks). The runtime audit confirms the first continuous 100 ms failure threshold
+occurs on the final saved observation, preserves the full checkpoint chain and
+original topology/signs/bounds, and verifies the next seed-27 start checkpoint.
+The second birth's 90.476% standing fraction applies only to this shortened,
+exploratory training episode; it is not a five-second standing success. Mean
+stance slip remains 13.204 mm/s and RH has one physical cycle. No frozen V16
+candidate evaluation has run and no best-validated checkpoint exists.
