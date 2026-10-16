@@ -58,3 +58,18 @@ checkpoint and the read-only `audit_progress.py`/`progress.json` are in
 `outputs/birth-cycle-v14`; user-accessible copies are under the main checkout's
 `outputs/young-fly-v14-progress`. Live `report.json` is authoritative; copied
 reports are dated snapshots and may lag the ongoing run.
+
+## Ground-support diagnostic for the completed first birth
+
+The CSV reproduces the reported 990 awake samples, standing fraction and mean
+stance slip exactly. Standing with at least three loaded feet occupies 45.66%
+of the measurement window; standing without any loaded feet occupies 1.72%.
+Mean slip conditioned on standing is 15.901 mm/s, so substantial slip is present
+while upright, not only during a fall. Stance fractions are LF 55.86%, LM 36.87%,
+LH 58.18%, RF 23.43%, RM 65.25%, RH 12.42%; support is visibly uneven.
+The posture trace also shows an abrupt loss of uprightness at the end of the
+five-second episode. The earlier 4.02-second frame does not show that later
+failure. The full video and support plot retain it. These are diagnostic
+observations, not new acceptance criteria or evidence of an improvement over
+matched original weights. `diagnose_support.py` regenerates the plot and JSON
+without modifying the brain, reward, checkpoint or behavioral gates.
