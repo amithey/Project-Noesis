@@ -152,3 +152,18 @@ case restarted from time zero and original weights in attempt_0005; its partial
 checkpoint is not used. All cases remain learning-off/exploration-off, and model
 promotion remains disabled. The first-hour terminal report and partial artifacts
 are retained for comparison with the completed replay.
+
+## Fifth case completed by exact replay
+
+The typed-resistance seed-16 replay completed five simulated seconds: 68.79%
+standing, 15.195 mm/s all-window stance slip and 8.882 mm heading translation,
+with a late unrecovered fall. Every field of all 980 partial CSV rows matches
+the full replay prefix; 41,310 motor spike events match exactly.
+
+The initial audit incorrectly treated scalar duration_ms as another spike vector.
+That diagnostic assumption was corrected: partial/full neural durations are
+4,850/4,950 ms, matching their awake windows, and extra spikes begin only after
+the partial duration. Original weights and learning traces remain unchanged.
+The 4.90-second attempt stays separately marked incomplete. Five of six original-
+weight conditions are complete; the legacy seed-16 baseline is still pending.
+No direction hypothesis has been selected for training or promoted.
