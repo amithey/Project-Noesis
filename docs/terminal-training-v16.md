@@ -183,3 +183,20 @@ failed on the Hebrew path and truncated this report. The previous report was
 restored from its parent Git commit, this section added, and the result written
 atomically as explicit UTF-8. Neural source and training checkpoints were not
 modified by that documentation failure.
+
+## Longer second-hour replay verified
+
+The seed-40 replay completed a terminal fall at 2.915 simulated seconds. Every
+recorded field in all 482 partial CSV rows and all 21,297 partial motor-spike
+events matches the completed prefix exactly. Partial/full neural durations are
+2,360/2,865 ms, matching awake sample counts. Both attempts start from the same
+complete seed-39 checkpoint; the partial attempt remains wall_budget and is not
+counted complete. No internal weight-vector equality at the prefix boundary is
+asserted and this terminal training failure is not a five-second success.
+
+The following audited snapshot contains seventeen completed births: five full
+horizons and twelve terminal falls. Seed 42, the final planned training birth,
+was running. All seventeen checkpoint chains and actual terminal conditions pass
+the runtime audit. Frozen comparison and obstacle/held-out verification remain
+required; no candidate is validated or promoted. Exact replay proofs, reports,
+videos and checkpoints are preserved with the dated progress snapshot.
