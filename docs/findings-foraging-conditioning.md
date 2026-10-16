@@ -32,8 +32,23 @@ after. Hunger scales the sugar-receptor drive only (energy 0.2 → gain 1.8). Le
 - Does not show: that real hunger-dependent learning cannot work with this connectome. Three seeds; one APL
   gain; one reward route (sugar-receptor neurons, not a specific PAM subset); one plasticity rate.
 
+## Follow-up: which dopaminergic types does sugar reach? (`experiments/sugar_pathway.py`, `scripts/graph_reach.py`)
+Sugar gustatory neurons (541) driven at 200 Hz, weight 400, graded APL gain 1024, 3 seeds, compared with bitter
+(179) and water (24) gustatory neurons and three size-matched random afferent sets.
+
+- **0 of 33 dopaminergic cell types are sugar-selective.** Sugar changes PAM types by 0.0–0.4 Hz and the
+  controls (especially the random afferent sets) change them as much or more (e.g. PAM08: sugar +0.20 Hz,
+  random sets +1.4 to +1.5 Hz; PAM01: +0.21 versus +0.3 to +0.5). The top row, PPM1201 (+1.5 Hz, 4 neurons),
+  exceeds the best control by only 1.3 Hz, below the 2 Hz criterion.
+- **Graph reach (excitatory edges, counts only):** from sugar neurons the feeding motor neuron MN9 is reached in
+  2 hops and 87 of 281 PAM neurons in 3 hops (209 in 4), but random afferents reach 172 of 281 PAM in 3 hops,
+  so the graph does not single out sugar → reward either.
+- So in this model sugar does reach the feeding motor neuron (consistent with the earlier battery) but there is
+  no sugar-specific route to a reward subset to rescue; trying PAM-subset learning on this evidence would mean
+  injecting an assumed reward, not testing a connectome pathway.
+
 ## Possible fixes (untested)
-1. Identify which dopaminergic types sugar actually reaches and drive reward-coding PAM subsets in proportion to
-   sugar (an assumed shortcut, to be labelled as such).
+1. Drive an assumed reward-coding PAM subset in proportion to sugar contact (an explicit shortcut, not a
+   discovered pathway; must be labelled as such, like the body-reward in the locomotion track).
 2. Make the KC share of MBON input larger via the existing `compartmentalize_mbons`.
 3. Leave associative learning aside; use hunger only as a gain on innate responses and test it directly.
