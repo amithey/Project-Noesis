@@ -64,5 +64,12 @@
   "active_run": "outputs/birth-cycle-v11/report.json",
   "candidate_reward_objective": "standing-first-linear-slip-v3",
   "portable_patch": "docs/patches/standing-first-reward.patch",
-  "neural_body_sensory_and_acceptance_changed": false
+  "neural_body_sensory_and_acceptance_changed": false,
+  "frozen_reference_regression": {
+    "passed": 227,
+    "failed": 0,
+    "ruff": "passed",
+    "reference_source_sha256": "ccbcb9e59e674ffe9a32ed49eb711040984c749f4aece369bb818dc33e4d7fe5",
+    "reference_location_after_installation": "tests/support_slip_v2_reference.py"
+  }
 }

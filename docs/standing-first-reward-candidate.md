@@ -50,3 +50,13 @@ old controls under a changed reward or deploy without the full frozen gates.
 Portable patch: docs/patches/standing-first-reward.patch. Reproducible tests and
 source snapshot: outputs/protocol-v12-posture-candidate; replay and source hashes
 are recorded in docs/standing-first-reward-candidate.json.
+
+## Frozen regression reference
+
+The nonreward-field comparison now loads a frozen copy of the original v2 reward
+module, carried with the portable patch as tests/support_slip_v2_reference.py.
+This test-only fixture is never imported by production training. It keeps the
+1,000-sample comparison meaningful after installation, instead of accidentally
+comparing the candidate to itself through the current src path. Full regression
+was repeated with the frozen fixture: 227 passed, Ruff passed. The candidate
+model source and active v11 source fingerprints did not change.
