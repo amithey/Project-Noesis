@@ -13,7 +13,7 @@ import numpy as np
 
 from noesis.sensory import SensoryMap
 
-ENCODINGS = ('legacy', 'typed-resistance', 'typed-reversed')
+ENCODINGS = ('legacy', 'typed-resistance', 'typed-reversed', 'typed-consistent')
 # Positive model Tibia coordinates/velocity mean flexion (physical FK tests).
 TUNING = {'SNpp50': ('claw', 1), 'SNpp51': ('claw', -1),
           'SNpp39': ('hook', -1), 'SNpp41': ('hook', 1)}
@@ -24,6 +24,8 @@ class TypedSensoryMap:
 
     Claw types receive signed joint position, hook types rectified signed velocity.
     Reversal changes all four inferred preferences, without changing anatomy.
+    typed-consistent tunes only cells whose primary type agrees with organ subclass;
+    conflicting annotations retain their exact legacy organ and rate transfer.
     Rate curves/scales are assumptions. All six leg states must be supplied.
     """
 
@@ -43,9 +45,15 @@ class TypedSensoryMap:
         primary = (neurons['Primary Cell Type'].reindex(self._legacy.idx).fillna('').to_numpy()
                    if 'Primary Cell Type' in neurons else np.full(n, '', object))
         effective_kinds, preferences = old_kinds.copy(), np.zeros(n, int)
-        polarity = 1 if encoding == 'typed-resistance' else -1
+        polarity = -1 if encoding == 'typed-reversed' else 1
+        tuning_masks = {}
+        conflicts = np.zeros(n, bool)
         for cell, (kind, preference) in TUNING.items():
             selected = primary == cell
+            conflicts |= selected & (old_kinds != kind)
+            if encoding == 'typed-consistent':
+                selected &= old_kinds == kind
+            tuning_masks[cell] = selected
             effective_kinds[selected] = kind
             preferences[selected] = polarity * preference
         keep = np.ones(n, bool) if kinds is None else np.isin(effective_kinds, list(kinds))
@@ -57,8 +65,9 @@ class TypedSensoryMap:
                        for kind, leg in sorted(set(zip(effective_kinds, legs, strict=True)))]
         self._tuning = []
         for cell in TUNING:
-            for leg in sorted(set(legs[primary == cell])):
-                slots = np.flatnonzero((primary == cell) & (legs == leg))
+            selected = tuning_masks[cell][keep]
+            for leg in sorted(set(legs[selected])):
+                slots = np.flatnonzero(selected & (legs == leg))
                 self._tuning.append((cell, leg, TUNING[cell][0],
                                      polarity * TUNING[cell][1], slots))
         self._coverage = {
@@ -66,8 +75,10 @@ class TypedSensoryMap:
             'mapped_neurons': len(self.idx), 'typed_neurons': int(np.count_nonzero(preferences)),
             'unchanged_legacy_neurons': int(np.count_nonzero(preferences == 0)),
             'unresolved_hook_neurons': int(np.count_nonzero((effective_kinds == 'hook') & (preferences == 0))),
-            'types': {cell: int(np.count_nonzero(primary == cell)) for cell in TUNING},
+            'types': {cell: int(np.count_nonzero(tuning_masks[cell][keep])) for cell in TUNING},
         }
+        if encoding == 'typed-consistent':
+            self._coverage['conflicting_annotations_kept_legacy'] = int(np.count_nonzero(conflicts[keep]))
 
     def drive(self, state):
         """Only actual joint state determines input; stationary hooks return base."""

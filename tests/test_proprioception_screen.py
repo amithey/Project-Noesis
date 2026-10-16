@@ -48,3 +48,29 @@ def test_screen_rejects_invalid_wall_budget(tmp_path,seconds):
     with pytest.raises(SystemExit):
         screen.main(['--data',str(tmp_path/'data'),'--output',str(tmp_path/'out'),'--wall-seconds',seconds])
     assert not (tmp_path/'out').exists()
+
+
+def test_screen_custom_encodings_stay_frozen_and_resume_cannot_change_comparison(monkeypatch,tmp_path):
+    calls=[]
+    def episode(cn,args,index,checkpoint,*,deadline):
+        calls.append((args.seed,args.proprioceptive_encoding,args.learn,args.motor_exploration,checkpoint))
+        saved=args.output/'episode_000.npz';saved.write_bytes(b'original')
+        return {'status':'completed','simulated_seconds':5.,'learning':False,'motor_exploration_mv_ms':0.},saved
+    monkeypatch.setattr(screen,'load_training_brain',lambda *a:(None,{}))
+    monkeypatch.setattr(screen.lab,'run_episode',episode)
+    output=tmp_path/'custom'
+    argv=['--data',str(tmp_path/'data'),'--output',str(output),'--encodings','typed-resistance','typed-consistent']
+    screen.main(argv)
+    assert calls==[(15,'typed-resistance',False,0.,None),(15,'typed-consistent',False,0.,None),
+                   (16,'typed-consistent',False,0.,None),(16,'typed-resistance',False,0.,None)]
+    report=json.loads((output/'report.json').read_text())
+    assert len(report['completed'])==4 and not report['promotion_allowed']
+    with pytest.raises(SystemExit):
+        screen.main(argv+['--resume','--encodings','legacy'])
+
+
+def test_screen_rejects_duplicate_encodings_before_creating_output(tmp_path):
+    with pytest.raises(SystemExit):
+        screen.main(['--data',str(tmp_path/'data'),'--output',str(tmp_path/'out'),
+                     '--encodings','typed-consistent','typed-consistent'])
+    assert not (tmp_path/'out').exists()

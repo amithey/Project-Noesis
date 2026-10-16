@@ -8,7 +8,7 @@ param(
     [ValidateRange(1, 10000)][int]$Episodes = 3,
     [ValidateRange(0, 4294967295)][long]$Seed = 0,
     [ValidateSet('graded', 'quiet', 'obstacle')][string]$TrainingArena = 'graded',
-    [ValidateSet('legacy', 'typed-resistance', 'typed-reversed')][string]$ProprioceptiveEncoding = 'legacy',
+    [ValidateSet('legacy', 'typed-resistance', 'typed-reversed', 'typed-consistent')][string]$ProprioceptiveEncoding = 'legacy',
     [string]$Output = 'outputs/young-fly',
     [string]$ImportWeights,
     [string]$Data,

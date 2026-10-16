@@ -135,7 +135,7 @@ def test_early_rejection_does_not_claim_unrun_controls_and_resume_continues_trai
     assert all(c[3] for c in calls)
 
 
-@pytest.mark.parametrize('encoding',['legacy','typed-resistance','typed-reversed'])
+@pytest.mark.parametrize('encoding',['legacy','typed-resistance','typed-reversed','typed-consistent'])
 def test_pipeline_keeps_same_proprioception_for_every_training_and_frozen_control(monkeypatch,tmp_path,encoding):
     import json
 

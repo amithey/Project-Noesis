@@ -100,3 +100,54 @@ def test_unknown_encoding_rejected_and_returned_coverage_cannot_mutate_mapping()
     mapping=TypedSensoryMap(neurons());coverage=mapping.coverage()
     coverage['types']['SNpp39']=500
     assert mapping.coverage()['types']['SNpp39']==2
+
+
+def test_consistent_mapping_preserves_conflicting_organs_and_exact_legacy_rates():
+    frame=neurons();saved=frame.copy(deep=True)
+    legacy=SensoryMap(frame);old=TypedSensoryMap(frame)
+    consistent=TypedSensoryMap(frame,'typed-consistent')
+    np.testing.assert_array_equal(consistent.idx,legacy.idx)
+    assert {(kind,leg,tuple(ids)) for kind,leg,ids in consistent.groups}=={
+        (kind,leg,tuple(ids)) for kind,leg,ids in legacy.groups}
+    assert consistent.coverage()['typed_neurons']==4
+    assert consistent.coverage()['conflicting_annotations_kept_legacy']==2
+    assert consistent.coverage()['unresolved_hook_neurons']==2
+    rng=np.random.default_rng(67)
+    for _ in range(100):
+        state={leg:LegState(tibia=rng.uniform(-2,2),tibia_vel=rng.uniform(-10,10),
+                           coxa=rng.uniform(-1,1),femur=rng.uniform(-1,1),load=rng.uniform(0,60))
+               for leg in LEGS}
+        original=rates(legacy,state);previous=rates(old,state);new=rates(consistent,state)
+        assert all(new[idx]==original[idx] for idx in (21,24,30,37))
+        assert all(new[idx]==previous[idx] for idx in (5,8,12,16))
+    pd.testing.assert_frame_equal(frame,saved)
+
+
+@pytest.mark.parametrize('organ',['campaniform_sensillum','club_chordotonal_organ','hair_plate','bristle'])
+def test_consistent_mapping_never_reclassifies_nonmatching_load_or_movement_organs(organ):
+    frame=neurons()
+    frame.loc[37,'Sub Class']=f'front_leg_{organ}_neuron'
+    frame.loc[37,'Primary Cell Type']='SNpp39'
+    legacy=SensoryMap(frame);mapping=TypedSensoryMap(frame,'typed-consistent')
+    for angle,velocity,load in ((0.,0.,0.),(.5,-3.,40.),(-.5,3.,2.)):
+        state={leg:LegState(tibia=angle,tibia_vel=velocity,load=load,coxa=.2,femur=-.4) for leg in LEGS}
+        assert rates(mapping,state)[37]==rates(legacy,state)[37]
+    assert mapping.coverage()['conflicting_annotations_kept_legacy']==3
+
+
+def test_consistent_hook_ablation_uses_documented_organs_and_scoped_conflict_coverage():
+    full=TypedSensoryMap(neurons(),'typed-consistent')
+    hooks=TypedSensoryMap(neurons(),'typed-consistent',kinds=frozenset({'hook'}))
+    assert set(hooks.idx)=={12,16,21,30}
+    assert hooks.coverage()['conflicting_annotations_kept_legacy']==1
+    assert hooks.coverage()['typed_neurons']==2
+    expected=rates(full,states(.2,3.))
+    assert rates(hooks,states(.2,3.))=={idx:expected[idx] for idx in hooks.idx}
+
+
+def test_consistent_missing_primary_labels_stay_exactly_legacy():
+    frame=neurons().drop(columns='Primary Cell Type')
+    legacy=SensoryMap(frame);mapping=TypedSensoryMap(frame,'typed-consistent')
+    np.testing.assert_array_equal(mapping.drive(states(.7,-2.,30.)),legacy.drive(states(.7,-2.,30.)))
+    assert mapping.coverage()['typed_neurons']==0
+    assert mapping.coverage()['conflicting_annotations_kept_legacy']==0

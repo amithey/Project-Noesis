@@ -33,19 +33,23 @@ def main(argv=None):
     ap.add_argument('--resume', action='store_true')
     ap.add_argument('--video', action='store_true')
     ap.add_argument('--seeds', type=int, nargs='+', default=[15, 16])
+    ap.add_argument('--encodings', nargs='+', choices=ENCODINGS,
+                    default=['legacy', 'typed-resistance', 'typed-reversed'])
     args = ap.parse_args(argv)
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 3600:
         ap.error('wall-seconds must be in (0, 3600]')
     if (not args.seeds or len(set(args.seeds)) != len(args.seeds)
             or any(seed < 0 or seed >= 2**32 for seed in args.seeds)):
         ap.error('development seeds must be unique unsigned 32-bit integers')
+    if len(set(args.encodings)) != len(args.encodings):
+        ap.error('development encodings must be unique')
     if set(args.seeds) & {10, 11, 200, 201, 202}:
         ap.error('validation and held-out seeds are reserved')
     if args.output.resolve() == args.data.resolve() or args.data.resolve() in args.output.resolve().parents:
         ap.error('output must be outside read-only source data')
     jobs = [{'id': f'{encoding}-{seed}', 'encoding': encoding, 'seed': seed}
             for index, seed in enumerate(args.seeds)
-            for encoding in (ENCODINGS if index % 2 == 0 else ENCODINGS[::-1])]
+            for encoding in (args.encodings if index % 2 == 0 else args.encodings[::-1])]
     settings = {'data': str(args.data.resolve()), 'output': str(args.output.resolve()),
                 'seeds': args.seeds, 'seconds': 5., 'source_sha256': source_fingerprint(),
                 'driver_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}

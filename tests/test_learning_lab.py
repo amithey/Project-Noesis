@@ -341,10 +341,11 @@ def test_normalized_training_then_frozen_evaluation_keeps_weights_and_scale_froz
     assert not evaluation['learning'] and evaluation['motor_exploration_mv_ms'] == 0
 
 
-def test_checkpoint_context_gates_proprioceptive_tuning_and_explicit_transfer(lab_environment):
+@pytest.mark.parametrize('encoding',['typed-resistance','typed-consistent'])
+def test_checkpoint_context_gates_proprioceptive_tuning_and_explicit_transfer(lab_environment,encoding):
     env=lab_environment
     _,checkpoint=lab.run_episode(env.cn,env.args,0,None)
-    env.args.proprioceptive_encoding='typed-resistance'
+    env.args.proprioceptive_encoding=encoding
     with pytest.raises(ValueError,match='context mismatch'):
         lab.run_episode(env.cn,env.args,1,checkpoint)
     env.args.import_weights=True
@@ -353,17 +354,18 @@ def test_checkpoint_context_gates_proprioceptive_tuning_and_explicit_transfer(la
     with np.load(checkpoint) as old,np.load(transferred) as new:
         np.testing.assert_array_equal(old['weights'],new['weights'])
     context=json.loads(transferred.with_suffix('.model.json').read_text())
-    assert context['proprioceptive_encoding']=='typed-resistance'
-    assert summary['proprioceptive_encoding']=='typed-resistance'
+    assert context['proprioceptive_encoding']==encoding
+    assert summary['proprioceptive_encoding']==encoding
 
 
-def test_typed_sensor_selection_reaches_brain_in_frozen_episode(lab_environment,monkeypatch):
+@pytest.mark.parametrize('encoding',['typed-reversed','typed-consistent'])
+def test_typed_sensor_selection_reaches_brain_in_frozen_episode(lab_environment,monkeypatch,encoding):
     env=lab_environment
     env.args.no_senses=False
     env.args.no_balance=True
     env.args.no_environment_senses=True
     env.args.learn=False
-    env.args.proprioceptive_encoding='typed-reversed'
+    env.args.proprioceptive_encoding=encoding
     seen=[]
     class Sensor:
         idx=np.array([0])
@@ -371,14 +373,14 @@ def test_typed_sensor_selection_reaches_brain_in_frozen_episode(lab_environment,
             assert set(states)==set(LEGS)
             return np.array([32.])
         def coverage(self):
-            return {'encoding':'typed-reversed','preferred_directions_are_inferred':True}
+            return {'encoding':encoding,'preferred_directions_are_inferred':True}
     def factory(neurons,encoding):
         seen.append(encoding)
         return Sensor()
     monkeypatch.setattr(lab,'make_proprioception_map',factory)
     summary,checkpoint=lab.run_episode(env.cn,env.args,0,None)
-    assert seen==['typed-reversed']
+    assert seen==[encoding]
     assert summary['learning'] is False and summary['motor_exploration_mv_ms']==0
     assert np.array_equal(env.networks[-1].last_drive['drive_idx'],[0])
     assert np.array_equal(env.networks[-1].last_drive['drive_rate_hz'],[32.])
-    assert json.loads(checkpoint.with_suffix('.proprioception-map.json').read_text())['encoding']=='typed-reversed'
+    assert json.loads(checkpoint.with_suffix('.proprioception-map.json').read_text())['encoding']==encoding
