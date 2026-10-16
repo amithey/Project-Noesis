@@ -120,3 +120,22 @@ fractional change 0.0064424 and maximum 0.1260464 from original, inside the 0.5
 bound. The sixth birth (seed 22) is running. Full per-leg/window measurements and
 reproducible read-only audit are in `support-across-births.json` and
 `audit_support_across_births.py`; no candidate is best-validated.
+
+## Six training births completed; frozen control running
+
+Seed 22 completed five seconds with 38.79% standing, 9.073 mm/s all-window
+stance slip and 15.795 mm/s slip conditioned on standing. Its final uprightness
+is -0.967: it did not recover from the fall. Physical cycle counts are
+LF 5 / LM 10 / LH 7 / RF 8 / RM 10 / RH 8. Those cycles and the 9.319 mm heading
+translation are not proof of walking because most of this birth was fallen.
+
+All six complete checkpoints pass topology, motor-edge identity, original-weight
+reference, sign and 50% bound audits. The latest seed-22 checkpoint has mean
+fractional change 0.0067014 and maximum 0.1445601 from original; 37,204 connections
+changed during the final birth. It is the last-training checkpoint only.
+
+The protocol has now started validation-quiet-original-10 with learning=False
+and start_checkpoint=null. The runner sets motor exploration to zero for every
+nontraining job. Neither this control nor subsequent candidate, obstacle or
+held-out trials are claimed complete yet. There is still no best-validated
+checkpoint and the normal launcher remains unchanged.
