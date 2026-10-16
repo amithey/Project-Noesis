@@ -1,6 +1,6 @@
 # Survival drive: senses → internal need → behaviour (without legs)
 
-Status 2026-10-16: **stage 1 partly passed (odour specificity at PN/KC); descending-neuron test pending.** Nothing here shows the fly behaves like a fly.
+Status 2026-10-16: **stage 1 partly passed (odour specificity at PN/KC; none at descending neurons); stage 4 blocked.** Nothing here shows the fly behaves like a fly.
 
 ## Why this track exists
 Locomotion training (standing, then walking) runs on `codex/brain-body-feedback` and has not
@@ -13,10 +13,10 @@ track. Merging with a walking body is a later step, planned only after results b
 | Stage | Content | State |
 |---|---|---|
 | 0 | Own worktree `C:/dev/noesis-claude-drive` | done |
-| 1 | `experiments/sense_audit.py`, `operating_point.py`: does each odour channel reach the mushroom body, dopamine cells and descending neurons? | run; gate partly passed: PN/KC odour specificity found (modest), steering output untested; see [findings-sense-audit.md](findings-sense-audit.md) |
+| 1 | `experiments/sense_audit.py`, `operating_point.py`: does each odour channel reach the mushroom body, dopamine cells and descending neurons? | run; gate partly passed: PN/KC odour specificity (modest); descending neurons show no odour identity and only a ~3% ipsilateral bias; see [findings-sense-audit.md](findings-sense-audit.md) |
 | 2 | `drives.py`: energy/water state, hunger-scaled sensory gain, reward = net intake | done, unit-tested |
 | 3 | `experiments/mb_foraging_conditioning.py`: odour A + sugar, fed vs hungry, with no-reward control | script done and unit-tested; **not yet run** |
-| 4 | Leg-free virtual agent steered by descending neurons | blocked until a per-neuron descending-neuron test beats shuffle nulls |
+| 4 | Leg-free virtual agent steered by descending neurons | blocked: pooled descending neurons carry no odour identity and only a faint side bias |
 | 5 | Evolution of a small genome (sensory gains, hunger coupling, plasticity rates) | not started |
 | 6 | Reconnect to the full MuJoCo body | out of scope until walking is measurable |
 

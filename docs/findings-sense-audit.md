@@ -53,7 +53,31 @@ Interpretation:
 - Not yet tested: descending neurons. Whether any of this reaches output cells that could steer
   (left/right differences, odour identity in descending-neuron responses) is open.
 
+## Part 3 — descending neurons: identity and side (`experiments/dn_selectivity.py`)
+Same configuration as part 2 (graded APL gain 1024, no background, 200 ms settle + 500 ms at 80 Hz).
+All 1,316 descending neurons (651 left-soma, 665 right-soma), full rate vectors, 1,000-permutation nulls.
+Odour identity: 4 odours × 3 independently seeded repeats. Side: 3 odour sets driven through left-side or
+right-side receptors only × 2 repeats.
+
+| ORN weight | DN active | Odour identity index (null) | p | Side identity index | p | Lateralisation S (null sd) | p |
+|---|---|---|---|---|---|---|---|
+| 400 | 44.4% | +0.001 (0.000 ± 0.001) | 0.162 | −0.000 | 0.600 | +0.75 Hz (0.17) | 0.001 |
+| 100 | 44.3% | +0.001 (0.000 ± 0.001) | 0.027 | +0.000 | 0.238 | +0.65 Hz (0.21) | 0.004 |
+
+- **Odour identity is essentially absent at the DN level.** The index is ~0.001 correlation units: repeats
+  of one odour are no more alike than different odours in any practical sense (p = 0.027 at one weight is
+  statistically nominal, but the effect is negligible). The descending population is ≈ 44% active and its
+  rate pattern is dominated by network-state noise, not by which odour was presented.
+- **A small ipsilateral lateralisation exists.** Left-soma DNs respond ≈ 0.7 Hz more (relative to right-soma
+  DNs) when left receptors are driven than when right receptors are driven, p ≤ 0.004 at both weights.
+  That is ≈ 3% of the DN mean response (≈ 28 Hz); no side signal appears in the full-vector pattern test.
+- Not established: that any DN subset steers, which direction a DN pattern turns the fly, or that a 0.7 Hz
+  population difference is large enough to steer a body. All DNs were pooled; known steering types
+  (e.g. DNa) were not analysed separately. Two weights, one odour-set draw, small repeat counts.
+
 ## Gate status
-Stage 1 is **partly passed**: odour identity is represented at the projection-neuron and Kenyon-cell level.
-It is **not** passed for steering. Stage 4 stays blocked until a per-neuron test on descending neurons
-(odour identity, and left- versus right-sided stimulation) beats shuffle nulls.
+Stage 1: odour identity is represented at projection-neuron and Kenyon-cell level (part 2) but not in
+descending-neuron output (part 3); a faint ipsilateral side bias exists. A virtual agent steered by pooled
+descending neurons would be driven mostly by noise, so stage 4 stays **blocked** pending one of: a
+steering-type subset analysis, a stronger/more natural graded bilateral input, or a better-calibrated
+operating point.
