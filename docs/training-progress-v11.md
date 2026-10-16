@@ -1,7 +1,7 @@
 # V11 short quiet-floor training progress
 
 Status: all three five-second training births completed; original seed-10
-frozen quiet-floor control is live. Candidate/obstacle/heldout evaluation is pending. No validated model exists or has been deployed.
+frozen quiet-floor control is complete and original seed 11 is live. Candidate/obstacle/heldout evaluation is pending. No validated model exists or has been deployed.
 The run uses source fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd,
 imports complete v10 training weights and preserves all 25 frozen test cases.
 
@@ -87,3 +87,14 @@ fingerprint was reverified unchanged. Best-validated weights remain null. The
 runner has started original seed-10 quiet-floor control with learning=False and
 exploration off. It must finish required controls across bounded resume cycles
 before promotion. The separately tested standing-first reward remains unapplied.
+
+## Completed frozen original seed 10
+
+The original five-second control completed with learning and exploration off:
+92.22% standing, 8.319 mm heading-integrated displacement and 15.839 mm/s mean
+stance slip. Every field of all 1,000 CSV rows and all recorded motor-spike arrays
+exactly matches the completed v10 original seed-10 control. The short training
+job schedule therefore did not contaminate this original model or change the
+recorded conditions. This reproducibility result establishes a baseline, not
+trained-model improvement. Original seed 11 and candidate evaluations remain
+unfinished; no promotion is allowed.
