@@ -116,3 +116,15 @@ improvement or basic walking. The full video is preserved without truncation.
 
 Three of 18 planned training births are complete. Seed 28 is learning from the
 seed-27 checkpoint; best-validated remains absent. Source and criteria are fixed.
+
+## Second consecutive full-horizon training birth
+
+Seed 28 completed five seconds with 94.242% standing, 16.211 mm/s stance slip,
+2.354 mean supporting feet and cycles LF 13 / LM 17 / LH 16 / RF 8 / RM 11 / RH 4.
+The two full-horizon births (27/28) exceed 90% standing during exploratory
+training; both retain substantial slip and neither is frozen evidence of learned
+walking. Different seeds and changing weights do not isolate a learning benefit.
+The runtime audit confirms the fourth completed checkpoint, its original
+references/topology/signs/bounds and full-horizon termination. Seed 29 is learning
+from that checkpoint. Four of 18 births are complete; no candidate has been
+validated or promoted and the source/criteria remain unchanged.
