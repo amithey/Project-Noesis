@@ -89,6 +89,8 @@ def main():
     ap.add_argument('--training-arena', choices=('graded', 'quiet', 'obstacle'), default='graded',
                     help='training scenes only; frozen quiet/obstacle controls remain mandatory')
     ap.add_argument('--seconds', type=float, default=5.)
+    ap.add_argument('--training-fall-seconds', type=float, default=0.,
+                    help='terminal sustained fall for training births only; evaluations stay full length')
     ap.add_argument('--evaluation-seconds', type=float, default=5.)
     ap.add_argument('--wall-seconds', type=float, default=3600.)
     ap.add_argument('--depression-u', type=float, choices=(0., .03, .1), default=0.)
@@ -130,6 +132,7 @@ def main():
         ap.error('output must be outside read-only source data')
     template = lab.parser().parse_args(['--data', str(args.data), '--output', str(args.output/'probe'),
         '--seconds', str(args.seconds), '--learning-rate', str(args.learning_rate), '--arena', 'quiet', '--depression-u', str(args.depression_u), '--learn'])
+    template.training_fall_seconds = args.training_fall_seconds
     template.proprioceptive_encoding = args.proprioceptive_encoding
     template.normalize_reward_error = args.normalize_reward_error
     lab.validate_args(lab.parser(), template)
@@ -181,6 +184,7 @@ def main():
             case.seed, case.arena = job['seed'], job['arena']
             case.learn = job['stage'] == 'training'
             case.seconds = args.seconds if case.learn else 5.
+            case.training_fall_seconds = args.training_fall_seconds if case.learn else 0.
             case.motor_exploration = 1.5 if case.learn else 0.
             case.import_weights = (args.import_weights is not None
                                    and report['last_training_checkpoint'] is None and case.learn)

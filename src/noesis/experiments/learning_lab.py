@@ -69,6 +69,8 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--seconds', type=float, default=3.0)
     ap.add_argument('--birth', type=float, default=0.05)
+    ap.add_argument('--training-fall-seconds', type=float, default=0.,
+                    help='training-only terminal sustained fall duration; 0 keeps full horizon')
     ap.add_argument('--seed', type=int, default=0)
     ap.add_argument('--brain', choices=('corrected', 'raw'), default='corrected')
     ap.add_argument('--body-model', choices=('muscles', 'legacy'), default='muscles')
@@ -114,6 +116,11 @@ def validate_args(ap, args):
         ap.error('--episodes must be positive')
     if not np.isfinite(args.seconds) or args.seconds <= 0:
         ap.error('--seconds must be finite and positive')
+    if (not np.isfinite(args.training_fall_seconds)
+            or not 0 <= args.training_fall_seconds <= args.seconds):
+        ap.error('--training-fall-seconds must be finite and within [0, --seconds]')
+    if not args.learn and args.training_fall_seconds:
+        ap.error('evaluation requires training fall termination disabled')
     if not np.isfinite(args.birth) or not 0 <= args.birth < args.seconds:
         ap.error('--birth must be between zero and --seconds')
     for name in ('learning_rate', 'sensory_weight', 'environment_weight', 'bg_hz', 'bg_weight'):
@@ -132,6 +139,11 @@ def validate_args(ap, args):
 
 
 def run_episode(cn, args, episode, checkpoint, *, deadline=None):
+    terminal_after = args.training_fall_seconds
+    if (not np.isfinite(terminal_after) or not 0 <= terminal_after <= args.seconds):
+        raise ValueError('training fall duration must be finite and within episode horizon')
+    if not args.learn and terminal_after:
+        raise ValueError('evaluation requires training fall termination disabled')
     import flygym
     from flygym import Camera, Fly, PhysicsError, SingleFlySimulation, preprogrammed
 
@@ -253,6 +265,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
               f'learning={args.learn}, seed={seed}', flush=True)
         awake_origin = None
         obstacle_duration = 0.
+        fall_duration = 0.
+        training_fall_terminated = False
         for k in range(int(np.ceil(args.seconds * 1000 / chunk_ms))):
             if deadline is not None and time.monotonic() >= deadline:
                 status = 'wall_budget'
@@ -390,6 +404,14 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                 if not viewer.is_running():
                     status = 'viewer_closed'
                     break
+            # Training environment termination only: reward/eligibility above already
+            # includes the actual failure transition. No posture or motor correction.
+            if terminal_after and awake:
+                fallen = score['uprightness'] < .5 or score['height_mm'] < .3
+                fall_duration = fall_duration + chunk_ms / 1000 if fallen else 0.
+                if fall_duration + 1e-12 >= terminal_after:
+                    training_fall_terminated = True
+                    break
         plasticity.save(prefix.with_suffix('.npz'))
         prefix.with_suffix('.model.json').write_text(json.dumps(context, indent=2), encoding='utf-8')
         if camera:
@@ -428,6 +450,9 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
     prefix.with_suffix('.gait.json').write_text(json.dumps(gait, indent=2), encoding='utf-8')
     awake_rows = [r for r in rows if r['awake']]
     summary = {'episode': episode, 'seed': seed, 'status': status, 'learning': args.learn,
+               'termination_reason': 'training_fall' if training_fall_terminated else (
+                   'horizon' if status == 'completed' else status.split(':', 1)[0]),
+               'episode_horizon_seconds': args.seconds, 'training_fall_seconds': terminal_after,
                **behavior_summary(rows), 'arena': args.arena,
                'imported_weights_from': str(checkpoint) if checkpoint and args.import_weights else None,
                'external_senses': environmental_input,

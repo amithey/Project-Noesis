@@ -28,8 +28,8 @@ Candidate next training change: make sustained falls terminal for training birth
 only, saving learned weights and starting the next seed/body/neural birth. The
 learner would still receive the failure-transition reward before termination.
 This resets a failed training environment; it does not inject a gait, fix body
-posture during an episode or alter the connectome. The implementation and tests
-are not yet present. The active V15 screen must finish before changing its source.
+posture during an episode or alter the connectome. At the time of this audit the implementation and tests were not present. V15
+subsequently completed; see terminal-training-v16.md for the tested implementation.
 
 If implemented, evaluation must always retain its complete five-second window,
 learning/exploration off, all standing/cycle/heading/slip/obstacle gates and the

@@ -20,7 +20,7 @@ from noesis.sensory import LEGS
 
 @pytest.fixture
 def lab_environment(monkeypatch, tmp_path):
-    state = SimpleNamespace(simulations=[], networks=[], learners=[], fail_step=None)
+    state = SimpleNamespace(simulations=[], networks=[], learners=[], fail_step=None, pose=None)
     names = [f"joint_{leg}{dof}" for leg in LEGS for dof in ("Coxa", "Femur", "Tibia")]
 
     class PhysicsError(Exception):
@@ -46,11 +46,16 @@ def lab_environment(monkeypatch, tmp_path):
             state.simulations.append(self)
 
         def observation(self):
-            return {"joints": np.zeros((2, len(names))),
+            obs = {"joints": np.zeros((2, len(names))),
                     "fly": np.array([[self.steps * self.timestep, 0., 0.8]]),
                     "cardinal_vectors": np.eye(3), "contact_forces": np.zeros((6, 3)),
                     "end_effectors": np.zeros((6, 3)), "vision": np.full((2, 4, 2), 0.5),
                     "odor_intensity": np.full((6, 4), 0.5)}
+            if state.pose is not None:
+                up,height=state.pose(self.steps*self.timestep)
+                obs['cardinal_vectors'][2,2]=up
+                obs['fly'][0,2]=height
+            return obs
 
         def reset(self, seed):
             self.seed = seed
@@ -100,7 +105,11 @@ def lab_environment(monkeypatch, tmp_path):
     monkeypatch.setattr(lab, "MotorPlasticity", Learner)
     monkeypatch.setattr(lab, "build_motor_matrix", lambda neurons, joints: sparse.csr_matrix(
         ([1.0], ([0], [1])), shape=(len(joints), 2)))
-    state.cn = Connectome(pd.DataFrame({"root_id": [1, 2]}),
+    state.cn = Connectome(pd.DataFrame({"root_id": [1, 2],
+        "Class": ["interneuron", "leg_motor_neuron"],
+        "Sub Class": ["", "front_leg_motor_neuron"],
+        "Primary Cell Type": ["", "tibia_flexor"],
+        "Nerve": ["", "left_prothoracic_leg_nerve"], "Soma side": ["", "left"]}),
                          sparse.csr_matrix([[0., 50.], [0., 0.]]))
     state.args = lab.parser().parse_args([
         "--output", str(tmp_path), "--seconds", "0.025", "--birth", "0.005",
@@ -384,3 +393,90 @@ def test_typed_sensor_selection_reaches_brain_in_frozen_episode(lab_environment,
     assert np.array_equal(env.networks[-1].last_drive['drive_idx'],[0])
     assert np.array_equal(env.networks[-1].last_drive['drive_rate_hz'],[32.])
     assert json.loads(checkpoint.with_suffix('.proprioception-map.json').read_text())['encoding']==encoding
+
+
+def test_training_fall_terminates_after_debounce_and_retains_failure_credit_and_weights(lab_environment):
+    env=lab_environment
+    env.args.seconds=.05;env.args.training_fall_seconds=.01
+    env.pose=lambda t:(.2,.8) if t>=.015-1e-12 else (1.,.8)
+    first,checkpoint=lab.run_episode(env.cn,env.args,0,None)
+    assert first['status']=='completed' and first['termination_reason']=='training_fall'
+    assert first['simulated_seconds']==pytest.approx(.02)
+    assert first['episode_horizon_seconds']==.05 and first['awake_samples']==3
+    with checkpoint.with_suffix('.csv').open() as f:rows=list(csv.DictReader(f))
+    assert len(rows)==4 and float(rows[-1]['reward'])<0
+    with np.load(checkpoint) as saved:
+        assert float(saved['reward_baseline'])<0
+        assert not np.array_equal(saved['weights'],saved['initial_weights'])
+        weights=saved['weights'].copy();initial=saved['initial_weights'].copy()
+    second,continued=lab.run_episode(env.cn,env.args,1,checkpoint)
+    assert second['termination_reason']=='training_fall' and second['seed']==8
+    with np.load(continued) as saved:
+        np.testing.assert_array_equal(saved['initial_weights'],initial)
+        assert not np.array_equal(saved['weights'],weights)
+    assert all(sim.closed for sim in env.simulations)
+    np.testing.assert_array_equal(env.cn.W.data,[50.])
+
+
+def test_training_fall_timer_resets_between_transient_losses(lab_environment):
+    env=lab_environment
+    env.args.seconds=.05;env.args.training_fall_seconds=.01
+    env.pose=lambda t:(.2,.8) if any(abs(t-x)<1e-9 for x in (.015,.025,.035)) else (1.,.8)
+    summary,_=lab.run_episode(env.cn,env.args,0,None)
+    assert summary['termination_reason']=='horizon' and summary['simulated_seconds']==pytest.approx(.05)
+
+
+def test_training_fall_ignores_cold_birth_period(lab_environment):
+    env=lab_environment
+    env.args.seconds=.05;env.args.birth=.015;env.args.training_fall_seconds=.01
+    env.pose=lambda t:(.2,.8) if t<=.015+1e-12 else (1.,.8)
+    summary,_=lab.run_episode(env.cn,env.args,0,None)
+    assert summary['termination_reason']=='horizon' and summary['simulated_seconds']==pytest.approx(.05)
+
+
+def test_training_low_height_is_terminal_even_when_upright(lab_environment):
+    env=lab_environment
+    env.args.seconds=.05;env.args.training_fall_seconds=.01
+    env.pose=lambda t:(1.,.2) if t>=.015-1e-12 else (1.,.8)
+    summary,_=lab.run_episode(env.cn,env.args,0,None)
+    assert summary['termination_reason']=='training_fall' and summary['simulated_seconds']==pytest.approx(.02)
+
+
+def test_evaluation_fall_termination_is_rejected_before_body_is_created(lab_environment):
+    env=lab_environment
+    env.args.seconds=.05;env.args.training_fall_seconds=.01;env.args.learn=False
+    with pytest.raises(SystemExit):lab.validate_args(lab.parser(),env.args)
+    with pytest.raises(ValueError,match='evaluation requires training fall termination disabled'):
+        lab.run_episode(env.cn,env.args,0,None)
+    assert not env.simulations and not env.networks
+
+
+def test_frozen_fallen_evaluation_keeps_full_horizon_and_unchanged_weights(lab_environment):
+    env=lab_environment
+    env.args.seconds=.05;env.args.learn=False
+    env.pose=lambda t:(.2,.8)
+    summary,checkpoint=lab.run_episode(env.cn,env.args,0,None)
+    assert summary['termination_reason']=='horizon' and summary['simulated_seconds']==pytest.approx(.05)
+    assert not summary['learning'] and summary['motor_exploration_mv_ms']==0.
+    with np.load(checkpoint) as saved:
+        np.testing.assert_array_equal(saved['weights'],saved['initial_weights'])
+        assert not saved['eligibility'].any() and not saved['activity'].any()
+
+
+def test_wall_interruption_is_not_a_completed_terminal_fall(lab_environment,monkeypatch):
+    env=lab_environment
+    env.args.seconds=.05;env.args.birth=0.;env.args.training_fall_seconds=.01
+    env.pose=lambda t:(.2,.8)
+    monkeypatch.setattr(lab.time,'monotonic',lambda:2. if env.simulations and env.simulations[-1].steps>=50 else 0.)
+    summary,_=lab.run_episode(env.cn,env.args,0,None,deadline=1.)
+    assert summary['status']=='wall_budget' and summary['termination_reason']=='wall_budget'
+    assert summary['simulated_seconds']==pytest.approx(.005)
+
+
+@pytest.mark.parametrize('duration',[-.01,float('nan'),float('inf'),.026])
+def test_invalid_training_fall_duration_is_rejected(lab_environment,duration):
+    env=lab_environment;env.args.training_fall_seconds=duration
+    with pytest.raises(SystemExit):lab.validate_args(lab.parser(),env.args)
+    with pytest.raises(ValueError,match='training fall duration'):
+        lab.run_episode(env.cn,env.args,0,None)
+    assert not env.simulations

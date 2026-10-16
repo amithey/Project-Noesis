@@ -6,6 +6,7 @@ param(
     [ValidateRange(1, 3600)][int]$WallSeconds = 3600,
     [ValidateRange(0.051, 3600)][double]$Seconds = 5,
     [ValidateRange(1, 10000)][int]$Episodes = 3,
+    [ValidateRange(0, 3600)][double]$TrainingFallSeconds = 0,
     [ValidateRange(0, 4294967295)][long]$Seed = 0,
     [ValidateSet('graded', 'quiet', 'obstacle')][string]$TrainingArena = 'graded',
     [ValidateSet('legacy', 'typed-resistance', 'typed-reversed', 'typed-consistent')][string]$ProprioceptiveEncoding = 'legacy',
@@ -41,6 +42,7 @@ try {
     $trainingArguments = @('-u', '-m', 'noesis.experiments.train_validate',
         '--data', $Data, '--output', $Output, '--wall-seconds', $WallSeconds,
         '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture), '--episodes', $Episodes, '--seed', $Seed,
+        '--training-fall-seconds', $TrainingFallSeconds.ToString([cultureinfo]::InvariantCulture),
         '--training-arena', $TrainingArena, '--proprioceptive-encoding', $ProprioceptiveEncoding)
     if ($Resume) { $trainingArguments += '--resume' }
     if ($ImportWeights) { $trainingArguments += @('--import-weights', $ImportWeights) }

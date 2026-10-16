@@ -142,7 +142,7 @@ def test_pipeline_keeps_same_proprioception_for_every_training_and_frozen_contro
     from noesis.experiments import train_validate as tv
     calls=[]
     def episode(cn,args,index,checkpoint,*,deadline):
-        calls.append((args.proprioceptive_encoding,args.learn,args.motor_exploration,args.no_senses,args.no_balance,args.no_environment_senses,args.seconds))
+        calls.append((args.proprioceptive_encoding,args.learn,args.motor_exploration,args.no_senses,args.no_balance,args.no_environment_senses,args.seconds,args.training_fall_seconds))
         summary=trials(reward=.2 if checkpoint is None else .3,slip=.2 if checkpoint is None else .1)[0].copy()
         summary.update(seed=args.seed,learning=args.learn,motor_exploration_mv_ms=args.motor_exploration,
                        obstacle_observation_complete=True,obstacle_response_seconds=.2,
@@ -153,10 +153,11 @@ def test_pipeline_keeps_same_proprioception_for_every_training_and_frozen_contro
     monkeypatch.setattr(tv.lab,'run_episode',episode)
     output=tmp_path/'run'
     monkeypatch.setattr('sys.argv',['train_validate','--data',str(tmp_path/'data'),'--output',str(output),
-                                  '--episodes','1','--proprioceptive-encoding',encoding])
+                                  '--episodes','1','--proprioceptive-encoding',encoding,'--training-fall-seconds','.1'])
     tv.main()
     report=json.loads((output/'report.json').read_text())
     assert report['decision']['accepted'] and len(calls)==26
     assert all(call[0]==encoding and not call[3] and not call[4] for call in calls)
     assert all(call[2]==0 and call[6]==5 for call in calls if not call[1])
     assert any(call[5] for call in calls)
+    assert all(call[7] == (.1 if call[1] else 0.) for call in calls)
