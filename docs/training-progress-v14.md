@@ -73,3 +73,19 @@ failure. The full video and support plot retain it. These are diagnostic
 observations, not new acceptance criteria or evidence of an improvement over
 matched original weights. `diagnose_support.py` regenerates the plot and JSON
 without modifying the brain, reward, checkpoint or behavioral gates.
+
+## Interrupted second birth and strict continuation
+
+The original terminal handle disappeared and a fresh process inventory confirmed
+that no V14 train_validate worker remained. Its second-birth log reached 4.8 s,
+but no completed CSV or checkpoint was published; only a partial movie and
+mapping metadata remain in attempt_0001. The cause of process termination was
+not established. This is not a completed five-second trial or a wall-budget
+completion. The existing report retained the first complete birth and weights.
+
+The exact source/settings were resumed with --resume and a new one-hour limit.
+The report now marks attempt_0001 interrupted and starts train-1 again from the
+completed train-0 checkpoint, in a fresh attempt directory. A matching worker
+was verified live. No partial training weights were imported; no candidate was
+promoted. Live report/log state, rather than this timestamped note, determines
+subsequent progress.
