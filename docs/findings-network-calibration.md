@@ -106,3 +106,31 @@ side labels shuffled within each odour set, whole evaluation repeated 500 times 
   per-set accuracies are in `outputs/dn_decoder.json`); 500 ms windows, whereas the agent acts every 50 ms; the
   decoder is trained on labelled side, so it is a trained interface to the network, not the network steering
   by itself.
+
+## 5. Real-time (50 ms) side decoding from graded bilateral input: not demonstrated (`experiments/decoder_forage.py`, stages collect + cv)
+Calibrated network (`g_I = 12`, graded APL). 10 independent runs × 11 one-second blocks; in each block the two
+antennae received receptor drive from concentrations (level × left/right ratio), 6 levels (0.02-2.9) and 6 ratios
+(0.67-1.5 left/right concentration; rate ratio is its square root), label = which side was stronger. Features:
+log(1 + 250 ms causal average of descending-neuron rates), sampled every 50 ms (2,200 windows, 110 blocks).
+Ridge decoder, evaluated on a concentration level never used in training (leave-one-level-out); null = block-level
+labels shuffled within level, 100 repeats.
+
+| ridge per feature | accuracy on unseen level | null | p |
+|---|---|---|---|
+| 0.01 | 0.520 | 0.498 ± 0.039 | 0.33 |
+| 0.1 (pre-specified for the agent) | 0.552 | 0.503 ± 0.043 | 0.14 |
+| 1 | 0.558 | 0.507 ± 0.042 | 0.11 |
+
+Per unseen level (λ = 0.1): 0.46, 0.48, 0.58, 0.71, 0.59, 0.53 for levels 0.02, 0.05, 0.15, 0.4, 1.0, 2.9.
+
+- **The decoder does not beat chance on unseen concentration levels (55% versus 50%, p = 0.14).** By the
+  rule fixed beforehand (run the agent only if the decoder generalises), the agent experiment with this decoder
+  was **not run**.
+- This is consistent with section 4 yet different from it: there, whole-side stimulation (receptors of one side
+  only, 500 ms) was decodable at 78-85%; here the contrast is a graded 1.1-1.5-fold left/right difference
+  (a 1.05-1.22-fold receptor-rate difference after the square-root compression), read in 50 ms windows. The
+  side information that survives is large for one-sided input and, at this noise level, not usable for the
+  gradients a plume provides.
+- Not tried (so not excluded): longer integration windows, projection-neuron or all-neuron read-outs,
+  larger antenna separation or stronger contrast, and training on more data. The per-window ratio was not saved,
+  so accuracy as a function of contrast cannot be broken out without re-collecting.
