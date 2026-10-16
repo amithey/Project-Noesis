@@ -241,5 +241,68 @@
   "screen_seconds_per_trial": 5.0,
   "promotion_allowed": false,
   "model_context_schema": 7,
-  "checkpoint_transfer_requires_explicit_import": true
+  "checkpoint_transfer_requires_explicit_import": true,
+  "completed_development_trials": [
+    {
+      "id": "legacy-15",
+      "encoding": "legacy",
+      "seed": 15,
+      "summary": {
+        "episode": 0,
+        "seed": 15,
+        "status": "completed",
+        "learning": false,
+        "standing_fraction": 0.9030303030303031,
+        "leg_step_cycles": {
+          "LF": 14,
+          "LM": 12,
+          "LH": 13,
+          "RF": 9,
+          "RM": 14,
+          "RH": 5
+        },
+        "obstacle_contact_seconds": 0.0,
+        "obstacle_response_seconds": null,
+        "obstacle_observation_complete": false,
+        "arena": "quiet",
+        "imported_weights_from": null,
+        "external_senses": true,
+        "wall_seconds": 468.6399999999994,
+        "simulated_seconds": 5.0,
+        "awake_samples": 990,
+        "mean_reward": 0.12160514802132795,
+        "mean_uprightness": 0.8487121155955876,
+        "forward_displacement_mm": -2.529534101486206,
+        "mean_motor_hz": 30.624464605953396,
+        "mean_joint_speed_rad_s": 2.4025490052170224,
+        "per_leg_mean_speed_rad_s": {
+          "LF": 2.58310424854057,
+          "LM": 2.24082120009745,
+          "LH": 2.8437822971982185,
+          "RF": 2.404662362629115,
+          "RM": 2.3962843000888823,
+          "RH": 1.9466396328776774
+        },
+        "motor_exploration_mv_ms": 0.0,
+        "body_model": "muscles",
+        "brain": "corrected",
+        "learning_rule": "perturbation",
+        "reward_mode": "grounded",
+        "proprioceptive_encoding": "legacy",
+        "normalize_reward_error": true,
+        "reward_objective": "standing-first-linear-slip-v3",
+        "wing_mode": "neural",
+        "adhesion_mode": "geometry",
+        "heading_forward_distance_mm": 7.425379759918901,
+        "mean_supporting_feet": 2.3464646464646464,
+        "mean_stance_slip_mm_s": 19.156249168459777,
+        "gait_metrics": "outputs\\proprioception-screen-v13\\legacy-15\\attempt_0000\\episode_000.gait.json",
+        "tripod_score": null,
+        "checkpoint": "outputs\\proprioception-screen-v13\\legacy-15\\attempt_0000\\episode_000.npz"
+      }
+    }
+  ],
+  "first_original_weights_unchanged": true,
+  "current_job": "typed-resistance-15",
+  "source_and_driver_unchanged": true
 }

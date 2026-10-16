@@ -64,3 +64,18 @@ rejects reserved validation/held-out seeds. Complete all six conditions before
 choosing a training hypothesis; do not treat this screen as the required matched
 trained-weight validation. Future training must still pass quiet, obstacle,
 ablation and held-out gates before any normal launch change.
+
+## First completed development baseline
+
+Legacy seed 15 completed all five seconds with original weights, learning off and
+exploration zero: 90.30% standing, 7.425 mm heading-integrated translation and
+19.156 mm/s mean stance slip. Its saved weights equal initial weights exactly;
+activity/eligibility traces and reward baseline remain zero. The full CSV and
+video are retained. This is a baseline, not a trained walking result.
+
+The matched typed-resistance seed-15 case is live. Remaining typed/reversed and
+seed-16 cases are unfinished, so no direction hypothesis has been selected for
+training. Source and driver fingerprints were reverified unchanged. A global CPU
+load snapshot was 100% with about 1.3 GiB physical memory available, while learner
+private memory stayed near 3.5 GB. Timing under that contention is not a controlled
+performance benchmark; the fixed simulated-time requirements remain unchanged.
