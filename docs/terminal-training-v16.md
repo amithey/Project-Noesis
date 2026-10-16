@@ -242,3 +242,20 @@ traces are verified. This proves frozen-control compatibility, not walking.
 The final seed-42 trained checkpoint is now undergoing frozen candidate seed-10
 evaluation. No candidate has been promoted. The dated current-progress.md
 remains the source for the latest completed-case snapshot.
+
+## First trained candidate completed and rejected; continued learning planned
+
+Frozen seed 10 completed five seconds without learning, exploration or fall
+termination. Standing was 84.444% versus the original 92.222%; mean stance
+slip was 14.301 versus 15.839 mm/s, a 9.714% reduction, below the 20% gate.
+Step-cycle and forward-distance counters passed, but standing and slip failed;
+translation and leg motion do not establish walking. The late fall is retained
+in the raw CSV and video. Candidate 11, obstacle/ablation and held-out trials
+were not run after this completed early rejection, and none is claimed complete.
+
+The complete terminal report, failure measurements, all checkpoints and video
+are preserved before starting cycle 1. Continue the same source and parameters
+from the last complete seed-42 training checkpoint for eighteen more births.
+This tests additional experience without changing dynamics, reward, sensory
+encoding, weight bounds or evaluation gates. Repeated training seeds remain
+disjoint from frozen validation and held-out seeds. No model is promoted.
