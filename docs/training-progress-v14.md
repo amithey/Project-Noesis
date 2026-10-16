@@ -89,3 +89,34 @@ completed train-0 checkpoint, in a fresh attempt directory. A matching worker
 was verified live. No partial training weights were imported; no candidate was
 promoted. Live report/log state, rather than this timestamped note, determines
 subsequent progress.
+
+## Five complete training births
+
+The resumed seed-18 episode completed five seconds. Its first logged checkpoints
+reproduced the interrupted trajectory; no partial CSV existed for a row-by-row
+replay proof, so none is claimed. Seeds 19, 20 and 21 also completed.
+
+| Seed | Standing | All-window slip mm/s | Slip while standing mm/s | Final uprightness |
+| --- | ---: | ---: | ---: | ---: |
+| 17 | 89.49% | 16.190 | 15.901 | 0.143 |
+| 18 | 41.41% | 10.933 | 15.515 | -0.391 |
+| 19 | 94.04% | 16.625 | 16.445 | 0.883 |
+| 20 | 12.93% | 8.383 | 22.157 | -0.417 |
+| 21 | 46.26% | 8.894 | 12.990 | -0.324 |
+
+Only seed 19 meets the standing threshold in these training observations. This
+is not a matched comparison or frozen evaluation: seeds differ, weights change
+sequentially and motor exploration is active. The lower all-window slip in failed
+births is misleading; seed 20's standing-conditioned slip is 22.157 mm/s.
+
+Across these five births, right-front stance occupies only 11.6..26.1% of upright
+samples, versus 44.6..88.3% for left-front. This is evidence of uneven support,
+not a demonstrated cause or justification to change anatomical signs. The current
+training series and source remain unchanged pending frozen validation.
+
+Every complete checkpoint preserves original topology, motor-edge indices,
+reference weights and signs. The latest complete seed-21 weights have mean
+fractional change 0.0064424 and maximum 0.1260464 from original, inside the 0.5
+bound. The sixth birth (seed 22) is running. Full per-leg/window measurements and
+reproducible read-only audit are in `support-across-births.json` and
+`audit_support_across_births.py`; no candidate is best-validated.
