@@ -200,3 +200,18 @@ was running. All seventeen checkpoint chains and actual terminal conditions pass
 the runtime audit. Frozen comparison and obstacle/held-out verification remain
 required; no candidate is validated or promoted. Exact replay proofs, reports,
 videos and checkpoints are preserved with the dated progress snapshot.
+
+## All eighteen training births completed; frozen evaluation started
+
+All planned training seeds 25..42 completed under their declared horizon or
+sustained-fall terminal condition. Five reached the full five-second horizon and
+thirteen ended in terminal falls. All eighteen complete checkpoints passed the
+runtime audit for exact chain, original references/topology/signs/bounds, actual
+duration and termination. The latest complete seed-42 weights are preserved for
+training/evaluation; none of these exploratory results is frozen walking proof.
+
+The protocol entered validation-quiet-original-10 with learning false. Frozen
+cases force motor exploration and training-fall termination to zero and retain
+the full five-second window. Candidate comparison, obstacle/ablation and held-out
+gates are still required; no candidate is promoted. The dated generated progress
+snapshot and training-complete-report-snapshot.json preserve this phase boundary.
