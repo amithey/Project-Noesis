@@ -42,3 +42,27 @@ five-second acceptance gates or normal launcher has changed for this prototype.
 It is not installed or promoted. After the active cycle ends, any adoption
 requires integration tests, explicit checkpoint-context versioning and a new
 training protocol with full frozen controls. Learned walking remains unproven.
+
+## Opt-in integration staged and full regression passed
+
+The isolated integration accepts --grounded-objective standing-gate-linear-slip-v4
+through the episode, train_validate and PowerShell launcher. V3 remains default.
+The existing reward_objective checkpoint tag gates normal loads across objectives;
+explicit import transfers weights while resetting traces. Schema stays 7 because
+the existing tag already records the semantic version and default contexts are
+unchanged. Resume with a different objective is rejected before any episode.
+
+All 292 staged regression tests pass (79.46 s), Ruff passes and PowerShell syntax
+is valid. Tests include 1,000 exact default-v3 physical observations versus the
+archived implementation, unchanged non-reward measurements under v4, equivalence
+to the independent offline formula, trajectory ordering, checkpoint transfer,
+unchanged tiny-body/neural frozen observations and all 25 frozen pipeline cases
+retaining zero exploration, zero training-fall termination and five seconds.
+These are software checks, not full-brain walking proof.
+
+Only embodied_metrics.py, learning_lab.py and train_validate.py differ in staged
+source, plus the launcher and tests. The active V16 source is still exactly a9cc;
+its preserved source archive also matches a9cc. Staged code and manifests are in
+outputs/protocol-v17-standing-gate-candidate and copied for review under the
+primary outputs/staged-standing-gate-v17 directory. Nothing is installed or
+promoted while the active V16 cycle runs.
