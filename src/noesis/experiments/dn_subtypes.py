@@ -23,6 +23,7 @@ import numpy as np
 from noesis.connectome import load_all_pairs
 from noesis.embodiment import load_training_brain
 from noesis.experiments.dn_selectivity import lateralisation
+from noesis.experiments.ei_balance_scan import scale_inhibition
 from noesis.experiments.mb_selectivity import glomeruli, present
 from noesis.experiments.sense_audit import receptor_sides
 from noesis.mushroom_body import populations, with_weak_pathway_edges
@@ -59,6 +60,7 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=Path("outputs/dn_subtypes.json"))
     ap.add_argument("--rates-out", type=Path, default=Path("outputs/dn_subtype_rates.npz"))
     ap.add_argument("--apl-gain", type=float, default=1024.0)
+    ap.add_argument("--g-inh", type=float, default=1.0, help="multiply all inhibitory weights (E/I balance)")
     ap.add_argument("--weights", default="400,100")
     ap.add_argument("--rate", type=float, default=80.0)
     ap.add_argument("--glom-per-odour", type=int, default=5)
@@ -77,6 +79,7 @@ def main() -> None:
     cn, _ = load_training_brain(a.data, a.cache, "corrected")
     pops = populations(cn.neurons)
     W = with_weak_pathway_edges(cn, load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons), pops)
+    W = scale_inhibition(W, a.g_inh)
     glom = glomeruli(cn.neurons, pops)
     perm = list(np.random.default_rng(1).permutation(list(glom)))
     sets = [perm[i * a.glom_per_odour:(i + 1) * a.glom_per_odour] for i in range(a.sets)]

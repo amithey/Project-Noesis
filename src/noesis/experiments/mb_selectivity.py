@@ -25,6 +25,7 @@ import numpy as np
 
 from noesis.connectome import load_all_pairs
 from noesis.embodiment import load_training_brain
+from noesis.experiments.ei_balance_scan import scale_inhibition
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.mushroom_body import GradedAPL, populations, with_weak_pathway_edges
 
@@ -112,6 +113,7 @@ def main() -> None:
     ap.add_argument("--cache", type=Path, default=Path("outputs/selectivity-cache"))
     ap.add_argument("--out", type=Path, default=Path("outputs/mb_selectivity.json"))
     ap.add_argument("--apl-gain", type=float, default=1024.0)
+    ap.add_argument("--g-inh", type=float, default=1.0, help="multiply all inhibitory weights (E/I balance)")
     ap.add_argument("--weights", default="400,100")
     ap.add_argument("--rate", type=float, default=80.0)
     ap.add_argument("--n-glomeruli", type=int, default=10)
@@ -127,6 +129,7 @@ def main() -> None:
     cn, _ = load_training_brain(a.data, a.cache, "corrected")
     pops = populations(cn.neurons)
     W = with_weak_pathway_edges(cn, load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons), pops)
+    W = scale_inhibition(W, a.g_inh)
     glom = glomeruli(cn.neurons, pops)
     names = list(glom)
     rng = np.random.default_rng(0)
