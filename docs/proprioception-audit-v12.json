@@ -1,0 +1,346 @@
+{
+  "diagnostic_only": true,
+  "active_source_unchanged": true,
+  "sensory_neurons": 3921,
+  "groups": [
+    {
+      "kind": "bristle",
+      "leg": "LF",
+      "neurons": 488
+    },
+    {
+      "kind": "bristle",
+      "leg": "LH",
+      "neurons": 494
+    },
+    {
+      "kind": "bristle",
+      "leg": "LM",
+      "neurons": 471
+    },
+    {
+      "kind": "bristle",
+      "leg": "RF",
+      "neurons": 484
+    },
+    {
+      "kind": "bristle",
+      "leg": "RH",
+      "neurons": 556
+    },
+    {
+      "kind": "bristle",
+      "leg": "RM",
+      "neurons": 486
+    },
+    {
+      "kind": "campaniform",
+      "leg": "LF",
+      "neurons": 29
+    },
+    {
+      "kind": "campaniform",
+      "leg": "LH",
+      "neurons": 2
+    },
+    {
+      "kind": "campaniform",
+      "leg": "LM",
+      "neurons": 2
+    },
+    {
+      "kind": "campaniform",
+      "leg": "RF",
+      "neurons": 25
+    },
+    {
+      "kind": "campaniform",
+      "leg": "RH",
+      "neurons": 2
+    },
+    {
+      "kind": "campaniform",
+      "leg": "RM",
+      "neurons": 2
+    },
+    {
+      "kind": "claw",
+      "leg": "LF",
+      "neurons": 27
+    },
+    {
+      "kind": "claw",
+      "leg": "LH",
+      "neurons": 38
+    },
+    {
+      "kind": "claw",
+      "leg": "LM",
+      "neurons": 34
+    },
+    {
+      "kind": "claw",
+      "leg": "RF",
+      "neurons": 25
+    },
+    {
+      "kind": "claw",
+      "leg": "RH",
+      "neurons": 25
+    },
+    {
+      "kind": "claw",
+      "leg": "RM",
+      "neurons": 13
+    },
+    {
+      "kind": "club",
+      "leg": "LF",
+      "neurons": 59
+    },
+    {
+      "kind": "club",
+      "leg": "LH",
+      "neurons": 56
+    },
+    {
+      "kind": "club",
+      "leg": "LM",
+      "neurons": 53
+    },
+    {
+      "kind": "club",
+      "leg": "RF",
+      "neurons": 47
+    },
+    {
+      "kind": "club",
+      "leg": "RH",
+      "neurons": 71
+    },
+    {
+      "kind": "club",
+      "leg": "RM",
+      "neurons": 56
+    },
+    {
+      "kind": "hairplate",
+      "leg": "LF",
+      "neurons": 36
+    },
+    {
+      "kind": "hairplate",
+      "leg": "LH",
+      "neurons": 36
+    },
+    {
+      "kind": "hairplate",
+      "leg": "LM",
+      "neurons": 32
+    },
+    {
+      "kind": "hairplate",
+      "leg": "RF",
+      "neurons": 44
+    },
+    {
+      "kind": "hairplate",
+      "leg": "RH",
+      "neurons": 40
+    },
+    {
+      "kind": "hairplate",
+      "leg": "RM",
+      "neurons": 46
+    },
+    {
+      "kind": "hook",
+      "leg": "LF",
+      "neurons": 27
+    },
+    {
+      "kind": "hook",
+      "leg": "LH",
+      "neurons": 22
+    },
+    {
+      "kind": "hook",
+      "leg": "LM",
+      "neurons": 20
+    },
+    {
+      "kind": "hook",
+      "leg": "RF",
+      "neurons": 26
+    },
+    {
+      "kind": "hook",
+      "leg": "RH",
+      "neurons": 24
+    },
+    {
+      "kind": "hook",
+      "leg": "RM",
+      "neurons": 23
+    }
+  ],
+  "known_primary_types": {
+    "claw": {
+      "SNpp50": 99,
+      "SNpp51": 44,
+      "SNpp39": 10,
+      "SNpp41": 8,
+      "SNpp55": 1
+    },
+    "hook": {
+      "SNpp39": 81,
+      "SNpp41": 46,
+      "SNpp51": 7,
+      "SNpp44": 3,
+      "SNpp43": 2,
+      "SNpp52": 1,
+      "SNpp45": 1,
+      "SNppxx": 1
+    }
+  },
+  "hook_stimuli": [
+    {
+      "angle_rad": -1.0,
+      "velocity_rad_s": -2.0,
+      "hook_rate_hz": 144.90211104140076
+    },
+    {
+      "angle_rad": -1.0,
+      "velocity_rad_s": 0.0,
+      "hook_rate_hz": 144.90211104140076
+    },
+    {
+      "angle_rad": -1.0,
+      "velocity_rad_s": 2.0,
+      "hook_rate_hz": 144.90211104140076
+    },
+    {
+      "angle_rad": 0.0,
+      "velocity_rad_s": -2.0,
+      "hook_rate_hz": 76.0
+    },
+    {
+      "angle_rad": 0.0,
+      "velocity_rad_s": 0.0,
+      "hook_rate_hz": 76.0
+    },
+    {
+      "angle_rad": 0.0,
+      "velocity_rad_s": 2.0,
+      "hook_rate_hz": 76.0
+    },
+    {
+      "angle_rad": 1.0,
+      "velocity_rad_s": -2.0,
+      "hook_rate_hz": 7.097888958599253
+    },
+    {
+      "angle_rad": 1.0,
+      "velocity_rad_s": 0.0,
+      "hook_rate_hz": 7.097888958599253
+    },
+    {
+      "angle_rad": 1.0,
+      "velocity_rad_s": 2.0,
+      "hook_rate_hz": 7.097888958599253
+    }
+  ],
+  "force_response": {
+    "LF": {
+      "bearing_samples": 502,
+      "force_q10_q50_q90_q99": [
+        40.0172013917943,
+        42.80762482628413,
+        46.9381229562162,
+        52.92966346584485
+      ],
+      "mean_stance_rate_hz": 147.8107078717727,
+      "fraction_signal_at_least_0_99": 0.950199203187251,
+      "air_rate_hz": 2.0
+    },
+    "LM": {
+      "bearing_samples": 377,
+      "force_q10_q50_q90_q99": [
+        40.302366211560624,
+        42.600266836728416,
+        45.39708890340614,
+        47.057061079119045
+      ],
+      "mean_stance_rate_hz": 146.08212398836955,
+      "fraction_signal_at_least_0_99": 0.9283819628647215,
+      "air_rate_hz": 2.0
+    },
+    "LH": {
+      "bearing_samples": 444,
+      "force_q10_q50_q90_q99": [
+        40.064841633268784,
+        41.8912062843971,
+        44.46534371984086,
+        46.680685109090774
+      ],
+      "mean_stance_rate_hz": 147.24600783968793,
+      "fraction_signal_at_least_0_99": 0.9662162162162162,
+      "air_rate_hz": 2.0
+    },
+    "RF": {
+      "bearing_samples": 221,
+      "force_q10_q50_q90_q99": [
+        2.172008229413452,
+        41.40258700667209,
+        45.310669047303065,
+        49.72873679303705
+      ],
+      "mean_stance_rate_hz": 141.26727550861193,
+      "fraction_signal_at_least_0_99": 0.8642533936651584,
+      "air_rate_hz": 2.0
+    },
+    "RM": {
+      "bearing_samples": 655,
+      "force_q10_q50_q90_q99": [
+        2.357416171215543,
+        41.95391967668104,
+        44.49254258950955,
+        46.487910505268914
+      ],
+      "mean_stance_rate_hz": 141.9570608008911,
+      "fraction_signal_at_least_0_99": 0.850381679389313,
+      "air_rate_hz": 2.0
+    },
+    "RH": {
+      "bearing_samples": 97,
+      "force_q10_q50_q90_q99": [
+        25.533520638534476,
+        41.09178942267476,
+        43.39377994634252,
+        44.44141035529989
+      ],
+      "mean_stance_rate_hz": 144.82057015341772,
+      "fraction_signal_at_least_0_99": 0.8969072164948454,
+      "air_rate_hz": 2.0
+    }
+  },
+  "hook_ignores_velocity": true,
+  "stationary_hook_rate_at_rest_hz": 76.0,
+  "annotation_direction_labels_present": false,
+  "annotation_note": "Hook primary types SNpp39/SNpp41 are present, but inspected Primary/Alternative labels do not state flexion/extension preference. MANC predicts opposing motor effects; deriving preferred direction from a resistance-reflex assumption is an inference, requiring an opposite-assignment control.",
+  "references": [
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6481666/",
+      "finding": "2018 ramp-and-hold: hook phasic directional movement, claw tonic position; sampled hook line flexion selective."
+    },
+    {
+      "url": "https://doi.org/10.1016/j.neuron.2023.07.009",
+      "finding": "Later work identifies flexion- and extension-sensitive hook subtypes."
+    },
+    {
+      "url": "https://elifesciences.org/reviewed-preprints/97766",
+      "finding": "Figure 59: SNpp39/SNpp41 hooks and SNpp50/SNpp51 claws have opposing predicted effects on tibia flexor/extensor circuits. This is not direct functional tuning measurement."
+    }
+  ],
+  "active_source_sha256": "6f6b31dbe85d7ff21e00cdb5c6fbe10aadc417d8d3d45316fdff9107e88b5ef3"
+}

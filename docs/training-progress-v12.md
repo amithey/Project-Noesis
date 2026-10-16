@@ -1,6 +1,7 @@
 # V12 standing-first training progress
 
-Status: two five-second quiet-floor births completed; third birth is live.
+Status: all three quiet-floor births and original seed-10 control completed;
+original seed-11 control is live. Candidate evaluations are pending.
 This is learning-on data, not a frozen acceptance result or deployment.
 
 Seed 12 imported the complete final v11 training weights under the explicit
@@ -40,3 +41,16 @@ evolving weights prevent a causal comparison of those two trials.
 The complete second checkpoint passed sign and 50% bound checks and is now used
 for seed 14. Frozen validation and held-out tests have not started. No model has
 been promoted and the primary launch remains unchanged.
+
+## Third completed birth and first frozen original control
+
+Seed 14 completed five seconds with 91.92% standing and 16.185 mm/s mean stance
+slip. The full trained checkpoint preserves signs and the 50% magnitude bounds.
+Across training seeds 12/13/14, standing fractions were 91.72%, 18.48%, 91.92%;
+this is inconsistent training stability, not matched evidence of learning.
+
+Original seed 10 completed its frozen five-second control. Every field of all
+1,000 CSV rows except the intentionally changed reward matches the V11 control
+exactly; all motor-spike arrays also match. The reward change therefore leaves
+this original brain/body trajectory unchanged. Seed 11 and trained candidates
+are still pending, and no validated checkpoint exists.
