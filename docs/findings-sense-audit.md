@@ -38,8 +38,8 @@ fresh network. Nulls: random PN sets of equal size (1,000 draws); odour labels p
 
 | ORN weight | Glomeruli with own-PN rate > random sets | Own PN rate vs other PN rate | KC active | KC within-odour / between-odour Jaccard | Identity index (null) | p |
 |---|---|---|---|---|---|---|
-| 400 | 6 of 10 at p < 0.01 (two more at p < 0.1) | 159–398 Hz vs ≈ 120 Hz | 25.8% | 0.89 / 0.74 | +0.143 (0.002 ± 0.037) | 0.013 |
-| 100 | 5 of 10 at p < 0.05 (one is at 0.598) | 111–367 Hz vs ≈ 120 Hz | 27.2% | 0.80 / 0.72 | +0.084 (0.002 ± 0.030) | 0.023 |
+| 400 | 7 of 10 at p < 0.01 (one more, DM3, at p = 0.098) | 159–398 Hz vs ≈ 120 Hz | 25.8% | 0.89 / 0.74 | +0.143 (0.002 ± 0.037) | 0.013 |
+| 100 | 6 of 10 at p < 0.05 (one, VA1v, at 0.598) | 111–367 Hz vs ≈ 120 Hz | 27.2% | 0.80 / 0.72 | +0.084 (0.002 ± 0.030) | 0.023 |
 
 Interpretation:
 - Real wiring-specific signal exists: driving a glomerulus raises its own PNs well above random PN sets,
