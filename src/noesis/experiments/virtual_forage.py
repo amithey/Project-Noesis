@@ -29,6 +29,7 @@ import numpy as np
 from noesis.connectome import load_all_pairs
 from noesis.drives import FOOD_CHANNELS, HomeostaticState
 from noesis.embodiment import load_training_brain
+from noesis.experiments.ei_balance_scan import scale_inhibition
 from noesis.experiments.sense_audit import receptor_sides
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.mushroom_body import GradedAPL, populations, with_weak_pathway_edges
@@ -72,11 +73,12 @@ def paired_diff(rows: list[dict], a: str, b: str, key: str = "final_dist_mm") ->
 class Brain:
     """Wiring of the shared network to receptor groups and steering groups."""
 
-    def __init__(self, data: Path, cache: Path, apl_gain: float):
+    def __init__(self, data: Path, cache: Path, apl_gain: float, g_inh: float = 1.0):
         cn, _ = load_training_brain(data, cache, "corrected")
         self.cn, self.apl_gain = cn, apl_gain
         self.pops = populations(cn.neurons)
-        self.W = with_weak_pathway_edges(cn, load_all_pairs(data / "raw", data / "processed", cn.neurons), self.pops)
+        self.W = scale_inhibition(with_weak_pathway_edges(
+            cn, load_all_pairs(data / "raw", data / "processed", cn.neurons), self.pops), g_inh)
         n = cn.neurons
         function = n["Function"].fillna("")
         orn = n["Flow"].eq("afferent") & n["Class"].eq("olfactory_receptor_neuron")

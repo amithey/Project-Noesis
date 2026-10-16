@@ -68,11 +68,19 @@ class SteeringAgent:
 
     def step(self, dt_s: float, left_hz: float | None, right_hz: float | None) -> None:
         """Advance dt_s. ``None`` rates mean no steering input (diffusion-only control)."""
+        if left_hz is not None and right_hz is not None:
+            self.step_with_signal(dt_s, steering_signal(left_hz, right_hz) - self.bias)
+        else:
+            self.step_with_signal(dt_s, None)
+
+    def step_with_signal(self, dt_s: float, raw: float | None) -> None:
+        """Advance dt_s with a ready-made signed steering signal (positive = turn left); None = no input."""
         if not isfinite(dt_s) or dt_s <= 0:
             raise ValueError("dt_s must be finite and positive")
-        if left_hz is not None and right_hz is not None:
-            raw = self.sign * (steering_signal(left_hz, right_hz) - self.bias)
-            self.signal += (raw - self.signal) * (1 - exp(-dt_s / self.p.smooth_s))
+        if raw is not None:
+            if not isfinite(raw):
+                raise ValueError("steering signal must be finite")
+            self.signal += (self.sign * raw - self.signal) * (1 - exp(-dt_s / self.p.smooth_s))
         turn = float(np.clip(self.p.gain_rad_s * self.signal, -self.p.max_turn_rad_s, self.p.max_turn_rad_s))
         self.theta += turn * dt_s + self.rng.normal(0.0, self.p.rot_diffusion_rad_sqrt_s * dt_s ** 0.5)
         self.theta = (self.theta + pi) % (2 * pi) - pi
