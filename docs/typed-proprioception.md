@@ -79,3 +79,19 @@ training. Source and driver fingerprints were reverified unchanged. A global CPU
 load snapshot was 100% with about 1.3 GiB physical memory available, while learner
 private memory stayed near 3.5 GB. Timing under that contention is not a controlled
 performance benchmark; the fixed simulated-time requirements remain unchanged.
+
+## First matched typed-resistance result, seed 15
+
+The full original-weight typed-resistance trial completed: standing 78.69% versus
+legacy 90.30%, stance slip 18.062 versus 19.156 mm/s and heading-integrated
+translation 3.965 versus 7.425 mm. This is a decline in standing, despite a small
+slip reduction. The higher mean uprightness alone does not establish standing: the
+height gate and every out-of-range interval remain included. Original weights and
+frozen traces were independently checked unchanged in both saved checkpoints.
+
+The reversed-direction condition and seed 16 are still pending, so no tuning
+hypothesis is selected or accepted for training. Full failures, support fractions
+and posture/height failure breakdowns are preserved in
+outputs/proprioception-screen-audit-v13/progress.json. The remaining comparison
+must be completed before drawing a development decision; no result here can
+promote a model or replace the matched trained-weight validation.
