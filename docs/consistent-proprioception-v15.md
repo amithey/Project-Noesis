@@ -137,3 +137,25 @@ and motor-spike array exactly; the new case passes frozen-checkpoint checks.
 Typed-consistent seed 16 is running and shows an early fall in its progress log,
 but no full metric is claimed yet. Remaining planned cases continue for complete
 reporting. The source, driver, weights and normal launcher remain unchanged.
+
+## Second conservative-mapping trial also failed
+
+Typed-consistent seed 16 completed five seconds with 12.222% standing, mean
+uprightness -0.34657, mean supporting feet 1.323, mean stance slip 7.345 mm/s
+all-window and 15.896 mm/s conditioned on standing. Its 11.599 mm heading
+translation and LF 1 / LM 3 / LH 5 / RF 13 / RM 9 / RH 17 physical cycles include
+fallen movement and do not establish walking. It did not recover from its early
+fall. Original weights, zero exploration and zero learning traces are verified.
+
+Both new-encoding trials are complete and fail badly: standing 21.414% / 12.222%
+on seeds 15 / 16. The seed-15 predeclared regression alone already disqualifies
+this hypothesis for training. The lower all-window slips cannot compensate for
+loss of standing. No new-encoding weights were trained or promoted.
+
+Four of six planned cases are complete. The two remaining original-weight seed-16
+controls are still being measured; typed-resistance seed 16 is running. Their
+results will complete the matched table and exact-control reproduction audit.
+The live source, driver and criteria remain unchanged. Reading the neural core
+confirmed that spike-frequency adaptation already exists (the bodily experiment
+uses da=1), so lack of adaptation is not an established explanation of these
+failures. No neural-dynamics change is justified by these sensory results alone.
