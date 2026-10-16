@@ -139,3 +139,35 @@ and start_checkpoint=null. The runner sets motor exploration to zero for every
 nontraining job. Neither this control nor subsequent candidate, obstacle or
 held-out trials are claimed complete yet. There is still no best-validated
 checkpoint and the normal launcher remains unchanged.
+
+## First bounded invocation finished; original control failure preserved
+
+The hour-bounded invocation ended normally after 3595.922 wall seconds, with
+7/31 jobs complete: six training births and original-weight validation seed 10.
+The seed-11 original control stopped at 0.265 simulated seconds (43 awake samples)
+and remains status wall_budget; its apparent 100% standing is not a five-second
+result. The full terminal report is `first-wall-cycle-report.json`.
+
+The completed seed-10 control has 21.52% standing, mean reward -0.44666,
+7.662 mm/s all-window stance slip and mean uprightness -0.25776. Its weights are
+exactly original, learning and exploration are off, and all activity/eligibility,
+reward-baseline and variance traces in the saved learner are zero. The slip and
+10.092 mm heading translation are fall-biased and do not indicate walking.
+`audit_frozen.py` and `frozen-evaluation-audit.json` preserve these checks.
+
+A matched read-only comparison to the earlier V12 original-weight seed-10 case
+finds identical original weights and topology. Stored model context differs
+only by the newly recorded typed-resistance encoding and schema 6 -> 7. The old
+legacy sensory mapping achieved 92.22% standing; the new inferred mapping achieves
+21.52%. This is strong evidence that selection by two development seeds did not
+establish generalization. It is not a trained-candidate result or a demonstrated
+biological explanation; sensory-direction and annotation-conflict assumptions
+remain uncertain. Full contexts and summaries are preserved in
+`original-sensory-comparison-seed-10.json`.
+
+After confirming the prior worker's terminal exit, the exact protocol/source was
+resumed under a fresh one-hour limit. Completed training and original seed 10 are
+retained; original seed 11 is replaying from birth in a new attempt directory.
+Its partial video/CSV/checkpoint are retained separately. No original/candidate
+comparison has yet completed for V14, no held-out seed has been observed and no
+best-validated checkpoint exists. Source is unchanged during this family.
