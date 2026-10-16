@@ -111,3 +111,29 @@ exploration off. No new-encoding behavioral result exists yet. The read-only
 selection audit remains advance_to_training=false and promotion_allowed=false
 until every required comparison and predeclared improvement criterion is met.
 Source, driver, plan and weights remain unchanged during the comparison.
+
+## First conservative-mapping trial failed the predeclared standing guard
+
+Typed-consistent seed 15 completed five seconds with original weights, learning
+and exploration off: standing 21.414%, mean uprightness -0.22866, stance slip
+7.886 mm/s all-window and 14.472 mm/s conditioned on standing, mean supporting
+feet 1.433. It fell early and did not recover. The full failed video and a raw
+frame near 4.02 s are preserved; heading translation and leg cycles do not imply
+walking after a fall.
+
+Matched seed-15 standing is legacy 90.303%, resistance 78.687%, consistent 21.414%.
+The preregistered per-seed minimum is 88.303% (better baseline minus two percentage
+points). Thus this hypothesis already violates a necessary advancement condition,
+regardless of the remaining seed. Lower all-window slip is partly fall-biased;
+even its lower standing-conditioned slip cannot compensate for the standing loss.
+
+The read-only decision audit now records known per-seed regressions even while
+other trials are missing; no criterion or threshold changed. Eight selection
+boundary/failure tests pass, including a partial screen with a known regression.
+The audit remains advance_to_training=false and promotion_allowed=false.
+
+Three of six cases are complete. Both old controls reproduce every observation
+and motor-spike array exactly; the new case passes frozen-checkpoint checks.
+Typed-consistent seed 16 is running and shows an early fall in its progress log,
+but no full metric is claimed yet. Remaining planned cases continue for complete
+reporting. The source, driver, weights and normal launcher remain unchanged.
