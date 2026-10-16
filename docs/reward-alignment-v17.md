@@ -1,0 +1,44 @@
+# Offline standing-gate reward prototype (not installed)
+
+The completed V16 frozen candidate failed standing and slip gates. In seed 10,
+standing declined from 92.222% to 84.444% while recorded mean reward increased
+from 0.109431 to 0.146775. Exact reconstruction of every reward in all three
+completed frozen trials (2,970 awake observations) identifies a mismatch:
+support-weighted posture contributes 0.810265 in the original and 0.837697 in
+the candidate. That increase and lower all-window slip outweigh standing loss.
+This does not establish that the reward caused the late fall.
+
+The isolated prototype directly credits the measured standing threshold
+(uprightness >= 0.7, height 0.3..1.5 mm), additionally requiring at least one
+force-bearing foot. Foot support is a smaller bonus. Grounded progress still
+requires three feet and traction; slip, effort and obstacle costs remain.
+
+    clip(0.7*standing - 0.8*(1-standing)
+         + 0.1*standing*min(supporting_feet/3,1)
+         + 0.5*grounded_progress - 0.05*effort
+         - 0.006*stance_slip_mm_s - 0.2*obstacle_cost, -1,1)
+
+Fourteen targeted tests pass: a synthetic 90%-standing two-foot trajectory
+outranks an 80%-standing three-foot trajectory (the old objective reverses
+this ordering), unsupported/low/tilted observations get no standing/progress
+credit, measured slip/effort/contact reduce credit, useful grounded progress
+increases credit, and invalid/bounded cases are checked. Ruff passes after
+import/dictionary formatting fixes; the initial lint output is retained.
+
+On identical recorded rows, prototype means are 0.519817 for original seed 10,
+0.428728 for candidate seed 10 and 0.582407 for original seed 11. Absolute reward
+scales differ and must not be compared as behavioral improvement. This formula
+was designed after observing development seed 10; the retrospective ordering
+is not independent validation or a counterfactual simulation.
+
+The plan, formula, tests, hashes, raw logs and exact telemetry rescore are in
+outputs/reward-alignment-v17-prototype. Run rescore.py only from the isolated
+worktree against its original source and recorded artifacts; it verifies the
+unchanged V16 source hash before reporting. The current V16 cycle remains on
+source a9cc082094e8234d4749c29fbd05635d0ef3c5dceec45c5b14144f6f6afaa735.
+
+No simulator source, dynamics, muscles, connectome, weights, learning settings,
+five-second acceptance gates or normal launcher has changed for this prototype.
+It is not installed or promoted. After the active cycle ends, any adoption
+requires integration tests, explicit checkpoint-context versioning and a new
+training protocol with full frozen controls. Learned walking remains unproven.
