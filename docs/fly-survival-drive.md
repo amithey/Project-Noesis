@@ -15,7 +15,7 @@ track. Merging with a walking body is a later step, planned only after results b
 | 0 | Own worktree `C:/dev/noesis-claude-drive` | done |
 | 1 | `experiments/sense_audit.py`, `operating_point.py`: does each odour channel reach the mushroom body, dopamine cells and descending neurons? | run; gate partly passed: PN/KC odour specificity (modest); pooled descending neurons show no odour identity; the DNa family carries a real, control-surviving but one-sided ipsilateral side signal; see [findings-sense-audit.md](findings-sense-audit.md) |
 | 2 | `drives.py`: energy/water state, hunger-scaled sensory gain, reward = net intake | done, unit-tested |
-| 3 | `experiments/mb_foraging_conditioning.py`: odour A + sugar, fed vs hungry, with no-reward control | script done and unit-tested; **not yet run** |
+| 3 | `experiments/mb_foraging_conditioning.py`: odour A + sugar, fed vs hungry, with no-reward and direct-dopamine controls | run: **no sugar- or hunger-dependent learning**, see [findings-foraging-conditioning.md](findings-foraging-conditioning.md) |
 | 4 | Leg-free virtual agent steered by descending neurons | possible only as side-steering via the DNa group (no odour-identity signal at DN level; one-sided effect) |
 | 5 | Evolution of a small genome (sensory gains, hunger coupling, plasticity rates) | not started |
 | 6 | Reconnect to the full MuJoCo body | out of scope until walking is measurable |
