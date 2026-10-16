@@ -95,3 +95,26 @@ and posture/height failure breakdowns are preserved in
 outputs/proprioception-screen-audit-v13/progress.json. The remaining comparison
 must be completed before drawing a development decision; no result here can
 promote a model or replace the matched trained-weight validation.
+
+## Complete seed-15 comparison; seed 16 pending
+
+All three original-weight conditions completed five seconds, with learning and
+exploration off. These are development trials and cannot promote weights.
+
+| Encoding | Standing | Stance slip mm/s | Heading displacement mm | Mean supporting feet |
+| --- | ---: | ---: | ---: | ---: |
+| Legacy | 90.30% | 19.156 | 7.425 | 2.346 |
+| Typed resistance | 78.69% | 18.062 | 3.965 | 2.598 |
+| Typed reversed | 87.47% | 15.529 | 9.585 | 1.981 |
+
+Neither typed variant reaches 90% standing in this seed. The reversed variant
+reduces all-window slip by 18.94% relative to legacy, below the 20% walking target;
+its lower mean support also requires caution in interpreting averaged slip. The
+right hind leg has zero completed cycles in that condition. Passing translation
+and cycles in other legs would not establish validated walking.
+
+All three saved checkpoints retain exactly original weights and zero learning
+traces. Posture/height failure breakdowns and upright-only slip are saved in the
+companion JSON. The first typed condition improves mean uprightness but increases
+high-body intervals, so the unchanged height gate is material. All seed-16 cases
+remain unfinished; no preferred-direction hypothesis has been chosen for training.

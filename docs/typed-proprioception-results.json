@@ -358,10 +358,68 @@
         "tripod_score": null,
         "checkpoint": "outputs\\proprioception-screen-v13\\typed-resistance-15\\attempt_0001\\episode_000.npz"
       }
+    },
+    {
+      "id": "typed-reversed-15",
+      "encoding": "typed-reversed",
+      "seed": 15,
+      "summary": {
+        "episode": 0,
+        "seed": 15,
+        "status": "completed",
+        "learning": false,
+        "standing_fraction": 0.8747474747474747,
+        "leg_step_cycles": {
+          "LF": 12,
+          "LM": 20,
+          "LH": 6,
+          "RF": 7,
+          "RM": 13,
+          "RH": 0
+        },
+        "obstacle_contact_seconds": 0.0,
+        "obstacle_response_seconds": null,
+        "obstacle_observation_complete": false,
+        "arena": "quiet",
+        "imported_weights_from": null,
+        "external_senses": true,
+        "wall_seconds": 770.0939999999973,
+        "simulated_seconds": 5.0,
+        "awake_samples": 990,
+        "mean_reward": -0.007451494340377337,
+        "mean_uprightness": 0.8206502341260814,
+        "forward_displacement_mm": -2.6408257484436035,
+        "mean_motor_hz": 31.041619363715196,
+        "mean_joint_speed_rad_s": 2.0691296183701717,
+        "per_leg_mean_speed_rad_s": {
+          "LF": 2.32106971770826,
+          "LM": 2.0287084263382535,
+          "LH": 1.9055193647591755,
+          "RF": 2.3293393615971913,
+          "RM": 2.2032631587500524,
+          "RH": 1.6268776458923262
+        },
+        "motor_exploration_mv_ms": 0.0,
+        "body_model": "muscles",
+        "brain": "corrected",
+        "learning_rule": "perturbation",
+        "reward_mode": "grounded",
+        "proprioceptive_encoding": "typed-reversed",
+        "normalize_reward_error": true,
+        "reward_objective": "standing-first-linear-slip-v3",
+        "wing_mode": "neural",
+        "adhesion_mode": "geometry",
+        "heading_forward_distance_mm": 9.585264744184752,
+        "mean_supporting_feet": 1.9808080808080808,
+        "mean_stance_slip_mm_s": 15.528543260576516,
+        "gait_metrics": "outputs\\proprioception-screen-v13\\typed-reversed-15\\attempt_0002\\episode_000.gait.json",
+        "tripod_score": null,
+        "checkpoint": "outputs\\proprioception-screen-v13\\typed-reversed-15\\attempt_0002\\episode_000.npz"
+      }
     }
   ],
   "first_original_weights_unchanged": true,
-  "current_job": "typed-reversed-15",
+  "current_job": "typed-reversed-16",
   "source_and_driver_unchanged": true,
   "physical_audit": {
     "development_only": true,
@@ -504,14 +562,82 @@
           "RM": 0.7262626262626263,
           "RH": 0.16767676767676767
         }
+      },
+      {
+        "id": "typed-reversed-15",
+        "summary": {
+          "episode": 0,
+          "seed": 15,
+          "status": "completed",
+          "learning": false,
+          "standing_fraction": 0.8747474747474747,
+          "leg_step_cycles": {
+            "LF": 12,
+            "LM": 20,
+            "LH": 6,
+            "RF": 7,
+            "RM": 13,
+            "RH": 0
+          },
+          "obstacle_contact_seconds": 0.0,
+          "obstacle_response_seconds": null,
+          "obstacle_observation_complete": false,
+          "arena": "quiet",
+          "imported_weights_from": null,
+          "external_senses": true,
+          "wall_seconds": 770.0939999999973,
+          "simulated_seconds": 5.0,
+          "awake_samples": 990,
+          "mean_reward": -0.007451494340377337,
+          "mean_uprightness": 0.8206502341260814,
+          "forward_displacement_mm": -2.6408257484436035,
+          "mean_motor_hz": 31.041619363715196,
+          "mean_joint_speed_rad_s": 2.0691296183701717,
+          "per_leg_mean_speed_rad_s": {
+            "LF": 2.32106971770826,
+            "LM": 2.0287084263382535,
+            "LH": 1.9055193647591755,
+            "RF": 2.3293393615971913,
+            "RM": 2.2032631587500524,
+            "RH": 1.6268776458923262
+          },
+          "motor_exploration_mv_ms": 0.0,
+          "body_model": "muscles",
+          "brain": "corrected",
+          "learning_rule": "perturbation",
+          "reward_mode": "grounded",
+          "proprioceptive_encoding": "typed-reversed",
+          "normalize_reward_error": true,
+          "reward_objective": "standing-first-linear-slip-v3",
+          "wing_mode": "neural",
+          "adhesion_mode": "geometry",
+          "heading_forward_distance_mm": 9.585264744184752,
+          "mean_supporting_feet": 1.9808080808080808,
+          "mean_stance_slip_mm_s": 15.528543260576516,
+          "gait_metrics": "outputs\\proprioception-screen-v13\\typed-reversed-15\\attempt_0002\\episode_000.gait.json",
+          "tripod_score": null,
+          "checkpoint": "outputs\\proprioception-screen-v13\\typed-reversed-15\\attempt_0002\\episode_000.npz"
+        },
+        "original_weights_and_traces_unchanged": true,
+        "low_uprightness_fraction": 0.11717171717171718,
+        "too_low_fraction": 0.0,
+        "too_high_fraction": 0.00808080808080808,
+        "upright_only_slip_mm_s": 15.43234045792436,
+        "per_leg_support_fraction": {
+          "LF": 0.7232323232323232,
+          "LM": 0.33636363636363636,
+          "LH": 0.1707070707070707,
+          "RF": 0.14343434343434344,
+          "RM": 0.5888888888888889,
+          "RH": 0.01818181818181818
+        }
       }
     ],
     "remaining_cases": [
-      "typed-reversed-15",
       "typed-reversed-16",
       "typed-resistance-16",
       "legacy-16"
     ],
-    "current": "typed-reversed-15"
+    "current": "typed-reversed-16"
   }
 }
