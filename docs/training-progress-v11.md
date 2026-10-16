@@ -98,3 +98,18 @@ job schedule therefore did not contaminate this original model or change the
 recorded conditions. This reproducibility result establishes a baseline, not
 trained-model improvement. Original seed 11 and candidate evaluations remain
 unfinished; no promotion is allowed.
+
+## First wall budget and exact protocol resume
+
+The first wall cycle closed normally after 3,596.42 seconds (process exit 0).
+Original seed 11 reached 3.13 simulated seconds and was marked wall_budget. It
+was not added to completed jobs and cannot count as a five-second control. Its
+partial CSV, checkpoint, gait report and video remain preserved in attempt_0004,
+along with the terminal first-hour report.
+
+After confirming the old process was terminal and the source fingerprint was
+unchanged, --resume started original seed 11 again from time zero in attempt_0005
+with no checkpoint, learning or exploration. Exact settings, completed-job records
+and last-training weights match the preceding terminal report; no source/config
+checks were bypassed. Training episodes are not repeated. Best-validated remains
+null and the standing-first reward is still unapplied.

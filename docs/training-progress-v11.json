@@ -457,5 +457,14 @@
       "tripod_score": null,
       "checkpoint": "outputs\\birth-cycle-v11\\cycle_000\\validation-quiet-original-10\\attempt_0003\\episode_000.npz"
     }
-  }
+  },
+  "first_wall_cycle": {
+    "cycle": 0,
+    "wall_seconds": 3596.4219999999987,
+    "completed_jobs": 4,
+    "total_jobs": 28
+  },
+  "unfinished_original_11_seconds": 3.13,
+  "resumed_attempt_output": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v11\\cycle_000\\validation-quiet-original-11\\attempt_0005",
+  "resume_preserved_completed_jobs_and_last_weights": true
 }
