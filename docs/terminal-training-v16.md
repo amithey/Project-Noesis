@@ -259,3 +259,16 @@ from the last complete seed-42 training checkpoint for eighteen more births.
 This tests additional experience without changing dynamics, reward, sensory
 encoding, weight bounds or evaluation gates. Repeated training seeds remain
 disjoint from frozen validation and held-out seeds. No model is promoted.
+
+## Post-hoc slip diagnostics on the rejected candidate
+
+The frozen seed-10 CSV confirms that lower all-window slip is not a consistent
+traction improvement. Standing-conditioned slip is 14.530 vs 15.696 mm/s
+(candidate/original), but standing with at least three loaded feet gives 14.590
+vs 13.905 mm/s, 4.93% worse. Over the shared awake window through 4.4 seconds,
+slip is 15.173 vs 15.139 mm/s, essentially unchanged (0.22% worse).
+
+These are descriptive post-hoc diagnostics, not new acceptance gates or causal
+proof: standing-conditioned samples differ, and 4.4 seconds was chosen after
+observing the late fall. The original five-second decision remains rejected.
+CSV hashes, exact definitions and limitations are in cycle-000-slip-diagnostics.json.
