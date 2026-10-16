@@ -215,3 +215,17 @@ cases force motor exploration and training-fall termination to zero and retain
 the full five-second window. Candidate comparison, obstacle/ablation and held-out
 gates are still required; no candidate is promoted. The dated generated progress
 snapshot and training-complete-report-snapshot.json preserve this phase boundary.
+
+## First frozen original control complete and exactly preserved
+
+Validation original seed 10 completed five seconds with standing 92.222% and
+mean stance slip 15.839 mm/s. Learning, motor exploration and training-fall
+termination are off; original weights and zero learner traces are verified.
+All 1,000 CSV observations and 43,490 motor-spike events/duration match the V12
+legacy original-weight control exactly. Stored context differs only by schema
+and the explicitly recorded legacy encoding. This confirms evaluation compatibility
+of the training-only termination change, not a candidate learning improvement.
+
+The generated dated progress report now includes completed frozen evaluations
+separately from training. Original seed 11 is running; candidate, obstacle and
+held-out proof remain pending. No model has been promoted.
