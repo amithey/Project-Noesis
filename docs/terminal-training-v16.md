@@ -128,3 +128,18 @@ The runtime audit confirms the fourth completed checkpoint, its original
 references/topology/signs/bounds and full-horizon termination. Seed 29 is learning
 from that checkpoint. Four of 18 births are complete; no candidate has been
 validated or promoted and the source/criteria remain unchanged.
+
+## Third consecutive full-horizon training birth
+
+Seed 29 completed five seconds with 91.919% standing and 15.358 mm/s mean stance
+slip. Mean supporting feet is 2.394; physical cycles are LF 13 / LM 14 / LH 10 /
+RF 8 / RM 14 / RH 2. The full-horizon training seeds 27/28/29 stand 95.556% /
+94.242% / 91.919%, with substantial slip in each. Learning/exploration are active,
+seeds differ and there is no matched original/frozen comparison; these observations
+do not prove learned walking or a causal improvement from termination.
+
+The runtime audit verifies all five completed checkpoints and their actual
+termination/duration, original references, topology, signs and magnitude bounds.
+The sixth birth, seed 30, starts from the completed seed-29 weights. Five of 18
+births are complete; best-validated remains absent and all acceptance gates stay
+unchanged. Full video/CSV/checkpoint for this birth are retained.
