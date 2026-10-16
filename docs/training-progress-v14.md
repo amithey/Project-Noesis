@@ -195,3 +195,28 @@ The current job is validation-quiet-candidate-10, loading the final complete
 seed-22 training checkpoint. Learning and motor exploration are off. No candidate
 validation result, obstacle result or held-out result is claimed yet. The source
 and all behavioral thresholds remain unchanged; no model has been promoted.
+
+## V14 rejected after the full first frozen candidate test
+
+Candidate seed 10 completed five seconds with learning/exploration off and exact
+final-training weights. Standing is 45.76% versus original 21.52%, mean reward
+-0.24561 versus -0.44666, and stance slip 10.870 versus 7.662 mm/s. It fell near
+2.6 s and did not recover. Its 9.937 mm heading translation and physical cycles
+(LF 5 / LM 3 / LH 6 / RF 13 / RM 8 / RH 18) do not establish walking.
+
+The official decision is rejected_validation: standing and slip fail, while
+completion, cycles, heading and reward checks pass. Frozen checkpoint audit
+confirms candidate weights equal the final complete seed-22 training weights and
+all learner traces remain zero. This is a partial improvement in one posture
+metric, not success; no candidate was promoted. Candidate seed 11, obstacle and
+held-out trials were not run and are not claimed complete. Normal launch remains
+unchanged. The worker exited normally; exact source and terminal report are
+preserved in outputs/protocol-v14-typed-resistance-source.
+
+Next hypothesis, before any new run: preserve documented organ subclass when it
+conflicts with an inferred primary-type tuning. The existing policy reclassified
+36 afferents. A new opt-in encoding will tune only primary/subclass-consistent
+cells and leave all conflicting/unknown transfers exactly legacy. The existing
+encodings, neural dynamics, weights, body and behavioral gates will stay intact.
+This hypothesis must undergo unit/integration checks and an original-weight
+matched development comparison before any new bodily training.
