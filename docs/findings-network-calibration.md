@@ -59,3 +59,26 @@ inhibition factor applied uniformly (it also scales the APL synapses that the gr
 connectome and is a model assumption, not a biological estimate; whether the real circuit is better described by
 global inhibition, by weaker excitation, or by missing synapses (BANC detects 20-60% of FAFB's synapses) is not
 tested here.
+
+## 3. Steering-candidate DNa types on the calibrated networks (`dn_subtypes.py --g-inh`, ORN weight 400)
+Same 8 pre-specified groups, 4 odour sets × 3 repeats, 5,000 random same-sized DN groups, Bonferroni alpha 0.0063.
+
+| Group | g_I = 12: S Hz (p) | g_I = 12, shuffled sides: S (p) | g_I = 4: S Hz (p) | g_I = 4, shuffled sides: S (p) |
+|---|---|---|---|---|
+| DNa family (16 + 16) | +0.03 (0.91) | +0.36 (0.09) | −1.13 (0.21) | −0.21 (0.42) |
+| DNa01-04 | +0.58 (0.21) | +0.75 (0.039) | −2.79 (0.086) | −0.75 (0.15) |
+| DNa02 | +3.17 (0.041) | +2.33 (0.014) | −2.17 (0.11) | −0.33 (0.38) |
+| DNb family | +0.54 (0.18) | +0.04 (0.78) | −1.05 (0.23) | −0.10 (0.70) |
+| others (DNa01, 03, 04, DNp09) | none below 0.0298 | | DNa03 −7.83 (0.030) | |
+
+- **No group passes the corrected threshold at either balance, and the unshuffled DNa lateralisation found at
+  `g_I = 1` (+7.5 to +8.7 Hz, p = 0.0002) is gone.** Shuffled-side controls give values of the same size
+  (e.g. DNa02 +2.3, p = 0.014), so the few nominal p < 0.05 entries are not distinguishable from noise.
+- The DNa neurons themselves became nearly silent: the DNa family fires ≈ 0.9 Hz at `g_I = 12` (≈ 100 Hz at
+  `g_I = 1`) and 2-4 Hz at `g_I = 4`. A 16-neuron group then yields about one spike per 50 ms control step, too
+  little to steer a 20 Hz control loop.
+- Together with part 2: stronger inhibition makes the olfactory pathway and descending population sparser and
+  more pattern-specific (including a side-specific pattern across all DNs at `g_I = 12`), but the pre-chosen
+  steering cells no longer carry it. Any steering read-out on the calibrated network would have to be
+  *learned* from the data (e.g. a linear decoder over descending-neuron rates, fitted on some trials and tested on
+  others), not taken from the literature.
