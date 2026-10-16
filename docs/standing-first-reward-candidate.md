@@ -1,9 +1,9 @@
-# Standing-first reward candidate: tested, not applied
+# Standing-first reward: applied after completed rejection
 
-The live v11 run remains under its original source and reward. The first short
-training birth stood for 93.1%; the second stood for 58.6% with late unrecovered
-fall; the live third birth has also fallen. Frozen evaluation is not complete.
-No source change or model promotion is justified by these learning-on frames.
+V11 completed and was rejected after the frozen candidate seed 10 stood for
+36.87% versus original 92.22%. Its exact source and all failed artifacts were
+preserved before installation. This is an applied training-objective hypothesis,
+not a verified behavioral improvement or deployment.
 
 This candidate addresses a concrete reward-ranking concern. A stationary fully
 supported upright state with 16 mm/s slip receives -0.71 under the current
@@ -60,3 +60,15 @@ This test-only fixture is never imported by production training. It keeps the
 comparing the candidate to itself through the current src path. Full regression
 was repeated with the frozen fixture: 227 passed, Ruff passed. The candidate
 model source and active v11 source fingerprints did not change.
+
+## Installation and next training protocol
+
+The application gate above has been satisfied: V11 is terminal and rejected.
+The installed source is byte-identical to the staged source, fingerprint
+6f6b31dbe85d7ff21e00cdb5c6fbe10aadc417d8d3d45316fdff9107e88b5ef3.
+Installed full regression: 227 passed, Ruff passed.
+New training uses unused seeds 12/13/14, disjoint from validation 10/11 and
+held-out 200/201/202. Seeds 8/9 are skipped because a contiguous three-seed batch
+would overlap validation. Complete V11 training weights are explicitly imported
+with reset traces under a new reward context. No frozen controls or acceptance
+results are transferred across objectives. The primary default is unchanged.

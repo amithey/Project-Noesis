@@ -1,7 +1,8 @@
 # V11 short quiet-floor training progress
 
-Status: all three five-second training births completed; both original seeds 10/11
-frozen quiet-floor controls are complete; frozen candidate seed 10 is live. Candidate/obstacle/heldout evaluation is pending. No validated model exists or has been deployed.
+Status: terminal rejected_validation. Both original controls and frozen candidate
+seed 10 completed; the candidate failed standing and reward. Remaining controls
+were not run and are not claimed complete. No model was validated or deployed.
 The run uses source fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd,
 imports complete v10 training weights and preserves all 25 frozen test cases.
 
@@ -124,3 +125,19 @@ control. No partial test was counted complete. The frozen candidate seed-10 test
 has now started from the final complete trained weights, with learning and motor
 exploration disabled. Original-control reproducibility does not demonstrate
 trained improvement; candidate, obstacle and held-out gates remain pending.
+
+## Final frozen rejection
+
+Candidate seed 10 completed five seconds with learning/exploration off: 36.87%
+standing versus matched original 92.22%; heading-integrated translation 7.218 mm,
+mean stance slip 11.538 mm/s and mean reward -0.75063. It fell and did not recover.
+The decision rejects standing and reward despite passing raw movement, cycle-count
+and all-window relative-slip checks. Candidate seed 11, obstacle controls and
+held-out cases were not started; none are presented as completed.
+
+The full frozen failure video and CSV are preserved. After normal process exit,
+its exact fc03104b... source was archived in
+outputs/protocol-v11-short-curriculum-source. The separately tested standing-first
+reward is now installed in the isolated worktree, with physical gates unchanged,
+for new explicitly imported-weight training. V11 reports are not rewritten or
+reused as new-reward controls. The primary default remains unchanged.

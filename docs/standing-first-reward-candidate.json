@@ -51,7 +51,7 @@
   },
   "active_source_sha256": "fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd",
   "candidate_source_sha256": "6f6b31dbe85d7ff21e00cdb5c6fbe10aadc417d8d3d45316fdff9107e88b5ef3",
-  "status": "tested_not_applied",
+  "status": "applied_after_completed_v11_rejection",
   "full_regression": {
     "passed": 227,
     "failed": 0,
@@ -71,5 +71,18 @@
     "ruff": "passed",
     "reference_source_sha256": "ccbcb9e59e674ffe9a32ed49eb711040984c749f4aece369bb818dc33e4d7fe5",
     "reference_location_after_installation": "tests/support_slip_v2_reference.py"
+  },
+  "preceding_run": "outputs/birth-cycle-v11/report.json",
+  "preceding_status": "rejected_validation",
+  "old_source_archive": "outputs/protocol-v11-short-curriculum-source",
+  "new_training_seeds": [
+    12,
+    13,
+    14
+  ],
+  "installed_regression": {
+    "passed": 227,
+    "failed": 0,
+    "ruff": "passed"
   }
 }

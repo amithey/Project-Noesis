@@ -218,7 +218,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
             'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
-        context.update(schema=6, reward_objective='support-slip-v2' if args.reward_mode == 'grounded' else 'legacy-body-v1',
+        context.update(schema=6, reward_objective='standing-first-linear-slip-v3' if args.reward_mode == 'grounded' else 'legacy-body-v1',
                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
                        motor_interface='anatomical-coxa-flexion-v3',
                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,

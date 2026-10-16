@@ -102,9 +102,12 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     posture_quality = float(np.clip((uprightness - .5) / .4, 0, 1))
     support_quality = float(min(support.sum() / 3, 1))
     standing_quality = posture_quality * support_quality if .3 <= base['height_mm'] <= 1.5 else 0.
-    fallen = uprightness < .5 or base['height_mm'] < .3
-    reward = float(np.clip(.25 * standing_quality + .5 * progress - .6 * fallen
-                           - .05 * base['effort'] - .3 * slip_cost - .2 * obstacle_cost, -1, 1))
+    # Standing-first candidate: preserve a linear measured slip cost while
+    # reducing its scale tenfold so typical upright sliding cannot dominate
+    # the support/posture signal. Continuous support loss also costs reward.
+    # Physical standing, gait, mean-slip and obstacle acceptance stay separate.
+    reward = float(np.clip(.75 * standing_quality + .5 * progress - .6 * (1 - standing_quality)
+                           - .05 * base['effort'] - .03 * slip_cost - .2 * obstacle_cost, -1, 1))
     return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
             'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
             'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,

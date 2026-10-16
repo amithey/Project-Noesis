@@ -64,7 +64,7 @@
   },
   "unchanged_source_sha256": "fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd",
   "best_validated_checkpoint": null,
-  "status": "training_in_progress",
+  "status": "rejected_validation",
   "next_training_seed": null,
   "pending_training_seed": null,
   "validation_and_heldout_completed": false,
@@ -343,7 +343,7 @@
     "signs_preserved": true,
     "bounds_preserved": true
   },
-  "current_job": "validation-quiet-candidate-10",
+  "current_job": null,
   "current_source_sha256": "fc03104befece72e24bcabc7f49c751d63f2f9363557c1c8211e31aeb2b6a7fd",
   "completed_frozen_original_controls": [
     {
@@ -577,5 +577,83 @@
       "tripod_score": null,
       "checkpoint": "outputs\\birth-cycle-v11\\cycle_000\\validation-quiet-original-11\\attempt_0005\\episode_000.npz"
     }
-  }
+  },
+  "final_frozen_candidate": {
+    "episode": 0,
+    "seed": 10,
+    "status": "completed",
+    "learning": false,
+    "standing_fraction": 0.3686868686868687,
+    "leg_step_cycles": {
+      "LF": 5,
+      "LM": 9,
+      "LH": 6,
+      "RF": 16,
+      "RM": 9,
+      "RH": 8
+    },
+    "obstacle_contact_seconds": 0.0,
+    "obstacle_response_seconds": null,
+    "obstacle_observation_complete": false,
+    "arena": "quiet",
+    "imported_weights_from": null,
+    "external_senses": true,
+    "wall_seconds": 328.7960000000021,
+    "simulated_seconds": 5.0,
+    "awake_samples": 990,
+    "mean_reward": -0.750626603066938,
+    "mean_uprightness": 0.04972146294371347,
+    "forward_displacement_mm": -4.567157983779907,
+    "mean_motor_hz": 29.956823387178897,
+    "mean_joint_speed_rad_s": 2.323592784970698,
+    "per_leg_mean_speed_rad_s": {
+      "LF": 2.384700513036564,
+      "LM": 2.2394274444291087,
+      "LH": 2.6933796355820667,
+      "RF": 2.2896588290430078,
+      "RM": 2.237945828293309,
+      "RH": 2.0964444898595715
+    },
+    "motor_exploration_mv_ms": 0.0,
+    "body_model": "muscles",
+    "brain": "corrected",
+    "learning_rule": "perturbation",
+    "reward_mode": "grounded",
+    "normalize_reward_error": true,
+    "reward_objective": "support-slip-v2",
+    "wing_mode": "neural",
+    "adhesion_mode": "geometry",
+    "heading_forward_distance_mm": 7.2182344579344475,
+    "mean_supporting_feet": 1.598989898989899,
+    "mean_stance_slip_mm_s": 11.537818055575016,
+    "gait_metrics": "outputs\\birth-cycle-v11\\cycle_000\\validation-quiet-candidate-10\\attempt_0006\\episode_000.gait.json",
+    "tripod_score": null,
+    "checkpoint": "outputs\\birth-cycle-v11\\cycle_000\\validation-quiet-candidate-10\\attempt_0006\\episode_000.npz"
+  },
+  "final_decision": {
+    "accepted": false,
+    "reason": "completed quiet validation failed; remaining controls not claimed complete",
+    "quiet_check": {
+      "accepted": false,
+      "reason": "candidate did not pass all behavioral criteria",
+      "checks": [
+        {
+          "seed": 10,
+          "complete": true,
+          "standing": false,
+          "cycles": true,
+          "forward": true,
+          "slip": true,
+          "reward": false
+        }
+      ]
+    }
+  },
+  "frozen_candidate_slip_supplement": {
+    "all_window_slip_mm_s": 11.537818055575016,
+    "upright_only_slip_mm_s": 19.774392384068086,
+    "upright_rows": 365,
+    "awake_rows": 990
+  },
+  "old_source_archive": "outputs/protocol-v11-short-curriculum-source"
 }
