@@ -134,3 +134,38 @@ Per unseen level (λ = 0.1): 0.46, 0.48, 0.58, 0.71, 0.59, 0.53 for levels 0.02,
 - Not tried (so not excluded): longer integration windows, projection-neuron or all-neuron read-outs,
   larger antenna separation or stronger contrast, and training on more data. The per-window ratio was not saved,
   so accuracy as a function of contrast cannot be broken out without re-collecting.
+
+## 6. Contrast and integration time (`experiments/decoder_contrast.py`, `g_I = 12`)
+16 independent runs × 7 blocks of 2 s; 6 concentration levels × 8 left/right ratios (0.33-3); 112 blocks. Features:
+log(1 + causally averaged rate) with time constants 250 ms and 1 s, for the 1,316 descending neurons (DN) and 699
+projection neurons (PN). Only the last second of each block is analysed (2,240 windows, identical for all sets).
+Ridge decoder, leave-one-concentration-level-out, block-shuffle null (60 repeats, p floor 0.016). Contrast =
+|ln(left/right concentration)|; the ratio of receptor rates is the square root of the concentration ratio. Block
+accuracy = sign of the block-mean score; intervals are Wilson 95% on blocks.
+
+| Features | accuracy on unseen level (λ = 0.01 / 0.1 / 1) | null, p | contrast 0.2 | 0.4 | 0.7 | 1.1 |
+|---|---|---|---|---|---|---|
+| DN, 250 ms | 0.52 / 0.47 / 0.45 | 0.50 ± 0.04, p = 0.82 | 0.49 | 0.42 | 0.52 | 0.41 |
+| DN, 1 s | 0.50 / 0.49 / 0.50 | 0.50 ± 0.04, p = 0.67 | 0.46 | 0.39 | 0.44 | 0.66 |
+| PN, 250 ms | 0.72 / 0.72 / 0.68 | 0.50 ± 0.04, **p = 0.016** | **0.61** | **0.68** | **0.77** | **0.81** |
+| PN, 1 s | 0.63 / 0.61 / 0.63 | 0.49 ± 0.04, p = 0.033 | 0.50 | 0.57 | 0.63 | 0.74 |
+
+(window-level accuracy per contrast bin, λ = 0.1; block-level accuracy of PN 250 ms: 0.66, 0.65, 0.82, 0.85 of
+29, 23, 34, 26 blocks, 95% intervals 0.47-0.80, 0.45-0.81, 0.66-0.92, 0.66-0.94.)
+
+- **Descending neurons do not carry decodable side information at this calibration, at either integration time,
+  at any contrast** (chance-level accuracy, null p = 0.67-0.82; the below-chance values at some contrasts are the
+  usual leave-one-group-out artefact of a decoder that has learned nothing transferable).
+- **Projection neurons do, in 250 ms windows:** 72% on unseen levels (null 50%, p = 0.016), rising with contrast to
+  ≈ 80% at contrast ≥ 0.7. At contrasts a plume produces between two antennae 1 mm apart (≈ 0.2-0.4) it is
+  61-68% per window (block-level intervals still include 50% for 0.2).
+- **A longer average is worse, not better** (PN 1 s: 61-63%): the integration blurs a signal that changes when
+  the block changes, and lags the label; note PN feeds are one synapse from the receptors, so this is largely
+  periphery, not a computation by the circuit.
+- The p = 0.016 for PN 250 ms is the smallest the 60-repeat null allows; there is no correction across the four
+  feature sets.
+
+## Consequence for the virtual agent
+A side signal usable in real time exists only at the projection-neuron level and only weakly at plume-like
+contrast. An agent steered from it would be an olfactory-periphery comparison with a trained read-out, not a brain
+that steers; it is a defensible next experiment only if described as that. Not run yet.
