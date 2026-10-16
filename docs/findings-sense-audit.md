@@ -75,9 +75,35 @@ right-side receptors only × 2 repeats.
   population difference is large enough to steer a body. All DNs were pooled; known steering types
   (e.g. DNa) were not analysed separately. Two weights, one odour-set draw, small repeat counts.
 
+## Part 4 — steering-candidate DN types, with controls (`experiments/dn_subtypes.py`)
+Groups fixed before looking (8): DNa01, DNa02, DNa03, DNa04, their union, the numbered DNa family (16 left + 16
+right), the numbered DNb family (13 + 13), DNp09. That these types steer is taken from memory of the
+literature and is not verified here. Statistic S = (left-soma minus right-soma rate | left receptors driven)
+minus (same | right receptors driven), mean over 4 odour sets × 3 repeats; null = 5,000 random same-sized DN
+groups; Bonferroni alpha = 0.0063.
+
+| Group | w400 S (p) | w100 S (p) | w400, equal receptor counts S (p) | w400, shuffled sides S (p) |
+|---|---|---|---|---|
+| DNa family | +7.5 Hz (0.0002) | +8.7 Hz (0.0002) | +12.1 Hz (0.0002) | +0.1 Hz (0.79) |
+| DNa01–04 | +11.5 (0.0018) | +10.7 (0.0056) | +17.2 (0.0014) | +0.6 (0.40) |
+| DNa02 (1 pair) | +33 (0.003) | +31 (0.0046) | +59 (0.0002) | −1.7 (0.22) |
+| DNb family | +3.4 (0.025) | +4.9 (0.0060) | +3.5 (0.088) | +0.6 (0.25) |
+| DNa01, DNa03, DNa04 | not significant | not significant | DNa03 p = 0.035 only | not significant |
+| DNp09 | silent (0 Hz) | silent | silent | silent |
+
+- The DNa lateralisation replicates at two drive strengths, **survives equalising the number of left and right
+  receptors** (it gets larger), and **disappears when receptor side is shuffled** (S ≈ 0 in every group). So it
+  depends on which side's receptors are driven, not on total input or on the DN selection.
+- The DNb result does not survive equalising counts, so it was a receptor-count effect.
+- The effect is one-sided: it comes from right-soma DNs responding more to right-side drive (e.g. DNa family
+  103 → 116 Hz); left-soma DNs show no change (98.6 vs 99.4 Hz). Causes not tested (data asymmetry, left-side
+  ceiling at up to ~360 Hz in some DNs, or both).
+- DNa rates of 100–360 Hz are near saturation; the lateralisation is ~8–12% of the mean response.
+- Still not shown: that these cells steer a body in this model, the sign of any turn, or odour-specific
+  steering. DNp09 never fires in this setup.
+
 ## Gate status
 Stage 1: odour identity is represented at projection-neuron and Kenyon-cell level (part 2) but not in
-descending-neuron output (part 3); a faint ipsilateral side bias exists. A virtual agent steered by pooled
-descending neurons would be driven mostly by noise, so stage 4 stays **blocked** pending one of: a
-steering-type subset analysis, a stronger/more natural graded bilateral input, or a better-calibrated
-operating point.
+descending-neuron output (part 3); the DNa family carries a real, control-surviving ipsilateral side signal
+(part 4), one-sided and small. A virtual agent may use **side only** (not odour identity) through the DNa group
+as a minimal steering signal, with these limits stated. Odour-specific steering is not supported by these data.
