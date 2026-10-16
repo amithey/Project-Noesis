@@ -118,3 +118,23 @@ traces. Posture/height failure breakdowns and upright-only slip are saved in the
 companion JSON. The first typed condition improves mean uprightness but increases
 high-body intervals, so the unchanged height gate is material. All seed-16 cases
 remain unfinished; no preferred-direction hypothesis has been chosen for training.
+
+## Reversed mapping does not hold across development seeds
+
+Typed-reversed seed 16 completed five seconds with only 50.51% standing and an
+unrecovered fall. Mean stance slip was 13.400 mm/s; the long fallen interval
+prevents interpreting that as good walking. Legacy seed 16 is not complete, so
+no cross-seed slip comparison is substituted for its matched baseline. Full video
+and a frame around four simulated seconds preserve the failure. Original weights
+and learning traces were rechecked unchanged. The resistance and legacy seed-16
+conditions remain unfinished; no hypothesis has been selected for training.
+
+The additional Function field labels all 142 original hook neurons as directional
+proprioception and all 162 claw neurons as position proprioception. Body Part gives
+only the leg, without receptor location or individual flexion/extension preference.
+Current primary-priority reassignment changes the encoded organ of 36 cells,
+including 25 hook/claw swaps and 11 other organ assignments. This exposes a
+conflict-resolution assumption; it is not proof that primary types or subclass
+labels are physiological ground truth. A subclass/Function-preserving encoding
+should be compared separately after this screen, without changing running cases.
+The exact audit is in proprioception-screen-audit-v13/annotation-conflicts.json.

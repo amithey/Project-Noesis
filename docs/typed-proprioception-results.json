@@ -416,10 +416,68 @@
         "tripod_score": null,
         "checkpoint": "outputs\\proprioception-screen-v13\\typed-reversed-15\\attempt_0002\\episode_000.npz"
       }
+    },
+    {
+      "id": "typed-reversed-16",
+      "encoding": "typed-reversed",
+      "seed": 16,
+      "summary": {
+        "episode": 0,
+        "seed": 16,
+        "status": "completed",
+        "learning": false,
+        "standing_fraction": 0.5050505050505051,
+        "leg_step_cycles": {
+          "LF": 6,
+          "LM": 11,
+          "LH": 6,
+          "RF": 8,
+          "RM": 11,
+          "RH": 6
+        },
+        "obstacle_contact_seconds": 0.0,
+        "obstacle_response_seconds": null,
+        "obstacle_observation_complete": false,
+        "arena": "quiet",
+        "imported_weights_from": null,
+        "external_senses": true,
+        "wall_seconds": 773.9380000000092,
+        "simulated_seconds": 5.0,
+        "awake_samples": 990,
+        "mean_reward": -0.26429833642642886,
+        "mean_uprightness": 0.2102969226968296,
+        "forward_displacement_mm": -3.817481279373169,
+        "mean_motor_hz": 29.917248732792586,
+        "mean_joint_speed_rad_s": 2.0513582171815816,
+        "per_leg_mean_speed_rad_s": {
+          "LF": 2.2359428373250094,
+          "LM": 2.0923877439715644,
+          "LH": 1.803730673681606,
+          "RF": 2.1176880008795043,
+          "RM": 2.1700311354916506,
+          "RH": 1.8883689018963563
+        },
+        "motor_exploration_mv_ms": 0.0,
+        "body_model": "muscles",
+        "brain": "corrected",
+        "learning_rule": "perturbation",
+        "reward_mode": "grounded",
+        "proprioceptive_encoding": "typed-reversed",
+        "normalize_reward_error": true,
+        "reward_objective": "standing-first-linear-slip-v3",
+        "wing_mode": "neural",
+        "adhesion_mode": "geometry",
+        "heading_forward_distance_mm": 11.494093739032499,
+        "mean_supporting_feet": 1.7141414141414142,
+        "mean_stance_slip_mm_s": 13.399887635502287,
+        "gait_metrics": "outputs\\proprioception-screen-v13\\typed-reversed-16\\attempt_0003\\episode_000.gait.json",
+        "tripod_score": null,
+        "checkpoint": "outputs\\proprioception-screen-v13\\typed-reversed-16\\attempt_0003\\episode_000.npz"
+      }
     }
   ],
   "first_original_weights_unchanged": true,
-  "current_job": "typed-reversed-16",
+  "current_job": "typed-resistance-16",
   "source_and_driver_unchanged": true,
   "physical_audit": {
     "development_only": true,
@@ -631,13 +689,146 @@
           "RM": 0.5888888888888889,
           "RH": 0.01818181818181818
         }
+      },
+      {
+        "id": "typed-reversed-16",
+        "summary": {
+          "episode": 0,
+          "seed": 16,
+          "status": "completed",
+          "learning": false,
+          "standing_fraction": 0.5050505050505051,
+          "leg_step_cycles": {
+            "LF": 6,
+            "LM": 11,
+            "LH": 6,
+            "RF": 8,
+            "RM": 11,
+            "RH": 6
+          },
+          "obstacle_contact_seconds": 0.0,
+          "obstacle_response_seconds": null,
+          "obstacle_observation_complete": false,
+          "arena": "quiet",
+          "imported_weights_from": null,
+          "external_senses": true,
+          "wall_seconds": 773.9380000000092,
+          "simulated_seconds": 5.0,
+          "awake_samples": 990,
+          "mean_reward": -0.26429833642642886,
+          "mean_uprightness": 0.2102969226968296,
+          "forward_displacement_mm": -3.817481279373169,
+          "mean_motor_hz": 29.917248732792586,
+          "mean_joint_speed_rad_s": 2.0513582171815816,
+          "per_leg_mean_speed_rad_s": {
+            "LF": 2.2359428373250094,
+            "LM": 2.0923877439715644,
+            "LH": 1.803730673681606,
+            "RF": 2.1176880008795043,
+            "RM": 2.1700311354916506,
+            "RH": 1.8883689018963563
+          },
+          "motor_exploration_mv_ms": 0.0,
+          "body_model": "muscles",
+          "brain": "corrected",
+          "learning_rule": "perturbation",
+          "reward_mode": "grounded",
+          "proprioceptive_encoding": "typed-reversed",
+          "normalize_reward_error": true,
+          "reward_objective": "standing-first-linear-slip-v3",
+          "wing_mode": "neural",
+          "adhesion_mode": "geometry",
+          "heading_forward_distance_mm": 11.494093739032499,
+          "mean_supporting_feet": 1.7141414141414142,
+          "mean_stance_slip_mm_s": 13.399887635502287,
+          "gait_metrics": "outputs\\proprioception-screen-v13\\typed-reversed-16\\attempt_0003\\episode_000.gait.json",
+          "tripod_score": null,
+          "checkpoint": "outputs\\proprioception-screen-v13\\typed-reversed-16\\attempt_0003\\episode_000.npz"
+        },
+        "original_weights_and_traces_unchanged": true,
+        "low_uprightness_fraction": 0.494949494949495,
+        "too_low_fraction": 0.0,
+        "too_high_fraction": 0.0030303030303030303,
+        "upright_only_slip_mm_s": 19.79519111413414,
+        "per_leg_support_fraction": {
+          "LF": 0.4313131313131313,
+          "LM": 0.30606060606060603,
+          "LH": 0.18181818181818182,
+          "RF": 0.20303030303030303,
+          "RM": 0.4121212121212121,
+          "RH": 0.1797979797979798
+        }
       }
     ],
     "remaining_cases": [
-      "typed-reversed-16",
       "typed-resistance-16",
       "legacy-16"
     ],
-    "current": "typed-reversed-16"
+    "current": "typed-resistance-16"
+  },
+  "extended_annotation_audit": {
+    "diagnostic_only": true,
+    "no_active_source_change": true,
+    "function_labels": {
+      "hook": {
+        "direction,proprioception": 142
+      },
+      "claw": {
+        "position,proprioception": 162
+      }
+    },
+    "organ_reassignments": [
+      {
+        "subclass_organ": "campaniform",
+        "typed_organ": "hook",
+        "primary_type": "SNpp39",
+        "function": "mechanical_strain,proprioception",
+        "count": 1
+      },
+      {
+        "subclass_organ": "claw",
+        "typed_organ": "hook",
+        "primary_type": "SNpp39",
+        "function": "position,proprioception",
+        "count": 10
+      },
+      {
+        "subclass_organ": "claw",
+        "typed_organ": "hook",
+        "primary_type": "SNpp41",
+        "function": "position,proprioception",
+        "count": 8
+      },
+      {
+        "subclass_organ": "club",
+        "typed_organ": "claw",
+        "primary_type": "SNpp51",
+        "function": "proprioception,vibro_tactile",
+        "count": 5
+      },
+      {
+        "subclass_organ": "club",
+        "typed_organ": "hook",
+        "primary_type": "SNpp39",
+        "function": "proprioception,vibro_tactile",
+        "count": 4
+      },
+      {
+        "subclass_organ": "hairplate",
+        "typed_organ": "claw",
+        "primary_type": "SNpp51",
+        "function": "joint_angle,proprioception",
+        "count": 1
+      },
+      {
+        "subclass_organ": "hook",
+        "typed_organ": "claw",
+        "primary_type": "SNpp51",
+        "function": "direction,proprioception",
+        "count": 7
+      }
+    ],
+    "total_reassignments": 36,
+    "interpretation": "Function agrees with original subclass modality but gives no individual direction. Primary-priority reassignment is an experimental policy, not verified functional truth. Compare a subclass/Function-preserving policy separately after this screen; do not change running trials."
   }
 }
