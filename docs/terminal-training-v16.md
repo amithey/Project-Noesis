@@ -138,8 +138,11 @@ RF 8 / RM 14 / RH 2. The full-horizon training seeds 27/28/29 stand 95.556% /
 seeds differ and there is no matched original/frozen comparison; these observations
 do not prove learned walking or a causal improvement from termination.
 
-The runtime audit verifies all five completed checkpoints and their actual
-termination/duration, original references, topology, signs and magnitude bounds.
-The sixth birth, seed 30, starts from the completed seed-29 weights. Five of 18
-births are complete; best-validated remains absent and all acceptance gates stay
-unchanged. Full video/CSV/checkpoint for this birth are retained.
+Before this progress snapshot was finalized, seed 30 also completed with a
+terminal fall at 0.885 s. The runtime audit verifies all six completed checkpoints,
+actual termination/duration, original references, topology, signs and magnitude
+bounds. Maximum deviation is now 16.863%, within the 50% bound. Seed 31 is learning
+from the seed-30 checkpoint. Six of 18 births are complete: three full horizons
+and three terminal falls. This early new failure shows stability is not yet
+consistent. Best-validated remains absent and all acceptance gates stay unchanged.
+Full videos/CSVs/checkpoints, including the early failure, are retained.
