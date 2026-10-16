@@ -170,3 +170,34 @@ The final legacy seed-16 case is running. The conservative encoding remains
 disqualified by its already completed seed-15 regression; no model was trained
 or promoted. The separate V14 post-fall learning audit is documented in
 post-fall-learning.md and does not change this active comparison.
+
+## Screen complete: conservative encoding rejected
+
+All six five-second original-weight cases completed. All four legacy/resistance
+controls reproduce every observation and motor-spike array/duration from V13
+exactly. All six checkpoints retain original weights and zero learning traces.
+
+| Encoding | Standing seed 15 | Standing seed 16 |
+| --- | ---: | ---: |
+| Legacy | 90.303% | 32.020% |
+| Inferred resistance | 78.687% | 68.788% |
+| Conservative organ-consistent | 21.414% | 12.222% |
+
+The preregistered decision rejects advancement: both per-seed standing guards and
+the worst-seed gain fail. Mean standing-conditioned slip alone passes, but cannot
+compensate for lost posture. No weights were trained by this screen and no model
+was promoted. Completed is the screen status only, not the fly goal status.
+
+Exact source, driver, full terminal report, all complete/partial videos and the
+final screen-audit.json are preserved. The read-only analyzer accepts explicit
+--source-root and --driver paths for exact archived reproduction after the active
+worktree changes; hashes must still match the original plan/report. Reproduction
+against the stored V15 source/driver passed all six audits and the same rejection.
+
+The next hypothesis comes from the separate post-fall exposure audit: train with
+sustained falls as explicit terminal training events, carrying weights into fresh
+births. Its implementation is staged separately and cannot shorten frozen tests.
+The legacy sensory encoding will remain the reference; the rejected experimental
+encoding will not be used for the next training. Existing legacy original-weight
+validation controls stood 92.22%/94.95% on seeds 10/11, but their high slip and the
+failed development seed 16 mean they are not a validated walking model.
