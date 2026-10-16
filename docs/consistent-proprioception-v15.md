@@ -73,3 +73,24 @@ typed-resistance seed 15 is now running. Advancement remains false because the
 comparison is incomplete. Evidence and seven-test log are under
 outputs/protocol-v15-consistent-candidate. Copied analysis scripts in the main
 output folder are reference snapshots; execute the originals in the worktree.
+
+## Interrupted second control resumed without accepting partial data
+
+During monitoring, the tool host timed out and the wait handle became stale.
+The underlying process was checked separately: terminal session 49477 returned
+exit 1 and no matching V15 screen Python worker remained. The log reached 4.0
+simulated seconds of typed-resistance seed 15, but no completed CSV/checkpoint
+was published. The process-termination cause is unknown; the observation timeout
+alone was not treated as proof of termination.
+
+The pre-resume report is preserved as interrupted-observation-report.json.
+Attempt_0001 retains only an unfinalized partial movie and sensory-map metadata;
+it is not a completed behavioral result and cannot supply a row-by-row replay
+proof. The exact source/driver/settings were resumed with --resume. The report
+now marks that attempt interrupted and starts typed-resistance seed 15 again
+from birth, original weights, in attempt_0002. A matching worker was verified
+live. The full legacy seed-15 case remains complete and is not repeated.
+
+The source hash, preregistered plan and all six planned comparisons remain
+unchanged. Advancement to training is still false; no learned weights or normal
+launch were changed during the interruption.
