@@ -47,3 +47,29 @@ obstacle/ablation and held-out criteria are still required for any deployment.
 
 Normal launch remains unchanged. Latest complete training and best-validated
 weights remain separate, and the failed V14 learning experience is preserved.
+
+## Read-only advancement gate and first control verified
+
+The output-only analyzer `analyze_screen.py` reads the preregistered plan and
+checks the exact source/driver fingerprint and six-job design. Every completed
+case must be five seconds, original weights, learning/exploration off and zero
+learner traces. It recomputes standing and standing-conditioned slip from all
+awake CSV observations. Existing legacy/resistance controls must reproduce all
+1,000 CSV rows and every motor-spike event/duration from V13 exactly.
+
+Its separate selection gate cannot advance an incomplete screen. Seven boundary
+and failure tests pass: incomplete/unverified controls, insufficient worst-seed
+gain, per-seed regression, worse upright slip, missing/nonfinite metrics and
+floating-point threshold boundaries. Even a passing selection result permits
+training only and always retains promotion_allowed=false. These diagnostics do
+not change live source, model weights, runner or behavioral acceptance gates.
+
+The first new development case, legacy seed 15, completed five seconds with
+90.303% standing and 19.156 mm/s mean stance slip (19.597 while standing). Its
+weights are original and learner traces zero. All 1,000 observation rows and all
+motor-spike arrays/duration match V13 exactly. This confirms the first old control
+was preserved, not that the new encoding works. One of six cases is complete;
+typed-resistance seed 15 is now running. Advancement remains false because the
+comparison is incomplete. Evidence and seven-test log are under
+outputs/protocol-v15-consistent-candidate. Copied analysis scripts in the main
+output folder are reference snapshots; execute the originals in the worktree.
