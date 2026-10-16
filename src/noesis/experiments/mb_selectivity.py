@@ -37,19 +37,19 @@ def jaccard(a: np.ndarray, b: np.ndarray) -> float:
     return float(np.count_nonzero(a & b) / union) if union else 0.0
 
 
-def identity_index(codes: dict[int, list[np.ndarray]]) -> float:
-    """Mean within-odour Jaccard minus mean between-odour Jaccard. codes: odour -> list of masks."""
-    within = [jaccard(a, b) for reps in codes.values() for a, b in itertools.combinations(reps, 2)]
+def identity_index(codes: dict[int, list[np.ndarray]], sim=jaccard) -> float:
+    """Mean within-class similarity minus mean between-class similarity (default Jaccard of masks)."""
+    within = [sim(a, b) for reps in codes.values() for a, b in itertools.combinations(reps, 2)]
     flat = [(o, m) for o, reps in codes.items() for m in reps]
-    between = [jaccard(m1, m2) for (o1, m1), (o2, m2) in itertools.combinations(flat, 2) if o1 != o2]
+    between = [sim(m1, m2) for (o1, m1), (o2, m2) in itertools.combinations(flat, 2) if o1 != o2]
     if not within or not between:
         raise ValueError("need >= 2 repeats per odour and >= 2 odours")
     return float(np.mean(within) - np.mean(between))
 
 
-def identity_null(codes: dict[int, list[np.ndarray]], n_perm: int, seed: int = 0) -> dict:
+def identity_null(codes: dict[int, list[np.ndarray]], n_perm: int, seed: int = 0, sim=jaccard) -> dict:
     """Permute odour labels over all codes (keeping group sizes); return observed index and p."""
-    observed = identity_index(codes)
+    observed = identity_index(codes, sim)
     flat = [m for reps in codes.values() for m in reps]
     sizes = [len(reps) for reps in codes.values()]
     rng = np.random.default_rng(seed)
@@ -60,7 +60,7 @@ def identity_null(codes: dict[int, list[np.ndarray]], n_perm: int, seed: int = 0
         for k, size in enumerate(sizes):
             shuffled[k] = [flat[i] for i in order[start:start + size]]
             start += size
-        null.append(identity_index(shuffled))
+        null.append(identity_index(shuffled, sim))
     null = np.asarray(null)
     return {"observed": observed, "null_mean": float(null.mean()), "null_sd": float(null.std()),
             "p_value": float((1 + np.count_nonzero(null >= observed - 1e-12)) / (n_perm + 1))}
