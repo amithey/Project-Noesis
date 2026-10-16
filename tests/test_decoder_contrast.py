@@ -23,8 +23,8 @@ def test_contrast_table_groups_by_abs_log_ratio():
     ratio = np.repeat([2.0, 0.5, 1.25, 0.8], 3)
     scores = np.where(block >= 2, -y * 1.0, y * 1.0)   # perfect for strong contrast, wrong for weak
     rows = {r["abs_log_ratio"]: r for r in contrast_table(scores, y, block, ratio)}
-    assert rows[0.69]["window_accuracy"] == 1.0 and rows[0.69]["block_accuracy"] == 1.0
-    assert rows[0.22]["window_accuracy"] == 0.0
+    assert rows[0.7]["window_accuracy"] == 1.0 and rows[0.7]["block_accuracy"] == 1.0
+    assert rows[0.2]["window_accuracy"] == 0.0
 
 
 def test_loso_scores_never_use_the_held_out_group():

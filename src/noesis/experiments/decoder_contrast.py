@@ -58,7 +58,7 @@ def loso_scores(x: np.ndarray, y: np.ndarray, groups: np.ndarray, lam_per_featur
 
 def contrast_table(scores, y, block, ratio) -> list[dict]:
     """Accuracy by |ln ratio|: per window, and per block using the sign of the block-mean score."""
-    contrast = np.round(np.abs(np.log(ratio)), 2)
+    contrast = np.round(np.abs(np.log(ratio)), 1)
     rows = []
     for c in np.unique(contrast):
         sel = contrast == c
@@ -147,7 +147,7 @@ def analyse(path: Path, lams, n_perm: int, min_tin: float) -> dict:
         print(f"{name:7s} lam {lam0:g}: null {null.mean():.3f} ± {null.std():.3f}, p={entry['null']['p_value']:.3f}",
               flush=True)
         for r in entry["contrast_table"]:
-            print(f"   |ln ratio| {r['abs_log_ratio']:.2f}: window acc {r['window_accuracy']:.2f} "
+            print(f"   |ln ratio| {r['abs_log_ratio']:.1f}: window acc {r['window_accuracy']:.2f} "
                   f"(n={r['n_windows']}), block acc {r['block_accuracy']:.2f} of {r['n_blocks']} "
                   f"[{r['block_ci95'][0]:.2f}-{r['block_ci95'][1]:.2f}]", flush=True)
         report["sets"][name] = entry
