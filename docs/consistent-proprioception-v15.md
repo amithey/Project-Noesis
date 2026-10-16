@@ -159,3 +159,14 @@ The live source, driver and criteria remain unchanged. Reading the neural core
 confirmed that spike-frequency adaptation already exists (the bodily experiment
 uses da=1), so lack of adaptation is not an established explanation of these
 failures. No neural-dynamics change is justified by these sensory results alone.
+
+## Third old control complete; final case running
+
+Typed-resistance seed 16 completed five seconds: standing 68.788%, all-window
+stance slip 15.195 mm/s. Frozen original weights and zero learner traces are
+verified; all 1,000 observation rows and every motor-spike array/duration match
+V13 exactly. Five of six planned cases are complete, with three exact old controls.
+The final legacy seed-16 case is running. The conservative encoding remains
+disqualified by its already completed seed-15 regression; no model was trained
+or promoted. The separate V14 post-fall learning audit is documented in
+post-fall-learning.md and does not change this active comparison.
