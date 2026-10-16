@@ -1,6 +1,6 @@
 # Survival drive: senses → internal need → behaviour (without legs)
 
-Status 2026-10-16: **stage 1 gate failed; decision pending.** Nothing here shows the fly behaves like a fly.
+Status 2026-10-16: **stage 1 partly passed (odour specificity at PN/KC); descending-neuron test pending.** Nothing here shows the fly behaves like a fly.
 
 ## Why this track exists
 Locomotion training (standing, then walking) runs on `codex/brain-body-feedback` and has not
@@ -13,10 +13,10 @@ track. Merging with a walking body is a later step, planned only after results b
 | Stage | Content | State |
 |---|---|---|
 | 0 | Own worktree `C:/dev/noesis-claude-drive` | done |
-| 1 | `experiments/sense_audit.py`, `operating_point.py`: does each odour channel reach the mushroom body, dopamine cells and descending neurons? | run; **gate failed**, see [findings-sense-audit.md](findings-sense-audit.md) |
+| 1 | `experiments/sense_audit.py`, `operating_point.py`: does each odour channel reach the mushroom body, dopamine cells and descending neurons? | run; gate partly passed: PN/KC odour specificity found (modest), steering output untested; see [findings-sense-audit.md](findings-sense-audit.md) |
 | 2 | `drives.py`: energy/water state, hunger-scaled sensory gain, reward = net intake | done, unit-tested |
 | 3 | `experiments/mb_foraging_conditioning.py`: odour A + sugar, fed vs hungry, with no-reward control | script done and unit-tested; **not yet run** |
-| 4 | Leg-free virtual agent steered by descending neurons | blocked: no steering signal established |
+| 4 | Leg-free virtual agent steered by descending neurons | blocked until a per-neuron descending-neuron test beats shuffle nulls |
 | 5 | Evolution of a small genome (sensory gains, hunger coupling, plasticity rates) | not started |
 | 6 | Reconnect to the full MuJoCo body | out of scope until walking is measurable |
 
@@ -30,7 +30,7 @@ brain. Controls: no stimulus, and the same number of receptors drawn at random f
 A descending neuron counts as responsive only if it beats both controls by at least 2 Hz.
 
 ### Result
-Stimulus responses match the random-receptor control at every operating point tried; see [findings-sense-audit.md](findings-sense-audit.md).
+Population-mean responses match the random-receptor control at every operating point tried, but per-glomerulus / per-Kenyon-cell tests with shuffle nulls do find modest odour specificity; see [findings-sense-audit.md](findings-sense-audit.md).
 
 ### Note on "bad smell"
 The habitat has no faecal or carrion odour. Its only aversive odour is `aversive_volatile`, emitted by
