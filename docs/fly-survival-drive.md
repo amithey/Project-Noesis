@@ -1,6 +1,6 @@
 # Survival drive: senses → internal need → behaviour (without legs)
 
-Status 2026-10-16: **in progress.** Nothing here shows the fly behaves like a fly.
+Status 2026-10-16: **stage 1 gate failed; decision pending.** Nothing here shows the fly behaves like a fly.
 
 ## Why this track exists
 Locomotion training (standing, then walking) runs on `codex/brain-body-feedback` and has not
@@ -13,10 +13,10 @@ track. Merging with a walking body is a later step, planned only after results b
 | Stage | Content | State |
 |---|---|---|
 | 0 | Own worktree `C:/dev/noesis-claude-drive` | done |
-| 1 | `experiments/sense_audit.py`: does each odour channel reach the mushroom body, dopamine cells and descending neurons? | script done and tested; full run in progress |
+| 1 | `experiments/sense_audit.py`, `operating_point.py`: does each odour channel reach the mushroom body, dopamine cells and descending neurons? | run; **gate failed**, see [findings-sense-audit.md](findings-sense-audit.md) |
 | 2 | `drives.py`: energy/water state, hunger-scaled sensory gain, reward = net intake | done, unit-tested |
 | 3 | `experiments/mb_foraging_conditioning.py`: odour A + sugar, fed vs hungry, with no-reward control | script done and unit-tested; **not yet run** |
-| 4 | Leg-free virtual agent steered by descending neurons | not started; gated on stage 1 |
+| 4 | Leg-free virtual agent steered by descending neurons | blocked: no steering signal established |
 | 5 | Evolution of a small genome (sensory gains, hunger coupling, plasticity rates) | not started |
 | 6 | Reconnect to the full MuJoCo body | out of scope until walking is measurable |
 
@@ -29,13 +29,8 @@ neurons (left, right, both; 80 Hz, weight 400; 0.3 s rest, 0.7 s stimulus; 3 see
 brain. Controls: no stimulus, and the same number of receptors drawn at random from other channels.
 A descending neuron counts as responsive only if it beats both controls by at least 2 Hz.
 
-### Preliminary observations (6 of 9 channels, controls not yet compared)
-Per channel, 233–349 of the 1,316 descending neurons exceed the no-stimulus rate, and PPL1 rises by
-about 85–100 Hz in **every** channel, including the pleasant fruit odour and the 26-receptor
-`animal_matter_volatile` channel. This pattern looks nonspecific (any strong receptor drive excites
-the same cells), so it is not evidence that the brain distinguishes odours or could steer on them.
-The random-channel control and left/right asymmetry decide this; they are in the final JSON, not yet
-analysed here.
+### Result
+Stimulus responses match the random-receptor control at every operating point tried; see [findings-sense-audit.md](findings-sense-audit.md).
 
 ### Note on "bad smell"
 The habitat has no faecal or carrion odour. Its only aversive odour is `aversive_volatile`, emitted by
