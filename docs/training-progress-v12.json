@@ -1,5 +1,5 @@
 {
-  "status": "training_in_progress",
+  "status": "rejected_validation",
   "training_only": true,
   "validation_and_heldout_completed": false,
   "summary": {
@@ -242,7 +242,7 @@
     "signs_preserved": true,
     "bounds_preserved": true
   },
-  "current_job": "validation-quiet-original-11",
+  "current_job": null,
   "last_training_checkpoint": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\birth-cycle-v12\\cycle_000\\train-2\\attempt_0002\\episode_000.npz",
   "third_checkpoint_weight_metrics": {
     "mean_relative_change": 0.005220567562334666,
@@ -302,6 +302,58 @@
       "gait_metrics": "outputs\\birth-cycle-v12\\cycle_000\\validation-quiet-original-10\\attempt_0003\\episode_000.gait.json",
       "tripod_score": null,
       "checkpoint": "outputs\\birth-cycle-v12\\cycle_000\\validation-quiet-original-10\\attempt_0003\\episode_000.npz"
+    },
+    {
+      "episode": 0,
+      "seed": 11,
+      "status": "completed",
+      "learning": false,
+      "standing_fraction": 0.9494949494949495,
+      "leg_step_cycles": {
+        "LF": 14,
+        "LM": 16,
+        "LH": 12,
+        "RF": 13,
+        "RM": 15,
+        "RH": 4
+      },
+      "obstacle_contact_seconds": 0.0,
+      "obstacle_response_seconds": null,
+      "obstacle_observation_complete": false,
+      "arena": "quiet",
+      "imported_weights_from": null,
+      "external_senses": true,
+      "wall_seconds": 427.29700000000594,
+      "simulated_seconds": 5.0,
+      "awake_samples": 990,
+      "mean_reward": 0.25159409463457744,
+      "mean_uprightness": 0.8891144555626493,
+      "forward_displacement_mm": -3.4660592079162598,
+      "mean_motor_hz": 31.44188256302219,
+      "mean_joint_speed_rad_s": 2.4314783307639036,
+      "per_leg_mean_speed_rad_s": {
+        "LF": 2.5245574079077655,
+        "LM": 2.338177024083908,
+        "LH": 2.8449875095877983,
+        "RF": 2.4447376803466767,
+        "RM": 2.454644251863162,
+        "RH": 1.9817661115165912
+      },
+      "motor_exploration_mv_ms": 0.0,
+      "body_model": "muscles",
+      "brain": "corrected",
+      "learning_rule": "perturbation",
+      "reward_mode": "grounded",
+      "normalize_reward_error": true,
+      "reward_objective": "standing-first-linear-slip-v3",
+      "wing_mode": "neural",
+      "adhesion_mode": "geometry",
+      "heading_forward_distance_mm": 10.151316113205874,
+      "mean_supporting_feet": 2.496969696969697,
+      "mean_stance_slip_mm_s": 16.222090935359706,
+      "gait_metrics": "outputs\\birth-cycle-v12\\cycle_000\\validation-quiet-original-11\\attempt_0004\\episode_000.gait.json",
+      "tripod_score": null,
+      "checkpoint": "outputs\\birth-cycle-v12\\cycle_000\\validation-quiet-original-11\\attempt_0004\\episode_000.npz"
     }
   ],
   "original_control_equivalence": {
@@ -361,5 +413,77 @@
       "tripod_score": null,
       "checkpoint": "outputs\\birth-cycle-v12\\cycle_000\\validation-quiet-original-10\\attempt_0003\\episode_000.npz"
     }
-  }
+  },
+  "final_frozen_candidate": {
+    "episode": 0,
+    "seed": 10,
+    "status": "completed",
+    "learning": false,
+    "standing_fraction": 0.06666666666666667,
+    "leg_step_cycles": {
+      "LF": 0,
+      "LM": 3,
+      "LH": 5,
+      "RF": 10,
+      "RM": 2,
+      "RH": 14
+    },
+    "obstacle_contact_seconds": 0.0,
+    "obstacle_response_seconds": null,
+    "obstacle_observation_complete": false,
+    "arena": "quiet",
+    "imported_weights_from": null,
+    "external_senses": true,
+    "wall_seconds": 596.1710000000021,
+    "simulated_seconds": 5.0,
+    "awake_samples": 990,
+    "mean_reward": -0.5854053982894709,
+    "mean_uprightness": -0.5589152016912144,
+    "forward_displacement_mm": 1.154127061367035,
+    "mean_motor_hz": 30.10234335481543,
+    "mean_joint_speed_rad_s": 2.3410335720789552,
+    "per_leg_mean_speed_rad_s": {
+      "LF": 2.4762536881246953,
+      "LM": 2.184257198072443,
+      "LH": 2.767935993725603,
+      "RF": 2.556744000059788,
+      "RM": 2.061618292873556,
+      "RH": 1.9993922440391598
+    },
+    "motor_exploration_mv_ms": 0.0,
+    "body_model": "muscles",
+    "brain": "corrected",
+    "learning_rule": "perturbation",
+    "reward_mode": "grounded",
+    "normalize_reward_error": true,
+    "reward_objective": "standing-first-linear-slip-v3",
+    "wing_mode": "neural",
+    "adhesion_mode": "geometry",
+    "heading_forward_distance_mm": 7.586154347577117,
+    "mean_supporting_feet": 1.0434343434343434,
+    "mean_stance_slip_mm_s": 6.088596551194825,
+    "gait_metrics": "outputs\\birth-cycle-v12\\cycle_000\\validation-quiet-candidate-10\\attempt_0005\\episode_000.gait.json",
+    "tripod_score": null,
+    "checkpoint": "outputs\\birth-cycle-v12\\cycle_000\\validation-quiet-candidate-10\\attempt_0005\\episode_000.npz"
+  },
+  "final_decision": {
+    "accepted": false,
+    "reason": "completed quiet validation failed; remaining controls not claimed complete",
+    "quiet_check": {
+      "accepted": false,
+      "reason": "candidate did not pass all behavioral criteria",
+      "checks": [
+        {
+          "seed": 10,
+          "complete": true,
+          "standing": false,
+          "cycles": true,
+          "forward": true,
+          "slip": true,
+          "reward": false
+        }
+      ]
+    }
+  },
+  "old_source_archive": "outputs/protocol-v12-standing-first-source"
 }

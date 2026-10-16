@@ -133,3 +133,30 @@ def test_early_rejection_does_not_claim_unrun_controls_and_resume_continues_trai
     assert second['status'] == 'completed' and len(second['jobs']) == 26
     assert second['decision']['accepted']
     assert all(c[3] for c in calls)
+
+
+@pytest.mark.parametrize('encoding',['legacy','typed-resistance','typed-reversed'])
+def test_pipeline_keeps_same_proprioception_for_every_training_and_frozen_control(monkeypatch,tmp_path,encoding):
+    import json
+
+    from noesis.experiments import train_validate as tv
+    calls=[]
+    def episode(cn,args,index,checkpoint,*,deadline):
+        calls.append((args.proprioceptive_encoding,args.learn,args.motor_exploration,args.no_senses,args.no_balance,args.no_environment_senses,args.seconds))
+        summary=trials(reward=.2 if checkpoint is None else .3,slip=.2 if checkpoint is None else .1)[0].copy()
+        summary.update(seed=args.seed,learning=args.learn,motor_exploration_mv_ms=args.motor_exploration,
+                       obstacle_observation_complete=True,obstacle_response_seconds=.2,
+                       obstacle_contact_seconds=.4 if args.no_environment_senses else .1)
+        saved=args.output/'episode_000.npz';saved.write_bytes(b'checkpoint')
+        return summary,saved
+    monkeypatch.setattr(tv,'load_training_brain',lambda *a:(None,{}))
+    monkeypatch.setattr(tv.lab,'run_episode',episode)
+    output=tmp_path/'run'
+    monkeypatch.setattr('sys.argv',['train_validate','--data',str(tmp_path/'data'),'--output',str(output),
+                                  '--episodes','1','--proprioceptive-encoding',encoding])
+    tv.main()
+    report=json.loads((output/'report.json').read_text())
+    assert report['decision']['accepted'] and len(calls)==26
+    assert all(call[0]==encoding and not call[3] and not call[4] for call in calls)
+    assert all(call[2]==0 and call[6]==5 for call in calls if not call[1])
+    assert any(call[5] for call in calls)

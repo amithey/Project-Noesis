@@ -34,7 +34,8 @@ from noesis.habitat import Habitat, habitat_arena
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_motor_matrix, build_muscle_matrices
 from noesis.plasticity import MotorPlasticity
-from noesis.sensory import LEGS, LegState, SensoryMap
+from noesis.proprioception import ENCODINGS, make_proprioception_map
+from noesis.sensory import LEGS, LegState
 from noesis.training_scene import training_arena
 from noesis.viz.brain_map import write_activity
 from noesis.world import (
@@ -90,6 +91,8 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--video', action='store_true', help='record each episode as MP4')
     ap.add_argument('--no-senses', action='store_true')
     ap.add_argument('--no-balance', action='store_true')
+    ap.add_argument('--proprioceptive-encoding', choices=ENCODINGS, default='legacy',
+                    help='typed directional tuning is an inferred hypothesis; reversed is its control')
     ap.add_argument('--sensory-weight', type=float, default=400.0)
     ap.add_argument('--arena', choices=('habitat', 'empty', 'quiet', 'obstacle'), default='habitat')
     ap.add_argument('--depression-u', type=float, default=0.)
@@ -217,8 +220,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         context = {name: getattr(args, name) for name in (
             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
             'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
-            'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u')}
-        context.update(schema=6, reward_objective='standing-first-linear-slip-v3' if args.reward_mode == 'grounded' else 'legacy-body-v1',
+            'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u', 'proprioceptive_encoding')}
+        context.update(schema=7, reward_objective='standing-first-linear-slip-v3' if args.reward_mode == 'grounded' else 'legacy-body-v1',
                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
                        motor_interface='anatomical-coxa-flexion-v3',
                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
@@ -232,7 +235,10 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                 raise ValueError('checkpoint model context mismatch')
             plasticity.load(checkpoint, weights_only=args.import_weights)
         tracker = RateTracker(cn.n, tau_ms=25.0)
-        senses = None if args.no_senses else SensoryMap(cn.neurons)
+        senses = None if args.no_senses else make_proprioception_map(cn.neurons, args.proprioceptive_encoding)
+        if senses is not None and hasattr(senses, 'coverage'):
+            prefix.with_suffix('.proprioception-map.json').write_text(
+                json.dumps(senses.coverage(), indent=2), encoding='utf-8')
         balance = (None if (args.no_senses or args.no_balance)
                    else BalanceMap(cn.neurons, seed=args.sensory_map_seed))
         environment = EnvironmentSenses(cn.neurons, fly.retina, seed=args.sensory_map_seed) if environmental_input else None
@@ -440,6 +446,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                'motor_exploration_mv_ms': amplitude,
                'body_model': args.body_model, 'brain': args.brain,
                'learning_rule': args.learning_rule, 'reward_mode': args.reward_mode,
+               'proprioceptive_encoding': args.proprioceptive_encoding,
                'normalize_reward_error': args.normalize_reward_error,
                'reward_objective': context['reward_objective'],
                'wing_mode': args.wing_mode, 'adhesion_mode': args.adhesion_mode,

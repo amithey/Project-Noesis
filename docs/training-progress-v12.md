@@ -1,7 +1,7 @@
 # V12 standing-first training progress
 
-Status: all three quiet-floor births and original seed-10 control completed;
-original seed-11 control is live. Candidate evaluations are pending.
+Status: terminal rejected_validation. Both original controls and the frozen
+candidate seed-10 trial completed; candidate standing and reward failed.
 This is learning-on data, not a frozen acceptance result or deployment.
 
 Seed 12 imported the complete final v11 training weights under the explicit
@@ -54,3 +54,19 @@ Original seed 10 completed its frozen five-second control. Every field of all
 exactly; all motor-spike arrays also match. The reward change therefore leaves
 this original brain/body trajectory unchanged. Seed 11 and trained candidates
 are still pending, and no validated checkpoint exists.
+
+## Final frozen failure
+
+The five-second candidate seed-10 trial used learning=False and exploration=0.
+It stood for only 6.67% versus original 92.22%, fell early and did not recover.
+Heading-integrated translation was 7.586 mm and all-window stance slip 6.089 mm/s.
+Those falling-motion metrics do not establish walking. The gate correctly failed
+standing and reward and promoted no checkpoint. Candidate seed 11, obstacle and
+held-out cases were never started and are not claimed complete.
+
+The complete final failure video and CSV are preserved. After normal process exit
+the exact 6f6b31db... source, tests and scripts were archived in
+outputs/protocol-v12-standing-first-source. The original training experience is
+still saved in train-2/attempt_0002 for a future explicit weights-only import.
+The next work is a development-only sensory comparison on seeds 15/16, without
+training or promotion. The normal primary-checkout launch remains unchanged.

@@ -1,0 +1,245 @@
+{
+  "status": "installed_development_screen_running",
+  "source_sha256": "738bd3a8130fc9a37eeb4b2a1351735006232e65ca1c74e60dbbac630422477b",
+  "old_source_archive": "outputs/protocol-v12-standing-first-source",
+  "screen_report": "outputs/proprioception-screen-v13/report.json",
+  "full_regression": {
+    "passed": 257,
+    "failed": 0,
+    "ruff": "passed"
+  },
+  "installed_regression": {
+    "passed": 257,
+    "failed": 0,
+    "ruff": "passed"
+  },
+  "actual_annotation_coverage": {
+    "typed-resistance": {
+      "encoding": "typed-resistance",
+      "preferred_directions_are_inferred": true,
+      "mapped_neurons": 3921,
+      "typed_neurons": 306,
+      "unchanged_legacy_neurons": 3615,
+      "unresolved_hook_neurons": 8,
+      "types": {
+        "SNpp50": 99,
+        "SNpp51": 57,
+        "SNpp39": 96,
+        "SNpp41": 54
+      }
+    },
+    "typed-reversed": {
+      "encoding": "typed-reversed",
+      "preferred_directions_are_inferred": true,
+      "mapped_neurons": 3921,
+      "typed_neurons": 306,
+      "unchanged_legacy_neurons": 3615,
+      "unresolved_hook_neurons": 8,
+      "types": {
+        "SNpp50": 99,
+        "SNpp51": 57,
+        "SNpp39": 96,
+        "SNpp41": 54
+      }
+    }
+  },
+  "receiver_trials": {
+    "typed-resistance": [
+      {
+        "phase": "hold",
+        "duration_ms": 400.0,
+        "velocity_rad_s": 0.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 2.0
+        },
+        "spike_counts": [
+          40,
+          40,
+          2,
+          0
+        ]
+      },
+      {
+        "phase": "flexion",
+        "duration_ms": 100.0,
+        "velocity_rad_s": 2.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 114.7159350814532
+        },
+        "spike_counts": [
+          14,
+          8,
+          0,
+          18
+        ]
+      },
+      {
+        "phase": "hold",
+        "duration_ms": 400.0,
+        "velocity_rad_s": 0.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 2.0
+        },
+        "spike_counts": [
+          27,
+          34,
+          0,
+          2
+        ]
+      },
+      {
+        "phase": "extension",
+        "duration_ms": 100.0,
+        "velocity_rad_s": -2.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 114.7159350814532,
+          "3": 2.0
+        },
+        "spike_counts": [
+          11,
+          14,
+          13,
+          0
+        ]
+      },
+      {
+        "phase": "hold",
+        "duration_ms": 400.0,
+        "velocity_rad_s": 0.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 2.0
+        },
+        "spike_counts": [
+          52,
+          42,
+          0,
+          0
+        ]
+      }
+    ],
+    "typed-reversed": [
+      {
+        "phase": "hold",
+        "duration_ms": 400.0,
+        "velocity_rad_s": 0.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 2.0
+        },
+        "spike_counts": [
+          40,
+          40,
+          2,
+          0
+        ]
+      },
+      {
+        "phase": "flexion",
+        "duration_ms": 100.0,
+        "velocity_rad_s": 2.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 114.7159350814532,
+          "3": 2.0
+        },
+        "spike_counts": [
+          14,
+          8,
+          13,
+          2
+        ]
+      },
+      {
+        "phase": "hold",
+        "duration_ms": 400.0,
+        "velocity_rad_s": 0.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 2.0
+        },
+        "spike_counts": [
+          27,
+          34,
+          0,
+          4
+        ]
+      },
+      {
+        "phase": "extension",
+        "duration_ms": 100.0,
+        "velocity_rad_s": -2.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 114.7159350814532
+        },
+        "spike_counts": [
+          11,
+          14,
+          0,
+          17
+        ]
+      },
+      {
+        "phase": "hold",
+        "duration_ms": 400.0,
+        "velocity_rad_s": 0.0,
+        "drive_hz_by_neuron": {
+          "0": 76.0,
+          "1": 76.0,
+          "2": 2.0,
+          "3": 2.0
+        },
+        "spike_counts": [
+          52,
+          42,
+          0,
+          2
+        ]
+      }
+    ]
+  },
+  "tuning_signs_are_inferred": true,
+  "physical_acceptance_unchanged": true,
+  "connectivity_and_signed_weights_changed": false,
+  "default_encoding": "legacy",
+  "development_seeds": [
+    15,
+    16
+  ],
+  "validation_seeds": [
+    10,
+    11
+  ],
+  "heldout_seeds": [
+    200,
+    201,
+    202
+  ],
+  "screen_learning": false,
+  "screen_motor_exploration": 0.0,
+  "screen_seconds_per_trial": 5.0,
+  "promotion_allowed": false,
+  "model_context_schema": 7,
+  "checkpoint_transfer_requires_explicit_import": true
+}

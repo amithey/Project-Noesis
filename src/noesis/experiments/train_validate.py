@@ -11,6 +11,7 @@ import numpy as np
 
 from noesis.embodiment import load_training_brain
 from noesis.experiments import learning_lab as lab
+from noesis.proprioception import ENCODINGS
 from noesis.wall_budget import WallBudget
 
 
@@ -84,6 +85,7 @@ def main():
     ap.add_argument('--normalize-reward-error', action='store_true')
     ap.add_argument('--early-reject', action='store_true', help='reject failed quiet validation before consuming further controls')
     ap.add_argument('--episodes', type=int, default=3)
+    ap.add_argument('--proprioceptive-encoding', choices=ENCODINGS, default='legacy')
     ap.add_argument('--training-arena', choices=('graded', 'quiet', 'obstacle'), default='graded',
                     help='training scenes only; frozen quiet/obstacle controls remain mandatory')
     ap.add_argument('--seconds', type=float, default=5.)
@@ -128,6 +130,7 @@ def main():
         ap.error('output must be outside read-only source data')
     template = lab.parser().parse_args(['--data', str(args.data), '--output', str(args.output/'probe'),
         '--seconds', str(args.seconds), '--learning-rate', str(args.learning_rate), '--arena', 'quiet', '--depression-u', str(args.depression_u), '--learn'])
+    template.proprioceptive_encoding = args.proprioceptive_encoding
     template.normalize_reward_error = args.normalize_reward_error
     lab.validate_args(lab.parser(), template)
     # Reject resuming under changed source code, model parameters or evaluation protocol.

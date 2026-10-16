@@ -1,0 +1,66 @@
+# Type-aware proprioception: development experiment
+
+Status: installed in the isolated worktree after V12 completed and was rejected.
+The original-weight, nonlearning screen is now running. No behavioral improvement
+or deployment is claimed. Default encoding remains legacy; typed variants require
+an explicit CLI choice. The primary default source/model is unchanged.
+
+Mamiya et al. 2018 reports phasic directional hook responses versus tonic claw
+position responses; 2023 work identifies opposing hook preferences. The old hook
+transfer ignored velocity and returned 76 Hz at a stationary rest pose. Sources:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC6481666/ and
+https://doi.org/10.1016/j.neuron.2023.07.009 .
+
+The MANC annotation study Figure 59 predicts opposing tibia-muscle effects of
+SNpp39/41 hooks and SNpp50/51 claws:
+https://elifesciences.org/reviewed-preprints/97766 .
+The resistance hypothesis uses SNpp50 claw flexion-position, SNpp51 claw extension-
+position, SNpp39 hook extension-motion and SNpp41 hook flexion-motion. This follows
+a resistance-reflex interpretation of predicted circuit effects; it is NOT a
+direct physiological annotation of these cell IDs. typed-reversed flips all four
+preferences as an explicit control. Both retain the same annotated identities
+and order, rather than inventing a row-parity or random split.
+
+Known primary types determine the effective organ when a subclass conflicts.
+There are 306 matched cells: SNpp50 99, SNpp51 57, SNpp39 96, SNpp41 54. The
+remaining 3,615 mapped afferents keep their legacy rates exactly, including eight
+unresolved hook cells. That unresolved fallback is a limitation, not a claim
+that every sensory neuron is biologically correct. Loaded contact rates remain
+unchanged; force saturation diagnosed earlier is not silently retuned here.
+
+Known hooks receive rectified signed measured tibia velocity, returning the 2 Hz
+base during every stationary hold. Known claws receive signed measured position.
+All 2..150 Hz bounds and scale assumptions are retained. Inputs contain only
+actual body state; no motor command, trajectory, oscillator or leg timing is added.
+Connectome edges, signs and weights, neural dynamics, body physics, reward,
+learning rate, eligibility and physical promotion thresholds are unchanged.
+
+Both CLIs and the isolated launcher expose --proprioceptive-encoding. Model
+context schema 7 records the choice and blocks normal cross-context checkpoint
+loading; explicit weights-only import remains validated and resets traces.
+Every training/original/candidate/ablation case receives the same chosen mapping.
+External sensory ablation continues to retain joint and balance feedback.
+
+Full staged regression and installed regression: 257 tests passed, Ruff passed.
+They include hold-versus-motion tuning, opposing-type selectivity, reversed
+assignment, identity/order preservation, unknown-type fallback, primary/subclass
+conflicts, organ ablation, immutability, context rejection/explicit transfer,
+brain-drive plumbing, the complete frozen matrix and interrupted-screen replay.
+Initial test-key and staged script-path failures were fixed and their logs retained.
+The PowerShell launcher parses. Source fingerprint:
+738bd3a8130fc9a37eeb4b2a1351735006232e65ca1c74e60dbbac630422477b.
+
+A four-neuron no-recurrence receiver using the real LIF backend confirms signed
+motion inputs produce direction-selective hook spiking. This is a controlled
+unit-level diagnostic stimulus, never a training controller or whole-brain
+walking result. Coverage and receiver phase counts are in the companion JSON.
+
+The development screen compares legacy, typed-resistance and typed-reversed on
+seeds 15/16, with counterbalanced order, original weights, five seconds, learning
+and exploration off, and full videos. It is bounded to one hour per invocation;
+--resume replays unfinished trials from their start and preserves completed trials.
+Both source and driver fingerprints are checked. It cannot promote a model and
+rejects reserved validation/held-out seeds. Complete all six conditions before
+choosing a training hypothesis; do not treat this screen as the required matched
+trained-weight validation. Future training must still pass quiet, obstacle,
+ablation and held-out gates before any normal launch change.
