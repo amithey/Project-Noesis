@@ -94,3 +94,20 @@ live. The full legacy seed-15 case remains complete and is not repeated.
 The source hash, preregistered plan and all six planned comparisons remain
 unchanged. Advancement to training is still false; no learned weights or normal
 launch were changed during the interruption.
+
+## Second control complete and exact; new encoding now running
+
+The resumed typed-resistance seed-15 control completed five seconds with 78.687%
+standing, 18.062 mm/s all-window stance slip and 18.089 mm/s slip conditioned on
+standing. Original weights and zero learner traces are verified. All 1,000 CSV
+rows and every saved motor-spike array/duration match the completed V13 case
+exactly, including the full trajectory beyond the interrupted log. The unfinished
+attempt remains separate; no row-by-row partial replay claim is made because
+its CSV was never published.
+
+Two of six V15 cases are complete and both old controls are exact. The first
+new typed-consistent case (seed 15) is running, original weights, learning and
+exploration off. No new-encoding behavioral result exists yet. The read-only
+selection audit remains advance_to_training=false and promotion_allowed=false
+until every required comparison and predeclared improvement criterion is met.
+Source, driver, plan and weights remain unchanged during the comparison.
