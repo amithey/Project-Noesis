@@ -830,5 +830,13 @@
     ],
     "total_reassignments": 36,
     "interpretation": "Function agrees with original subclass modality but gives no individual direction. Primary-priority reassignment is an experimental policy, not verified functional truth. Compare a subclass/Function-preserving policy separately after this screen; do not change running trials."
-  }
+  },
+  "first_wall_invocation": {
+    "wall_seconds": 3596.828999999998,
+    "completed_jobs": 4,
+    "total_jobs": 6
+  },
+  "unfinished_trial_seconds": 4.8999999999999995,
+  "resumed_attempt_output": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\outputs\\proprioception-screen-v13\\typed-resistance-16\\attempt_0005",
+  "resume_preserved_settings_and_completed_cases": true
 }

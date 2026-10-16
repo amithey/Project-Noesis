@@ -138,3 +138,17 @@ conflict-resolution assumption; it is not proof that primary types or subclass
 labels are physiological ground truth. A subclass/Function-preserving encoding
 should be compared separately after this screen, without changing running cases.
 The exact audit is in proprioception-screen-audit-v13/annotation-conflicts.json.
+
+## First hour limit and exact-protocol resume
+
+The first invocation closed normally after 3,596.83 wall seconds. Four cases
+completed. Typed-resistance seed 16 reached 4.90 simulated seconds and was marked
+wall_budget, not completed; legacy seed 16 had not started. The almost-complete
+trial is preserved but is not substituted for a five-second control.
+
+After terminal exit was confirmed, --resume accepted unchanged source and driver
+fingerprints/settings. Completed-case records are exactly preserved. The fifth
+case restarted from time zero and original weights in attempt_0005; its partial
+checkpoint is not used. All cases remain learning-off/exploration-off, and model
+promotion remains disabled. The first-hour terminal report and partial artifacts
+are retained for comparison with the completed replay.
