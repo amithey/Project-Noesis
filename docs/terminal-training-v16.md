@@ -288,3 +288,21 @@ The terminal report and all empty-attempt artifacts are preserved. Resume
 replays seed 35 from the complete seed-34 checkpoint under unchanged a9cc
 source and parameters. An empty prefix does not prove behavioral replay
 equivalence. Frozen evaluation of this cycle remains pending; no promotion.
+
+## Second cycle training complete; full frozen comparison started
+
+All eighteen cycle-1 births (seeds 25..42) completed: five full horizons and
+thirteen terminal training falls. Their full checkpoint chain, signs, original
+references, 50% bounds, observed durations and terminal conditions pass the
+runtime audit. The complete seed-42 checkpoint at cycle_001/train-17/attempt_0041
+is the latest training bank, retaining experience from both V16 cycles.
+
+The source remains a9cc and the protocol has entered original seed-10 frozen
+validation with learning disabled. Frozen cases retain the complete five-second
+horizon with exploration and training-fall termination off. No cycle-1 candidate
+is validated or promoted; the staged v4 objective is not installed. Reports,
+all completed trajectories, videos and checkpoint hashes are preserved.
+
+Both cycles have five full horizons out of eighteen exploratory births; this
+descriptive equality does not establish equal frozen behavior or successful
+walking. The new frozen comparison is required before choosing the next step.
