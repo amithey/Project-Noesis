@@ -45,7 +45,7 @@ antenna spacing does not enter.)
   (one-sided Fisher exact p = 1/70 ≈ 0.014 per comparison, not corrected for the six comparisons or the two
   worlds). The reversed-sign agent, which uses the same decoder and brain, moves away, so the sign convention
   steers rather than merely rotates the agent.
-- **Standard world: weak and not conclusive.** 2 of 4 reached versus 0-1 of 4 in controls (Fisher p ≈ 0.14-0.5);
+- **Standard world: weak and not conclusive.** 2 of 4 reached versus 0-1 of 4 in controls (Fisher p ≈ 0.21-0.5);
   one reversed-sign episode also reached the food (seed 0), consistent with the decoder's modest accuracy (61-68%
   per window) at the lower contrast of 1 mm antennae.
 - **Hunger made no reliable difference** (wide: 4 vs 3 reached; standard: 2 vs 1; fed-minus-hungry differences
