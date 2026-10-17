@@ -272,3 +272,19 @@ These are descriptive post-hoc diagnostics, not new acceptance gates or causal
 proof: standing-conditioned samples differ, and 4.4 seconds was chosen after
 observing the late fall. The original five-second decision remains rejected.
 CSV hashes, exact definitions and limitations are in cycle-000-slip-diagnostics.json.
+
+## Second training cycle: first hour ended with ten completed births
+
+The first hour-bounded invocation of cycle 1 ended normally at 3596.453 wall
+seconds with ten complete births (four horizons, six terminal falls). The
+seed-35 attempt reached the deadline before any body/neural sample: zero
+simulated seconds, no CSV (the writer creates one only for nonempty rows),
+and zero motor spikes. Its weights exactly equal the complete seed-34
+checkpoint, and learner traces/baseline are reset. The empty attempt is
+wall_budget, not completed or banked. No final video exists because no
+post-stabilization frame was captured.
+
+The terminal report and all empty-attempt artifacts are preserved. Resume
+replays seed 35 from the complete seed-34 checkpoint under unchanged a9cc
+source and parameters. An empty prefix does not prove behavioral replay
+equivalence. Frozen evaluation of this cycle remains pending; no promotion.
