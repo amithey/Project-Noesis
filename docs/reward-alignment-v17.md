@@ -81,3 +81,22 @@ causality. The protocol report is authoritative for launch/progress. Latest
 training weights remain separate from best fully validated weights. Normal
 startup is not pointed to an unvalidated candidate; learned walking remains
 unproven until all behavioral requirements and video review pass.
+
+## First completed birth and recorded learning-stream verification
+
+The first v4 birth, seed 43, completed five seconds with 96.667% standing,
+mean stance slip 15.650 mm/s and exploration active. This is a complete
+training episode, not a frozen walking result; high slip remains unresolved.
+The checkpoint retains its original connectome references, topology/signs
+and bounds. It changes 36,099 incoming motor edges from the complete parent;
+maximum deviation from original weights is 15.921% (mean 0.8874%).
+
+The independent audit_reward_stream.py verifies the scalar feedback actually
+recorded during this coupled run: all 1,000 rewards agree with the preserved
+offline formula within 1.12e-16, and all 990 awake prediction errors, learning
+signals and normalization scales agree with an independent reconstruction.
+The saved final reward baseline and variance also match. Cold-frame weight
+deviation matches the retained parent, supporting the explicit weight transfer.
+This does not reconstruct presynaptic eligibility or prove causal credit for
+each synapse, biological learning, or gait. Frozen behavioral tests remain
+required. The next training birth has started.
