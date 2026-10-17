@@ -480,3 +480,78 @@ def test_invalid_training_fall_duration_is_rejected(lab_environment,duration):
     with pytest.raises(ValueError,match='training fall duration'):
         lab.run_episode(env.cn,env.args,0,None)
     assert not env.simulations
+
+
+
+def test_changed_reward_context_requires_explicit_weight_transfer(lab_environment):
+    env = lab_environment
+    env.args.reward_mode = 'grounded'
+    _, checkpoint = lab.run_episode(env.cn, env.args, 0, None)
+    context = json.loads(checkpoint.with_suffix('.model.json').read_text())
+    assert context['schema'] == 7 and context['reward_objective'] == 'standing-first-linear-slip-v3'
+    env.args.grounded_objective = 'standing-gate-linear-slip-v4'
+    with pytest.raises(ValueError, match='context mismatch'):
+        lab.run_episode(env.cn, env.args, 1, checkpoint)
+    env.args.learn = False
+    env.args.import_weights = True
+    summary, transferred = lab.run_episode(env.cn, env.args, 2, checkpoint)
+    assert summary['reward_objective'] == 'standing-gate-linear-slip-v4'
+    with np.load(checkpoint) as old, np.load(transferred) as new:
+        np.testing.assert_array_equal(old['weights'], new['weights'])
+        np.testing.assert_array_equal(old['initial_weights'], new['initial_weights'])
+        assert not new['activity'].any() and not new['eligibility'].any()
+        assert float(new['reward_baseline']) == float(new['reward_variance']) == 0.
+    env.args.import_weights = False
+    _, reloaded = lab.run_episode(env.cn, env.args, 3, transferred)
+    assert json.loads(reloaded.with_suffix('.model.json').read_text())['reward_objective'] == 'standing-gate-linear-slip-v4'
+
+
+def test_selected_objective_reaches_real_episode_reward_call(lab_environment, monkeypatch):
+    env = lab_environment
+    env.args.reward_mode = 'grounded'
+    env.args.grounded_objective = 'standing-gate-linear-slip-v4'
+    env.args.learn = False
+    calls = []
+    original = lab.locomotion_reward
+    def measured(*args, **kwargs):
+        calls.append(kwargs['objective'])
+        return original(*args, **kwargs)
+    monkeypatch.setattr(lab, 'locomotion_reward', measured)
+    summary, _ = lab.run_episode(env.cn, env.args, 0, None)
+    assert calls and set(calls) == {'standing-gate-linear-slip-v4'}
+    assert summary['reward_objective'] == 'standing-gate-linear-slip-v4'
+    assert not summary['learning'] and summary['motor_exploration_mv_ms'] == 0
+
+
+def test_nondefault_grounded_objective_rejects_legacy_reward_mode(lab_environment):
+    env = lab_environment
+    env.args.grounded_objective = 'standing-gate-linear-slip-v4'
+    with pytest.raises(SystemExit):
+        lab.validate_args(lab.parser(), env.args)
+    assert not env.simulations
+
+
+
+def test_frozen_reward_selection_preserves_body_and_neural_observations(lab_environment):
+    env = lab_environment
+    env.args.reward_mode = 'grounded'
+    env.args.learn = False
+    _, original = lab.run_episode(env.cn, env.args, 0, None)
+    with original.with_suffix('.csv').open() as f:
+        before = list(csv.DictReader(f))
+    with np.load(original.with_suffix('.motor-spikes.npz')) as p:
+        events = {key:p[key].copy() for key in p.files}
+    env.args.output = env.args.output/'other-objective'
+    env.args.output.mkdir()
+    env.args.grounded_objective = 'standing-gate-linear-slip-v4'
+    _, changed = lab.run_episode(env.cn, env.args, 0, None)
+    with changed.with_suffix('.csv').open() as f:
+        after = list(csv.DictReader(f))
+    assert len(before)==len(after) and before
+    assert [{k:v for k,v in row.items() if k!='reward'} for row in before] == [
+        {k:v for k,v in row.items() if k!='reward'} for row in after]
+    assert any(a['reward']!=b['reward'] for a,b in zip(before,after,strict=True))
+    with np.load(changed.with_suffix('.motor-spikes.npz')) as p:
+        assert set(p.files)==set(events)
+        for key in p.files:
+            np.testing.assert_array_equal(p[key], events[key])

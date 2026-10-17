@@ -20,7 +20,7 @@ from noesis.adhesion import FootAdhesion
 from noesis.balance import BalanceMap
 from noesis.behavior_metrics import behavior_summary
 from noesis.body import BodyParams, MuscleModel, make_fly
-from noesis.embodied_metrics import body_reward, locomotion_reward
+from noesis.embodied_metrics import GROUNDED_OBJECTIVES, body_reward, locomotion_reward
 from noesis.embodiment import BrainReadout, MotorExploration, gait_report, load_training_brain
 from noesis.environment_senses import (
     EnvironmentSenses,
@@ -86,6 +86,7 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--learning-rate', type=float, default=0.2)
     ap.add_argument('--learning-rule', choices=('perturbation', 'hebbian'), default='perturbation')
     ap.add_argument('--reward-mode', choices=('grounded', 'legacy'), default='grounded')
+    ap.add_argument('--grounded-objective', choices=GROUNDED_OBJECTIVES, default=GROUNDED_OBJECTIVES[0])
     ap.add_argument('--wing-mode', choices=('neural', 'legacy'), default='neural')
     ap.add_argument('--adhesion-mode', choices=('geometry', 'legacy'), default='geometry')
     ap.add_argument('--viewer', action='store_true', help='open interactive MuJoCo window')
@@ -106,6 +107,8 @@ def parser() -> argparse.ArgumentParser:
 
 
 def validate_args(ap, args):
+    if args.reward_mode != "grounded" and args.grounded_objective != GROUNDED_OBJECTIVES[0]:
+        ap.error("nondefault grounded objective requires grounded reward mode")
     if args.normalize_reward_error and args.learning_rule != 'perturbation':
         ap.error('reward normalization requires perturbation learning')
     if args.depression_u not in (0., .03, .1):
@@ -233,7 +236,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
             'reward_mode', 'wing_mode', 'adhesion_mode', 'sensory_map_seed',
             'sensory_weight', 'environment_weight', 'vision_hz', 'depression_u', 'proprioceptive_encoding')}
-        context.update(schema=7, reward_objective='standing-first-linear-slip-v3' if args.reward_mode == 'grounded' else 'legacy-body-v1',
+        context.update(schema=7, reward_objective=args.grounded_objective if args.reward_mode == 'grounded' else 'legacy-body-v1',
                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
                        motor_interface='anatomical-coxa-flexion-v3',
                        body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
@@ -357,7 +360,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                 foot_velocity = (obs['end_effectors'] - previous_feet) / (chunk_ms / 1000)
                 score = locomotion_reward(previous, obs['fly'][0],
                     float(np.clip(obs['cardinal_vectors'][2][2], -1, 1)),
-                    obs['joints'][1][leg_rows], chunk_ms / 1000, heading, loads, foot_velocity, obstacle_duration)
+                    obs['joints'][1][leg_rows], chunk_ms / 1000, heading, loads, foot_velocity, obstacle_duration,
+                    objective=args.grounded_objective)
             credit = {'perturbation': exploration.credit(plasticity.motor_indices)} \
                 if args.learning_rule == 'perturbation' else {}
             learning = plasticity.update(spikes, chunk_ms, score['reward'], **credit) \

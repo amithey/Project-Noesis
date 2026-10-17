@@ -10,6 +10,7 @@ param(
     [ValidateRange(0, 4294967295)][long]$Seed = 0,
     [ValidateSet('graded', 'quiet', 'obstacle')][string]$TrainingArena = 'graded',
     [ValidateSet('legacy', 'typed-resistance', 'typed-reversed', 'typed-consistent')][string]$ProprioceptiveEncoding = 'legacy',
+    [ValidateSet('standing-first-linear-slip-v3', 'standing-gate-linear-slip-v4')][string]$GroundedObjective = 'standing-first-linear-slip-v3',
     [string]$Output = 'outputs/young-fly',
     [string]$ImportWeights,
     [string]$Data,
@@ -43,7 +44,8 @@ try {
         '--data', $Data, '--output', $Output, '--wall-seconds', $WallSeconds,
         '--seconds', $Seconds.ToString([cultureinfo]::InvariantCulture), '--episodes', $Episodes, '--seed', $Seed,
         '--training-fall-seconds', $TrainingFallSeconds.ToString([cultureinfo]::InvariantCulture),
-        '--training-arena', $TrainingArena, '--proprioceptive-encoding', $ProprioceptiveEncoding)
+        '--training-arena', $TrainingArena, '--proprioceptive-encoding', $ProprioceptiveEncoding,
+        '--grounded-objective', $GroundedObjective)
     if ($Resume) { $trainingArguments += '--resume' }
     if ($ImportWeights) { $trainingArguments += @('--import-weights', $ImportWeights) }
     if ($Video) { $trainingArguments += '--video' }

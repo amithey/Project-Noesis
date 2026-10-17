@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import numpy as np
 
+GROUNDED_OBJECTIVES = ("standing-first-linear-slip-v3", "standing-gate-linear-slip-v4")
+
 
 def body_reward(
     previous_position,
@@ -65,13 +67,18 @@ def body_reward(
 
 
 def locomotion_reward(previous_position, position, uprightness, joint_velocity, dt_seconds,
-                      heading, leg_loads, foot_velocity, obstacle_contact_seconds=0.):
+                      heading, leg_loads, foot_velocity, obstacle_contact_seconds=0., *,
+                      objective="standing-first-linear-slip-v3"):
     """Artificial grounded-forward objective with a measured stance-slip penalty.
 
     Uses horizontal thorax heading, >=3 force-bearing legs, and leg joint effort.
     The 1e-5 force threshold and 5 mm/s slip scale are explicit assumptions.
     This contact gate rejects airborne translation; it does not certify gait.
+    The opt-in v4 objective credits actual upright/height-valid standing with at
+    least one force-bearing foot; v3 remains the exact default objective.
     """
+    if objective not in GROUNDED_OBJECTIVES:
+        raise ValueError("unknown grounded reward objective")
     base = body_reward(previous_position, position, uprightness, joint_velocity, dt_seconds)
     heading = np.asarray(heading, float)
     loads = np.asarray(leg_loads, float)
@@ -108,6 +115,13 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     # Physical standing, gait, mean-slip and obstacle acceptance stay separate.
     reward = float(np.clip(.75 * standing_quality + .5 * progress - .6 * (1 - standing_quality)
                            - .05 * base['effort'] - .03 * slip_cost - .2 * obstacle_cost, -1, 1))
+    if objective == "standing-gate-linear-slip-v4":
+        # Explicit standing credit cannot be replaced by a third loaded foot.
+        # This is scalar learning feedback; it never produces a motor action.
+        standing = bool(support.any() and .3 <= base['height_mm'] <= 1.5 and uprightness >= .7)
+        reward = float(np.clip(.7 * standing - .8 * (1 - standing)
+                               + .1 * standing * support_quality + .5 * progress
+                               - .05 * base['effort'] - .03 * slip_cost - .2 * obstacle_cost, -1, 1))
     return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
             'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
             'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,

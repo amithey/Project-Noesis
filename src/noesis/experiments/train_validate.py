@@ -9,6 +9,7 @@ from pathlib import Path
 
 import numpy as np
 
+from noesis.embodied_metrics import GROUNDED_OBJECTIVES
 from noesis.embodiment import load_training_brain
 from noesis.experiments import learning_lab as lab
 from noesis.proprioception import ENCODINGS
@@ -86,6 +87,7 @@ def main():
     ap.add_argument('--early-reject', action='store_true', help='reject failed quiet validation before consuming further controls')
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--proprioceptive-encoding', choices=ENCODINGS, default='legacy')
+    ap.add_argument('--grounded-objective', choices=GROUNDED_OBJECTIVES, default=GROUNDED_OBJECTIVES[0])
     ap.add_argument('--training-arena', choices=('graded', 'quiet', 'obstacle'), default='graded',
                     help='training scenes only; frozen quiet/obstacle controls remain mandatory')
     ap.add_argument('--seconds', type=float, default=5.)
@@ -132,6 +134,7 @@ def main():
         ap.error('output must be outside read-only source data')
     template = lab.parser().parse_args(['--data', str(args.data), '--output', str(args.output/'probe'),
         '--seconds', str(args.seconds), '--learning-rate', str(args.learning_rate), '--arena', 'quiet', '--depression-u', str(args.depression_u), '--learn'])
+    template.grounded_objective = args.grounded_objective
     template.training_fall_seconds = args.training_fall_seconds
     template.proprioceptive_encoding = args.proprioceptive_encoding
     template.normalize_reward_error = args.normalize_reward_error

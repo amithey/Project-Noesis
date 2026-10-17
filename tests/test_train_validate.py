@@ -161,3 +161,42 @@ def test_pipeline_keeps_same_proprioception_for_every_training_and_frozen_contro
     assert all(call[2]==0 and call[6]==5 for call in calls if not call[1])
     assert any(call[5] for call in calls)
     assert all(call[7] == (.1 if call[1] else 0.) for call in calls)
+
+
+
+def test_opt_in_reward_objective_propagates_to_all_training_and_frozen_cases(monkeypatch, tmp_path):
+    from noesis.experiments import train_validate as tv
+    calls = []
+    def episode(cn, args, index, checkpoint, *, deadline):
+        calls.append((args.grounded_objective, args.learn, args.motor_exploration, args.training_fall_seconds, args.seconds))
+        summary = trials(reward=.3, slip=.1)[0].copy()
+        summary.update(seed=args.seed, learning=args.learn, motor_exploration_mv_ms=args.motor_exploration,
+                       obstacle_observation_complete=True, obstacle_response_seconds=.2,
+                       obstacle_contact_seconds=.4 if args.no_environment_senses else .1)
+        if not args.learn and checkpoint is None:
+            summary.update(mean_reward=.2, mean_stance_slip_mm_s=.2)
+        saved = args.output/'episode_000.npz'
+        saved.write_bytes(b'fake-checkpoint')
+        return summary, saved
+    monkeypatch.setattr(tv, 'load_training_brain', lambda *a: (None, {}))
+    monkeypatch.setattr(tv.lab, 'run_episode', episode)
+    monkeypatch.setattr('sys.argv', ['train_validate', '--data', str(tmp_path/'data'),
+                                   '--output', str(tmp_path/'run'), '--episodes', '1',
+                                   '--training-fall-seconds', '.1',
+                                   '--grounded-objective', 'standing-gate-linear-slip-v4'])
+    tv.main()
+    assert calls and all(c[0]=='standing-gate-linear-slip-v4' for c in calls)
+    training = [c for c in calls if c[1]]
+    frozen = [c for c in calls if not c[1]]
+    assert len(training)==1 and len(frozen)==25
+    assert training[0][2:]==(1.5,.1,5.)
+    assert all(c[2:]==(0.,0.,5.) for c in frozen)
+    previous_report = (tmp_path/'run/report.json').read_bytes()
+    previous_calls = len(calls)
+    monkeypatch.setattr('sys.argv', ['train_validate', '--data', str(tmp_path/'data'),
+                                   '--output', str(tmp_path/'run'), '--episodes', '1',
+                                   '--training-fall-seconds', '.1', '--resume'])
+    with pytest.raises(SystemExit):
+        tv.main()
+    assert len(calls)==previous_calls
+    assert (tmp_path/'run/report.json').read_bytes()==previous_report
