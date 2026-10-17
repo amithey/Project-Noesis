@@ -356,3 +356,25 @@ wall seconds; the completed behavioral window is still five simulated seconds.
 The protocol has entered candidate seed 10 with learning false. The latest
 seed-42 trained weights remain the candidate source. No candidate is promoted;
 quiet candidate, obstacle/ablation and held-out success remain unproven.
+
+## Second trained candidate completed and rejected before reward transition
+
+The full five-second frozen seed-10 candidate failed: standing 45.455% versus
+92.222% original, mean reward -0.236980 versus +0.109431. The body fell during
+the trial and remained inverted in later observations. All-window slip 9.555
+versus 15.839 mm/s passes the relative-slip gate but does not establish walking
+while fallen. Leg-cycle and displacement counters also cannot establish gait
+without upright support. The physical standing gate correctly rejects it.
+
+Candidate 11, obstacle/ablation and held-out cases were not run after completed
+early rejection. No best validated model exists. The complete terminal report,
+all trajectories, video and before/after frames, latest training weights and
+audits are preserved. Strict runtime audits against both current a9cc source
+and its exact archived source agree on every completed case. The helper now
+accepts --source-root for reproducible old-source verification after a new
+source is installed; it still requires the exact recorded source fingerprint.
+
+This satisfies the preregistered condition for the staged opt-in v4 reward
+experiment. Carry forward the final complete trained weights, retain all
+physical gates, and install/test the staged source only after this worker has
+terminated. No normal startup or validated bank is updated by this rejection.
