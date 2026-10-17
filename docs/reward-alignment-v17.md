@@ -66,3 +66,24 @@ its preserved source archive also matches a9cc. Staged code and manifests are in
 outputs/protocol-v17-standing-gate-candidate and copied for review under the
 primary outputs/staged-standing-gate-v17 directory. Nothing is installed or
 promoted while the active V16 cycle runs.
+
+## Conditional prospective training protocol
+
+conditional-launch-plan.json records the next experiment before its outcome.
+Only after the active V16 worker terminates and its completed quiet validation
+fails standing or slip: preserve the full cycle, install the reviewed source,
+verify its hash and installed tests, then explicitly import the final complete
+training weights. If quiet validation passes, finish V16 obstacle/held-out
+evaluation rather than switching to the new reward.
+
+The prospective run uses eighteen new training seeds 43..60, max five seconds
+per birth, 100 ms sustained-fall termination, quiet arena and opt-in v4 reward.
+Learning rate 0.2, eligibility 100 ms, exploration 1.5 mV/ms, normalized reward
+error, legacy sensory encoding, U=0, neural wings and geometric adhesion remain
+fixed. All original five-second frozen validation/held-out/obstacle/ablation
+gates remain, with exploration and training-fall termination off. Each worker
+is bounded to 3600 wall seconds, with strict source/settings resume and replay.
+
+This is conditional preparation, not an installed or launched experiment. New
+seeds and additional experience are explicit confounds for reward causality;
+actual behavioral success still requires all the specified frozen evidence.
