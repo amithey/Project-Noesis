@@ -147,7 +147,7 @@ def run_episode(brain: Brain, name: str, cond: dict, seed: int, a, params: Agent
         mixed = rng.permutation(np.concatenate([orn_l, orn_r]))
         orn_l, orn_r = mixed[:len(orn_l)], mixed[len(orn_l):]
     drive_idx = np.concatenate([orn_l, orn_r])
-    dn = decoders["dn"]
+    dn = decoders["idx"]
     dec = decoders[cond.get("decoder", "real")]
     net, apl = brain.new_net(seed + 9000)
     cur, ema = {}, np.zeros(len(dn))
@@ -219,6 +219,8 @@ def main() -> None:
     ap.add_argument("--start-mm", type=float, default=20.0)
     ap.add_argument("--sigma-mm", type=float, default=10.0)
     ap.add_argument("--gain-rad-s", type=float, default=1.5)
+    ap.add_argument("--readout", choices=("dn", "pn"), default="dn")
+    ap.add_argument("--antenna-mm", type=float, default=1.0)
     a = ap.parse_args()
 
     if a.stage == "cv":
@@ -229,10 +231,15 @@ def main() -> None:
         collect(a, brain)
         return
     d = np.load(a.windows)
-    x, y, level, block = d["x"], d["y"], d["level"], d["block"]
-    decoders = {"dn": d["dn"], "real": fit_decoder(x, y, a.lam),
+    if a.readout == "pn":     # windows from decoder_contrast.py: PN features, 250 ms average, last second of blocks
+        keep = d["tin"] >= 1.0 - 1e-9
+        x, y, level, block = d["pn250"][keep], d["y"][keep], d["level"][keep], d["block"][keep]
+        idx = brain.pops.pn
+    else:
+        x, y, level, block, idx = d["x"], d["y"], d["level"], d["block"], d["dn"]
+    decoders = {"idx": idx, "real": fit_decoder(x, y, a.lam),
                 "shuffled": fit_decoder(x, shuffle_block_labels(y, block, level, 123), a.lam)}
-    params = AgentParams(gain_rad_s=a.gain_rad_s, smooth_s=0.5)
+    params = AgentParams(gain_rad_s=a.gain_rad_s, smooth_s=0.5, antenna_mm=a.antenna_mm)
     rows, done = [], set()
     if a.out.exists():
         rows = [json.loads(line) for line in a.out.read_text(encoding="utf-8").splitlines() if line]
