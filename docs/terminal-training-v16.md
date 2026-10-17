@@ -306,3 +306,19 @@ all completed trajectories, videos and checkpoint hashes are preserved.
 Both cycles have five full horizons out of eighteen exploratory births; this
 descriptive equality does not establish equal frozen behavior or successful
 walking. The new frozen comparison is required before choosing the next step.
+
+## Cycle 1 original seed 10 complete with exact control equivalence
+
+Original seed 10 completed five seconds with standing 92.222% and stance slip
+15.839 mm/s. All 1,000 CSV rows and 43,490 motor-spike events plus neural duration
+match the earlier V12 original control exactly. Original weights and zero
+learner traces are verified. The current proof now records cycle, observation
+time and both checkpoint paths; the earlier two-control proof is preserved
+separately. This is compatibility evidence, not a learned walking result.
+
+The control required 1002.172 wall seconds. A read-only snapshot during this
+run found about 0.533 GB free out of 15.741 GB physical RAM and 3.268 GB private
+memory for the worker (1.025 GB working set). This single observation may be
+relevant to runtime variability but establishes neither a slowdown cause nor
+a memory leak. No process settings were changed. Original seed 11 is running;
+the new candidate, obstacle and held-out results remain pending.
