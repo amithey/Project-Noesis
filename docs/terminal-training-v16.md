@@ -322,3 +322,19 @@ memory for the worker (1.025 GB working set). This single observation may be
 relevant to runtime variability but establishes neither a slowdown cause nor
 a memory leak. No process settings were changed. Original seed 11 is running;
 the new candidate, obstacle and held-out results remain pending.
+
+## Cycle 1 second hour ended with original seed 11 incomplete
+
+The worker ended normally at its wall budget with eighteen training births
+and original seed 10 complete. Original seed 11 stopped at 4.165 simulated
+seconds (833 observations, 823 awake, 4115 neural ms). It remains wall_budget
+and is absent from completed jobs. Every recorded row and motor-spike prefix
+matches the earlier complete cycle-0 original seed-11 control exactly; both
+have identical model context, original weights and zero learner traces.
+This reference comparison does not complete the interrupted current trial.
+
+The latest learned seed-42 weights are unchanged. All partial artifacts,
+including the partial-length finalized video, report and prefix audit are
+preserved. Resume must replay original seed 11 from birth for a complete
+five-second evaluation before the trained candidate can be assessed.
+No candidate is promoted and the staged v4 reward is not installed.
