@@ -56,3 +56,34 @@ antenna spacing does not enter.)
   interface to steer a leg-free agent up an odour gradient, nothing about odour identity, memory or learning
   inside the network.
 - Only 4 start poses; one network calibration (`g_I = 12`); the inhibition factor of 12 is a model assumption.
+
+## Update: 12 start poses per world (`experiments/agent_stats.py`)
+The four-pose result above was extended with eight more poses per world (seeds 4-11; seeds 0-3 unchanged; same
+decoder, parameters and controls; nothing was tuned after the first results). Fisher exact is one-sided
+("hungry decoder reached food more often than the control"), Holm-corrected over the six controls within a world;
+the sign test is exact and one-sided on the paired final distance (hungry decoder minus control, negative =
+decoder closer).
+
+| Condition | **wide (3 mm)** reached / 12 | Holm Fisher p | final-distance difference, mm (closer in n/12) | **standard (1 mm)** reached / 12 | Holm Fisher p | final-distance difference, mm (closer in n/12) |
+|---|---|---|---|---|---|---|
+| decoder, hungry | **9** | | | 3 | | |
+| decoder, fed | 5 | 0.107 | −10.2 ± 17.5 (9) | 4 | 1.00 | −0.4 ± 23.2 (4) |
+| shuffled-label decoder | 0 | 0.001 | −41.6 ± 16.2 (12) | 1 | 1.00 | −15.5 ± 29.6 (5) |
+| reversed sign | 0 | 0.001 | −49.3 ± 13.0 (12) | 1 | 1.00 | −15.7 ± 28.6 (7) |
+| shuffled receptor sides | 0 | 0.001 | −27.5 ± 18.7 (11) | 1 | 1.00 | −5.1 ± 28.3 (7) |
+| no gradient | 1 | 0.003 | −29.5 ± 21.1 (11) | 1 | 1.00 | −9.0 ± 20.1 (7) |
+| diffusion only | 0 | 0.001 | −51.5 ± 13.6 (12) | 0 | 0.65 | −31.0 ± 23.2 (10) |
+
+- **Wide-antenna world: the effect holds with more poses.** The trained projection-neuron read-out brought the
+  agent to the food in 9 of 12 poses; no control exceeded 1 of 12 (Holm p ≤ 0.003 for all five controls other than
+  fed; sign tests on distance p ≤ 0.003). The earlier "4 of 4" was an overestimate of the rate (≈ 75%, not 100%).
+- **Standard world: no evidence of steering.** 3 of 12 reached versus 0-1 of 12 in the controls (Holm p 0.65-1.0).
+  Its only nominally significant result (distance versus no steering, sign test p = 0.019) is not corrected and
+  can come from turning in circles rather than approaching. The earlier statement that this world was "weak" is
+  superseded: it is indistinguishable from the controls.
+- **Hunger: no reliable effect.** Wide world 9 vs 5 of 12 (Holm-uncorrected Fisher p = 0.107, closer in 9/12
+  with sign-test p = 0.073); standard world 3 vs 4 of 12. The hunger gain is therefore not supported as an
+  effect on foraging in this model.
+- All limits above remain: trained read-out, projection neurons one synapse from the receptors, changed world
+  needed to see an effect, one calibration (`g_I = 12`, a model assumption), 12 poses per world with one
+  network seed per pose (the pose and the network noise are not independent factors).
