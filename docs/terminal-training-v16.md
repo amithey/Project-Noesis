@@ -338,3 +338,21 @@ including the partial-length finalized video, report and prefix audit are
 preserved. Resume must replay original seed 11 from birth for a complete
 five-second evaluation before the trained candidate can be assessed.
 No candidate is promoted and the staged v4 reward is not installed.
+
+## Cycle 1 both original controls complete; interrupted seed 11 replay verified
+
+Resumed original seed 11 completed five seconds with standing 94.949% and
+stance slip 16.222 mm/s. All 833 interrupted observations and 36,536 motor
+spikes are reproduced exactly in the completed replay. The full trial has
+1,000 observations and 43,958 motor spikes; neural durations are 4115/4950 ms
+for partial/full. Both contexts match and each starts from original weights.
+The earlier interrupted attempt remains wall_budget, never counted complete.
+
+Both current-cycle original controls now match all recorded observations and
+motor events/duration of their earlier complete reference controls exactly.
+Frozen weights and zero learner traces are verified. Seed 11 used 1099.656
+wall seconds; the completed behavioral window is still five simulated seconds.
+
+The protocol has entered candidate seed 10 with learning false. The latest
+seed-42 trained weights remain the candidate source. No candidate is promoted;
+quiet candidate, obstacle/ablation and held-out success remain unproven.
