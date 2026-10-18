@@ -115,3 +115,22 @@ complete seed-48 training bank. All partial artifacts and the terminal hour
 report are preserved. The prior tool handle is unavailable, and a read-only
 process check found no matching V17 worker before resume. Restart seed 49
 from its complete start checkpoint under the same source and settings.
+
+## Second bounded worker and verified seed-49 replay
+
+The second bounded worker exited normally at its wall budget. Fifteen of
+eighteen training births are complete: nine full five-second horizons and six
+terminal falls. Seed 49 replayed from its complete seed-48 parent and completed
+five seconds. All 81 body rows and 3,453 motor spike times/indices from its
+interrupted 0.405-second attempt match the completed replay prefix exactly.
+The complete run contains 1,000 body rows, 43,411 motor spikes and 4,950 neural
+ms. This verifies recorded replay, not full membrane-vector equality or gait.
+
+All fifteen complete checkpoint chains and scalar learning streams pass the
+independent audits. Seed 58 stopped at 0.980 seconds and remains partial; it
+did not replace the seed-57 training bank (SHA256
+6137f46f487a9cd65037f91f98f2bd7016a94e4f501353fd01db0f70b9859756).
+Its artifacts and the second wall report are preserved. Resume uses the same
+source and settings, replaying seed 58 from the last complete bank. Frozen
+validation has not yet completed, no best model exists, and normal startup
+remains unchanged.
