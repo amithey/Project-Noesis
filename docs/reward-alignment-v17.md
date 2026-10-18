@@ -182,3 +182,21 @@ update explicitly distinguishes seed-10 completion from required coverage of
 both seeds 10 and 11; no verification assertion or criterion changed. The
 seed-11 original control is running. The trained candidate has no completed
 frozen behavioral result yet; no learning or walking success is established.
+
+## Both frozen original controls verified; candidate evaluation running
+
+Both original-weight quiet controls (seeds 10/11) completed five seconds with
+learning/exploration off, original weights and zero learner traces. Seed 11
+stands for 94.949% of the measurement window, with mean slip 16.222 mm/s and
+mean v4 reward 0.582407. Each control matches all 1,000 reference body rows
+except the changed scalar reward. Seed 11 also matches all 43,958 motor
+events and 4,950 neural ms exactly; every v4 reward agrees independently
+within 1.12e-16. Required original-control coverage is now complete. This
+proves physical compatibility, not learned gait or full behavioral validation.
+
+The trained seed-10 quiet trial has started with learning/exploration off
+from the final complete seed-60 bank. Candidate evaluation still requires
+the full five-second window even after a fall; any wall-budget interruption
+will remain partial and replay from that complete start bank. All standing,
+step-cycle, forward-distance, relative-slip, reward, obstacle and held-out
+gates remain unchanged. No candidate has been promoted.
