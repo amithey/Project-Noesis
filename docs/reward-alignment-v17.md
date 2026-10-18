@@ -134,3 +134,34 @@ Its artifacts and the second wall report are preserved. Resume uses the same
 source and settings, replaying seed 58 from the last complete bank. Frozen
 validation has not yet completed, no best model exists, and normal startup
 remains unchanged.
+
+## Training phase complete; frozen controls started
+
+All eighteen births (seeds 43..60) are complete: eleven five-second horizons
+and seven terminal falls, totaling 64.225 body seconds. Seed 60 fell at 0.580
+seconds; its failure feedback was retained before the final update. The last
+training checkpoint SHA256 is
+8755d9888de39337cf4286526a92ca6568d38bca8deb9e965f16cb0f5a1713fc.
+All eighteen checkpoint chains and recorded scalar learning streams pass
+their audits. Maximum weight deviation from original is 19.695%; mean absolute
+fractional deviation is 1.145%. Original topology, signs and 50% bounds remain.
+
+The interrupted seed-58 replay also passed exact prefix comparison: all 196
+body rows and 7,854 motor events match its completed replay, from the same
+complete seed-57 parent. The replay contains 1,000 body rows, 43,877 motor
+events and 4,950 neural ms. As with seed 49, this is recorded prefix equality,
+not equality of every membrane vector or evidence of walking.
+
+A post-hoc reward-component diagnostic on the first sixteen complete births
+shows that standing dominates seed 58 reward: mean pre-clip standing component
+0.67667, extra support 0.07741, slip -0.08624, and gripped progress 0.000648.
+Only 2.02% of awake samples have positive gripped progress; 93.13% have zero
+grip factor. These scalar diagnostics neither isolate objective causality nor
+certify gait. The contact-requiring reward standing gate is explicitly labeled
+separately from the established posture/height behavioral standing fraction.
+No dynamics, reward, criteria or protocol were changed in response.
+
+The original-weight quiet control on seed 10 has started with learning off.
+The trained candidate has not yet completed frozen validation, so learned
+walking remains unproven, best_validated_checkpoint stays null, and normal
+startup remains unchanged. Full controls and failure videos remain required.
