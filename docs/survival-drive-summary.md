@@ -54,7 +54,10 @@ brain at `g_I` = 1 is the **saturated** regime (17% active, PN ≈ 116 Hz). It w
 
 1. **Do not change the shared brain.** `g_I` stays an opt-in parameter (default 1.0, `scale_inhibition` in
    `ei_balance_scan.py`); nothing merged into the locomotion branch changes its default dynamics.
-2. **First an A/B on the locomotion pipeline, frozen weights, same seeds**: run its standing protocol (V14 acceptance
+2. **Step 2 done (brain only, `findings-network-calibration.md` section 7):** at `g_I` = 4-12 leg motor neurons are not silenced
+   but become input-driven (0.35-1.6 Hz at rest versus 21 Hz tonic at `g_I` = 1), the proprioceptive reflex survives at the same sign
+   and similar size, and the motor pools respond more strongly to injected current. So a body test needs a re-scaled rate-to-activation map.
+   **Step 3, still open: an A/B on the locomotion pipeline, frozen weights, same seeds**: run its standing protocol (V14 acceptance
    gates: standing ≥ 90%, heading progress ≥ 1 mm, two cycles in four legs, slip ≥ 20% lower than original weights)
    at `g_I` ∈ {1, 4, 12}. Before any body run, measure leg-motor and proprioceptive-pool rates at those `g_I`
    (DN activity falls to 6-17%; motor pools may fall silent), reusing `ei_balance_scan.py`/`operating_point.py`.

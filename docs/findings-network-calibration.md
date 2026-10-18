@@ -169,3 +169,32 @@ accuracy = sign of the block-mean score; intervals are Wilson 95% on blocks.
 A side signal usable in real time exists only at the projection-neuron level and only weakly at plume-like
 contrast. An agent steered from it would be an olfactory-periphery comparison with a trained read-out, not a brain
 that steers; it is a defensible next experiment only if described as that. Not run yet.
+
+## 7. Leg motor and proprioceptive pathway under inhibition scaling (`experiments/motor_g_inh.py`, brain only)
+Locomotion-training conditions: corrected connectome without the weak-edge/APL additions, background 3 Hz × weight 60,
+leg afferents (3,921) driven by `SensoryMap` at weight 400, 3 network seeds, 0.5 s settle + 1 s measured. 391 leg
+motor neurons (left-front tibia: 17 flexor, 2 extensor).
+
+| g_I | motor mean rate, background only → standing afferents (Hz) | motor neurons above 1 Hz, background → standing | whole brain active (standing) | left-front tibia reflex gain (Hz; 3 seeds) | response to +1.5 mV/ms into flexors (Hz) |
+|---|---|---|---|---|---|
+| 1 | 21.2 → 16.5 | 57% → 48% | 17.7% | −17.0 (−17.8, −13.4, −19.7) | +1.3 |
+| 4 | 1.6 → 4.1 | 24% → 29% | 6.5% | −13.4 (−11.8, −12.5, −15.9) | +3.4 |
+| 12 | 0.35 → 2.4 | 8% → 25% | 5.4% | −14.7 (−16.5, −11.8, −15.7) | +4.3 |
+
+(Reflex gain = [flexor − extensor pool rate | tibia flexed 0.6 rad] − [same | extended −0.6 rad]; afferent firing is
+unchanged by g_I, 48-52 Hz.)
+
+- **Motor neurons are not silenced, but their operating point moves a lot.** At `g_I` = 1 they fire tonically
+  (21 Hz mean, over half above 1 Hz even without sensory input, and *higher* without afferents than with them). At
+  `g_I` = 4-12 they are near-silent without input (0.35-1.6 Hz) and rise 2.5-7-fold when leg afferents drive them,
+  so motor output becomes input-driven rather than tonic.
+- **The proprioceptive reflex survives**: the same sign in all 9 runs and a similar size (−13 to −17 Hz) at all three
+  `g_I`; its sign means a flexed tibia lowers the flexor-minus-extensor difference (a resistance-type response). The
+  extensor pool has only two neurons, so these differences are noisy.
+- **Direct current is more effective at larger `g_I`** (+1.3 → +4.3 Hz for the same injected current): the motor pools are
+  closer to threshold and less saturated.
+- **Consequence for the body:** everything downstream of motor rates (the muscle adapter's agonist/antagonist
+  equilibrium targets, the exploration amplitude, the reward-bound weight limits) was calibrated at `g_I` = 1 with
+  tonic 10-20 Hz motor rates. At `g_I` > 1 the same pipeline would receive much lower, input-dependent rates, so a
+  body test needs at least a re-scaling of the rate-to-activation map. Limits: brain only (no feedback loop), one
+  proprioceptive test on one leg, 3 seeds, not the full training drive (no habitat, balance or exploration input).
