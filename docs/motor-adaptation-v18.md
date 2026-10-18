@@ -56,3 +56,22 @@ is authoritative for later progress. Any selected candidate still requires
 production integration, checkpoint compatibility, full regression checks and
 physical standing/walking/obstacle/held-out validation. No best model exists;
 normal startup remains unchanged and learned walking remains unproven.
+
+## Report-replacement interruption and unchanged-source resume
+
+The first worker exited with WinError 5 during atomic report replacement
+before starting trial 17. All sixteen complete trials match both committed
+and temporary ledgers and remain preserved. The file was not read-only.
+A real Windows test confirmed that a normal reader can block replacement;
+the attempted delete-sharing reader also failed its replacement test and
+was discarded, not deployed. Its failing regression probe/log are archived
+under observer-sharing-experiment. The actual handle owner is unproven.
+
+The active observer now refuses to open the ledger without --worker-stopped.
+While a worker is live, use only its process stdout; copy/verify the report
+after confirmed termination. The no-flag refusal was exercised successfully.
+The original 29 neural/protocol tests still pass. Neither driver nor neural
+prototype nor selection plan changed. Resume under the exact same settings
+retained sixteen trials, and stdout subsequently confirmed trials 17..19.
+No result is selected until all 72 trials complete. Source SHA guards remain
+strict; the operational failure is not a negative neural result.
