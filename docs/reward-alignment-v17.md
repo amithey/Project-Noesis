@@ -200,3 +200,24 @@ the full five-second window even after a fall; any wall-budget interruption
 will remain partial and replay from that complete start bank. All standing,
 step-cycle, forward-distance, relative-slip, reward, obstacle and held-out
 gates remain unchanged. No candidate has been promoted.
+
+## Deadline termination during candidate evaluation; exact replay started
+
+After long observation/wall-time gaps the third worker terminated with exit
+code 124, consistent with the absolute deadline watchdog. No matching V17
+worker remained in the OS process inventory before resume. The twenty complete
+cases (18 births and both original controls) and the final training bank remain
+intact. The candidate seed-10 attempt_0022 has only a partial MP4 and sensory
+map; it has no final CSV, summary, spike archive or checkpoint. The last stdout
+sample was t=2.00 seconds, not a known final duration or full behavioral result.
+The partial artifacts and stale pre-resume ledger are preserved with hashes.
+The observation gaps do not establish an underlying OS/host cause.
+
+Resume under the same source/settings marks attempt_0022 interrupted and
+starts attempt_0023 from the same complete seed-60 bank, SHA256
+8755d9888de39337cf4286526a92ca6568d38bca8deb9e965f16cb0f5a1713fc.
+Learning and exploration remain disabled for the full five-second replay.
+There is no recorded CSV/spike prefix for the interrupted attempt, so the
+strong prefix-equivalence claims made for seeds 49/58 cannot be made here.
+All twenty completed cases and eighteen scalar training streams still pass
+their audits; candidate walking remains unproven and promotion is disabled.
