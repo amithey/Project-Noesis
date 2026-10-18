@@ -165,3 +165,20 @@ The original-weight quiet control on seed 10 has started with learning off.
 The trained candidate has not yet completed frozen validation, so learned
 walking remains unproven, best_validated_checkpoint stays null, and normal
 startup remains unchanged. Full controls and failure videos remain required.
+
+## First frozen original control: physical compatibility verified
+
+The original-weight quiet seed-10 control completed all five seconds with
+learning off, exploration zero, standing 92.222%, mean slip 15.839 mm/s and
+mean v4 reward 0.519817. All 1,000 observation rows match the V12 original
+control exactly except the intentionally changed reward column. All 43,490
+motor event times/indices and the 4,950 ms neural duration are exact. Original
+weights and zero learner traces were verified; every new reward independently
+matches the preserved v4 reference within 1.12e-16. Context differences are
+limited to schema, the explicit legacy proprioception tag and reward objective.
+
+The initial comparison plan and auditor are preserved. A reporting-only
+update explicitly distinguishes seed-10 completion from required coverage of
+both seeds 10 and 11; no verification assertion or criterion changed. The
+seed-11 original control is running. The trained candidate has no completed
+frozen behavioral result yet; no learning or walking success is established.
