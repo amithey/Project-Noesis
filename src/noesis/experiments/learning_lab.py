@@ -20,6 +20,7 @@ from noesis.adhesion import FootAdhesion
 from noesis.balance import BalanceMap
 from noesis.behavior_metrics import behavior_summary
 from noesis.body import BodyParams, MuscleModel, make_fly
+from noesis.connectome import Connectome
 from noesis.embodied_metrics import body_reward, locomotion_reward
 from noesis.embodiment import BrainReadout, MotorExploration, gait_report, load_training_brain
 from noesis.environment_senses import (
@@ -29,6 +30,7 @@ from noesis.environment_senses import (
     merge_drive,
     mouth_position,
 )
+from noesis.experiments.ei_balance_scan import scale_inhibition
 from noesis.ground_contact import ground_contacts
 from noesis.habitat import Habitat, habitat_arena
 from noesis.lif import LIFNetwork, LIFParams
@@ -74,6 +76,10 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--body-model', choices=('muscles', 'legacy'), default='muscles')
     ap.add_argument('--bg-hz', type=float, default=3.0)
     ap.add_argument('--bg-weight', type=float, default=60.0)
+    ap.add_argument('--g-inh', type=float, default=1.0,
+                    help='multiply every inhibitory weight (frozen evaluation only; 1 = measured weights)')
+    ap.add_argument('--r-half', type=float, default=25.0,
+                    help='pool firing (Hz) giving half muscle activation (BodyParams.r_half default 25)')
     ap.add_argument('--motor-exploration', type=float, default=None,
                     help='bounded motor current mV/ms; default 1.5 training, 0 frozen')
     ap.add_argument('--learn', action='store_true', help='enable experimental synaptic updates')
@@ -203,7 +209,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         muscles = None
         if args.body_model == 'muscles':
             gp, gn = build_muscle_matrices(cn.neurons, names)
-            muscles = MuscleModel(gp[leg_rows], gn[leg_rows], [names[i] for i in leg_rows])
+            extra = {} if args.r_half == BodyParams().r_half else {'params': BodyParams(r_half=args.r_half)}
+            muscles = MuscleModel(gp[leg_rows], gn[leg_rows], [names[i] for i in leg_rows], **extra)
         amplitude = args.motor_exploration
         if amplitude is None:
             amplitude = 1.5 if args.learn else 0.0
@@ -224,7 +231,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         context.update(schema=7, reward_objective='standing-first-linear-slip-v3' if args.reward_mode == 'grounded' else 'legacy-body-v1',
                        normalize_reward_error=args.normalize_reward_error, body_interface='isolated-joint-lists-v2',
                        motor_interface='anatomical-coxa-flexion-v3',
-                       body_params=vars(BodyParams()) if args.body_model == 'muscles' else None,
+                       body_params=vars(BodyParams(r_half=args.r_half)) if args.body_model == 'muscles' else None,
                        actuated_joints=names,
                        contact='tarsal-ground-only', neural_dt_ms=.5,
                        eligibility_ms=100 if args.learning_rule == 'perturbation' else 500)
@@ -474,6 +481,15 @@ def main():
         cn, scale = load_training_brain(args.data, args.output / 'cache', args.brain)
     except (ValueError, FileNotFoundError) as exc:
         ap.error(str(exc))
+    if not np.isfinite(args.r_half) or args.r_half <= 0:
+        ap.error('--r-half must be finite and positive')
+    if args.g_inh != 1.0:
+        if args.learn:
+            ap.error('--g-inh other than 1 is for frozen evaluation only (do not combine with --learn)')
+        try:
+            cn = Connectome(cn.neurons, scale_inhibition(cn.W, args.g_inh))
+        except ValueError as exc:
+            ap.error(str(exc))
     args.output.mkdir(parents=True, exist_ok=True)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(neuron_table_entries=cn.n, synaptic_pairs=cn.W.nnz,
@@ -490,7 +506,8 @@ def main():
                   background_weight=args.bg_weight, region_scale=scale,
                   motor_exploration_mv_ms=args.motor_exploration if args.motor_exploration is not None else (1.5 if args.learn else 0.0),
                   motor_control='antagonistic activation -> bounded equilibrium' if args.body_model == 'muscles' else 'legacy tanh targets',
-                  motor_slew_rad_s=12.0, body_params=vars(BodyParams()) if args.body_model == 'muscles' else None)
+                  motor_slew_rad_s=12.0,
+                  body_params=vars(BodyParams(r_half=args.r_half)) if args.body_model == 'muscles' else None)
     (args.output / 'config.json').write_text(json.dumps(config, indent=2), encoding='utf-8')
     checkpoint = args.checkpoint
     summaries = []
