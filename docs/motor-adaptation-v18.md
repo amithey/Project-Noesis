@@ -86,3 +86,36 @@ SHA256 matches the independent cache/checkpoint reconstruction
 This verifies the intended weight transfer, not sensory preservation, recovery
 improvement or gait. The active ledger was not opened; full-report verification
 remains deferred until worker termination. No candidate has been selected.
+
+## Completed 72-trial screen: neither multiplier is eligible
+
+All 72 unique trials completed (180 neural seconds) and the worker exited 0.
+Independent reconstruction confirms every P1-P8 verdict and selection check,
+both full-network weight hashes, source/plan/checkpoint guards, and exact
+preservation of the first sixteen records after resume. No candidate passed.
+
+| Weights | Scale | Motor recovery reduction | Recovery/stimulus ratio reduction | Lost passing assay |
+| --- | ---: | ---: | ---: | --- |
+| Original | 2 | 16.50% | 2.65% | none |
+| Original | 4 | 31.82% | 6.85% | P4 |
+| Trained | 2 | 10.01% | 0.45% | none |
+| Trained | 4 | 28.94% | 5.34% | none |
+
+The 10% ratio-improvement criterion fails in every case, so decreased firing
+alone cannot qualify. Global recovery active counts also worsen in at least
+one condition for every candidate/model. With trained weights and scale 4,
+for example, sugar recovery activity rises from 19,116 to 22,491.5 neurons.
+P8 remains false for every battery; original scale 4 additionally loses P4
+(sugar+bitter no longer suppresses MN9 relative to sugar). Both candidates
+remain outside production and body training. Normal startup is unchanged;
+walking remains unproven. These are computational two-seed summaries, not
+physiological validation or saved full spike-trajectory evidence.
+
+A read-only graph audit finds 7,386 distinct direct presynaptic neurons and
+53,535 existing edges into the 389 mapped leg motor neurons. Positive-weight
+inputs arise from 4,250 sources and negative-weight inputs from 3,136; 306
+edges connect mapped leg motors to other mapped leg motors. Static anatomy
+does not reveal which sources maintain the late drive. The next diagnostic
+will record neuron-resolved activity and compare the legacy scalar adaptation
+kernel with the prototype default before choosing an upstream intervention.
+No new adaptation parameter has been selected.
