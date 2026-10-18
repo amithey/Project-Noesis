@@ -75,3 +75,14 @@ prototype nor selection plan changed. Resume under the exact same settings
 retained sixteen trials, and stdout subsequently confirmed trials 17..19.
 No result is selected until all 72 trials complete. Source SHA guards remain
 strict; the operational failure is not a negative neural result.
+
+## Original-model half complete; trained-weight import observed
+
+Process stdout confirms trials 1..36 for the original model and trials 37/38
+for the trained model. Every observed record retains a 2,500 ms horizon,
+learning/exploration off and unchanged weights. The trained full-network
+SHA256 matches the independent cache/checkpoint reconstruction
+(78b4d60d746f3b6675da63c878e2a4006c0573aa14473bd1481dc4d85b2fd284).
+This verifies the intended weight transfer, not sensory preservation, recovery
+improvement or gait. The active ledger was not opened; full-report verification
+remains deferred until worker termination. No candidate has been selected.
