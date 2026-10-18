@@ -100,3 +100,18 @@ deviation matches the retained parent, supporting the explicit weight transfer.
 This does not reconstruct presynaptic eligibility or prove causal credit for
 each synapse, biological learning, or gait. Frozen behavioral tests remain
 required. The next training birth has started.
+
+## First bounded worker completed; interrupted seed 49 preserved
+
+The first V17 worker ended at 3596.765 wall seconds with six complete births:
+four horizons and two terminal training falls. Seed 47 completed five seconds
+with standing 92.323% and slip 15.659 mm/s; seed 48 ended in a training fall
+at 2.110 seconds. All six complete checkpoints and recorded scalar learning
+streams pass their respective audits; this is still exploratory training.
+
+Seed 49 was interrupted after 0.405 seconds: 81 body observations, 71 awake
+updates and 355 neural ms. It remains wall_budget and never replaced the
+complete seed-48 training bank. All partial artifacts and the terminal hour
+report are preserved. The prior tool handle is unavailable, and a read-only
+process check found no matching V17 worker before resume. Restart seed 49
+from its complete start checkpoint under the same source and settings.
