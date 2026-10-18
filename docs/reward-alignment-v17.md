@@ -221,3 +221,33 @@ There is no recorded CSV/spike prefix for the interrupted attempt, so the
 strong prefix-equivalence claims made for seeds 49/58 cannot be made here.
 All twenty completed cases and eighteen scalar training streams still pass
 their audits; candidate walking remains unproven and promotion is disabled.
+
+## Complete frozen candidate failed; no model promoted
+
+The replayed candidate seed-10 trial completed five seconds with learning and
+exploration off, original topology/signs/bounds and unchanged loaded weights.
+Standing is 66.869% versus original 92.222%; mean reward is 0.156043 versus
+0.519817. The existing standing and reward gates fail. Forward distance and
+leg-cycle gates pass numerically; these do not establish walking after a fall.
+
+All-window slip is 10.950 versus 15.839 mm/s (a 30.87% reduction), but standing-
+conditioned slip is 13.570 versus 15.696 mm/s (only 13.55% lower). With at least
+three loaded feet during standing it is 13.240 versus 13.905 mm/s. These are
+post-hoc samples of different states, not new acceptance criteria or causal
+comparisons. The first sustained fall trigger is 3.660 seconds; no later
+awake sample meets standing criteria. Post-fall motor firing persists at
+30.321 Hz and mean joint speed 2.351 rad/s. Directly inspected video frames
+at 1.99 and 4.52 seconds show the later inverted body with legs above it.
+
+Tibia pool imbalance also persists: in RM the candidate flexor/extensor pool
+means are 9.566/279.495 Hz; in RF they are 0.250/83.232 Hz. These observations
+motivate investigating motor-neuron dynamics, but do not establish the cause
+of the fall. The v4 reward alone has not produced verified walking; additional
+experience and training seeds prevent isolating its causal effect from V16.
+
+The protocol is rejected_validation after 21 complete cases. Candidate11,
+obstacle/ablation and held-out 200..202 remain unrun and are not claimed
+complete. All eighteen training streams and twenty-one checkpoint/runtime
+audits pass; the exact source, failed candidate video, terminal report and
+negative diagnostics are preserved. Best validated remains null. Normal
+startup is unchanged. No new training cycle was launched unchanged.
