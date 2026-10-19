@@ -88,3 +88,22 @@ checkpoints copied with hashes to primary. Seventeen common-parent tests now
 pass, including actual driver interrupted-birth replay and frozen separation
 with controlled tiny checkpoints. Full-connectome preflight previously passed.
 The registered six-birth common-parent learning pilot is the next physical run.
+
+
+## Common-parent worker live; immutable-case audit prepared
+
+Worker46529 is actually training86, learningTrue, observed through2.4body
+seconds. All six branches use the same original V23parent. No committed birth
+yet and no V26frozen outcome. Source/plan/driver remain fixed during the batch.
+The added preserve_completed_birth.py accepts only stdout-committed summaries,
+then checks source/context, parent identity, topology/signs/weight bounds, CSV
+body measures, independently reconstructed v5reward and corrected RPE/EMA, and
+first sustained-fall timing. It preserves child artifacts separately from an
+as-yet-unformed mean bank; actual ledger start pointers remain a terminal audit.
+Ruff and compile pass; real-case execution awaits a committed birth.
+
+Hash-verified previous V24training trajectories show lower reward clipping in
+3.33–15.95% of awake samples. Clipping exists but does not dominate all learning
+frames. Negative reward in valid posture is possible during genuine slip and
+is not itself evidence of wrong credit. No reward/gate/dynamics changes follow
+from this retrospective diagnostic, and it does not describe the active birth.
