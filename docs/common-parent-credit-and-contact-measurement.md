@@ -139,3 +139,23 @@ The branch is retained and will enter the equal-weight mean including failures.
 No mean/best validated bank exists. Worker46529 has begun independent87 from
 the same registered V23parent, observed learningTrue through.2s. Core source,
 plan, reward and physical gates remain unchanged during the batch.
+
+
+## Second independent birth: full horizon, slip remains high
+
+Seed87 completed5s/990awake samples, standing93.737374%, stance slip
+14.710625mm/s, mean v5reward.236853803, heading advance10.270391mm and
+cycles16/15/11/8/14/5. This is exploration-on training, not frozen walking.
+The raw case audit passes parent/model context, exact original topology/motor
+IDs/references, signs/bounds (max original deviation22.408073%), CSV body/gait
+measurements, independently reconstructed v5reward (max error2.22e-16) and
+normalized bias-corrected learning moments. No sustained fall occurred. All
+raw artifacts are copied/hash-verified to young-fly-v26-progress. The ledger
+start-pointer audit remains pending until the worker stops.
+
+Two independent births now total9.595body seconds: one full and one fall.
+Neither lower training slip across different seeds nor a shortened fall window
+is treated as a learned improvement. The branch remains separate from an
+unformed mean and best validatednull. Worker46529 has started88, learningTrue.
+The long1480.609s wall time for87includes the previously observed host/tool
+pause; no additional simulated progress is inferred from elapsed time.
