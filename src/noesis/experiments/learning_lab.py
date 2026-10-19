@@ -226,7 +226,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         amplitude = args.motor_exploration
         if amplitude is None:
             amplitude = 1.5 if args.learn else 0.0
-        if not args.learn and amplitude != 0:
+        if not args.learn and amplitude != 0 and not getattr(args, 'diagnostic_frozen_exploration', False):
             raise ValueError('evaluation requires motor exploration disabled')
         exploration = MotorExploration(cn.neurons, amplitude, seed=seed)
         readout = BrainReadout(cn.neurons, np.unique(G.indices))
