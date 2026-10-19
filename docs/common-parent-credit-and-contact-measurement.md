@@ -208,3 +208,25 @@ Five completed births total18.300body seconds: one full, four falls. All five
 branches remain retained for the predefined equal-weight mean, still unformed;
 best validatednull. The same worker46529 has started91, learningTrue, observed
 through.4s. No live ledger opened or source/reward/gate/startup change occurs.
+
+
+## First wall-budget boundary and exact resume
+
+Worker46529 exited0 after the last birth hit the wall budget at4.275s:
+855CSVrows/845awake samples/4225neural ms. Seed91status wall_budget is not
+committed: report has five jobs and six attempts, no mean/best bank, no frozen
+evaluation. OS inventory confirmed no matching Python/encoder before the ledger
+was read. Stopped ledger SHA25659f945d0b3050e98971ecc8970f3c33907523c95e5e47b168f2c53acfc0f7900.
+All five completed case hashes and summaries are bound to the actual recorded
+start checkpoint2f3400da...; each used the same common parent. The partial91
+artifacts and immutable terminal ledger/audit are copied with hashes into
+worker-boundary-000 and the primary checkout. The pending ledger status is not
+a successful completion; the explicit attempt status records wall-budget stop.
+
+Exact --resume now runs in session31194 (launcher33956/interpreter9668), with
+source/driver/aggregation/plan hashes unchanged and a new wall budget<=3600s.
+It skips the five committed births and replays91 from the registered common
+parent, never from the partial learned weights. After that case commits, compare
+the first855CSVrows and4225ms motor-spike prefix against the archived partial.
+Final training NPZweights will extend beyond the prefix and need not equal the
+partial bank. No mean or model is promoted from an incomplete episode.
