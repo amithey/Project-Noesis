@@ -81,3 +81,27 @@ without opening the live report. The CSV auditor similarly reads only copied,
 completed artifacts. Ruff passes for both helpers. Production source and the
 running driver/plan remain unchanged. No model promoted, startup unchanged;
 three complete frozen diagnostic cases and all later required gates remain.
+## Sixth case complete; gain reduction does not rescue the trained bank
+
+The resumed seed66/background40 trained case completed five seconds. Standing
+is79.4949% versus95.7576% in its matched original control; all-window slip is
+16.007278 versus15.429347mm/s, so both standing and relative-slip gates fail.
+Standing-conditioned slip is14.689525 versus15.415065mm/s (about4.7% lower,
+not20%). Forward during standing is6.068745mm; all-window3.376297mm. These are
+useful movements but do not establish accepted walking. The case and all its
+immutable artifacts were independently checked/copied; the live ledger was
+not opened. Six complete CSVs now pass the independent physical-summary audit.
+
+The replay reproduces all200 interrupted CSV rows exactly across every column,
+and the first8594 motor events have identical times/indices (partial950neuralms
+versus4950ms completed). Both frozen checkpoints have identical SHA256
+cd49364cc80d8923a74d7783d696fd1a90a132d53afa344610d70663b8a11b19 and zero
+learning traces. The one-second attempt remains incomplete and separate.
+
+Three frames from original seed66/background40 were directly viewed at displayed
+physical times1.52,3.02,4.52 seconds; sampled bodies are upright and their leg
+configurations differ. Sparse frames do not certify continuous support or gait,
+and this is explicitly an original-weight control. The image/review are saved.
+The live worker has advanced to trained seed67/background60, with two cases
+remaining. A separate earlier-training-bank test has been prepared, not launched;
+see best-training-v21.md. All source/driver/plan hashes for V20 remain unchanged.
