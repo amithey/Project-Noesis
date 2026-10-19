@@ -153,3 +153,18 @@ All complete artifacts and video are copied with hashes. Four births are now
 verified: two full horizons and two terminal falls. Seed72 is active. All frozen
 validation/heldout/obstacle gates remain pending; no live ledger opened and no
 model promoted. Source and training configuration remain unchanged.
+
+
+## Fifth birth is a short terminal fall
+
+Seed72 ended at0.95s under the existing100ms sustained-fall rule. Its86.6667%
+standing and9.890164mm/s slip describe a shortened training window, not a
+five-second standing/slip success. Every terminal observation, scalar reward
+and RPE/RMS trace passes the observer. Original references/topology/signs and
+50% bounds remain preserved: max original-weight deviation21.3709%, mean1.0373%,
+29924 edges differ from the expected prior checkpoint.
+Checkpoint SHA25645a865b8fd3654a0a1efdf94b41ca09ebd2d8a5645f5900d5a4a047e48b3c8d7.
+All short-run measurements/video and the complete weight bank are preserved
+with hashes. Five births are verified: two full horizons, three terminal falls.
+The sixth, seed73, is active; frozen matched evaluations follow all six births.
+No live ledger opened, source/configuration unchanged, no model promoted.
