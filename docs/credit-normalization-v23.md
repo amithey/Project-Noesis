@@ -155,3 +155,29 @@ terminal fall. All25frozen controls remain pending, and no model is promoted.
 
 Producer stdout confirms the same worker44661 has started seed78, learning=True.
 Source, reward, controls and gates are unchanged. No live ledger was opened.
+
+
+## Fifth training birth: early fall
+
+Seed78 ended at1.345seconds with a verified sustained0.1-second fall,
+standing75.675676% and slip9.703323mm/s over its short259-sample awake window.
+The lower all-window slip is not compared with full-window trials or described
+as improvement. Cycles4/4/2/2/3/1, projected heading advance1.907718mm and
+mean reward0.310060 do not establish walking. It is a completed training birth,
+not a five-second behavioral evaluation.
+
+The immutable-artifact audit passes terminal timing, actual expected parent,
+reward/weighted-normalization reconstruction, body metrics, signs and bounds.
+32504selected edges change from the previous bank; max original deviation
+22.561934%. Checkpoint SHA256d82e6d5e5127171f164433ec3890249851a5e52b5d281f076861a187dee3749e.
+Complete failure video, CSV, motor artifacts and checkpoint are copied with
+hash checks. Five births now total21.240body seconds (three full/two falls).
+All25frozen controls remain pending, with no validated model promoted.
+
+Producer stdout confirms seed79 is active in the same worker44661. The model,
+reward and all gates remain unchanged; no live ledger opened. An additional
+comparison helper is prepared, Ruff-checked, but not yet executed: after each
+new original control is completed and independently archived, it will compare
+V22/V23 full CSV bytes, checkpoint shared arrays, motor-event arrays, gait
+analysis and context differences. It cannot skip controls or infer trained
+behavior equivalence. Actual frozen results are still required.
