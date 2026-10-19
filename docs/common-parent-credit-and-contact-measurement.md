@@ -230,3 +230,37 @@ parent, never from the partial learned weights. After that case commits, compare
 the first855CSVrows and4225ms motor-spike prefix against the archived partial.
 Final training NPZweights will extend beyond the prefix and need not equal the
 partial bank. No mean or model is promoted from an incomplete episode.
+
+
+## Sixth birth and exact real replay proof
+
+Replayed91 completed5s/990awake samples, standing90.101010%, slip14.522565mm/s,
+reward.193732678, heading advance8.005869mm, cycles15/20/16/8/13/0. RH has no
+completed support/lift cycle, and exploration-on movement is not a walking proof.
+Immutable-case audit passes common-parent/model/source, body/CSV measures, no
+sustained fall, original topology/references/signs/bounds (max deviation22.919904%),
+v5scalar/corrected learning moments (max scalar error2.22e-16). Checkpoint SHA256
+9a257f1552149544c0303e4fe95fa8455c2b3f9e691a36c920d00aa42bcd43d0.
+
+Actual compare_seed91_replay.py passes: all855CSVrows (845awake), full4225ms
+motor prefix and all38775motor events exactly equal the archived incomplete
+attempt; model context, topology, motor identities and original references exact.
+Final learned NPZweights extend past the prefix and are not asserted equal to
+partial weights. Partial attempt remains excluded. Six completed births total
+23.300body seconds: two full, four falls; extra4.275partial seconds are not
+counted as completed experience. All six raw branches are copied with hashes.
+
+## Mean verified; frozen screen live
+
+The producer began frozen10 with learningFalse; its static mean bank was then
+independently recomputed from all six audited branches without a live-ledger read.
+Direct mean agreement max absolute error4.55e-13 (floating summation order),
+original topology/motor IDs/references/signs/bounds preserved, every learning
+trace/statistic zero, and model context exactly equals the cached original
+control. Mean max original deviation22.918863%, RMS update from parent.000811673;
+net-to-summed increment norm ratio.430480 is arithmetic, not a walking gain.
+Mean checkpoint SHA256ce1e6ca0dc8c47ad6d5c41342557aeffd883a0905bf19bc0616f4845302963b5.
+The mean is copied as latest unvalidated training separately from best validated
+null. Frozen10 is active in session31194 through.6s, no learning/exploration or
+fall cutoff. Final start-pointer ledger audit awaits terminal worker. No goal
+completion, full-validation claim, model promotion or startup change occurs.
