@@ -103,7 +103,11 @@ def main():
     ap.add_argument('--validation-seeds', type=int, nargs='+', default=[10, 11])
     ap.add_argument('--heldout-seeds', type=int, nargs='+', default=[200, 201, 202])
     ap.add_argument('--learning-rate', type=float, default=.2)
+    ap.add_argument('--bg-weight', type=float, default=60.,
+                    help='background event weight shared by training and all matched controls')
     args = ap.parse_args()
+    if not np.isfinite(args.bg_weight) or args.bg_weight < 0:
+        ap.error('bg-weight must be finite and nonnegative')
     if not np.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 3600:
         ap.error('wall-seconds must be in (0, 3600]')
     if args.evaluation_seconds != 5.:
@@ -138,6 +142,7 @@ def main():
     template.training_fall_seconds = args.training_fall_seconds
     template.proprioceptive_encoding = args.proprioceptive_encoding
     template.normalize_reward_error = args.normalize_reward_error
+    template.bg_weight = args.bg_weight
     lab.validate_args(lab.parser(), template)
     # Reject resuming under changed source code, model parameters or evaluation protocol.
     digest = hashlib.sha256()

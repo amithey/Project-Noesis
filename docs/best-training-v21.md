@@ -109,3 +109,25 @@ The V21 terminal auditor has the same explicit archive option, to be run only
 after verified worker termination and all four cases. No live report was opened.
 The staged training CLI has independently passed all297 tests plus Ruff; no
 source installation or new training has occurred while V21 remains active.
+
+## Four-case diagnostic complete; no promotion
+
+The worker terminated normally and the OS inventory showed no remaining matching
+Python worker. All four unique frozen five-second cases were independently
+audited against exact archived source, selected parent, original controls,
+full CSV metrics and copied artifact hashes. No incomplete attempts occurred.
+Terminal report SHA2564d7e118331dc4023b9d513899c1e405d9b483b281b83c0bb2242c4ad3ddaa38a.
+
+At gain40, seed66/67 stand94.8485%/90.2020%, with repeated support/lift cycles
+in all six legs. Both pass standing/cycles/heading/reward on these diagnostic
+seeds. Slip14.160074/15.364946mm/s versus original15.429347/12.609414 fails
+the20% reduction in both cases. At gain60, both fail standing. Tripod remains
+separately reported, not inferred from movement. All raw videos and failures
+are preserved. No model has passed all walking/obstacle/heldout requirements.
+
+The fully tested background-gain CLI candidate is now installed with source
+5651f6dd207cd9ee7be6ea2ebcfb381cfe66d01e03422cda5a9ae70f3bf1032e.
+Only train_validate.py changed (shared --bg-weight and validation); the exact
+producer source839 remains archived for reproducibility. V21 is terminal and
+will not be resumed with the new source. A fresh learning protocol will start
+from the earlier bank at gain40; normal startup remains unchanged.

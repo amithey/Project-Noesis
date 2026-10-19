@@ -43,3 +43,14 @@ The full-suite invocation explicitly selects staged src, and the new source-path
 assertion passes. Logs and hashes are preserved in plan.json. This runs separately
 from the active diagnostic and does not change its source, driver or parameters.
 The installation gate remains completion/archival of all four V21 body cases.
+
+
+## Installed after complete control archival
+
+All four V21 cases completed and were audited before installation. The byte-
+identical staged source is installed, SHA2565651f6dd207cd9ee7be6ea2ebcfb381cfe66d01e03422cda5a9ae70f3bf1032e.
+All297 staged unit/integration checks and Ruff had passed; the five added
+control/resume/gain checks also pass against the actual installed import path.
+The new test file is tests/test_background_training.py. Source changes remain
+limited to the shared CLI gain argument; normal startup and model promotion
+remain unchanged. The prospective six-birth learning protocol is now ready.
