@@ -31,8 +31,8 @@ No simultaneous heavy workers will be started. Seven unit checks pass (partial
 birth/evaluation exclusion, changed selected checkpoint/source and missing matched-control rejection),
 Ruff passes, and the real checkpoint/control/argument preflight passes.
 
-This is prepared only; V20's remaining background trials are still running.
-No new body run or training was launched for this earlier bank yet. Regardless
+All eight V20 background trials completed and were independently audited.
+The earlier-bank body diagnostic has now started; no new training is running. Regardless
 of diagnostic comparison outcome, validation10/11, heldout200..202, obstacle and
 external-sense ablation remain required for actual model promotion. Standing90%,
 heading1mm, repeated cycles in4legs and20% slip reduction are unchanged. Report
@@ -45,3 +45,17 @@ observed V20 original-control and trained seed66 standing improvement at40; it
 does not use any result from the selected bank. All four original controls were
 already complete. Candidate ranking is unchanged and training-only. Comparisons
 remain separated by background gain. Source/model/acceptance are unchanged.
+
+
+## Launch confirmed
+
+After V20 worker termination was verified, session8749 started the four-case
+frozen grid under a3600-second wall limit. The first case is seed66/background60;
+stdout confirms learning=False and physical progress through0.40s. No full
+case has completed yet. Driver SHA256fa6ebe0ab9e8c1ab8acd856f2c8fc7d53d659716694b2e11d902d271803d6174;
+plan SHA2561061d042dfa6357b50d80f966dfb58eb3733ea05b4fff8168914a879c3bbeda8.
+The source remains839a0a8bd85a8ebca55048319dc95642413491a9a14c5d168fe24cc4d6e8d107.
+Observe stdout only while live. preserve_completed_case.py checks exact source,
+plan, selected parent, frozen checkpoint and matched original-control coverage,
+then copies only stdout-confirmed immutable completed artifacts. Ruff passes
+for this helper. No live ledger was opened; no gait success or promotion claimed.
