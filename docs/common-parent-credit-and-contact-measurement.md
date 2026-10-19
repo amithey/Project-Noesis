@@ -70,3 +70,21 @@ or encoder before stopped report read. All completed non-video artifacts copied
 with hash checks. No promotion; latest training85 is retained independently.
 Read-only original10 contact measurement now takes precedence over the prepared
 common-parent pilot. No additional learning has yet been performed.
+
+
+## Actual contact diagnostic: sliding is present
+
+The one-second original10 diagnostic completed with exact first200CSV rows,
+exact950ms motor-spike prefix and every original checkpoint array unchanged.
+190awake samples: endpoint proxy13.416658mm/s, actual contact-point horizontal
+velocity15.729462mm/s, mean absolute difference5.163442mm/s. This slice does not
+support an inflated endpoint proxy as the explanation for failed slip reduction;
+force-bearing contact points actually slide. Instantaneous and finite-difference
+measures differ, and this is only a one-second diagnostic, not a walking pass.
+Existing objective, body, neural dynamics and acceptance metrics remain unchanged.
+Worker33980 exited0 after170.969s; OS inventory confirmed no matching processes
+before terminal ledger read. Raw contacts/frames, CSV/motor/gait/sensory and
+checkpoints copied with hashes to primary. Seventeen common-parent tests now
+pass, including actual driver interrupted-birth replay and frozen separation
+with controlled tiny checkpoints. Full-connectome preflight previously passed.
+The registered six-birth common-parent learning pilot is the next physical run.
