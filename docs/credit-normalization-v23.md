@@ -135,3 +135,23 @@ terminal fall. All25frozen cases remain pending. Producer stdout confirms the
 same live session44661 has begun seed77, learning=True. Neither the live ledger
 nor running-episode files were read. All original physical/sensory/heldout gates
 remain unchanged and the user goal stays unachieved.
+
+
+## Fourth training birth complete
+
+Seed77 completed5seconds: standing92.424242%, stance slip16.309770mm/s,
+mean reward0.550237, projected heading advance8.808548mm and cycles17/13/15/9/11/3.
+The experiment remains learning=True with motor exploration1.5; these are not
+frozen controls or evidence of matched improvement. Tripod score stays null.
+
+Independent immutable-artifact audit passes full horizon/no sustained fall,
+all CSV/body metrics, reward/normalization reconstruction, original topology,
+signs and bounds.35320selected edges differ from the actual previous bank;
+max original-weight deviation23.062409% (weight deviation is not a progress
+criterion). Checkpoint SHA256c6b112074aad01e7a213862bd050669289fcb6c65c456de4d51e2a7236d826e3.
+Complete artifacts including MP4 are copied and hash-checked in the user
+checkout. Four births now total19.895body seconds: three full windows and one
+terminal fall. All25frozen controls remain pending, and no model is promoted.
+
+Producer stdout confirms the same worker44661 has started seed78, learning=True.
+Source, reward, controls and gates are unchanged. No live ledger was opened.
