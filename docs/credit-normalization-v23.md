@@ -293,3 +293,37 @@ seed10 frozen candidate has begun, learning=False. Final training bank2f340
 is retained unchanged, best validated remainsnull and normal startup unchanged.
 No live ledger read; next interpretation requires a completed candidate and
 its matched standing/cycle/progress/slip gates.
+
+
+## Terminal trained candidate: standing passes, slip fails
+
+Frozen seed10 completed5seconds with no learning, motor exploration or fall
+cutoff. Standing911/990samples (92.020202%) passes; cycles12/11/12/15/16/4,
+projected heading advance6.080728mm and mean reward0.526444 also pass. Stance
+slip16.755122mm/s fails against original9.366594mm/s (required<=7.493275).
+Posture-conditional slip16.923862417mm/s is descriptive only and does not
+replace or loosen the all-window criterion. Frozen weights exactly equal the
+final training bank, with all learner statistics/traces zero.
+
+Session33407 exited normally(code0); elevated OS inventory confirmed no matching
+V23Python/encoder before ledger read. Stopped audit binds9completed cases to
+actual parent checkpoints, verifies original/frozen weights, all file copies,
+latest bank2f340retention and best validatednull. Ledger rejected_validation;
+22required cases were not run following the registered quiet rejection and
+are not claimed complete. Terminal report SHA256fcf9ee5e778875b999a984522fbdb04ed07ec4cead7c5d06d0caef9b2d1b8957.
+Worker walls3597.234/966.171seconds. The old partial remains separately preserved.
+
+Compared with the prior V22 candidate on the same frozen seed/background,
+standing890/990->911/990 improves while slip16.084272->16.755122 worsens. Different
+training seeds, extra experiences and changed learning normalization prevent
+attributing this contrast to one mechanism or establishing generalization.
+No model/normal-startup promotion occurs. Full terminal artifacts and the
+negative result are preserved in the user checkout.
+
+The next hypothesis targets slip credit: v4's explicit standing reward remains,
+while the slip term would increase from0.006to0.03per measuredmm/s (5x). This
+is a proposed scalar learning objective, not a physical controller or changed
+walking criterion. Previous strong-slip/soft-posture failures motivate retaining
+v4's hard standing credit and testing a moderate intermediate penalty. Default
+v3/v4 semantics must remain unchanged; all body gates, sensory controls, LIF,
+connectome topology/signs/bounds and motor-exploration settings remain fixed.
