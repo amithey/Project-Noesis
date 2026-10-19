@@ -69,3 +69,29 @@ encoding and original graph/sign/bound constraints remain. Original, candidate
 and ablated controls use the same gain40. Every evaluation remains5s with no
 learning/OU; validation10/11, heldout200..202, obstacle and sensory ablation all
 remain required. No live ledger opened, no normal startup or model promotion.
+
+
+## First complete learning birth verified
+
+Seed68 completed five seconds, standing89.7980%, heading-relative distance
+11.097045mm, cycles14/10/13/9/13/5 and mean stance slip15.934218mm/s. This is
+training with learning/OU active, not frozen behavioral validation or proof of
+improvement over a different seed. The second birth, seed69, is running.
+
+The stdout-only completed-case observer verifies source565, background3Hz/40,
+model context, parent original topology/references, unchanged signs and50%
+weight bounds. Max original-weight deviation20.5009%, mean0.9900%;35668 edges
+differ from the expected prior bank. It verifies every CSV scalar reward and
+RPE/baseline/RMS learning signal, matching checkpoint trace statistics; maximum
+scalar reward difference1.11e-16. It independently checks all1000 body rows,
+990 awake samples,4950 neural ms, reported physical metrics and absence of the
+training terminal-fall condition. These checks establish implementation and
+recording consistency, not causal learning success or a policy gradient proof.
+
+Checkpoint SHA256989f69981bdc8c6a4c3dba2db3e7e01a6eb7b3e8daba96a1bb5457d2b5629243.
+All immutable completed files, including video, were copied with hashes.
+The observer never opens the live report; its expected prior-bank ordering is
+verified from committed receipts, while actual attempt start-pointer metadata
+remains for the terminal-ledger audit. Partial/budget cases cannot be banked as
+completed results. Frozen validation/heldout/obstacle gates remain outstanding;
+best validated remains null and normal startup is unchanged.
