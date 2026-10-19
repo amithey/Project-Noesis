@@ -82,3 +82,32 @@ CSV, neural spike artifacts and MP4 were copied and hash-verified in the user
 checkout, outputs/young-fly-v23-progress/cycle_000/train-0/attempt_0000.
 Worker session44661 continues the next birth (seed75), learning=True. No live
 ledger was opened, best validated remains unset and normal startup unchanged.
+
+
+## Second complete training birth and physical limitation
+
+Seed75 completed5seconds with no terminal fall: standing93.434343%, slip
+17.354199mm/s, projected heading advance5.614072mm; cycles15/20/15/10/12/4.
+Independent checkpoint/CSV/weighted-reward audits pass.35430selected edges
+changed from the preceding bank; max original deviation23.336195%, signs and
+bounds intact. Checkpoint/CSV/motor artifacts and the full MP4 are copied with
+hash checks. This passes neither a matched frozen comparison nor the slip gate;
+seed74/75 differences cannot be attributed to learning because seeds differ
+and both have active motor exploration.
+
+Supplementary analysis uses only the two immutable audited copies. Seed74/75
+horizontal paths66.369/65.674mm have net displacements10.313/2.621mm. Projected
+heading changes during adjacent valid-posture intervals average346.520/340.337
+degrees per second (descriptive heading, not independent rigid-body rotation).
+Posture-conditional slip15.742486/17.158546mm/s remains high; falling alone does
+not explain the all-window slip. Right-hind ground-load fractions10.30%/4.75%
+and right-front20.91%/31.41% contrast with greater loading of other legs. These
+are observations, not evidence of an anatomical error or causal mechanism.
+Both tibia-flexor phase estimates are invalid, so tripod_score stays null.
+Spectral significance against a stationary Poisson null alone is not gait.
+
+The running source/reward/gates are unchanged. Worker44661 is confirmed in
+seed76; no live ledger read or duplicate worker started. Two of six training
+births are audited; all25frozen cases remain pending. The existing experiment
+continues before choosing another change. Detailed immutable-file hashes and
+metric definitions accompany completed-motion-diagnostics.json.
