@@ -50,3 +50,13 @@ completed-case observations will be preserved without opening a live ledger.
 
 The installed full suite also passed317tests in72.52seconds, with Ruff and
 git diff --check passing. Physical outcomes are pending at this registration point. The user goal of validated basic walking remains open.
+
+
+## Launch observed
+
+Worker session44661 starts the registered3600-second cycle under source
+6eb9405de05f11a4741ab269cabf0b8fafe1d667a978700f5a97c0529843909d.
+Producer stdout confirms158262entries,556motor mappings, learning=True,
+seed74 and physical t=0.00seconds. The launcher/interpreter process pair was
+verified in the OS inventory. No completed episode or new behavior result is
+claimed from this startup observation. The live ledger remains unopened.
