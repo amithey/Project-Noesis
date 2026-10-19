@@ -176,3 +176,19 @@ hashes. Each independent branch remains retained, no mean or best bank yet.
 Three completed births total11.635body seconds, one full and two falls.
 The same worker46529 has begun89, learningTrue, observed through.2s. No live
 ledger read, source/plan/reward/gate change or model promotion occurs.
+
+
+## Fourth independent birth: another terminal fall
+
+Seed89 ended at1.855s/361awake samples with training_fall, standing80.886427%,
+slip11.598113mm/s, reward.145610452, heading advance1.251662mm and cycles
+3/5/6/2/4/3. These short-window values do not establish walking or an improvement
+over full trials. The independent artifact audit passes original topology/motor
+IDs/references/signs/bounds (max deviation22.797694%), model/common-parent
+context, CSV/body measures, v5scalar/corrected learning moments (max scalar
+error2.22e-16), and first sustained fall exactly at the last awake sample.
+All raw child artifacts are copied with hashes. Four completed births now
+total13.490body seconds: one full and three falls, all retained for the planned
+equal-weight mean. No mean/best validated bank exists yet. The same worker46529
+has begun90 with learningTrue, observed through.2s. No live ledger read, reward,
+source, physical-gate or normal-startup change occurs.
