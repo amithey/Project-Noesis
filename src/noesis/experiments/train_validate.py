@@ -84,6 +84,7 @@ def main():
     ap.add_argument('--import-weights', type=Path,
                     help='start a new protocol with compatible learned weights from an earlier model')
     ap.add_argument('--normalize-reward-error', action='store_true')
+    ap.add_argument('--bias-correct-reward-error', action='store_true')
     ap.add_argument('--early-reject', action='store_true', help='reject failed quiet validation before consuming further controls')
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--proprioceptive-encoding', choices=ENCODINGS, default='legacy')
@@ -142,6 +143,7 @@ def main():
     template.training_fall_seconds = args.training_fall_seconds
     template.proprioceptive_encoding = args.proprioceptive_encoding
     template.normalize_reward_error = args.normalize_reward_error
+    template.bias_correct_reward_error = args.bias_correct_reward_error
     template.bg_weight = args.bg_weight
     lab.validate_args(lab.parser(), template)
     # Reject resuming under changed source code, model parameters or evaluation protocol.

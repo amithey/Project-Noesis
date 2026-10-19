@@ -83,6 +83,8 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--import-weights', action='store_true',
                     help='explicitly transfer compatible synaptic weights across body model versions')
     ap.add_argument('--normalize-reward-error', action='store_true')
+    ap.add_argument('--bias-correct-reward-error', action='store_true',
+                    help='remove startup bias from reward-normalization moments')
     ap.add_argument('--learning-rate', type=float, default=0.2)
     ap.add_argument('--learning-rule', choices=('perturbation', 'hebbian'), default='perturbation')
     ap.add_argument('--reward-mode', choices=('grounded', 'legacy'), default='grounded')
@@ -109,6 +111,8 @@ def parser() -> argparse.ArgumentParser:
 def validate_args(ap, args):
     if args.reward_mode != "grounded" and args.grounded_objective != GROUNDED_OBJECTIVES[0]:
         ap.error("nondefault grounded objective requires grounded reward mode")
+    if getattr(args, 'bias_correct_reward_error', False) and not args.normalize_reward_error:
+        ap.error('bias correction requires reward normalization')
     if args.normalize_reward_error and args.learning_rule != 'perturbation':
         ap.error('reward normalization requires perturbation learning')
     if args.depression_u not in (0., .03, .1):
@@ -231,6 +235,7 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         plasticity = MotorPlasticity(net, np.unique(G.indices),
                                     learning_rate=args.learning_rate, rule=args.learning_rule,
                                     normalize_reward_error=args.normalize_reward_error,
+                                    bias_correct_reward_error=getattr(args, 'bias_correct_reward_error', False),
                                     tau_eligibility_ms=100 if args.learning_rule == "perturbation" else 500)
         context = {name: getattr(args, name) for name in (
             'brain', 'body_model', 'bg_hz', 'bg_weight', 'learning_rule', 'learning_rate',
@@ -243,6 +248,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                        actuated_joints=names,
                        contact='tarsal-ground-only', neural_dt_ms=.5,
                        eligibility_ms=100 if args.learning_rule == 'perturbation' else 500)
+        if getattr(args, 'bias_correct_reward_error', False):
+            context.update(schema=8, bias_correct_reward_error=True)
         if checkpoint:
             metadata = Path(checkpoint).with_suffix('.model.json')
             if (not args.import_weights and metadata.exists()
@@ -485,6 +492,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                'gait_metrics': str(prefix.with_suffix('.gait.json')),
                'tripod_score': gait.get('tibia_flexor_phase', {}).get('tripod_score'),
                'checkpoint': str(prefix.with_suffix('.npz'))}
+    if getattr(args, 'bias_correct_reward_error', False):
+        summary['bias_correct_reward_error'] = True
     prefix.with_suffix('.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
     return summary, prefix.with_suffix('.npz')
 

@@ -267,3 +267,37 @@ printed0.2/0.4/0.6s neural/body samples match. Full CSV/motor-event prefix
 equivalence will be checked only after the replay completes. No live ledger
 was opened after resume. All full-window, slip, obstacle, ablation and heldout
 requirements remain unchanged; normal startup and model promotion unchanged.
+
+
+## Terminal frozen failure and reproducible replay
+
+The resumed worker terminated normally. Candidate10 completed the full five
+seconds with no learning, motor exploration or fall cutoff. It stood890/990
+awake samples (89.8989899%, below90%; no rounding pass), with16.084272mm/s
+stance slip versus9.366594mm/s for the matched original. Heading advance8.432201mm
+and leg cycles15/18/15/8/10/4 do not overcome the standing/slip failures.
+Mean reward0.498612 exceeds the original-0.173475, but reward alone cannot pass.
+Posture-conditional slip also worsens:15.512503 versus14.455730mm/s.
+
+Exact replay checks passed all709 partial CSV rows/every column and the first
+31643motor events. The interrupted3.545-second attempt remains separate and
+incomplete. The terminal ledger is rejected_validation, with9of31required jobs
+committed and22unrun. Stopped-worker audit binds every completed case to its
+actual parent checkpoint and preserves latest training/best validated separation.
+Terminal report SHA256636e2021095491a6c453ee4eb8299efec5258b10e5b9e8ad816ee5e69e61ca1b.
+The final training bank79ed5b2c3392ca082f8289ad8e43abbedd0162fcd01cb843e6f4987df471f418
+is retained for further training, not validated deployment. Best validated stays
+null; normal startup stays unchanged. Raw full/partial artifacts, failure videos
+and audits are copied to outputs/young-fly-v22-progress in the user checkout.
+
+## Offline reward-credit hypothesis for a separate V23 experiment
+
+Every birth starts with the same scalar reward0.7884805872557102, while the
+legacy reward baseline/RMS start at zero. Across the first up-to-one awake
+second,91-100% of recorded learning signals saturate at±1. An offline replay
+on these fixed rewards using EMA-mass bias correction and a neutral first
+prediction error leaves67.8-85.5% unsaturated. This is a counterfactual on
+unchanged recorded rewards, not a new neural/body result or an established
+cause of walking failure. V23 stages this optional learner-only change with
+legacy behavior/checkpoint bytes preserved by default. All existing physical,
+sensory, heldout and slip gates remain unchanged.

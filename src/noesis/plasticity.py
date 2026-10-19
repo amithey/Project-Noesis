@@ -44,12 +44,14 @@ class MotorPlasticity:
     With normalization enabled, the raw prediction error is divided by its
     two-second RMS estimate (floor 0.01) and clipped to [-1, 1]. The learning
     rate then applies to that unitless signal; the reward baseline stays in raw
-    reward units. Network topology must remain fixed throughout.
+    reward units. Optional bias correction divides weighted moments by their
+    accumulated EMA mass and makes the first prediction error zero. Legacy
+    defaults/checkpoint bytes remain unchanged. Network topology stays fixed.
     """
 
     def __init__(self, net, motor_indices, learning_rate=0.02,
                  tau_eligibility_ms=500.0, max_change=0.5, rule="hebbian",
-                 normalize_reward_error=False):
+                 normalize_reward_error=False, bias_correct_reward_error=False):
         params = np.array([learning_rate, tau_eligibility_ms, max_change], dtype=float)
         if not np.isfinite(params).all():
             raise ValueError("learning parameters must be finite")
@@ -63,6 +65,12 @@ class MotorPlasticity:
             raise TypeError("normalize_reward_error must be boolean")
         if normalize_reward_error and rule != "perturbation":
             raise ValueError("reward normalization requires perturbation learning")
+        if not isinstance(bias_correct_reward_error, (bool, np.bool_)):
+            raise TypeError("bias_correct_reward_error must be boolean")
+        if bias_correct_reward_error and not normalize_reward_error:
+            raise ValueError("bias correction requires reward normalization")
+        self.bias_correct_reward_error = bool(bias_correct_reward_error)
+        self.reward_normalization_mass = 0.0
         self.normalize_reward_error = bool(normalize_reward_error)
         self.reward_variance = 0.0
         self.rule = rule
@@ -111,7 +119,20 @@ class MotorPlasticity:
         reward = float(np.clip(reward, -1, 1))
         raw_error = reward - self.reward_baseline
         error = raw_error
-        if self.normalize_reward_error:
+        if self.bias_correct_reward_error:
+            # Remove zero-initialization bias from the two-second weighted
+            # moments. The first observation establishes a baseline, rather
+            # than crediting motor perturbations for the shared birth posture.
+            if self.reward_normalization_mass == 0:
+                self.reward_baseline = reward
+                raw_error = 0.0
+            alpha_reward = -np.expm1(-dt_ms / 2000.0)
+            self.reward_normalization_mass += alpha_reward * (1 - self.reward_normalization_mass)
+            effective_alpha = (alpha_reward / self.reward_normalization_mass
+                               if self.reward_normalization_mass else 1.0)
+            self.reward_variance += effective_alpha * (raw_error * raw_error - self.reward_variance)
+            error = float(np.clip(raw_error / max(.01, np.sqrt(self.reward_variance)), -1, 1))
+        elif self.normalize_reward_error:
             self.reward_variance += -np.expm1(-dt_ms / 2000.0) * (
                 raw_error * raw_error - self.reward_variance)
             error = float(np.clip(raw_error / max(.01, np.sqrt(self.reward_variance)), -1, 1))
@@ -149,7 +170,10 @@ class MotorPlasticity:
         relative = np.clip(relative + delta, 1 - self.max_change, 1 + self.max_change)
         new = self.initial_weights * relative
         self.net.data[self.edge_indices] = new
-        self.reward_baseline += -np.expm1(-dt_ms / 2000.0) * raw_error
+        if self.bias_correct_reward_error:
+            self.reward_baseline += effective_alpha * raw_error
+        else:
+            self.reward_baseline += -np.expm1(-dt_ms / 2000.0) * raw_error
         return {
             "reward": reward, "reward_baseline": float(self.reward_baseline),
             "prediction_error": float(raw_error), "learning_signal": float(error),
@@ -175,18 +199,26 @@ class MotorPlasticity:
             "max_relative_change": float(np.max(changes)) if len(changes) else 0.0,
         }
 
+    @property
+    def _checkpoint_version(self):
+        return (4 if self.bias_correct_reward_error else 3 if self.normalize_reward_error
+                else 1 if self.rule == "hebbian" else 2)
+
     def save(self, path: str | Path):
         """Write a pickle-free NPZ checkpoint at the exact requested path."""
+        extra = ({"bias_correct_reward_error": np.array(True),
+                  "reward_normalization_mass": np.array(self.reward_normalization_mass)}
+                 if self.bias_correct_reward_error else {})
         with Path(path).open("wb") as handle:
             np.savez_compressed(
-                handle, version=np.array(3 if self.normalize_reward_error else 1 if self.rule == "hebbian" else 2),
+                handle, version=np.array(self._checkpoint_version),
                 normalize_reward_error=np.array(self.normalize_reward_error),
                 reward_variance=np.array(self.reward_variance),
                 rule=np.array(self.rule), topology=np.array(self._topology),
                 motor_indices=self.motor_indices, initial_weights=self.initial_weights,
                 parameters=np.array([self.learning_rate, self.tau_eligibility_ms, self.max_change]),
                 weights=self.net.data[self.edge_indices], activity=self.activity,
-                eligibility=self.eligibility, reward_baseline=np.array(self.reward_baseline),
+                eligibility=self.eligibility, reward_baseline=np.array(self.reward_baseline), **extra,
             )
 
     def load(self, path: str | Path, restore_traces: bool = False, *, weights_only=False):
@@ -202,14 +234,13 @@ class MotorPlasticity:
         try:
             with np.load(path, allow_pickle=False) as checkpoint:
                 version = checkpoint["version"]
-                if version.shape != () or version.dtype.kind not in "iu" or int(version) not in (1, 2, 3):
+                if version.shape != () or version.dtype.kind not in "iu" or int(version) not in (1, 2, 3, 4):
                     raise ValueError("unsupported checkpoint version")
                 expected = {"topology": np.array(self._topology),
                             "motor_indices": self.motor_indices,
                             "initial_weights": self.initial_weights}
                 if not weights_only:
-                    expected.update(version=np.array(3 if self.normalize_reward_error
-                                    else 1 if self.rule == "hebbian" else 2),
+                    expected.update(version=np.array(self._checkpoint_version),
                                     parameters=np.array([self.learning_rate,
                                         self.tau_eligibility_ms, self.max_change]))
                 for key, value in expected.items():
@@ -217,7 +248,18 @@ class MotorPlasticity:
                         raise ValueError(f"checkpoint mismatch: {key}")
                 stored_rule = str(checkpoint["rule"]) if "rule" in checkpoint else "hebbian"
                 normalized = bool(checkpoint["normalize_reward_error"]) if "normalize_reward_error" in checkpoint else False
-                if not weights_only and (stored_rule != self.rule or normalized != self.normalize_reward_error):
+                corrected = (checkpoint["bias_correct_reward_error"]
+                             if "bias_correct_reward_error" in checkpoint else np.array(False))
+                if corrected.shape != () or corrected.dtype.kind != "b":
+                    raise ValueError("invalid bias correction flag")
+                if bool(corrected) != (int(version) == 4) or (bool(corrected) and not normalized):
+                    raise ValueError("checkpoint mismatch: bias correction version")
+                mass = checkpoint["reward_normalization_mass"].copy() if int(version) == 4 else np.array(0.)
+                if (mass.shape != () or mass.dtype.kind not in "fi" or not np.isfinite(mass)
+                        or not 0 <= float(mass) <= 1):
+                    raise ValueError("invalid reward normalization mass")
+                if not weights_only and (stored_rule != self.rule or normalized != self.normalize_reward_error
+                                         or bool(corrected) != self.bias_correct_reward_error):
                     raise ValueError("checkpoint mismatch: learning rule or normalization")
                 weights = checkpoint["weights"].copy()
                 if weights.shape != self.initial_weights.shape or not np.isfinite(weights).all():
@@ -248,3 +290,4 @@ class MotorPlasticity:
         self.eligibility[:] = eligibility if restore_traces else 0
         self.reward_baseline = float(baseline) if restore_traces else 0.0
         self.reward_variance = float(variance) if restore_traces else 0.0
+        self.reward_normalization_mass = float(mass) if restore_traces else 0.0
