@@ -56,3 +56,14 @@ are compared only within the same objective. Early quiet rejection does not
 claim unrun cases complete. Latest training stays separate from best validated.
 A full frozen video of any behaviorally accepted model remains mandatory before
 normal startup/goal-completion claims. No model has been promoted.
+
+
+## Physical launch observed
+
+Session78321 is confirmed live under sourcecd36906d477df98817acab5e62cdb5d2b025e27903af674ec41bf24f5a9bc865.
+Producer stdout158262entries/556motor mappings, learning=True, seed80, body
+samples through0.40seconds. The venv launcher/interpreter pair is verified in
+OS inventory; only one heavy training job was started. The completed V23 bank
+is explicitly imported; source/body/sensory settings and all physical acceptance
+gates remain as registered. No completed new-body result is claimed. The live
+ledger remains unopened, best validatedunset, normal startup unchanged.
