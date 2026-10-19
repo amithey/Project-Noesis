@@ -90,3 +90,25 @@ for this no-camera birth; prior V23footage remains labeled as prior experience.
 Producer stdout confirms the same live worker78321 has begun seed81,
 learning=True, through1.00seconds. Source/reward/gates are unchanged mid-batch;
 no live ledger opened, no model promoted and normal startup unchanged.
+
+
+## Second birth: sustained fall at3.950seconds
+
+Seed81 ended with training_fall at3.950body seconds (780awake samples), with
+standing90.641026% only within that shortened window, stance slip17.658443mm/s,
+mean v5reward0.116746, heading advance2.631254mm and cycles10/10/12/12/10/1.
+It is a completed training failure, not a full five-second stance/walking pass.
+
+Independent artifact audit confirms the first sustained0.1-second fall at the
+last awake sample, negative terminal reward, exact expected parent, corrected
+reward moments and scalar formula (max error2.22e-16), body/CSV measurements,
+original topology/signs/bounds.36282selected edges change from the prior bank;
+max original deviation22.090577%, mean1.094390%. Checkpoint SHA25697338d7970f9822a3fc72dd5e6b924861728a84bd4c597c9cda9be2ac09b9e03.
+All completed non-video artifacts are copied/hash-verified. The current training
+role points explicitly to this retained failure experience, while best validated
+staysnull. No visual or behavioral success is inferred from checkpoint updates.
+
+Two births are audited, one full and one fall, totaling8.950body seconds.
+All25frozen cases remain pending. Producer stdout confirms seed82 is active
+in session78321, learning=True, through1.00seconds. No source/reward/gate change
+mid-batch, live-ledger read, model promotion or normal-startup change occurs.
