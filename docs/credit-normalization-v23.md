@@ -60,3 +60,25 @@ Producer stdout confirms158262entries,556motor mappings, learning=True,
 seed74 and physical t=0.00seconds. The launcher/interpreter process pair was
 verified in the OS inventory. No completed episode or new behavior result is
 claimed from this startup observation. The live ledger remains unopened.
+
+
+## First complete physical training birth (seed74)
+
+The first birth completed5seconds (990awake samples) with learning and motor
+exploration active. Standing89.191919%, stance slip15.846478mm/s, projected
+heading advance10.451245mm, leg cycles16/17/16/9/13/4; tripod score unavailable.
+These are training observations, not a matched frozen comparison or validated
+walking. Standing remains below90%, and all required frozen controls are pending.
+
+Independent immutable-artifact audit passes topology, signs and±50%bounds,
+actual expected parent, full horizon, body/CSV metrics and explicit weighted
+reward-moment reconstruction. Scalar reward max error1.11e-16;36118selected
+edges differ from the previous bank, max original-weight deviation22.533541%.
+The first awake prediction error and learning signal are exactly0, as designed.
+The observed unsaturated fraction is0.855000over the first
+awake second and0.854545over the full awake window. This single
+training seed does not establish behavioral improvement. Its complete checkpoint,
+CSV, neural spike artifacts and MP4 were copied and hash-verified in the user
+checkout, outputs/young-fly-v23-progress/cycle_000/train-0/attempt_0000.
+Worker session44661 continues the next birth (seed75), learning=True. No live
+ledger was opened, best validated remains unset and normal startup unchanged.
