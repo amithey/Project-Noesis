@@ -67,3 +67,26 @@ OS inventory; only one heavy training job was started. The completed V23 bank
 is explicitly imported; source/body/sensory settings and all physical acceptance
 gates remain as registered. No completed new-body result is claimed. The live
 ledger remains unopened, best validatedunset, normal startup unchanged.
+
+
+## First completed physical birth (seed80)
+
+The first birth completed5seconds, standing93.434343%, stance slip16.901372mm/s,
+mean v5reward0.182305, projected heading advance9.717429mm, cycles11/16/13/11/9/4.
+Learning and motor exploration remain active. This is not a frozen comparison;
+the new reward scale and different seed prevent comparison of reward means with
+V23as evidence of learning improvement. Slip remains high; walking is unproven.
+
+Independent immutable-artifact audit passes the actual v5scalar formula (max
+error2.22e-16), corrected weighted reward moments, full horizon/no sustained fall,
+all CSV/body measures, actual expected parent, topology/signs/±50%bounds.
+35937selected edges change from the parent; max original deviation21.594178%,
+mean1.086570%. Checkpoint SHA25610e1daa2966d8e23e30b124b63155f8a2dcf5aeebef5f4838f37330bdf71edf6.
+The completed checkpoint, CSV, motor/gait and sensory artifacts are copied with
+hash checks to the user checkout. checkpoint-roles.json explicitly distinguishes
+the current training checkpoint from best validatednull. There is no V24video
+for this no-camera birth; prior V23footage remains labeled as prior experience.
+
+Producer stdout confirms the same live worker78321 has begun seed81,
+learning=True, through1.00seconds. Source/reward/gates are unchanged mid-batch;
+no live ledger opened, no model promoted and normal startup unchanged.
