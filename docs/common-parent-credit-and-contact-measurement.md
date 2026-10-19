@@ -264,3 +264,22 @@ The mean is copied as latest unvalidated training separately from best validated
 null. Frozen10 is active in session31194 through.6s, no learning/exploration or
 fall cutoff. Final start-pointer ledger audit awaits terminal worker. No goal
 completion, full-validation claim, model promotion or startup change occurs.
+
+
+## Terminal mean-bank rejection
+
+Frozen10 completed5s/990awake, no learning/exploration/fall cutoff. Standing
+86.767677%, slip14.983849mm/s versus original9.366594 (required<=7.493275),
+reward.154267731 versus original−.357539995, heading advance6.812677mm and
+cycles16/16/14/8/7/6. Standing and slip fail, despite passing reward/advance/raw
+cycle checks. No learned-walking or promotion claim follows from those checks.
+Frozen weights exactly equal the mean, all learner statistics zero; independent
+CSV/body/scalar audit passes (max reward error2.22e-16). Every actual completed
+training start pointer matches2f3400da..., frozen start pointer matches mean
+ce1e6ca0..., and partial91 is excluded. Worker31194 exited0 after1278.797s;
+OS inventory found no matching Python/encoder before terminal report read.
+Terminal report SHA256a81ea7f7467864ffcb15fa819633d8020a0f82c6175dbd9088b37e6af42002e8.
+Mean and all failures remain retained; best validatednull,23required frozen
+cases unrun, no V26video and no startup change. Installed core source stayscd369.
+The next opt-in hypothesis expands learning into existing local motor-circuit
+input synapses; selection-only staging is documented in premotor-credit-v28.md.
