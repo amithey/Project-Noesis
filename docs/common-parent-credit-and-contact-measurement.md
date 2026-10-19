@@ -107,3 +107,35 @@ Hash-verified previous V24training trajectories show lower reward clipping in
 frames. Negative reward in valid posture is possible during genuine slip and
 is not itself evidence of wrong credit. No reward/gate/dynamics changes follow
 from this retrospective diagnostic, and it does not describe the active birth.
+
+
+## Contact-point distribution limits the proxy-artifact hypothesis
+
+The stopped one-second original10 diagnostic has611awake Tarsus5contact
+records and only one Tarsus3 and one Tarsus4record. Instantaneous contact slip
+median10.816648mm/s, mean15.729462mm/s;189/190awake frames exceed1mm/s.
+Thus proximal-contact / moving-distal-endpoint geometry is not a dominant
+explanation in this measured slice. This does not prove all longer trajectories
+or seeds equivalent. The diagnostic plot shows different instantaneous and5ms
+finite-difference measurements; no metric or reward is replaced. Actual control
+prefix and checkpoint arrays remain exact. PNG and distribution JSON are copied
+to the primary checkout. The common-parent worker continues unchanged.
+
+
+## First independent birth: failure retained, no mean bank yet
+
+Seed86 ended with sustained training fall at4.595s/909awake samples;
+standing91.969197% only in this shortened window, slip15.791781mm/s, mean
+reward.185450699, heading advance5.807274mm, support/lift counts12/13/14/6/10/4.
+The counts and advance do not constitute walking after a terminal fall.
+The immutable-case audit passes original topology/motor IDs/references/signs
+and +/-50%bounds (max original deviation22.671389%), actual v5formula
+(max error2.22e-16), independently reconstructed bias-corrected learning credit,
+CSV/body measures and first sustained-fall termination exactly at the final
+awake sample. Raw checkpoint, motor/gait, CSV and sensory artifacts are copied
+with hashes to young-fly-v26-progress. Actual attempt start-pointer ledger
+audit remains pending until worker termination; live ledger was not opened.
+The branch is retained and will enter the equal-weight mean including failures.
+No mean/best validated bank exists. Worker46529 has begun independent87 from
+the same registered V23parent, observed learningTrue through.2s. Core source,
+plan, reward and physical gates remain unchanged during the batch.
