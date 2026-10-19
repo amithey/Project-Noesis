@@ -124,3 +124,17 @@ Checkpoint SHA2565f6e1339845add1e2fe5749293162f75412d026981c3144c22b57c2dccf22a5
 The full short video, measurements and checkpoint are copied with hashes. Two
 births are verified (one full horizon, one terminal fall); seed70 is now active.
 No live ledger opened. Frozen validation and all promotion gates remain pending.
+
+## Third birth retained after early terminal fall
+
+Seed70 ended under the unchanged100ms sustained-fall rule at1.35s. Its86.9231%
+standing is over the shortened training window, not a five-second result.
+Slip11.796586mm/s and limited cycle counts cannot establish gait after this
+fall. The complete short recording, checkpoint and all CSV data were preserved.
+The observer verifies exact terminal timing, all scalar rewards/RPE/RMS traces,
+original topology/references/signs and50% bounds; maximum scalar reward error
+1.11e-16, maximum original-weight deviation20.3306%, mean1.0169%,31269 edges
+differ from the expected prior. Three births are now verified: one full horizon
+and two terminal falls. The fourth, seed71, is active. Different seeds and active
+learning/OU prevent treating these fractions as a matched learning comparison.
+No live ledger opened; validation and promotion remain outstanding.
