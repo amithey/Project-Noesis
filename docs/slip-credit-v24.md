@@ -133,3 +133,39 @@ Three births now total10.285body seconds: one full, two sustained falls.
 All25frozen cases remain pending. Producer stdout confirms seed83 is active
 in the same session78321, learning=True, through1.20seconds. The registered
 source/reward/controls/gates are kept fixed mid-batch; no live ledger opened.
+
+
+## Terminal result: stronger slip credit rejected
+
+All six births80..85 completed: two full five-second births and four sustained
+falls, totaling21.790body seconds. Final seed85 experience is retained as latest
+training, independently from best validated null. Frozen final-bank seed10
+completed5s without learning, exploration or early fall termination. Standing
+was8.080808%, slip5.758227mm/s versus original9.366594, mean reward−.805036 versus
+original−.357540. Lower slip accompanied collapse and is not walking improvement.
+The canonical standing and reward checks failed; final status rejected_validation.
+Nine of31cases committed;22controls not executed, no promotion/startup change.
+Worker78321 exited0, wall2381.188s; subsequent OS inventory found no matching
+Python/encoder before stopped ledger audit. Terminal report SHA256
+a12758a4efb001df0b0e92b422bcb49c2d7bb345fbf7eb7d1877e0cfeadbdb53.
+
+Both originals10/11 reproduce previous source body trajectories exactly, including
+all1000 non-reward rows and checkpoint/motor/sensory arrays; changed reward only
+is independently verified. No V24recording was requested; prior V23videos remain
+prior evidence, not V24footage. A passing model would still require frozen video.
+
+Seed83 diagnostics: full-training standing97.878788%, slip14.255995mm/s, actual
+path58.517596mm but net displacement1.340647mm, considerable turning, RH ground
+load only6.06%. New-load frames contain33.45% of total slip while occupying31.31%
+of time, which does not support a dominant contact-onset artifact. End-effector
+finite differences are a proxy, not proven contact-point slip. No measurement
+criterion is changed from these observations.
+
+## Next non-promoting screen
+
+Retain all failed experience. Select highest reward among full5s training births
+only (seed83, reward.3250846); no validation score is used for ranking. Frozen
+seed10 with identical source/context is a preliminary rejection screen, never
+a promotion decision. Plan and independently tested driver are under
+outputs/best-training-v25-prototype. All missing controls, full frozen video and
+normal-startup verification remain required before goal completion.
