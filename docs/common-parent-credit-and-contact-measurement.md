@@ -159,3 +159,20 @@ is treated as a learned improvement. The branch remains separate from an
 unformed mean and best validatednull. Worker46529 has started88, learningTrue.
 The long1480.609s wall time for87includes the previously observed host/tool
 pause; no additional simulated progress is inferred from elapsed time.
+
+
+## Third independent birth: early fall retained
+
+Seed88 ended at2.040s/398awake samples with training_fall, standing91.708543%
+in that shortened window, slip14.096214mm/s and mean reward.271306211.
+Heading advance1.689936mm and cycles4/7/5/2/2/3 do not convert a terminal fall
+into walking success. Lower slip and higher average reward in the shortened
+window are not treated as an improvement over full-horizon trajectories.
+The actual immutable-case audit passes scalar reward/corrected credit moments
+(max scalar error2.22e-16), exact first sustained-fall terminal timing, body/CSV
+measures, source/model/parent, topology/signs/original references and bounds
+(max original deviation23.378739%). All raw child artifacts are copied with
+hashes. Each independent branch remains retained, no mean or best bank yet.
+Three completed births total11.635body seconds, one full and two falls.
+The same worker46529 has begun89, learningTrue, observed through.2s. No live
+ledger read, source/plan/reward/gate change or model promotion occurs.
