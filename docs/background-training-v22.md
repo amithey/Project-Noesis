@@ -239,3 +239,31 @@ not a uniform original-weight improvement beyond diagnostic seeds66/67.
 Per-seed comparisons and hashes are preserved without extrapolating a biological
 mechanism or modifying the active protocol. No live ledger opened or model
 promoted; all candidate/obstacle/heldout requirements remain outstanding.
+
+
+## First one-hour boundary: complete controls retained, incomplete candidate replayed
+
+The first worker exited normally after3599.25wall seconds, with six complete
+training births and both original controls retained. Candidate10 reached3.545
+body seconds and statuswall_budget; it is not a five-second evaluation. No
+matching Python worker remained in the elevated OS inventory before ledger read.
+The stopped-worker auditor passed all eight committed cases, actual attempt
+start-checkpoint pointers, latest/best bank separation, original/frozen weights
+and all copied artifact hashes. Report SHA256cf7d7191feb871ea30a9c00097bf5086767705c34a4cf055e21209c28645914b.
+Best validated remains null;23required jobs remain. No partial result promoted.
+
+The partial attempt0008 was preserved separately:709body rows,699awake samples,
+3495neural ms and31643motor events. Frozen weights equal the complete final
+training bank79ed5b2c3392ca082f8289ad8e43abbedd0162fcd01cb843e6f4987df471f418,
+with zero learner traces. The first wall report/audit and all partial files have
+separate immutable copies and hashes. Partial checkpoint76d8984d3b780c7051f540ff84f3ec4b427ea60471b6ff2e2ca73c1fdf528a5b
+contains frozen weights/traces, not a resumable body/membrane state.
+
+Exact --resume under source565 and unchanged settings started a fresh full
+seed10 candidate episode in session32017, with another3600-second wall budget.
+It loads the complete final training bank, skips all eight completed jobs and
+replays from episode start. Stdout confirms learning=False; the first three
+printed0.2/0.4/0.6s neural/body samples match. Full CSV/motor-event prefix
+equivalence will be checked only after the replay completes. No live ledger
+was opened after resume. All full-window, slip, obstacle, ablation and heldout
+requirements remain unchanged; normal startup and model promotion unchanged.
