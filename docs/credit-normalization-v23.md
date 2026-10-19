@@ -203,3 +203,29 @@ learning=False. All25frozen cases remain pending at this observation. The
 new candidate has not yet completed any frozen evaluation; differing training
 seeds and active exploration prevent attributing per-birth metric differences
 to learning. Source/reward/gates unchanged, no live ledger read and no promotion.
+
+
+## Observational overhead and prospective exact resume
+
+The first frozen original control is still active and has fallen; this is an
+original-weight control, not a new candidate outcome. Rendering remains at
+0.1x playback (about300external frames per body-second), with streamed encoding.
+A separate optional camera-cadence prototype preserves the default and passes
+10lightweight clock/stream tests; it is not installed, physically benchmarked
+or evidence of speedup. A test fixture initially duplicated a camera name in
+one scene; separate episode scenes fixed the fixture. Active source stays6eb.
+
+On the next exact resume after verified worker termination/stopped-ledger audit,
+we will first omit the already-supported --video flag. train_validate explicitly
+excludes video from resume settings; no neural/body/reward or sensory setting
+changes. All six completed training videos (including two failures) remain
+preserved, plus any saved interrupted-control video. Completed cases are not
+rerun or relabeled. The unfinished case restarts from its beginning; full
+original CSV/motor/shared checkpoint arrays will be compared with V22, and
+its partial prefix where available, to test observation equivalence.
+
+This does not skip any five-second control or loosen any gate. A full frozen
+video of any behaviorally accepted candidate still must be recorded/visually
+verified before normal startup changes. planned-resume-without-video.json
+records the exact future arguments and stop/audit prerequisites; it has not
+been executed. No second heavy worker or camera benchmark was started.
