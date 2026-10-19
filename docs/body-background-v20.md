@@ -105,3 +105,35 @@ and this is explicitly an original-weight control. The image/review are saved.
 The live worker has advanced to trained seed67/background60, with two cases
 remaining. A separate earlier-training-bank test has been prepared, not launched;
 see best-training-v21.md. All source/driver/plan hashes for V20 remain unchanged.
+## All eight diagnostic cases complete and audited
+
+Worker92000 terminated normally after all remaining cases; an elevated OS process
+inventory found no matching body-background worker before the terminal ledger
+was opened. All eight unique complete five-second cases have frozen weights,
+zero learning/OU exploration and no early fall cutoff. The separate one-second
+attempt remains incomplete. Terminal report SHA256:
+373138d0b31d0d6089cee617488b25e022ed2541fe377aebc307569e01c0c618.
+
+The eighth case (trained seed67/background40) stands83.9394%, with mean slip
+15.459190mm/s, versus original61.3131% and12.609414mm/s. Standing improves in
+this one matched weight contrast, but remains below90% and fails relative-slip.
+Standing-conditioned slip is14.650954 versus14.968752mm/s (about2.1% lower).
+The same-background weight comparisons fail at both gains. At60, both trained
+cases fall extensively; low all-window slip cannot establish walking. At40,
+both trained cases fail90% standing and20% relative-slip improvement. Cycles
+and heading distances alone do not establish useful gait. The lower background
+gain improves standing in all four fixed-weight contrasts, but is not promoted.
+
+The standalone completed-case auditor verifies the exact source, driver, plan,
+parent bank, every frozen checkpoint, final summary versus committed case JSON,
+all copied artifact hashes, all eight CSV-derived physical summaries and both
+independently reconstructed behavior-gate comparisons. Ruff passes. Full report,
+completed-body-audit.json, completed-csv-audit.json, raw data and videos are in
+the primary workspace's outputs/body-background-v20-progress. Best validated
+remains null; normal startup is unchanged. Validation/heldout/obstacle gates
+for any proposed new setting remain outstanding. No V20 worker is left running.
+
+The next diagnostic now starts the earlier bank chosen exclusively from full
+training-episode reward, at both background gains, without changing the
+production model. See best-training-v21.md. This is candidate evaluation,
+not new training or evidence of learned gait.
