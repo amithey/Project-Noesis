@@ -112,3 +112,24 @@ Two births are audited, one full and one fall, totaling8.950body seconds.
 All25frozen cases remain pending. Producer stdout confirms seed82 is active
 in session78321, learning=True, through1.00seconds. No source/reward/gate change
 mid-batch, live-ledger read, model promotion or normal-startup change occurs.
+
+
+## Third birth: early-fall failure retained
+
+Seed82 ended at1.335body seconds (257awake samples) with training_fall,
+standing78.599222%, slip15.738539mm/s, mean v5reward0.017855 and heading advance
+2.122573mm. Cycles4/5/3/2/2/3 do not make this a full five-second walking pass.
+Short-window slip is not compared with full-window controls as improvement.
+
+The immutable-case audit confirms first sustained-fall termination exactly at
+the last awake sample, negative terminal reward, v5scalar/corrected moments
+(max error2.22e-16), actual parent, physical metrics, signs/topology/bounds.
+32438selected edges differ from the preceding bank; max original deviation
+22.272599%, mean1.095293%. Checkpoint SHA25640d880495b20870e64e91bd451932dd620faf5c2a99f086f936dc500e0a409f9.
+All completed artifacts are copied/hash-verified; latest training is retained
+separately from best validatednull. No model or startup change is promoted.
+
+Three births now total10.285body seconds: one full, two sustained falls.
+All25frozen cases remain pending. Producer stdout confirms seed83 is active
+in the same session78321, learning=True, through1.20seconds. The registered
+source/reward/controls/gates are kept fixed mid-batch; no live ledger opened.
