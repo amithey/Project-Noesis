@@ -261,3 +261,35 @@ equivalence will be checked after completion. The incomplete episode restarts
 from its beginning; completed training births are not repeated. New wall limit
 3600seconds. No live ledger opened after resume, no second heavy worker started,
 no normal-startup/model promotion change. Full new frozen coverage is pending.
+
+
+## Both frozen original controls complete and exactly matched
+
+Original seed10 completed5seconds, standing44.242424%, stance slip9.366594mm/s,
+mean reward-0.173475. Original seed11 completed5seconds, standing92.929293%,
+slip16.732374mm/s, mean reward0.551633. Both use original weights exactly,
+zero learner traces/moments and exploration, no fall cutoff. Independent CSV,
+reward, genotype/sign/bound and full-horizon checks pass. Both are baselines;
+no trained candidate result is inferred from their movement or cycles.
+
+The strict comparison helper passes for both seeds: all1000CSV rows/every
+column byte-exact to the prior filmed V22 control; all recorded motor-event
+arrays, shared original-checkpoint arrays and gait analysis exactly equal.
+Only model-context schema7/8 and bias-correction metadata differ as expected.
+The resumed source6eb plus omitted evidence camera preserve these recorded
+frozen observations relative to565; this does not prove trained equivalence.
+
+Original10 also directly replays all961rows and40121motor events from the
+interrupted attempt exactly. Full recorded motor events41537 over4950neural ms;
+partial4755ms. Every partial/full checkpoint array matches. Raw final sensory
+arrays and eye-image pixels match the filmed V22 original exactly. The old
+partial remains separate and incomplete. Full no-camera wall318.672s versus
+old filmed partial847.938s is an observation with different lengths/host load,
+not a general causal throughput benchmark. Original11 wall307.312s.
+
+Eight cases are now individually audited (six training and two full frozen
+originals);23required cases remain. Producer stdout confirms the trained
+seed10 frozen candidate has begun, learning=False. Final training bank2f340
+is retained unchanged, best validated remainsnull and normal startup unchanged.
+No live ledger read; next interpretation requires a completed candidate and
+its matched standing/cycle/progress/slip gates.
