@@ -61,6 +61,13 @@ def obstacle_decision(candidate, ablated):
                for a, b in zip(candidate, ablated, strict=True))
 
 
+def training_exploration(job_id: str, schedule) -> float:
+    """Motor-exploration amplitude (mV/ms) for a training job: the registered 1.5 unless a per-birth schedule is given."""
+    if not schedule:
+        return 1.5
+    return float(schedule[int(job_id.split('-')[1])])
+
+
 def build_jobs(episodes, seed, validation, heldout, training_arena='graded'):
     """Choose training scenes while retaining every frozen evaluation case."""
     if training_arena not in ('graded', 'quiet', 'obstacle'):
@@ -85,6 +92,8 @@ def main():
                     help='start a new protocol with compatible learned weights from an earlier model')
     ap.add_argument('--normalize-reward-error', action='store_true')
     ap.add_argument('--bias-correct-reward-error', action='store_true')
+    ap.add_argument('--exploration-schedule', type=float, nargs='+', default=None,
+                    help='training-only motor exploration (mV/ms) per birth, one value per episode; default 1.5 each')
     ap.add_argument('--early-reject', action='store_true', help='reject failed quiet validation before consuming further controls')
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--proprioceptive-encoding', choices=ENCODINGS, default='legacy')
@@ -109,6 +118,10 @@ def main():
     args = ap.parse_args()
     if not np.isfinite(args.bg_weight) or args.bg_weight < 0:
         ap.error('bg-weight must be finite and nonnegative')
+    if args.exploration_schedule is not None and (
+            len(args.exploration_schedule) != args.episodes
+            or any(not np.isfinite(x) or x < 0 or x > 1.5 for x in args.exploration_schedule)):
+        ap.error('exploration-schedule needs one finite value in [0, 1.5] per training episode')
     if not np.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 3600:
         ap.error('wall-seconds must be in (0, 3600]')
     if args.evaluation_seconds != 5.:
@@ -152,7 +165,8 @@ def main():
         digest.update(source.relative_to(Path(lab.__file__).resolve().parents[1]).as_posix().encode())
         digest.update(source.read_bytes())
     settings = {k: str(v.resolve()) if isinstance(v, Path) else v for k, v in vars(args).items()
-                if k not in ('resume', 'wall_seconds', 'video')}
+                if k not in ('resume', 'wall_seconds', 'video')
+                and not (k == 'exploration_schedule' and v is None)}  # absent unless used: old reports still resume
     settings['source_sha256'] = digest.hexdigest()
     report_path = args.output/'report.json'
     if args.resume:
@@ -195,7 +209,7 @@ def main():
             case.learn = job['stage'] == 'training'
             case.seconds = args.seconds if case.learn else 5.
             case.training_fall_seconds = args.training_fall_seconds if case.learn else 0.
-            case.motor_exploration = 1.5 if case.learn else 0.
+            case.motor_exploration = training_exploration(job['id'], args.exploration_schedule) if case.learn else 0.
             case.import_weights = (args.import_weights is not None
                                    and report['last_training_checkpoint'] is None and case.learn)
             case.no_environment_senses = job['model'] == 'ablated'
