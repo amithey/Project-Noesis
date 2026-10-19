@@ -95,3 +95,32 @@ verified from committed receipts, while actual attempt start-pointer metadata
 remains for the terminal-ledger audit. Partial/budget cases cannot be banked as
 completed results. Frozen validation/heldout/obstacle gates remain outstanding;
 best validated remains null and normal startup is unchanged.
+
+
+## Video/motion limits and second training birth
+
+The first complete video has1495frames at30fps. Frames at displayed physical
+times1.52/3.02/4.52s were directly inspected: sampled bodies are upright and leg
+configurations/headings differ. Sparse frames do not certify coordinated gait.
+The first training trajectory has61.007439mm horizontal path and2.946193mm net
+horizontal displacement. A separate immutable-CSV analysis compares matched
+original/earlier-bank frozen cases at gain40, with training listed separately.
+Standing-adjacent projected-heading angular rates remain large: original seeds
+66/67 about333/329deg/s, earlier bank294/311deg/s, first new training332deg/s.
+These conditional state samples and projected-heading estimates are descriptive,
+not independent rigid-body rotation measurements or causal neural proof. They
+show that translation/turning/slip must accompany leg-cycle reporting; no
+acceptance criterion or active reward/controller was changed. Source CSV hashes,
+interval definitions, script, sampled image and interpretation limits are saved.
+
+Seed69 ended under the existing100ms sustained-fall rule at3.885body seconds,
+standing90.2216% only over its shortened training window, slip16.276339mm/s.
+It is a completed training birth with retained experience, not a five-second
+behavioral success. Every terminal observation and scalar reward/RPE/baseline/
+RMS signal matches the independent audit (reward max error1.11e-16). Topology,
+original references, signs and50% bounds are preserved; max original-weight
+deviation20.8956%, mean1.0060%,35242 edges differ from the expected prior bank.
+Checkpoint SHA2565f6e1339845add1e2fe5749293162f75412d026981c3144c22b57c2dccf22a50.
+The full short video, measurements and checkpoint are copied with hashes. Two
+births are verified (one full horizon, one terminal fall); seed70 is now active.
+No live ledger opened. Frozen validation and all promotion gates remain pending.
