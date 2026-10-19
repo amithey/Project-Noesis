@@ -195,3 +195,28 @@ attempts separately. It requires --worker-stopped and supports an explicit exact
 archived source root. It has not opened the live report and will be executed
 only after session/OS termination is verified. This additional audit does not
 change source, training configuration, reward or controller.
+
+
+## First frozen original control complete: lower-gain benefit is not universal
+
+Original seed10 completed all five seconds at gain40 with learning/exploration
+off: standing44.2424%, slip9.366594mm/s, mean reward-0.173475. Original weights,
+zero learner traces, full horizon/no fall cutoff, scalar reward and physical
+summary checks pass. The failure video is preserved.
+Checkpoint SHA256bafea4a21f54e4611097d40dc3112909138b92f4f0e32a63c35f2a0b25b36e6e.
+This is baseline behavior; the newly trained bank has not yet been evaluated.
+
+The matched prior original seed10/gain60 control stood92.2222%, slip15.839122
+and reward+0.519817. Saved weights, original references, topology, motor IDs and
+parameters are exactly equal; both have zero traces. Every saved model-context
+field is equal except bg_weight60/40. Lower gain improved original diagnostic
+seeds66/67 but worsens original seed10 standing. Lower all-window slip accompanies
+falling and cannot establish walking. This numerical-context contrast does not
+prove a biological mechanism or robust parameter improvement. It is preserved
+in original10-background-contrast.json; no source/reward/gate change is made.
+
+The progress renderer now shows completed frozen controls separately from
+training, and explicitly lists incomplete required coverage. Re-rendering the
+already-verified control is idempotent; its checkpoint/audit records are unchanged.
+Ruff passes. The live ledger remains unopened. The original seed11 control is
+next; all candidate/obstacle/heldout gates remain outstanding.
