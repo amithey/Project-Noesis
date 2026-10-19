@@ -138,3 +138,18 @@ differ from the expected prior. Three births are now verified: one full horizon
 and two terminal falls. The fourth, seed71, is active. Different seeds and active
 learning/OU prevent treating these fractions as a matched learning comparison.
 No live ledger opened; validation and promotion remain outstanding.
+
+## Fourth birth completes five seconds
+
+Seed71 completed the full horizon, standing95.6566%, heading-relative distance
+13.866417mm, cycles20/17/13/8/11/5 and mean stance slip14.526927mm/s. These
+are training-with-exploration measurements, not a matched frozen improvement.
+Every body row, reward/error/RMS signal and terminal condition passes the
+independent observer; max reward error1.11e-16. Topology, original references,
+signs and50% bounds are preserved; max original-weight deviation20.7866%,
+mean1.0317%,35890 edges differ from the expected prior checkpoint.
+Checkpoint SHA256d13832e1d1a5455ccaacea2f4328af2a694a68066cea8b90f465cf1639b351c8.
+All complete artifacts and video are copied with hashes. Four births are now
+verified: two full horizons and two terminal falls. Seed72 is active. All frozen
+validation/heldout/obstacle gates remain pending; no live ledger opened and no
+model promoted. Source and training configuration remain unchanged.
