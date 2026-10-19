@@ -168,3 +168,30 @@ All short-run measurements/video and the complete weight bank are preserved
 with hashes. Five births are verified: two full horizons, three terminal falls.
 The sixth, seed73, is active; frozen matched evaluations follow all six births.
 No live ledger opened, source/configuration unchanged, no model promoted.
+
+
+## Six-birth training phase complete; frozen controls running
+
+Seed73 ended under the unchanged terminal-fall rule at2.76s. Its92.8044%
+standing and12.458617mm/s slip are shortened-window training measurements.
+All six births are now audited/preserved: two full5s horizons, four terminal
+falls, 18.945 total body seconds. No partial wall-budget episode was
+banked. Max original-weight deviation in the final bank22.0710%, mean1.0588%;
+33756 edges differ from the expected prior bank. Every scalar reward/RPE/RMS
+trace and terminal condition matches the immutable measurements.
+Final training checkpoint SHA25679ed5b2c3392ca082f8289ad8e43abbedd0162fcd01cb843e6f4987df471f418.
+
+The worker automatically advanced to the original-weight validation control
+seed10, with learning=False; all frozen cases use gain40, exploration0, full5s
+and no fall cutoff. Candidate performance is not yet known. Validation10/11,
+heldout200..202 and obstacle/ablation coverage remain mandatory. No candidate
+promoted; normal startup unchanged.
+
+A stopped-worker ledger auditor is prepared and Ruff passes. It will bind every
+individually audited case to its actual attempt start checkpoint, verify latest
+training/best-validated bank retention across cycles, independently reconstruct
+complete quiet/obstacle gates, list unrun controls and preserve incomplete
+attempts separately. It requires --worker-stopped and supports an explicit exact
+archived source root. It has not opened the live report and will be executed
+only after session/OS termination is verified. This additional audit does not
+change source, training configuration, reward or controller.
