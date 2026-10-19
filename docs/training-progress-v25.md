@@ -54,11 +54,11 @@ validation (10, 11) nor the held-out (200-202) sets; no seed used in training (8
 | 12 | **0.202** | 0.742 | **−0.54** | 7.4 | 13.8 | +6.9 |
 | 13 | 0.891 | 0.863 | +0.03 | 16.9 | 15.9 | +9.4 |
 | 14 | 0.942 | 0.435 | +0.51 | 15.7 | 14.1 | +7.2 |
-| mean (sd) | 0.626 (0.38) | 0.682 (0.23) | −0.05 (0.55) | | | |
+| mean (sd) | 0.626 (0.41) | 0.682 (0.23) | −0.057 (0.58) | | | |
 
 - **The seed-10 result does not generalise.** The candidate stands ≥ 0.9 on 2 of 5 seeds (10 and 14; seed 13 is 0.891), falls
   onto its back on two (11 and 12), and the original weights stand ≥ 0.9 on 1 of 5 (seed 11). The mean difference in standing
-  is −0.05 with a spread of 0.55: no evidence that the candidate stands more reliably than the untrained weights.
+  is −0.057 with a spread (sd of the five paired differences) of 0.58: no evidence that the candidate stands more reliably than the untrained weights.
 - Both models are seed-sensitive in the same way as the earlier `g_I` = 1 baseline (standing 0.10-0.96 across seeds); the
   candidate's pattern across seeds differs from the original's, it is not uniformly better. The relation of the protocol's
   validation seeds to this: seed 11 is a validation seed, where this candidate falls (0.159) — the early-rejection rule would
