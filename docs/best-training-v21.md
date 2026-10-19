@@ -59,3 +59,23 @@ Observe stdout only while live. preserve_completed_case.py checks exact source,
 plan, selected parent, frozen checkpoint and matched original-control coverage,
 then copies only stdout-confirmed immutable completed artifacts. Ruff passes
 for this helper. No live ledger was opened; no gait success or promotion claimed.
+
+## First earlier-bank frozen case complete; failed standing
+
+Seed66/background60 completed the full five seconds with learning and exploration
+off. Standing is30.8081% versus original78.9899%, mean reward-0.364691 versus
++0.334575 (the exact matching summary is pinned in plan.json). All-window slip
+is7.595033 versus12.620769mm/s, but standing-conditioned slip is14.533034 versus
+13.998776mm/s: the lower all-window value is associated with extensive falling,
+not improved standing gait. Standing-window heading progress is3.724743mm versus
+6.321267mm original; all-window12.088498mm and cycle counts cannot overcome the
+failed standing gate. Physical and comparison checks use the actual saved summaries.
+
+The stdout-confirmed case was independently verified against selected parent
+7baaf2fabf0c238884f74260e2f3cfa420ce5df4880c6d47c60d62cea2f6247f,
+unchanged source/plan, original topology and zero learning traces. Every completed
+artifact, including the full video, was copied with SHA256 checks. The reused
+independent CSV auditor verifies all1000 rows/990 awake samples,5ms cadence,
+standing, slip, scalar reward and heading progress. The live ledger was never
+opened. The worker has advanced to seed66/background40; three cases remain.
+No source or active driver changes, no model promotion or startup update.
