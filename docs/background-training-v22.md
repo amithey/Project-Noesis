@@ -220,3 +220,22 @@ training, and explicitly lists incomplete required coverage. Re-rendering the
 already-verified control is idempotent; its checkpoint/audit records are unchanged.
 Ruff passes. The live ledger remains unopened. The original seed11 control is
 next; all candidate/obstacle/heldout gates remain outstanding.
+
+
+## Both required original quiet controls complete
+
+Original seed11 completed five seconds, standing92.9293%, slip16.732374mm/s
+and reward0.551633. Exact original weights and zero learner traces/exploration,
+all CSV/scalar reward checks and full-horizon/no-early-cutoff checks pass.
+Checkpoint SHA256bafea4a21f54e4611097d40dc3112909138b92f4f0e32a63c35f2a0b25b36e6e.
+Both original quiet controls10/11 are now complete; the trained candidate10
+frozen case has started with learning=False. No completed candidate result yet.
+
+The two-seed original gain contrast rechecks exact weights/references/topology,
+parameters and all learner traces; all saved model-context fields match except
+bg_weight60/40. Seed11 standing at60/40 is94.9495%/92.9293%, slip16.222091/
+16.732374mm/s. Together with seed10 standing92.2222%/44.2424%, lower gain is
+not a uniform original-weight improvement beyond diagnostic seeds66/67.
+Per-seed comparisons and hashes are preserved without extrapolating a biological
+mechanism or modifying the active protocol. No live ledger opened or model
+promoted; all candidate/obstacle/heldout requirements remain outstanding.
