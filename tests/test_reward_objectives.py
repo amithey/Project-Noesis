@@ -8,7 +8,7 @@ import pytest
 
 from noesis.embodied_metrics import GROUNDED_OBJECTIVES, locomotion_reward
 
-V3, V4 = GROUNDED_OBJECTIVES
+V3, V4 = GROUNDED_OBJECTIVES[:2]
 
 
 def reference(name):

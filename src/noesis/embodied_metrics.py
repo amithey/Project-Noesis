@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import numpy as np
 
-GROUNDED_OBJECTIVES = ("standing-first-linear-slip-v3", "standing-gate-linear-slip-v4")
+GROUNDED_OBJECTIVES = ("standing-first-linear-slip-v3", "standing-gate-linear-slip-v4",
+                       "standing-gate-linear-slip-v5")
 
 
 def body_reward(
@@ -75,7 +76,10 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     The 1e-5 force threshold and 5 mm/s slip scale are explicit assumptions.
     This contact gate rejects airborne translation; it does not certify gait.
     The opt-in v4 objective credits actual upright/height-valid standing with at
-    least one force-bearing foot; v3 remains the exact default objective.
+    least one force-bearing foot. Opt-in v5 retains that standing credit and
+    increases only the linear slip penalty fivefold, from 0.006 to 0.03 per
+    mm/s. This is a learning hypothesis; physical acceptance stays independent.
+    v3 remains the exact default objective and v4 remains unchanged.
     """
     if objective not in GROUNDED_OBJECTIVES:
         raise ValueError("unknown grounded reward objective")
@@ -122,6 +126,13 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         reward = float(np.clip(.7 * standing - .8 * (1 - standing)
                                + .1 * standing * support_quality + .5 * progress
                                - .05 * base['effort'] - .03 * slip_cost - .2 * obstacle_cost, -1, 1))
+    elif objective == "standing-gate-linear-slip-v5":
+        # Preserve explicit standing/support/progress feedback while giving
+        # measured foot sliding greater influence on action-credit learning.
+        standing = bool(support.any() and .3 <= base['height_mm'] <= 1.5 and uprightness >= .7)
+        reward = float(np.clip(.7 * standing - .8 * (1 - standing)
+                               + .1 * standing * support_quality + .5 * progress
+                               - .05 * base['effort'] - .15 * slip_cost - .2 * obstacle_cost, -1, 1))
     return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
             'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
             'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,

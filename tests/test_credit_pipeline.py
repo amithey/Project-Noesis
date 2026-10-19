@@ -65,7 +65,8 @@ def test_invalid_bias_configuration_precedes_body_or_output(lab_environment, mon
     assert not output.exists() and not env.simulations
 
 
-def test_opt_in_is_shared_by_all_controls_and_resume_is_strict(monkeypatch, tmp_path):
+@pytest.mark.parametrize('objective', lab.GROUNDED_OBJECTIVES)
+def test_opt_in_is_shared_by_all_controls_and_resume_is_strict(monkeypatch, tmp_path, objective):
     assert Path(tv.__file__).is_relative_to(Path(__file__).resolve().parents[1]/'src')
     calls = []
     interrupt = [True]
@@ -91,7 +92,8 @@ def test_opt_in_is_shared_by_all_controls_and_resume_is_strict(monkeypatch, tmp_
     monkeypatch.setattr(tv.lab, 'run_episode', episode)
     output = tmp_path/'run'
     base = ['train_validate', '--data', str(tmp_path/'data'), '--output', str(output),
-        '--episodes', '1', '--seed', '74', '--bg-weight', '40', '--normalize-reward-error']
+        '--episodes', '1', '--seed', '74', '--bg-weight', '40', '--normalize-reward-error',
+        '--grounded-objective', objective]
     monkeypatch.setattr('sys.argv', base+['--bias-correct-reward-error'])
     tv.main()
     report = output/'report.json'
@@ -109,7 +111,7 @@ def test_opt_in_is_shared_by_all_controls_and_resume_is_strict(monkeypatch, tmp_
     assert result['settings']['bias_correct_reward_error'] is True
     for c in calls:
         assert c['bias_correct_reward_error'] and c['normalize_reward_error']
-        assert c['bg_weight'] == 40
+        assert c['bg_weight'] == 40 and c['grounded_objective'] == objective
         assert c['motor_exploration'] == (1.5 if c['learn'] else 0.)
         assert not c['no_senses'] and not c['no_balance']
     assert any(c['no_environment_senses'] and not c['learn'] for c in calls)
