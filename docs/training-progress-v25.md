@@ -38,6 +38,6 @@ obstacle cases are **not run**. No claim of walking.
 - **The remaining failure is the slip gate only.** On seed 10 the *original* weights lie on their back for most of the
   episode (standing 0.44), so their stance slip is low (9.4 mm/s) simply because few feet are on the ground; a standing
   candidate (slip 16.0) cannot meet "≥ 20% below original" there. On seed 11 the original stands (slip 16.7) and the
-  candidate's slip would only need to be ≤ 13.4, a 4% reduction is what this run's seed-10 value (16.0) would give against it
-  if it were similar. The gate definition was not changed; this is an observation for whoever owns the protocol.
+  candidate's slip would have to be ≤ 13.4; its seed-10 value of 16.0 would be only about a 4% reduction against that original.
+  The gate definition was not changed; this is an observation for whoever owns the protocol.
 - Training births still fall often (3 of 6 ended by the 0.1 s fall cutoff), including at low exploration.
