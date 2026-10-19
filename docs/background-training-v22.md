@@ -33,6 +33,13 @@ the invocation now explicitly selects staged src. Those initial failures are
 preserved in the plan, not counted as passing staged tests. Ruff passes.
 
 Candidate files live in outputs/protocol-v22-background-training-candidate.
-They are not installed or launched. Complete V21 first, then run full unit/
-integration/Ruff checks before installation and fresh bounded training. This
+They are not installed or launched. All297 unit/integration tests now pass
+on staged source in118.99seconds; Ruff passes across staged src and both test
+sets. Complete V21 before installation and fresh bounded training. This
 staging does not constitute neural/body improvement or verified walking.
+
+
+The full-suite invocation explicitly selects staged src, and the new source-path
+assertion passes. Logs and hashes are preserved in plan.json. This runs separately
+from the active diagnostic and does not change its source, driver or parameters.
+The installation gate remains completion/archival of all four V21 body cases.
