@@ -13,7 +13,7 @@ for seed 10 equals the protocol's recorded value (0.0808), which checks the prob
 
 | Seed | exploration | standing | stance slip (mm/s) | heading-forward (mm) | supporting feet | uprightness | reward | legs with ≥ 2 cycles |
 |---|---|---|---|---|---|---|---|---|
-| 10 | off (protocol) | **0.081** | 5.8 | +9.2 | 1.19 | −0.49 | −0.805 | 6 of 6 (cycles 0-19) |
+| 10 | off (protocol) | **0.081** | 5.8 | +9.2 | 1.19 | −0.49 | −0.805 | 5 of 6 (LF 0 cycles) |
 | 11 | off (protocol) | **0.188** | 6.7 | +9.3 | 1.36 | −0.29 | −0.672 | 6 of 6 |
 | 10 | on, 1.5 mV/ms | **0.932** | 16.8 | +9.0 | 2.44 | +0.86 | +0.197 | 6 of 6 |
 | 11 | on, 1.5 mV/ms | **0.936** | 15.7 | +11.9 | 2.51 | +0.87 | +0.213 | 6 of 6 |
