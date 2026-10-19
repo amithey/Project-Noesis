@@ -79,3 +79,17 @@ independent CSV auditor verifies all1000 rows/990 awake samples,5ms cadence,
 standing, slip, scalar reward and heading progress. The live ledger was never
 opened. The worker has advanced to seed66/background40; three cases remain.
 No source or active driver changes, no model promotion or startup update.
+
+## Earlier bank at reduced gain: standing passes, slip improvement fails
+
+Seed66/background40 completed five frozen seconds, standing94.8485% (original
+95.7576%), heading9.431014mm and cycles12/14/16/8/11/4. Mean slip14.160074
+versus15.429347mm/s improves8.23%, below the required20%. Mean reward0.594951
+versus0.586967 passes the existing reward comparison. Standing, cycle, progress
+and reward gates pass for this single diagnostic case; slip fails and no model
+is promoted. Standing-conditioned slip13.995344 versus15.415065mm/s is also
+short of20%. The independent CSV auditor, frozen-parent/context/source checks
+and all copied artifact hashes pass. The full video is preserved. Two cases
+remain; the live worker has advanced to seed67/background60. The V21 source and
+driver remain immutable. A separate staged CLI candidate will allow prospective
+training at gain40 with fully matched controls; see background-training-v22.md.
