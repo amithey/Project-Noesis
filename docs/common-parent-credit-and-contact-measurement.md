@@ -55,3 +55,18 @@ and original checkpoint arrays of the existing five-second original10control.
 It is NOT a behavioral trial and cannot establish standing/walking success.
 Only after V25 is terminal and matching Python/encoder absence verified may
 another physical worker start. No concurrent simulation has been launched.
+
+
+## V25 terminal rejection
+
+Frozen seed10 of training83 completed5s with zero learning/exploration and no
+fall cutoff. Standing93/990=9.393939%, mean uprightness−.474094, mean slip
+4.698131mm/s and reward−.765151. Standing and reward checks failed; low slip
+accompanied collapse. Recorded support/lift cycles are not walking during this
+collapse. Frozen weight arrays exactly equal the selected bank and all learner
+statistics are zero. Body CSV measures independently recomputed.
+Worker18585 exited0 after680.735s; OS inventory confirmed no matching worker
+or encoder before stopped report read. All completed non-video artifacts copied
+with hash checks. No promotion; latest training85 is retained independently.
+Read-only original10 contact measurement now takes precedence over the prepared
+common-parent pilot. No additional learning has yet been performed.
