@@ -111,3 +111,27 @@ seed76; no live ledger read or duplicate worker started. Two of six training
 births are audited; all25frozen cases remain pending. The existing experiment
 continues before choosing another change. Detailed immutable-file hashes and
 metric definitions accompany completed-motion-diagnostics.json.
+
+
+## Third training birth: sustained-fall failure retained
+
+Seed76 ended with training_fall at4.895body seconds (969awake samples),
+standing86.996904% and stance slip17.495973mm/s. Cycles12/16/14/8/15/5 and
+projected heading advance7.828961mm do not establish walking. The independent
+artifact auditor confirms the first sustained0.1-second fall triggers exactly
+at the final awake sample, with negative terminal reward. This is a completed
+training attempt, not a completed5-second behavioral test.
+
+The complete failure MP4/CSV/neural artifacts and checkpoint are copied with
+hash checks. Checkpoint SHA25629efb902f4040bbaf41a4d01108edcc815cd60bde505d8b07413b67b315e6339.
+Topology, original references, signs and bounds remain intact;36216selected
+edges change from the preceding bank, max original deviation23.734955%.
+Reward reconstruction max error1.11e-16, with normalization state independently
+recomputed using weighted accumulators. Experiences are retained for subsequent
+training; this candidate is not promoted or described as validated.
+
+Three of six births now contribute14.895body seconds, two full windows and one
+terminal fall. All25frozen cases remain pending. Producer stdout confirms the
+same live session44661 has begun seed77, learning=True. Neither the live ledger
+nor running-episode files were read. All original physical/sensory/heldout gates
+remain unchanged and the user goal stays unachieved.
