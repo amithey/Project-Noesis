@@ -54,3 +54,18 @@ control/resume/gain checks also pass against the actual installed import path.
 The new test file is tests/test_background_training.py. Source changes remain
 limited to the shared CLI gain argument; normal startup and model promotion
 remain unchanged. The prospective six-birth learning protocol is now ready.
+
+
+## Fresh bounded training launched
+
+After complete V21 archival, session75379 launched train_validate on a fresh
+outputs/birth-cycle-v22 directory with six5s quiet births, seeds68..73, gain40
+and the earlier parent7baaf2fabf0c238884f74260e2f3cfa420ce5df4880c6d47c60d62cea2f6247f.
+First stdout confirms158262 entries, learning=True, seed68 and physical t=0.00s.
+The worker has a3600-second absolute wall budget and records complete start
+weights for replay; no completed training birth has yet been observed. The
+unchanged v4 reward, rate0.2, eligibility100ms, OU1.5, terminal fall0.1s, legacy
+encoding and original graph/sign/bound constraints remain. Original, candidate
+and ablated controls use the same gain40. Every evaluation remains5s with no
+learning/OU; validation10/11, heldout200..202, obstacle and sensory ablation all
+remain required. No live ledger opened, no normal startup or model promotion.
