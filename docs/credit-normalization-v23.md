@@ -181,3 +181,25 @@ new original control is completed and independently archived, it will compare
 V22/V23 full CSV bytes, checkpoint shared arrays, motor-event arrays, gait
 analysis and context differences. It cannot skip controls or infer trained
 behavior equivalence. Actual frozen results are still required.
+
+
+## Six births complete; frozen controls started
+
+Seed79 completed5seconds: standing95.353535%, slip14.593876mm/s,
+mean reward0.597193, projected heading advance8.928322mm and cycles19/19/13/8/10/6.
+The same independent artifact checks pass;36734selected edges differ from the
+preceding bank, max original deviation22.685582%, mean1.081416%. Reward scalar
+max error1.11e-16. Final training checkpoint SHA2562f3400da5a50e03584ba84346cac453eab093a192a5532855538e69db6029cfc.
+
+All six registered births74..79 are complete:26.240body seconds, four full
+five-second windows and two terminal falls. Their complete videos, CSV/motor
+artifacts and checkpoints are copied/hash-verified in the user checkout.
+The final bank is also explicitly saved there as latest-training.npz plus its
+schema8 model context and checkpoint-roles.json. Best validated remains null;
+this copy is for continued training, not deployment or normal startup.
+
+Producer stdout confirms the same worker44661 has begun original quiet seed10,
+learning=False. All25frozen cases remain pending at this observation. The
+new candidate has not yet completed any frozen evaluation; differing training
+seeds and active exploration prevent attributing per-birth metric differences
+to learning. Source/reward/gates unchanged, no live ledger read and no promotion.
