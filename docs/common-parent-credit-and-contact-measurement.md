@@ -192,3 +192,19 @@ total13.490body seconds: one full and three falls, all retained for the planned
 equal-weight mean. No mean/best validated bank exists yet. The same worker46529
 has begun90 with learningTrue, observed through.2s. No live ledger read, reward,
 source, physical-gate or normal-startup change occurs.
+
+
+## Fifth independent birth: late fall before full horizon
+
+Seed90 ended at4.810s/952awake samples with training_fall, standing92.226891%
+only within that shortened window, slip14.652058mm/s, reward.220855136, heading
+advance13.388858mm and cycles17/16/11/12/11/1. A late fall does not count as
+full-horizon standing or walking. Independent artifact audit passes body/CSV
+measures, exact first sustained-fall termination, scalar/corrected learning
+moments (max scalar error2.22e-16), common parent/model/source and original
+topology/signs/reference/bounds (max original deviation23.337379%). All raw
+checkpoint/motor/gait/CSV/sensory artifacts are copied with hashes.
+Five completed births total18.300body seconds: one full, four falls. All five
+branches remain retained for the predefined equal-weight mean, still unformed;
+best validatednull. The same worker46529 has started91, learningTrue, observed
+through.4s. No live ledger opened or source/reward/gate/startup change occurs.
