@@ -229,3 +229,35 @@ video of any behaviorally accepted candidate still must be recorded/visually
 verified before normal startup changes. planned-resume-without-video.json
 records the exact future arguments and stop/audit prerequisites; it has not
 been executed. No second heavy worker or camera benchmark was started.
+
+
+## First wall boundary audited; original-control replay resumed
+
+Session44661 exited normally(code0) after3597.234ledger wall seconds. Elevated
+OS inventory confirmed no matching Python or video encoder before ledger read.
+All six completed births are retained; the original seed10 control stopped at
+4.805seconds (961body rows,951awake,4755neural ms) with statuswall_budget and
+is not counted among completed controls. Its10files, including the failure
+MP4/checkpoint, are preserved separately. Checkpoint528756f1353c6c7d688253787c4eccc02c9701209c9592d1a3bc1567c2526f9c
+has exactly original weights and zero learner traces/moments.
+
+Stopped-ledger audit passes6actual parent bindings, source6eb, pending25required
+frozen cases, latest training2f3400da5a50e03584ba84346cac453eab093a192a5532855538e69db6029cfc
+retention and best validatednull. First report SHA2567df257603f061aad4262e812fd2610e7749c38cdd99ddd37e52aa341217533a5,
+with separate worker-01-wall-report/audit copies before resume. An output poll
+returned late after841seconds, but the worker wall record is still3597.234;
+observation delay is not extra completed simulation.
+
+The partial CSV is a byte-exact961-row prefix of the prior completed V22 original
+control, and all40121recorded motor events match its4755ms prefix exactly.
+All shared original-checkpoint arrays match except intentional v3/v4format
+metadata; no learned weights, dynamics or body changes are implied.
+
+Exact --resume launched session33407 after audit under the same6ebsource and
+all model/gate parameters. Only the existing --video flag is omitted as planned.
+Producer stdout confirms original seed10 learning=False fromt0.00s through0.40s;
+printed neural/body samples match the old run at0.2/0.4s. Full CSV/motor/context
+equivalence will be checked after completion. The incomplete episode restarts
+from its beginning; completed training births are not repeated. New wall limit
+3600seconds. No live ledger opened after resume, no second heavy worker started,
+no normal-startup/model promotion change. Full new frozen coverage is pending.
