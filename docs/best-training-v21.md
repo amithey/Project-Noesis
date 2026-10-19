@@ -14,8 +14,8 @@ The selected bank is training seed50, reward0.6681452789171789, SHA256
 7baaf2fabf0c238884f74260e2f3cfa420ce5df4880c6d47c60d62cea2f6247f.
 It is not declared best validated and does not replace the latest seed60 bank.
 
-Prepare two frozen five-second quiet trials on diagnostic seeds66/67 at existing
-background3Hz/60. Reuse the matching fully completed V20 original controls,
+Prepare four frozen five-second quiet trials on diagnostic seeds66/67 at existing
+background3Hz with event gains60/40. Reuse the matching fully completed V20 original controls,
 whose summary/checkpoint hashes and original frozen weights are rechecked.
 The original source839a0a8bd85a8ebca55048319dc95642413491a9a14c5d168fe24cc4d6e8d107,
 body, senses, balance, U0, da1, legacy proprioception, geometry adhesion, neural
@@ -27,8 +27,8 @@ The prepared runner uses the already tested V20 case/checkpoint verifier, whose
 SHA256 is pinned. A strict source/configuration/parent/control manifest guards
 resume; incomplete trials replay from the full selected start bank. Each worker
 is limited to3600 wall seconds. Read only stdout while live, not the live ledger.
-No simultaneous heavy workers will be started. Six unit checks pass (partial
-birth/evaluation exclusion, changed selected checkpoint and source rejection),
+No simultaneous heavy workers will be started. Seven unit checks pass (partial
+birth/evaluation exclusion, changed selected checkpoint/source and missing matched-control rejection),
 Ruff passes, and the real checkpoint/control/argument preflight passes.
 
 This is prepared only; V20's remaining background trials are still running.
@@ -38,3 +38,10 @@ external-sense ablation remain required for actual model promotion. Standing90%,
 heading1mm, repeated cycles in4legs and20% slip reduction are unchanged. Report
 standing-conditioned slip and falls as well as all-window scores. There is no
 external gait clock, fixed leg sequence or promotion/startup modification.
+
+Before any earlier-bank run, the initial two-case proposal was extended to both
+background gains. The initial driver/plan are retained separately. This uses the
+observed V20 original-control and trained seed66 standing improvement at40; it
+does not use any result from the selected bank. All four original controls were
+already complete. Candidate ranking is unchanged and training-only. Comparisons
+remain separated by background gain. Source/model/acceptance are unchanged.
