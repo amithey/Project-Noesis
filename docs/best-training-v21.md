@@ -93,3 +93,19 @@ and all copied artifact hashes pass. The full video is preserved. Two cases
 remain; the live worker has advanced to seed67/background60. The V21 source and
 driver remain immutable. A separate staged CLI candidate will allow prospective
 training at gain40 with fully matched controls; see background-training-v22.md.
+
+## Exact producer-source archive before the next CLI installation
+
+All36 active noesis Python source files were copied byte-for-byte into
+outputs/best-training-v21-prototype/source/noesis and into the primary artifact
+copy. Whole-source SHA256 remains839a0a8bd85a8ebca55048319dc95642413491a9a14c5d168fe24cc4d6e8d107;
+source-archive.json records each file hash. Active source is unchanged.
+The completed V20 eight-case auditor now accepts an explicit --source-root for
+replay against this archive while retaining the same exact expected hash. Its
+previous script/audit were preserved. The archived-source audit passed all eight
+cases and all artifact/checkpoint/behavior comparisons, with unchanged terminal
+report373138d0b31d0d6089cee617488b25e022ed2541fe377aebc307569e01c0c618.
+The V21 terminal auditor has the same explicit archive option, to be run only
+after verified worker termination and all four cases. No live report was opened.
+The staged training CLI has independently passed all297 tests plus Ruff; no
+source installation or new training has occurred while V21 remains active.
