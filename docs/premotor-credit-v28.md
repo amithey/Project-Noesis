@@ -130,3 +130,17 @@ posture, positive heading speed<=30mm/s and>=3support frames,140/154,145/152and
 reward signal; it does not by itself prove the cause of failed walking. Different
 seeds/lengths are not an improvement comparison. The active source, reward and
 physical criteria remain unchanged through the registered trial.
+
+
+## Fifth birth: terminal fall, last training seed active
+
+Seed96 ended3.430s/676awake with training_fall, standing88.313609%, slip
+12.347247mm/s, reward.235316259, heading advance2.246512mm and cycles6/11/10/5/5/3.
+Lower short-window slip is not compared as improvement over full evaluations.
+Audit passes original references/topology/signs/bounds (max deviation25.086870%),
+scalar/corrected learning moments (max scalar error2.22e-16), actual ground-load
+support, CSV/body measures and exact sustained-fall termination.8053CNSinput
+and35946motor input edges changed, all64CNSaffected. Raw artifacts copied with
+hashes. Five complete births total17.280body seconds, one full and four falls.
+Worker32711 has started97, observed through.8s learningTrue. No frozen result,
+validated bank, source/reward/gate change or normal-startup promotion exists.
