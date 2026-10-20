@@ -10,7 +10,8 @@ from __future__ import annotations
 import numpy as np
 
 GROUNDED_OBJECTIVES = ("standing-first-linear-slip-v3", "standing-gate-linear-slip-v4",
-                       "standing-gate-linear-slip-v5", "standing-gate-smooth-grip-v6")
+                       "standing-gate-linear-slip-v5", "standing-gate-smooth-grip-v6",
+                       "curriculum-standing-v7", "curriculum-gripped-step-v8")
 
 
 def body_reward(
@@ -83,6 +84,9 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     factor to retain directional credit during partial sliding. It is a scalar
     reward only; no motor output, gait timing or leg sequence is generated.
     v3 remains the exact default objective; v4 and v5 remain unchanged.
+    Curriculum v7 removes advancement credit to isolate standing. Curriculum v8
+    uses a 2 mm/s advancement target before returning to v6 for continuous gait.
+    Both are training feedback only; physical acceptance remains independent.
     """
     if objective not in GROUNDED_OBJECTIVES:
         raise ValueError("unknown grounded reward objective")
@@ -107,9 +111,15 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     if not np.isfinite(obstacle_contact_seconds) or obstacle_contact_seconds < 0:
         raise ValueError("obstacle contact duration must be finite and nonnegative")
     grip = float(np.clip(1 - slip / (abs(speed) + .1), 0, 1))
-    if objective == "standing-gate-smooth-grip-v6":
+    if objective in ("standing-gate-smooth-grip-v6", "curriculum-standing-v7",
+                     "curriculum-gripped-step-v8"):
         grip = float(1 / (1 + slip / (abs(speed) + .1)))
     progress *= grip
+    if objective == "curriculum-standing-v7":
+        progress = 0.
+    elif objective == "curriculum-gripped-step-v8":
+        # Smaller speed target gives credit for early grounded advancement.
+        progress = float(np.clip(speed / 2., -1, 1)) * grip if grounded and abs(speed) <= 30 else 0.
     obstacle_cost = float(np.clip(obstacle_contact_seconds, 0, 1))
     # Match the mean-slip criterion: keep this cost linear instead of rewarding
     # a few large slip bursts through a concave/saturating penalty. Only the
@@ -138,6 +148,14 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         reward = float(np.clip(.7 * standing - .8 * (1 - standing)
                                + .1 * standing * support_quality + .5 * progress
                                - .05 * base['effort'] - .15 * slip_cost - .2 * obstacle_cost, -1, 1))
+    if objective in ("curriculum-standing-v7", "curriculum-gripped-step-v8"):
+        standing = bool(support.any() and .3 <= base['height_mm'] <= 1.5 and uprightness >= .7)
+        stand_weight = .7 if objective == "curriculum-standing-v7" else .4
+        slip_weight = .006 if objective == "curriculum-standing-v7" else .03
+        reward = float(np.clip(stand_weight * standing - .8 * (1 - standing)
+                               + .1 * standing * support_quality + .6 * progress
+                               - .05 * base['effort'] - slip_weight * slip
+                               - .2 * obstacle_cost, -1, 1))
     return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
             'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
             'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,
