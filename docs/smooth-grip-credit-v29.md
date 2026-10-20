@@ -337,3 +337,27 @@ is launched for that plan and no heldout data informs it. If quiet validation
 passes, finish V29's remaining controls instead. This extends experience
 (current V29has17.430training body seconds) before another mechanism change;
 it does not promise improvement. No accepted model or startup update exists.
+
+## Both frozen originals audited; trained candidate validation active
+
+Original11completes5s/990awake with standing92.929293%, stance slip16.732374mm/s,
+reward.195403376, heading advance12.691961mm and cycles12/15/12/6/12/3. Its
+independent audit passes original weights/zero learning state, smooth progress/
+grip/scalar reward (max scalar error2.22e-16), actual ground support/body metrics
+and raw file hashes. All1000CSV rows outside the three explicit scalar fields,
+motor events, raw senses, gait report, retinal PNG and checkpoint arrays exactly
+match V28original11. Context differs only in the scalar objective. This control
+is unprofiled; original10's registered timing observer was already restored.
+Eight protocol jobs are now committed: six training births and two full frozen
+originals;23frozen cases remain. Six prior start pointers are terminal-bound,
+two current originals await the next stopped-worker ledger. No live ledger is
+read. No candidate or validated walking result is inferred from originals.
+
+Worker50439continues frozen candidate10from the retained F9Ftraining103bank.
+Producer confirms learningFalse; latest observed through1.4s/upright.91 after
+.65at.6s recovered to.85at.8s. This is partial telemetry only. The complete
+five-second standing, foot cycles, forward advance, mean-slip and reward gates
+remain mandatory; motor/CNS exploration and evaluation fall cutoff stay off.
+SourceB190and all model/body/sensory/learning/acceptance settings are unchanged.
+No bank or normal startup is promoted. The conditional30birth continuation is
+still only a plan, not an additional running worker.
