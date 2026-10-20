@@ -20,6 +20,7 @@ from noesis.adhesion import FootAdhesion
 from noesis.balance import BalanceMap
 from noesis.behavior_metrics import behavior_summary
 from noesis.body import BodyParams, MuscleModel, make_fly
+from noesis.circuit_learning import LEARNING_SCOPES, CircuitExploration, import_subset_weights
 from noesis.embodied_metrics import GROUNDED_OBJECTIVES, body_reward, locomotion_reward
 from noesis.embodiment import BrainReadout, MotorExploration, gait_report, load_training_brain
 from noesis.environment_senses import (
@@ -31,6 +32,7 @@ from noesis.environment_senses import (
 )
 from noesis.ground_contact import ground_contacts
 from noesis.habitat import Habitat, habitat_arena
+from noesis.learning_targets import select_premotor_targets
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.motor import RateTracker, build_motor_matrix, build_muscle_matrices
 from noesis.plasticity import MotorPlasticity
@@ -86,6 +88,7 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--bias-correct-reward-error', action='store_true',
                     help='remove startup bias from reward-normalization moments')
     ap.add_argument('--learning-rate', type=float, default=0.2)
+    ap.add_argument('--learning-scope', choices=LEARNING_SCOPES, default='motor')
     ap.add_argument('--learning-rule', choices=('perturbation', 'hebbian'), default='perturbation')
     ap.add_argument('--reward-mode', choices=('grounded', 'legacy'), default='grounded')
     ap.add_argument('--grounded-objective', choices=GROUNDED_OBJECTIVES, default=GROUNDED_OBJECTIVES[0])
@@ -108,7 +111,23 @@ def parser() -> argparse.ArgumentParser:
     return ap
 
 
+def _validate_learning_scope(args):
+    scope = getattr(args, 'learning_scope', 'motor')
+    if scope not in LEARNING_SCOPES:
+        raise ValueError('unknown learning scope')
+    if scope != 'motor':
+        if (args.learning_rule != 'perturbation' or not args.normalize_reward_error
+                or not getattr(args, 'bias_correct_reward_error', False)):
+            raise ValueError('circuit learning requires normalized bias-corrected perturbation credit')
+        if args.motor_exploration is not None and args.motor_exploration > 1.5:
+            raise ValueError('circuit exploration must be at most1.5mV/ms')
+
+
 def validate_args(ap, args):
+    try:
+        _validate_learning_scope(args)
+    except ValueError as error:
+        ap.error(str(error))
     if args.reward_mode != "grounded" and args.grounded_objective != GROUNDED_OBJECTIVES[0]:
         ap.error("nondefault grounded objective requires grounded reward mode")
     if getattr(args, 'bias_correct_reward_error', False) and not args.normalize_reward_error:
@@ -146,6 +165,7 @@ def validate_args(ap, args):
 
 
 def run_episode(cn, args, episode, checkpoint, *, deadline=None):
+    _validate_learning_scope(args)
     terminal_after = args.training_fall_seconds
     if (not np.isfinite(terminal_after) or not 0 <= terminal_after <= args.seconds):
         raise ValueError('training fall duration must be finite and within episode horizon')
@@ -228,11 +248,21 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             amplitude = 1.5 if args.learn else 0.0
         if not args.learn and amplitude != 0:
             raise ValueError('evaluation requires motor exploration disabled')
-        exploration = MotorExploration(cn.neurons, amplitude, seed=seed)
+        base_readouts = np.unique(G.indices)
+        learning_scope = getattr(args, 'learning_scope', 'motor')
+        selection = None
+        targets = base_readouts
+        if learning_scope != 'motor':
+            selection = select_premotor_targets(cn.W, cn.neurons, base_readouts)
+            targets = np.union1d(base_readouts, np.asarray(selection['indices'], dtype=np.int64))
+            exploration = CircuitExploration(cn.neurons, np.asarray(selection['indices'], dtype=np.int64),
+                                             amplitude, seed=seed)
+        else:
+            exploration = MotorExploration(cn.neurons, amplitude, seed=seed)
         readout = BrainReadout(cn.neurons, np.unique(G.indices))
         rates_hz = np.zeros(cn.n)
         leg_motor_ids = np.flatnonzero(cn.neurons['Class'].eq('leg_motor_neuron')) if 'Class' in cn.neurons else np.unique(G.indices)
-        plasticity = MotorPlasticity(net, np.unique(G.indices),
+        plasticity = MotorPlasticity(net, targets,
                                     learning_rate=args.learning_rate, rule=args.learning_rule,
                                     normalize_reward_error=args.normalize_reward_error,
                                     bias_correct_reward_error=getattr(args, 'bias_correct_reward_error', False),
@@ -250,12 +280,20 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                        eligibility_ms=100 if args.learning_rule == 'perturbation' else 500)
         if getattr(args, 'bias_correct_reward_error', False):
             context.update(schema=8, bias_correct_reward_error=True)
+        if selection is not None:
+            context.update(schema=9, learning_scope=learning_scope,
+                           additional_neural_targets=selection['indices'])
+            prefix.with_suffix('.learning-targets.json').write_text(
+                json.dumps(selection, indent=2), encoding='utf-8')
         if checkpoint:
             metadata = Path(checkpoint).with_suffix('.model.json')
             if (not args.import_weights and metadata.exists()
                     and json.loads(metadata.read_text(encoding='utf-8')) != context):
                 raise ValueError('checkpoint model context mismatch')
-            plasticity.load(checkpoint, weights_only=args.import_weights)
+            if selection is not None and args.import_weights:
+                import_subset_weights(plasticity, checkpoint)
+            else:
+                plasticity.load(checkpoint, weights_only=args.import_weights)
         tracker = RateTracker(cn.n, tau_ms=25.0)
         senses = None if args.no_senses else make_proprioception_map(cn.neurons, args.proprioceptive_encoding)
         if senses is not None and hasattr(senses, 'coverage'):
@@ -494,6 +532,9 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
                'checkpoint': str(prefix.with_suffix('.npz'))}
     if getattr(args, 'bias_correct_reward_error', False):
         summary['bias_correct_reward_error'] = True
+    if selection is not None:
+        summary.update(learning_scope=learning_scope, additional_neural_target_count=len(selection['indices']),
+                       plasticity_target_count=len(targets))
     prefix.with_suffix('.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
     return summary, prefix.with_suffix('.npz')
 

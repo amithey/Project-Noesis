@@ -1,43 +1,56 @@
-# Existing motor-circuit synapses: optional learning prototype
+# Learning inside existing motor circuits
 
-V26 mean-bank frozen10 failed standing (86.77%) and slip (14.98mm/s versus
-original9.37). It remains retained as latest training, not a validated model.
-The present learner changes73594existing synapses entering498motor/readout
-neurons. Inputs to local motor-circuit interneurons remain fixed. This is a
-limitation of the current learning scope, not proof that expanding it will work.
+Opt-in `--learning-scope motor-circuit-v1` lets reward-modulated learning update
+existing inputs of64anatomically selected CNS cells as well as existing motor
+readouts. The default `motor` path and its checkpoint/model context remain
+compatible. This extends a learning hypothesis; walking remains unverified.
 
-The isolated outputs/premotor-credit-v28-prototype currently adds only a pure
-selection function, learning_targets.py, to a copy of the currentcd369source.
-Twelve focused tests and Ruff pass. Actual original corrected-connectome
-preflight confirms selection of48local candidates (eight for each leg) and
-16sequential-leg candidates. Those are anatomical cell labels plus existing
-direct projections to mapped motor neurons, not physiological rhythm labels.
-The resulting562target identities would make85390existing input edges eligible,
-compared with73594now. No edge is added, removed, reordered or re-signed.
-Full-connectome weights and the original motor reference arrays remain exact.
+V26 mean-bank frozen10 failed standing86.77% and slip14.98mm/s versus original
+9.37. That bank is retained as the V28parent, preserving motor-synapse experience.
+The new scope selects48local leg-neuromere cells (eight per leg) and16sequential
+leg-neuromere cells by absolute original projections into mapped leg motor
+neurons, with index tie breaks. The labels are anatomical, not rhythm labels.
+562target identities make85390existing input edges eligible, compared with
+73594in the motor-only scope. No connectome edge is added, removed or re-signed.
 
-Selection uses original absolute projection weight, with index tie breaks.
-Each leg has anatomical coverage, but there is no phase, gait clock, joint
-trajectory or step sequence. The64selected identities are recorded in
-full-connectome-selection.json. Parent remains retained mean bankce1e6ca0...
-so prior motor-synapse experience can be transferred explicitly.
+The new cells receive independently seeded bounded OUcurrents/innovation credit.
+Their RNG is separate, so the old motor-pool stream is exact at every step.
+Evaluation sends no exploratory currents to either population. Selection and
+noise prescribe no leg phase, joint angle, gait clock or step sequence.
 
-Before any installation or body training, complete these parts:
+Explicit `--import-weights` accepts a validated old target subset into a fresh
+expanded learner. Original expanded references are captured first, then old
+learned motor weights are applied. Added target edges stay original. Topology,
+identity, sign, bounds and subset inclusion are checked before mutation. All
+traces/baseline/variance/normalization mass reset. Checkpoint format4 remains
+valid; opt-in model context is schema9 with scope and selected CNSidentities.
+Old scope retains schema7/8. The motor-Hz readout still measures actual motor
+neurons, not the newly trainable interneurons.
 
-- Extend bounded exploratory current/innovation credit to these CNS targets,
-  using a separate RNG so the existing motor-pool noise stream stays exact.
-  Default behavior stays unchanged; evaluation has zero exploration everywhere.
-- Add checked old-subset import into expanded plasticity. Construct expanded
-  original references before applying old learned weights, validate topology,
-  original references/signs/bounds and target inclusion, and reset all traces.
-  Existing checkpoint/default learning behavior must remain compatible.
-- Integrate the opt-in scope in learning_lab/train_validate with explicit model
-  context. Keep rate.2, eligibility100ms, amplitude<=1.5mV/ms, original +/-50%
-  bounds, depression0 and the same body/sensory/reward/physical gates.
-- Run meaningful new unit/integration checks, full existing regression/Ruff,
-  actual full-connectome import/save/load round trip and frozen-noise guards.
-  Only then install and conduct bounded training with frozen matched controls.
+All372staged tests and Ruff pass. The full-test wall time14848.61s includes long
+host/tool/environment delays, not a speed benchmark.34installed targeted tests
+pass in7.82s. Actual full-connectome preflight (158262neurons) verifies exact
+transfer of73594old edges,11796new target edges unchanged, original-reference
+bounds/signs, zero newborn statistics, full-network save/load identity, exact old
+motor-noise stream and zero frozen exploration. Imported expanded bank SHA256
+b688e73e725e7859c75a3eaa0dc5a10c9c30147615dd3401d4836b76862d2667.
 
-This is selection-only staging: no new circuit has been trained, no installed
-source or normal startup changed, and no walking success is claimed. Full frozen
-validation/heldout/obstacle/ablation and real video remain required for promotion.
+Installed only in the isolated worktree, source SHA256
+cf8515e2ad10da6a49fe3b87070ce62f1cdde41220482de59779af50af72d7c7.
+Only new learning_targets.py/circuit_learning.py and optional plumbing in
+learning_lab.py/train_validate.py differ. Body, sensory encodings, reward,
+neural equations, depression0 and physical acceptance gates are unchanged.
+The originalcd369source is preserved under the prototype's base-src/noesis.
+
+The registered pilot uses serial persistent-weight train_validate births92..97,
+quiet5s, sustained-fall termination.1s, rate.2, eligibility100ms, exploration
+<=1.5mV/ms, original +/-50%bounds, background3Hz*40 and v5grounded reward with
+normalized bias-corrected credit. This returns from the rejected independent
+mean pilot to serial learning; it is not a causal experiment isolating scope.
+Each wall cycle<=3600s supports exact resume. Validation10/11 and separate
+heldout200/201/202 stay full5s with no exploration/fall cutoff. All25quiet,
+obstacle and external-sense-ablation cases are required for promotion; early
+quiet rejection leaves remaining controls explicitly uncompleted. Proprioception
+and balance remain in external-sense ablation. No training video is requested;
+a passing model still needs real frozen video and normal-startup verification.
+No model is promoted and the normal startup default remains unchanged.
