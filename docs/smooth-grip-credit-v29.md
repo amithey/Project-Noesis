@@ -158,3 +158,29 @@ best validatednull. Actual checkpoint starting pointers await the stopped
 ledger. Three completed births total5.865body seconds, zero full horizons and
 three falls. No frozen V29case is complete. Worker46310continues training101,
 observed through.4s/upright.92; sourceB190and all trial criteria stay unchanged.
+
+## Fourth V29birth: terminal fall retained
+
+Seed101ends1.565s/303awake with training_fall, standing89.768977% in the
+short window, slip12.201230mm/s, reward.277536373, heading advance3.537906mm
+and cycles5/5/4/3/2/1. No full-horizon pass or improvement is inferred from
+these cropped/different-seed values. Four completed births total7.430body
+seconds, zero full horizons and four falls.
+
+The immutable-case audit passes independent smooth grip/progress, scalar
+reward/normalized learning moments (max scalar error1.11e-16), real ground
+support/body metrics, exact first sustained-fall termination, original refs/
+topology/signs and50%bounds.7101CNSinput and31408motor-input edges change,
+all64CNSaffected, max original deviation24.676016%. Raw artifacts are copied
+with hashes and latest-training roles update to101, best validatednull.
+Starting-pointer binding remains pending until worker termination. SourceB190,
+reward and physical gates stay fixed. Worker46310continues102, observed through
+.8s/upright.87. No frozen V29result, accepted bank or startup update exists.
+
+Read-only helper session98042is collecting a pre-control input/runtime manifest
+for the already-tested continue_young_fly helper. It has not changed the live
+ledger or reused a control. The separate helper is still pending; a timeout is
+not treated as process termination. Original-control reuse, if later used,
+still requires a terminal rejected worker, full immutable originals and exact
+source/context/input/runtime checks; failed candidate and heldout cases are
+never counted as newly evaluated through reuse.
