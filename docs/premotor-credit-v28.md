@@ -278,3 +278,26 @@ Live V28session55907 has begun candidate10and reproduces the prior rounded
 stdout samples through1.2s (upright-.55 at1.2s). Exact CSV-prefix replay will be
 checked only after its producer commits immutable output. No live report is
 read. Best validated remainsnull and normal startup is unchanged.
+
+## V28 rejected after complete frozen replay
+
+Session55907 ends0/native0; elevated CIM confirms no task Python before ledger
+read. Candidate10completes5s/990awake, standing12.222222%, slip5.142003mm/s,
+reward-.738833247, heading advance7.998818mm, cycles0/2/1/13/4/18, tripodnull.
+Original10standing44.242424%, slip9.366594mm/s, reward-.357539995. Standing
+and reward fail; complete/forward/cycles/slip pass mechanically. Low slip while
+collapsed is not walking. No model is promoted and startup remains unchanged.
+
+Immutable-case audit passes original refs/topology/signs/50%bounds, exact frozen
+weights with zero learning statistics, reward/support/body reconstruction and
+raw hashes. The restarted trajectory exactly reproduces all358saved CSV rows,
+348awake rows,1740ms/16172motor events, all checkpoint arrays and context/target/
+sensory mappings. Final-time sensory images differ in timestamp and are not
+compared. Frozen checkpoint SHA256f28efa79a9c80da2acc0ebeda0350d4d648daeed21e1d89f761fd589e2ccaf72.
+
+Final ledger SHA2567c6d03504d6565fc3516820d8fa693d4778ee10f0909670b2fe0cf8fd1ace5bb,
+statusrejected_validation;9/31jobs complete,3/25frozen controls done,22not run.
+All9actual start pointers/hashes match the final stopped ledger. One interrupted
+training attempt and one wall-budget partial remain separate from completed
+jobs. Latest training97/A2E5 is retained separately from best validatednull.
+The negative V28trial is closed before installing V29's optional scalar reward.

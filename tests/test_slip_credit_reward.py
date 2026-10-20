@@ -22,7 +22,7 @@ def stationary(*, feet=3, slip=0., up=.9, height=.8, objective=V5):
 @pytest.mark.parametrize('slip', [0., .1, 1., 5., 10., 17., 30.])
 def test_only_linear_slip_slope_changes_fivefold(slip):
     assert GROUNDED_OBJECTIVES[:2] == ('standing-first-linear-slip-v3',V4)
-    assert GROUNDED_OBJECTIVES[-1] == V5
+    assert GROUNDED_OBJECTIVES[2] == V5
     old = stationary(slip=slip,objective=V4)
     new = stationary(slip=slip)
     assert old['reward'] == pytest.approx(.8-.006*slip,abs=1e-14)

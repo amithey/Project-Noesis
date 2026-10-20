@@ -10,7 +10,7 @@ from __future__ import annotations
 import numpy as np
 
 GROUNDED_OBJECTIVES = ("standing-first-linear-slip-v3", "standing-gate-linear-slip-v4",
-                       "standing-gate-linear-slip-v5")
+                       "standing-gate-linear-slip-v5", "standing-gate-smooth-grip-v6")
 
 
 def body_reward(
@@ -79,7 +79,10 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     least one force-bearing foot. Opt-in v5 retains that standing credit and
     increases only the linear slip penalty fivefold, from 0.006 to 0.03 per
     mm/s. This is a learning hypothesis; physical acceptance stays independent.
-    v3 remains the exact default objective and v4 remains unchanged.
+    Opt-in v6 retains v5's costs and posture/support gates, but smooths the grip
+    factor to retain directional credit during partial sliding. It is a scalar
+    reward only; no motor output, gait timing or leg sequence is generated.
+    v3 remains the exact default objective; v4 and v5 remain unchanged.
     """
     if objective not in GROUNDED_OBJECTIVES:
         raise ValueError("unknown grounded reward objective")
@@ -104,6 +107,8 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     if not np.isfinite(obstacle_contact_seconds) or obstacle_contact_seconds < 0:
         raise ValueError("obstacle contact duration must be finite and nonnegative")
     grip = float(np.clip(1 - slip / (abs(speed) + .1), 0, 1))
+    if objective == "standing-gate-smooth-grip-v6":
+        grip = float(1 / (1 + slip / (abs(speed) + .1)))
     progress *= grip
     obstacle_cost = float(np.clip(obstacle_contact_seconds, 0, 1))
     # Match the mean-slip criterion: keep this cost linear instead of rewarding
@@ -126,7 +131,7 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         reward = float(np.clip(.7 * standing - .8 * (1 - standing)
                                + .1 * standing * support_quality + .5 * progress
                                - .05 * base['effort'] - .03 * slip_cost - .2 * obstacle_cost, -1, 1))
-    elif objective == "standing-gate-linear-slip-v5":
+    elif objective in ("standing-gate-linear-slip-v5", "standing-gate-smooth-grip-v6"):
         # Preserve explicit standing/support/progress feedback while giving
         # measured foot sliding greater influence on action-credit learning.
         standing = bool(support.any() and .3 <= base['height_mm'] <= 1.5 and uprightness >= .7)
