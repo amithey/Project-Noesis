@@ -184,3 +184,23 @@ not treated as process termination. Original-control reuse, if later used,
 still requires a terminal rejected worker, full immutable originals and exact
 source/context/input/runtime checks; failed candidate and heldout cases are
 never counted as newly evaluated through reuse.
+
+## Optional manifest scan cancelled; active training continues
+
+Read-only helper98042remained live but produced no manifest; elevated CIM
+identified its exact stdinPython parent chain17840/1808/26236 by the unique
+preregistration-command token. At the last sample it used339.625CPU seconds
+and112513024bytes working set. Its exact slow phase was not instrumented and
+is unknown; observation timeout was never treated as process death.
+
+The optional helper was deliberately cancelled after identity verification,
+with terminal session exit-1. Full-training PIDs16768/36120were not stopped;
+session46310subsequently produced further seed102telemetry. Neither a raw
+manifest nor its preregistration proof exists, and no partial fingerprint is
+usable. No live report/source/training parameter changed and no controls were
+reused. Mandatory originals will run fresh through the existing driver.
+
+Seed102remains active, observed through3.2s/upright.89. At2.8s uprightness.66
+was followed by.89at3.0s; this explored training transient is not a learned
+recovery claim or a complete standing/walking evaluation. Latest committed
+training remains101, best validatednull. No fifth birth is yet committed.
