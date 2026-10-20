@@ -179,3 +179,39 @@ on one actual full-body evaluation, not improved learned behavior.
 Worker32711 continues original11; candidate evaluation is still pending.
 No live ledger was read, no source or gate changed, and best validated remains
 null. Actual attempt-pointer binding waits for the worker to terminate.
+
+## Both original controls committed; six-birth reward coverage diagnostic
+
+Original11 completed5s/990awake, standing92.929293%, stance slip16.732374mm/s,
+reward.180826833 and heading advance12.691961mm. The immutable audit passes
+original weights/zero learning statistics, v5 scalar reconstruction, ground
+support/body metrics, source/context and hashes. Its1000CSV rows, motor events,
+sensory arrays, retinal PNG and gait report exactly reproduce V24original11,
+just as original10 did. Both old controls thus remain behaviorally identical
+under the inactive expanded target scope. Original checkpoints are identical
+across seeds because all original weights/traces are reset, not seed-trained.
+
+The coverage diagnostic now covers all six hash-verified completed training
+traces92..97 only. Directional progress is positive in14/544,7/666,21/990,
+15/530,24/676and20/570awake frames (1.05–3.55%). Among eligible forward/posture/
+three-support samples,87.17–95.39% receive zero progress under the current
+hard-clipped grip. No frozen or heldout trajectory was used in this diagnostic.
+A fixed-trajectory smooth-grip counterfactual retains nonzero progress in all
+eligible positive-forward samples (22.82–31.40% of awake frames). This is credit
+coverage evidence only, not simulated behavior or evidence of better walking.
+
+A separate, uninstalled primary-output V29prototype adds an optional v6scalar
+objective with grip1/(1+slip/(abs(speed)+.1)), keeping v5's standing/support/speed
+and obstacle gates and .03linear slip cost. Nine staged tests and Ruff pass:
+360random scenarios preserve every old objective's exact output; partial sliding
+retains signed directional credit; slip reduces reward; posture/support/speed
+gates remain; only grip/progress reward terms change. The initial strict reward
+monotonicity test exposed upper reward clipping; its nonsaturated example was
+corrected, without changing the production or proposed formulas. This prototype
+is not installed, fully regressed, body-tested, or promoted. Active V28sourceCF
+and all physical criteria stay unchanged.
+
+Worker32711 is now evaluating frozen candidate10 (trained97bank): observed
+uprightness-.68 at.8s and-.43 at1s. This is concerning early fall telemetry,
+not a completed-case result; full5s evaluation continues, no cutoff. Actual
+attempt-pointer binding waits for the terminal ledger. Best validatednull.
