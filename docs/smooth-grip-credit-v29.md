@@ -259,3 +259,37 @@ boundary yet. Model sourceB190and all physical/training/evaluation gates stay
 unchanged. No validated candidate, video evidence or normal-startup update.
 
 Latest completed training103checkpoint SHA256: f9f21933fbd47d00aa00c992fbec7473693fbce1e15b39de8f088ac328656036.
+
+## First V29hour boundary verified; frozen original replay resumed
+
+Session46310ends0/native0. Elevated CIM confirms no remaining V29Python
+before the terminal ledger is read. Stopped-report SHA256:
+19e8cd9b81d1f0732e001175699bfd0e95e58ef867b6aaf1435a989017e91031.
+Wall duration3597.094s;6/31jobs complete, all six training births, zero frozen
+controls complete. Actual start pointers for every completed/incomplete attempt
+match the last completed training bank (or no bank for originals). No partial
+checkpoint is used as a new training start. Latest training103SHA256:
+f9f21933fbd47d00aa00c992fbec7473693fbce1e15b39de8f088ac328656036.
+Best validated remainsnull. The boundary auditor passes on actual data.
+
+Original10stops at.510s/92awake with wall_budget.102CSV rows,460neural ms and
+4558motor events are preserved with raw file hashes under worker-boundary-000.
+Its saved weights equal original references exactly and all learning statistics
+are zero. Frozen partial checkpoint SHA256be34c92913c574e09e32d0a759ef7df66aca3deab10563fddbaae260a361ada0.
+Its temporary100% standing in a short window is not a completed control.
+
+Exact protocol/sourceB190resume is live as session50439, elevated CIM confirms
+launcher30940/interpreter20892and no duplicate full-training worker. It restarts
+original10from episode start, learning/exploration/fall cutoff0, no imported
+bank. Native stdout/exit are separately logged as worker001. All CLI settings
+remain equal, including the original V28A2E5import argument; actual candidate
+evaluations use the retained V29last103bank through the ledger.
+
+A registered timing-only observer profiles setup plus the first500ms neural
+prefix of the first replayed episode, then restores the original methods.
+Updated observer7tests pass1.13s/Ruff; script SHA256:
+581161c0ed65dddab0422a37d9943bcff42bb700408ec8dcd9169f71a8abb9c7.
+It emits a receipt after its stats files are written. No package source is
+edited, but actual trajectory equivalence is still pending the immutable-case
+CSV/motor-prefix comparison; software forwarding tests alone do not prove it.
+No live ledger is read after resume, and no model or startup is promoted.
