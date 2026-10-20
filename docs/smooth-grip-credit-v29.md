@@ -84,3 +84,35 @@ scalar reward/normalized learning moments, original refs/signs/bounds, actual
 ground support and fall timing. Only producer-committed cases will be opened;
 actual start-pointer binding waits for a stopped-worker ledger. The live
 ledger is not read. No V29committed birth or validated bank exists yet.
+
+## First two V29births: failures retained, actual directional coverage audited
+
+Seed98 ends1.355s/261awake with training_fall, standing82.758621% in the short
+window, slip17.976421mm/s, reward.036048338, heading advance1.145624mm and
+cycles3/4/3/2/3/2. Checkpoint9d821b19c26364dd961a4e11147da6cc8c1446c98bb93b29eeecc51901ba38ca.
+7315CNSinput and32193motor-input edges changed, all64CNSaffected; max original
+deviation25.462017%. Seed99ends1.505s/291awake with training_fall, standing
+87.285223%, slip18.621498mm/s, reward.080024778, heading advance2.419292mm,
+cycles6/5/8/4/3/0.7246CNSinput and31849motor-input edges change, all64CNSaffected,
+max original deviation25.622401%. Cropped standing/cycle counts are not full
+five-second success. Two completed births total2.860body seconds, zero full
+horizons and two falls. Latest training99is retained separately from bestnull.
+
+Both immutable-case audits pass original refs/topology/signs/bounds, exact
+first sustained-fall termination, actual tarsal-ground support/body measures,
+independent smooth grip and signed progress reconstruction, scalar reward and
+normalized/bias-corrected learning moments (max scalar error2.22e-16).
+All raw artifacts are copied with verified hashes. Actual starting-pointer
+binding still waits for the terminal worker ledger. No live ledger was read.
+The audit helper now refreshes checkpoint roles automatically after every
+completed training birth, including failures, without touching production code.
+
+Hash-verified actual training coverage finds64/261and70/291positive progress
+frames (24.52% and24.05%). Applying only the old v5grip formula to those same
+fixed V29traces would leave25/261and14/291positive frames (9.58%,4.81%). Every
+eligible positive-forward/three-support/posture-valid frame receives current
+progress credit. This confirms the intended scalar-credit change operates in
+actual training, not improved learned behavior or an old-policy comparison.
+No frozen or heldout data was used in the diagnostic. SourceB190, reward and
+physical acceptance remain unchanged through the trial. Worker46310has begun
+training100, last observed through.4s; no frozen V29result or promoted model.
