@@ -204,3 +204,33 @@ Seed102remains active, observed through3.2s/upright.89. At2.8s uprightness.66
 was followed by.89at3.0s; this explored training transient is not a learned
 recovery claim or a complete standing/walking evaluation. Latest committed
 training remains101, best validatednull. No fifth birth is yet committed.
+
+## Fifth V29birth: first full horizon in this cohort
+
+Seed102completes5s/990awake with horizon, standing90.909091%, mean stance
+slip14.845907mm/s, reward.226571938, heading advance4.665878mm and support/lift
+cycles17/16/13/8/10/6. Tripodnull is reported separately. This is explored
+training (OU1.5), not a frozen walking result; slip has not been compared to a
+matched seed102original. No promotion follows a noisy training-only threshold.
+Checkpoint SHA256d83ae0777bfbe20d5b2af79f505064aa6cd790e153e9fce0e18e3115695d1245.
+
+Independent committed-case audit passes smooth grip/signed progress, scalar
+reward and normalized/bias-corrected credit moments (max scalar error2.22e-16),
+actual ground support/body metrics, no sustained terminal fall and full horizon,
+original references/topology/signs and50%bounds.8199CNSinput and36246motor-input
+edges change, all64CNSaffected; max original deviation25.985439%. Raw artifacts
+are copied with hashes; latest-training roles now point to102, bestnull.
+Five completed births total12.430body seconds: one full horizon and four falls.
+Actual starting-pointer ledger audit waits for termination; no live report is
+read. Worker46310has begun103, observed through.2s/upright.90, learningTrue.
+SourceB190, reward, body/sensory settings and physical acceptance stay fixed.
+
+Read-only hardware inventory finds Intel i7-1165G7,4physical/8logical cores,
+Intel Iris Xe graphics. A separate standard-library timing observer prototype
+under primary outputs/runtime-profile-prototype passes7tests2.20s plus Ruff.
+It profiles setup and an initial500ms neural prefix, forwards arguments/results
+and restores methods after prefix/end/exception. Tests use tiny fake networks;
+it has not been used on an actual body and real trajectory equivalence is
+unproven. It changes no package source. Any later use must occur only after a
+verified terminal boundary of the current worker and be explicitly registered;
+no performance optimization or acceleration is claimed yet.
