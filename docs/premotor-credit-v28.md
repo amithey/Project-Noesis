@@ -110,3 +110,23 @@ Three complete births total11.150body seconds, one full and two falls. Latest
 training is retained separately from best validatednull; actual start-pointer
 ledger audit waits for termination. Worker32711 has begun95, observed through.4s
 with learningTrue. No source, reward, physical-gate, startup or promotion change.
+
+
+## Fourth birth and directional-credit coverage
+
+Seed95 ended in a fall2.700s/530awake, standing88.113208% in the short window,
+slip14.989422mm/s, reward.164612931 and cycles10/6/7/7/7/3. The immutable-case
+audit passes scalar/corrected learning moments, support/body metrics, exact
+first sustained-fall termination, original references/topology/signs/bounds
+(max deviation24.368958%).7975CNSinput and35162motor input edges changed, all
+64CNSaffected. All raw artifacts copied with hashes. Four completed births
+total13.850body seconds, one full and three falls; no frozen or promoted model.
+Worker32711 has started96, observed through.8s with learningTrue.
+
+A separate hash-verified coverage diagnostic on completed92/93/94 finds positive
+progress credit in14/544,7/666and21/990awake frames (1.05–2.57%). Among valid
+posture, positive heading speed<=30mm/s and>=3support frames,140/154,145/152and
+214/235have zero grip credit (90.91–95.39%). This exposes a sparse directional
+reward signal; it does not by itself prove the cause of failed walking. Different
+seeds/lengths are not an improvement comparison. The active source, reward and
+physical criteria remain unchanged through the registered trial.
