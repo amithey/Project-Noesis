@@ -62,3 +62,35 @@ header and successful subset import, exactly matches the full-connectome
 preflight64CNSidentities and389mapped leg motor neurons. No live ledger opened,
 completed V28birth, frozen result or promotion yet. The active source/plan and
 physical gates remain fixed during the batch.
+
+
+## First runtime boundary and committed circuit updates
+
+Initial83373terminated before a committed birth, leaving only target/sensory
+maps. Outer shell exit1did not preserve native Python status, so the exact cause
+is unresolved. No final trajectory/checkpoint exists and no walking result is
+inferred. The archived audit explicitly withdraws an initial default-sandbox
+process-absence claim: that query cannot see the known live elevated worker.
+Subsequent elevated CIM confirms only resumed launcher15420/interpreter43696,
+with no old worker. Exact --resume session32711 restarts92 from CE1E, unchanged
+CF8515source/parameters, and records stdout plus explicit native exit JSON.
+
+The original posthoc checker imported simulation dependencies unnecessarily;
+only that checker was stopped, leaving the body worker active. The file-only
+checker then passes actual saved cases without importing the simulation path.
+Its edge basis separates11796CNSinput edges from73594motor-readout input edges.
+
+Committed92 ends in a fall2.770s/544awake, standing90.992647% in the short
+window, slip16.779237mm/s, reward.158356083.7667CNSinput synapses and34744motor
+input synapses change, reaching all64selected CNS cells; max original deviation
+23.044675%. Committed93 falls3.380s/666awake, standing72.672673%, slip16.452826,
+reward−.052895283;8133CNSand36011motor input edges change, all64CNSaffected,
+max original deviation24.016786%. Both pass original-reference/topology/sign
+and bound checks, body/support metrics, scalar reward and bias-corrected credit
+reconstruction (max scalar error2.22e-16), exact sustained-fall termination and
+raw artifact hash copies. Actual start-pointer ledger audit awaits worker stop.
+
+These are two retained failures totaling6.150completed body seconds. Circuit
+weight changes demonstrate active new-scope learning, not useful learned gait.
+No full V28training success, frozen outcome, validated checkpoint or startup
+change exists yet. The same worker32711 is training94, observed through1.6s.
