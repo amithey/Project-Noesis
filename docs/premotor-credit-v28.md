@@ -144,3 +144,19 @@ and35946motor input edges changed, all64CNSaffected. Raw artifacts copied with
 hashes. Five complete births total17.280body seconds, one full and four falls.
 Worker32711 has started97, observed through.8s learningTrue. No frozen result,
 validated bank, source/reward/gate change or normal-startup promotion exists.
+
+
+## Sixth training birth retained; frozen original control active
+
+Seed97 ended2.900s/570awake with training_fall, standing95.087719% only in the
+short window, slip13.333831mm/s, reward.310479306, heading advance7.627222mm and
+cycles9/10/8/3/6/6. The cropped average does not count as full standing/walking.
+Audit passes original references/topology/signs/bounds (max deviation25.480914%),
+scalar/corrected learning moments (max scalar error2.22e-16), actual ground
+support, body/CSV metrics and exact first sustained-fall termination.7742CNS
+input and34152motor input edges changed, all64CNSaffected. Raw artifacts copied
+with hashes. Six completed births total20.180body seconds, one full/five falls.
+Latest training97remains separate from best validatednull. Worker32711 has
+begun full5s quiet original10, observed through.2s learningFalse, exploration0,
+fall cutoff0. No live ledger, validated walking, source/reward/gate or startup
+change is claimed. Actual attempt-pointer verification remains a terminal audit.
