@@ -94,3 +94,19 @@ These are two retained failures totaling6.150completed body seconds. Circuit
 weight changes demonstrate active new-scope learning, not useful learned gait.
 No full V28training success, frozen outcome, validated checkpoint or startup
 change exists yet. The same worker32711 is training94, observed through1.6s.
+
+
+## Third birth: full horizon, stance slip still high
+
+Seed94 completed5s/990awake with standing97.777778%, slip17.384094mm/s, reward
+.226328355, heading advance6.848899mm and cycles13/17/13/15/13/1. RH has only
+one support/lift cycle. Exploration remains on; this is not frozen walking.
+The immutable-case audit passes v5scalar/corrected credit (max error2.22e-16),
+ground-support counts, body/CSV measures, no sustained fall, original references,
+topology/signs/bounds (max deviation24.599393%).8070CNSinput edges and35610motor
+input edges changed, reaching all64selected CNS cells. Raw checkpoint, CSV,
+motor/gait and sensory artifacts are copied and hash-verified to primary.
+Three complete births total11.150body seconds, one full and two falls. Latest
+training is retained separately from best validatednull; actual start-pointer
+ledger audit waits for termination. Worker32711 has begun95, observed through.4s
+with learningTrue. No source, reward, physical-gate, startup or promotion change.
