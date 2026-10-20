@@ -116,3 +116,26 @@ actual training, not improved learned behavior or an old-policy comparison.
 No frozen or heldout data was used in the diagnostic. SourceB190, reward and
 physical acceptance remain unchanged through the trial. Worker46310has begun
 training100, last observed through.4s; no frozen V29result or promoted model.
+
+## Training-only load feedback diagnostic, no active parameter change
+
+On the two committed98/99traces, loaded pre-step tarsal forces have medians
+42.185988and42.194190in model force units. The legacy SensoryMap transfer uses
+load0=2, base2Hz and max150Hz. Its inferred rates reach>=149Hz in89.0244%and
+91.2134% of loaded leg samples; median rate derivative is numerically zero.
+Thus graded force information may be compressed into nearly binary contact
+input. This does not show that binary contact causes failed gait or that a
+less saturated encoding would help. Actual sensory spike trains were not
+measured by this diagnostic; these are rate-curve reconstructions.
+
+The input timing is matched correctly: each awake chunk uses the preceding
+CSV row's post-step ground loads, as confirmed against learning_lab's order
+(ground_contacts before sensory drive, then post-step ground_contacts before
+CSV). Raw CSV hashes match the committed-case index. Only training98/99data
+are used, no validation or heldout traces. Fixed-input scale2/10/20/40/80curves
+are retained in load-feedback-diagnostic.json. At40the inferred median rate
+is117.97–117.99Hz and slope about1.428Hz/model-force-unit, preserving a graded
+range; this is a possible later hypothesis, not a chosen behavior improvement.
+No sensory encoding, neural dynamics, weight bounds, reward or acceptance gate
+is changed during V29. The active worker46310continues training100, observed
+through1.8s upright.89. No completed third birth or frozen result is claimed.
