@@ -241,3 +241,40 @@ It restarts candidate10from its original episode start and training97bank;
 learning/exploration/fall cutoff remain off. Separate worker002stdout/native
 exit records are registered. The live ledger is not read. V29smooth-grip remains
 staged only,9targeted tests/Ruff passing, no installation or body run.
+
+## V29 staged pipeline checks, active V28 still unchanged
+
+The separate primary-output protocol-v29-smooth-grip-candidate now contains a
+full source/test/script snapshot. A source inventory proves only
+embodied_metrics.py differs from the live CF8515 tree. Its source digest is
+b190fadaadd43ff2bf7945819125e0b65ed2d7fa0794ddfa087e812e48f747e8.
+The added optional objective is standing-gate-smooth-grip-v6; the first three
+objective choices/default and every other production source file stay exact.
+No source is installed into the active worktree.
+
+Thirty targeted tests pass19.97s with Ruff. Coverage includes360random frozen
+old-objective outputs compared with a pre-change canonical golden digest,
+unchanged physical fields and ground/posture/speed requirements, slip cost and
+signed progress, actual fake-body V5-toV6circuit-bank import (original refs and
+weights exact, schema9/checkpoint4, frozen stats zero and no injected motor/CNS
+currents), all25frozen controls with no learning/exploration/fall cutoff, retained
+proprio/balance in external-sense ablation, and rejection of resume under a
+changed reward without mutating the old report. The earlier V5test now asserts
+its third-position choice rather than that no future choices may be appended.
+The first sandboxed test run had29passes and a Windows access-denied atomic
+rename in its temporary report; the unchanged tests pass with normal elevated
+file permissions. This was an environment failure, not a reward-code fix.
+Targeted log SHA256:
+216320b2ebc7f2e8213838d3d445c4c32581769a1112c7356ac886808d49eab8.
+
+Full regression, installation and any V29body training remain pending until
+V28's frozen candidate evaluation is completed and audited. The prospective
+continuation keeps latest97bank, circuit scope, lr.2, eligibility100ms, OU1.5,
+BG40/U0 and all physical acceptance gates; future training seeds98..103 are
+separate from validation10/11 and untouched heldout200..202. This is a learning
+hypothesis and software evidence only, not evidence of standing/walking.
+
+Live V28session55907 has begun candidate10and reproduces the prior rounded
+stdout samples through1.2s (upright-.55 at1.2s). Exact CSV-prefix replay will be
+checked only after its producer commits immutable output. No live report is
+read. Best validated remainsnull and normal startup is unchanged.
