@@ -139,3 +139,22 @@ range; this is a possible later hypothesis, not a chosen behavior improvement.
 No sensory encoding, neural dynamics, weight bounds, reward or acceptance gate
 is changed during V29. The active worker46310continues training100, observed
 through1.8s upright.89. No completed third birth or frozen result is claimed.
+
+## Third V29birth retained: support/lift cycles, terminal fall
+
+Seed100ends3.005s/591awake with training_fall. Standing88.494078% applies only
+to this shortened window; mean stance slip17.720150mm/s, reward.101892180,
+heading advance4.523187mm and cycles10/10/8/6/4/4. Tripod remainsnull. Neither
+forward movement nor those cycles prove walking while the body slips/falls.
+Checkpoint SHA2563ceb32d5faef541991d115dacae3ac428ee9f46e143bde1525bef4426732b7a2.
+
+The committed-case audit passes independent smooth grip/progress, scalar reward
+and normalized/bias-corrected learning moments (max scalar error2.22e-16),
+actual ground support/body metrics, exact sustained-fall termination, original
+refs/topology/signs and50%bounds.8117CNSinput and35818motor-input edges change,
+all64CNSaffected, maximum original deviation25.105438%. All raw artifacts are
+copied with hashes; latest-training roles refresh automatically to seed100,
+best validatednull. Actual checkpoint starting pointers await the stopped
+ledger. Three completed births total5.865body seconds, zero full horizons and
+three falls. No frozen V29case is complete. Worker46310continues training101,
+observed through.4s/upright.92; sourceB190and all trial criteria stay unchanged.
