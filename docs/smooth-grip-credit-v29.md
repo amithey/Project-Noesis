@@ -293,3 +293,47 @@ It emits a receipt after its stats files are written. No package source is
 edited, but actual trajectory equivalence is still pending the immutable-case
 CSV/motor-prefix comparison; software forwarding tests alone do not prove it.
 No live ledger is read after resume, and no model or startup is promoted.
+
+## First frozen V29original committed and replay equivalence proven
+
+Original10completes5s/990awake: standing44.242424%, slip9.366594mm/s, reward
+-.356606466, heading advance7.977423mm and cycles7/6/9/13/10/12. No learning,
+exploration or fall cutoff. The independent audit passes original weights and
+zero learning statistics, smooth grip/progress/reward reconstruction (max scalar
+error2.22e-16), body/support measures and raw file hashes. This is the original
+control, not trained gait. Seven protocol jobs are now committed (six births,
+one frozen control); six start pointers are terminal-ledger-bound, the new
+control awaits the next stopped-worker audit.
+
+Same-source replay exactly matches all102saved CSV rows/all columns,92awake
+rows,460ms/4558motor events and every checkpoint array from the prior cutoff.
+Across the full1000CSV rows, every field outside reward/grip_factor/
+grounded_progress exactly matches V28original10. All motor events, raw senses,
+gait report, retinal PNG and original checkpoint arrays are exact. Model
+contexts differ only in the explicitly changed scalar objective. Thus the
+registered timing observer and new scalar reward have no observed body/neural/
+sensory effect on this actual frozen original control. This is compatibility
+for the measured original only, not trained walking or a general speedup proof.
+Evidence is retained in original10-compatibility.json. Worker50439continues
+original11, observed through2.0s; candidate validation remains pending.
+
+The observed timing prefix includes cold setup,500neural ms and5450physical
+steps. Total profiled108.166s; get_observation5451calls cumulative51.570s,
+LIFkernel100calls cumulative14.719s, native mj_forward5456calls17.469s and
+mj_step15450calls14.500s. These timings nest/overlap and include initialization;
+they must not be added or projected as a whole-cycle benchmark. Local source
+inspection finds per-step vision/adhesion/last-observation bookkeeping and
+synchronized named-array reads with forward recalculation. Dropping observation
+calls or physics stages is not justified; any later readout optimization must
+preserve the actual data/timing and show equivalence. No such optimization is
+implemented or used in V29; sourceB190and physical criteria remain unchanged.
+
+Before seeing the trained V29validation result, an optional next-cohort plan is
+registered under primary outputs/extended-training-v30-plan/plan.json: only if
+V29quiet validation completes and rejects, retain last103/F9F and train30serial
+quiet births104..133with the same source/learning/body/sensory/reward settings,
+one-hour invocations/resume, fresh originals and all25frozen controls. No worker
+is launched for that plan and no heldout data informs it. If quiet validation
+passes, finish V29's remaining controls instead. This extends experience
+(current V29has17.430training body seconds) before another mechanism change;
+it does not promise improvement. No accepted model or startup update exists.
