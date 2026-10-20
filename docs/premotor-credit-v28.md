@@ -215,3 +215,29 @@ Worker32711 is now evaluating frozen candidate10 (trained97bank): observed
 uprightness-.68 at.8s and-.43 at1s. This is concerning early fall telemetry,
 not a completed-case result; full5s evaluation continues, no cutoff. Actual
 attempt-pointer binding waits for the terminal ledger. Best validatednull.
+
+## First resumed hour boundary audited; frozen candidate restarts from birth
+
+Session32711 exited0, native Python exit0. Elevated CIM confirmed no remaining
+V28Python worker before reading the terminal ledger. Its immutable snapshot
+SHA256 isee151b8b9c9dce732bda14f32aa07cd17f407cc8f512b21ff7943ad9d8298a1c.
+Wall duration3596.484s;8/31jobs completed (six training, two originals).
+Every completed job summary/output/checkpoint matches the independent case
+index; all actual starting checkpoint pointers and hashes are now bound to
+the terminal ledger. First training imports CE1E; later births form the expected
+serial chain; originals have no imported bank. Latest training remains97/A2E5,
+best validatednull. Initial interrupted92attempt remains separate.
+
+Candidate10 reached1.790s/348awake before wall_budget, not a completed control:
+standing34.770115% in this partial window, slip7.112244mm/s, reward-.448888609.
+Its weights equal latest training97exactly; all learning statistics are zero.
+All raw partial artifacts and the terminal report/native exit record were
+hash-copied under worker-boundary-001. No partial is counted or promoted.
+Full five-second candidate evaluation remains unproven.
+
+Exact unchanged-source/configuration resume is live as session55907, confirmed
+by elevated CIM launcher31048/interpreter43108 with no duplicate task worker.
+It restarts candidate10from its original episode start and training97bank;
+learning/exploration/fall cutoff remain off. Separate worker002stdout/native
+exit records are registered. The live ledger is not read. V29smooth-grip remains
+staged only,9targeted tests/Ruff passing, no installation or body run.
