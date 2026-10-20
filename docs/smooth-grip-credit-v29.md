@@ -59,3 +59,28 @@ isolating reward from every historical protocol difference. It is a learning
 hypothesis. No walking result is claimed. No normal-startup update is allowed
 without all behavioral gates, actual frozen video evidence and startup check.
 The pilot omits recording to reduce overhead; a passing bank still needs video.
+
+## Registered live V29 continuation
+
+Code commit77d2ad2 installs only the tested optional scalar objective and tests
+in the existing isolated worktree. No primary/normal-startup source changes.
+Actual live training session46310 is verified by elevated CIM launcher16768/
+interpreter36120, with no duplicate task worker. Exact CLI uses output
+outputs/birth-cycle-v29, imported V28training97/A2E5, six quiet births98..103,
+BG40,U0, circuit scope, normalized/bias-corrected lr.2, smooth-grip-v6,
+5s horizon/.1s training fall cutoff, validation10/11, heldout200..202,
+early-reject and wall3600. Native stdout and exit records are separate under
+protocol-v29-smooth-grip-candidate/worker-000-*.
+
+Producer stdout confirms seed98/learningTrue, observed through.6s with upright
+.84 and reward.615. This is explored training telemetry, not a committed birth,
+frozen success, or evidence of walking. All old V28negative results and raw
+partial/full replay proof remain preserved; no V28candidate is accepted.
+
+The file-only V29case auditor is prepared with an explicit worktree_root
+(the inherited checkpoint is nested deeper than V28's earlier parent). It
+independently reconstructs smooth grip and signed grounded progress as well as
+scalar reward/normalized learning moments, original refs/signs/bounds, actual
+ground support and fall timing. Only producer-committed cases will be opened;
+actual start-pointer binding waits for a stopped-worker ledger. The live
+ledger is not read. No V29committed birth or validated bank exists yet.
