@@ -54,3 +54,11 @@ quiet rejection leaves remaining controls explicitly uncompleted. Proprioception
 and balance remain in external-sense ablation. No training video is requested;
 a passing model still needs real frozen video and normal-startup verification.
 No model is promoted and the normal startup default remains unchanged.
+
+
+The actual worker83373 (launcher25508/interpreter14992) began92, learningTrue,
+observed through.2s. Its immutable target-map file, written before the episode
+header and successful subset import, exactly matches the full-connectome
+preflight64CNSidentities and389mapped leg motor neurons. No live ledger opened,
+completed V28birth, frozen result or promotion yet. The active source/plan and
+physical gates remain fixed during the batch.
