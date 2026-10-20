@@ -160,3 +160,22 @@ Latest training97remains separate from best validatednull. Worker32711 has
 begun full5s quiet original10, observed through.2s learningFalse, exploration0,
 fall cutoff0. No live ledger, validated walking, source/reward/gate or startup
 change is claimed. Actual attempt-pointer verification remains a terminal audit.
+
+## Frozen original10 reproduces the pre-expansion control
+
+The committed five-second original10 control is independently audited: no
+learning, no motor/CNS exploration, no fall cutoff, original weights and zero
+learning statistics. Standing is44.242424%, stance slip9.366594mm/s, reward
+-.357539995 and heading advance7.977423mm. It is a control, not trained walking.
+All1000CSV rows and every column are exactly equal to the earlier motor-only
+scope control from V24. Motor-event arrays, sensory arrays, retinal PNG and gait
+report also match exactly; shared original motor weights/references are exact.
+Only the explicitly registered schema8-to9 scope/target metadata differs.
+The new checkpoint SHA256 is
+be34c92913c574e09e32d0a759ef7df66aca3deab10563fddbaae260a361ada0.
+The file-only comparison helper passes Ruff and writes
+original10-scope-equivalence.json. This verifies inactive-scope compatibility
+on one actual full-body evaluation, not improved learned behavior.
+Worker32711 continues original11; candidate evaluation is still pending.
+No live ledger was read, no source or gate changed, and best validated remains
+null. Actual attempt-pointer binding waits for the worker to terminate.
