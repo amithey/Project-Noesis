@@ -234,3 +234,28 @@ it has not been used on an actual body and real trajectory equivalence is
 unproven. It changes no package source. Any later use must occur only after a
 verified terminal boundary of the current worker and be explicitly registered;
 no performance optimization or acceleration is claimed yet.
+
+## Sixth V29birth complete; frozen originals start
+
+Seed103completes5s/990awake, standing95.151515%, stance slip19.034420mm/s,
+reward.166560322, heading advance13.037285mm and cycles18/13/12/10/14/4,
+tripodnull. Exploration remains1.5; no frozen walking is inferred. Its high
+slip is still a limitation, and heading-integrated advance alone is not gait.
+The independent audit passes smooth grip/progress, reward/normalized learning
+moments (max scalar error2.22e-16), real ground support/body metrics, full horizon
+without sustained terminal fall, original refs/topology/signs/50%bounds and raw
+artifact hash copies.8291CNSinput and36742motor-input edges change, all64CNS,
+max original deviation25.270368%. Latest-training roles now point to103,
+best validatednull. Six births total17.430body seconds: two full and four falls.
+
+Worker46310has begun frozen quiet original10, observed through.4s learningFalse.
+All actual start-pointer bindings remain pending until the terminal ledger.
+The file-only audit_stopped_worker.py sidecar is prepared (Ruff/compile pass):
+it requires prior terminal/elevated-OS verification, checks every completed
+and incomplete attempt's start against the last completed training bank,
+preserves incomplete raw artifacts without counting them, and snapshots the
+stopped report/native exit. It has not opened the live ledger or run on a real
+boundary yet. Model sourceB190and all physical/training/evaluation gates stay
+unchanged. No validated candidate, video evidence or normal-startup update.
+
+Latest completed training103checkpoint SHA256: f9f21933fbd47d00aa00c992fbec7473693fbce1e15b39de8f088ac328656036.
