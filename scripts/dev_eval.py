@@ -29,7 +29,9 @@ def run_job(a, model: str, seed: int) -> dict | None:
            "--output", str(out / "run"), "--seed", str(seed)]
     cmd += a.probe_args.split()
     if model == "candidate":
-        cmd += ["--checkpoint", str(a.checkpoint)]
+        cmd += a.candidate_args.split()
+        if a.checkpoint is not None:
+            cmd += ["--checkpoint", str(a.checkpoint)]
     log = out.with_suffix(".log")
     log.parent.mkdir(parents=True, exist_ok=True)
     with log.open("w", encoding="utf-8") as fh:
@@ -52,13 +54,14 @@ def main() -> None:
     ap.add_argument("--out-dir", type=Path, required=True)
     ap.add_argument("--original-dir", type=Path, help="reuse cached original results from this directory")
     ap.add_argument("--workers", type=int, default=2)
+    ap.add_argument("--candidate-args", default="", help="extra frozen_probe arguments for the candidate only, e.g. \"--pool-gains genome.json\"")
     ap.add_argument("--probe-args", default="", help="extra arguments for frozen_probe, e.g. \"--birth 0.5 --seconds 5.5\"")
     a = ap.parse_args()
     if set(a.seeds) & HELD_OUT:
         ap.error("held-out seeds must not be used for development evaluation")
     models = a.models.split(",")
-    if "candidate" in models and a.checkpoint is None:
-        ap.error("--checkpoint is required for the candidate")
+    if "candidate" in models and a.checkpoint is None and not a.candidate_args:
+        ap.error("the candidate needs --checkpoint or --candidate-args")
     if a.original_dir is not None and "original" in models:
         for seed in a.seeds:
             src = a.original_dir / f"original-s{seed}" / "result.json"
