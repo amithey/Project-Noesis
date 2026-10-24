@@ -69,6 +69,8 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--seconds', type=float, default=3.0)
     ap.add_argument('--birth', type=float, default=0.05)
+    ap.add_argument('--warmup-ms', type=float, default=0.0,
+                    help='run the brain on background activity alone for this long before it is first coupled to the body (default 0)')
     ap.add_argument('--training-fall-seconds', type=float, default=0.,
                     help='training-only terminal sustained fall duration; 0 keeps full horizon')
     ap.add_argument('--seed', type=int, default=0)
@@ -128,6 +130,8 @@ def validate_args(ap, args):
         ap.error('--training-fall-seconds must be finite and within [0, --seconds]')
     if not args.learn and args.training_fall_seconds:
         ap.error('evaluation requires training fall termination disabled')
+    if not np.isfinite(args.warmup_ms) or args.warmup_ms < 0:
+        ap.error('--warmup-ms must be finite and nonnegative')
     if not np.isfinite(args.birth) or not 0 <= args.birth < args.seconds:
         ap.error('--birth must be between zero and --seconds')
     for name in ('learning_rate', 'sensory_weight', 'environment_weight', 'bg_hz', 'bg_weight'):
@@ -298,6 +302,8 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             if awake:
                 if awake_origin is None:
                     awake_origin = previous.copy()
+                    if args.warmup_ms > 0:
+                        net.run(args.warmup_ms, background_hz=args.bg_hz, background_weight=args.bg_weight)
                 drive_parts = []
                 loads, _ = ground_contacts(sim, fly)
                 if senses is not None:

@@ -27,6 +27,7 @@ def run_job(a, model: str, seed: int) -> dict | None:
         return json.loads(cache.read_text(encoding="utf-8"))
     cmd = [sys.executable, "-u", str(Path(__file__).with_name("frozen_probe.py")), "--data", str(a.data),
            "--output", str(out / "run"), "--seed", str(seed)]
+    cmd += a.probe_args.split()
     if model == "candidate":
         cmd += ["--checkpoint", str(a.checkpoint)]
     log = out.with_suffix(".log")
@@ -51,6 +52,7 @@ def main() -> None:
     ap.add_argument("--out-dir", type=Path, required=True)
     ap.add_argument("--original-dir", type=Path, help="reuse cached original results from this directory")
     ap.add_argument("--workers", type=int, default=2)
+    ap.add_argument("--probe-args", default="", help="extra arguments for frozen_probe, e.g. \"--birth 0.5 --seconds 5.5\"")
     a = ap.parse_args()
     if set(a.seeds) & HELD_OUT:
         ap.error("held-out seeds must not be used for development evaluation")
