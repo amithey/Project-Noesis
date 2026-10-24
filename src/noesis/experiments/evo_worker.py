@@ -58,7 +58,7 @@ def run_task(task: dict) -> dict:
                 "heading_forward_distance_mm", "mean_supporting_feet", "mean_reward")
         res = {k: summary[k] for k in keep if k in summary}
         res["ok"] = summary.get("status") == "completed"
-    except Exception as exc:  # a failed simulation scores as a fall; it must not stop the evolution
+    except Exception as exc:  # noqa: BLE001  a failed simulation scores as a fall; it must not stop the evolution
         res = {"ok": False, "error": f"{type(exc).__name__}: {exc}", "standing_fraction": 0.0}
     finally:
         shutil.rmtree(out, ignore_errors=True)
