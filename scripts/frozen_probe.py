@@ -23,6 +23,7 @@ def main() -> None:
     ap.add_argument('--seed', type=int, required=True)
     ap.add_argument('--exploration', type=float, default=0.0)
     ap.add_argument('--seconds', type=float, default=5.0)
+    ap.add_argument('--pool-gains', type=Path, help='JSON list of 84 log-gains (leg muscle pools)')
     ap.add_argument('--birth', type=float, default=0.05, help='time the brain is first coupled to the body (s)')
     ap.add_argument('--warmup-ms', type=float, default=0.0, help='brain pre-activation on background alone before coupling')
     ap.add_argument('--video', action='store_true', help='record an MP4 of the episode')
@@ -43,6 +44,7 @@ def main() -> None:
     case.seconds, case.training_fall_seconds = a.seconds, 0.0
     case.motor_exploration = a.exploration
     case.birth, case.warmup_ms = a.birth, a.warmup_ms
+    case.pool_gains = a.pool_gains
     case.diagnostic_frozen_exploration = a.exploration > 0
     case.import_weights, case.no_environment_senses, case.video = False, False, a.video
     case.output = a.output

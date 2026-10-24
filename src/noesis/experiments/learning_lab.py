@@ -69,6 +69,8 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument('--episodes', type=int, default=3)
     ap.add_argument('--seconds', type=float, default=3.0)
     ap.add_argument('--birth', type=float, default=0.05)
+    ap.add_argument('--pool-gains', type=Path, default=None,
+                    help='JSON list of 2 x 42 log-gains for the leg muscle pools (frozen evaluation only; default none)')
     ap.add_argument('--warmup-ms', type=float, default=0.0,
                     help='run the brain on background activity alone for this long before it is first coupled to the body (default 0)')
     ap.add_argument('--training-fall-seconds', type=float, default=0.,
@@ -130,6 +132,8 @@ def validate_args(ap, args):
         ap.error('--training-fall-seconds must be finite and within [0, --seconds]')
     if not args.learn and args.training_fall_seconds:
         ap.error('evaluation requires training fall termination disabled')
+    if (getattr(args, 'pool_gains', None) is not None or getattr(args, 'pool_genome', None) is not None) and args.learn:
+        ap.error('pool gains are for frozen evaluation only (do not combine with --learn)')
     if not np.isfinite(args.warmup_ms) or args.warmup_ms < 0:
         ap.error('--warmup-ms must be finite and nonnegative')
     if not np.isfinite(args.birth) or not 0 <= args.birth < args.seconds:
@@ -226,7 +230,14 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
         muscles = None
         if args.body_model == 'muscles':
             gp, gn = build_muscle_matrices(cn.neurons, names)
-            muscles = MuscleModel(gp[leg_rows], gn[leg_rows], [names[i] for i in leg_rows])
+            gp_leg, gn_leg = gp[leg_rows], gn[leg_rows]
+            pool_genome = getattr(args, 'pool_genome', None)
+            if pool_genome is None and getattr(args, 'pool_gains', None) is not None:
+                pool_genome = json.loads(Path(args.pool_gains).read_text(encoding='utf-8'))
+            if pool_genome is not None:
+                from noesis.pool_genome import apply as apply_pool_genome
+                gp_leg, gn_leg = apply_pool_genome(gp_leg, gn_leg, pool_genome)
+            muscles = MuscleModel(gp_leg, gn_leg, [names[i] for i in leg_rows])
         amplitude = args.motor_exploration
         if amplitude is None:
             amplitude = 1.5 if args.learn else 0.0
