@@ -1,5 +1,7 @@
 # Brief for Gemini 4 Argon: locomotion robustness of the Project Noesis fly (2026-10-26)
 
+Read `docs/project-alignment.md` first: it states the project goal, who works on what (you are assigned **walking**), and the rules.
+
 You are being asked to act as an **independent reviewer and, if a scope is agreed, a bounded implementer** on one problem. Read this
 whole file first. Do not claim results you have not measured with the tools listed in section 6.
 
