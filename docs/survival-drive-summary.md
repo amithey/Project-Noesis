@@ -1,0 +1,80 @@
+# Survival-drive track: final summary and coordination plan — 2026-10-17
+
+Goal: train the connectome-driven fly brain to work with its senses so a virtual fly shows fly-like,
+need-driven behaviour. Scope: everything that does not need legs (leg control belongs to the locomotion track,
+`codex/brain-body-feedback`). Branches (both on origin): `feature/fly-survival-drive`, `feature/network-calibration`
+(built on the first). Per-result detail: `findings-sense-audit.md`, `findings-foraging-conditioning.md`,
+`findings-virtual-agent.md`, `findings-network-calibration.md`, `findings-pn-decoder-agent.md`.
+
+## What was established (all brain-only or leg-free; each with shuffle/random/reversal controls)
+1. **The shared network is bistable.** With the corrected BANC brain, background ≤ 1 Hz (weight 60) is silent
+   and ≥ 2 Hz is saturated (PN ≈ 115 Hz, 17-35% of neurons active); a sparse window exists only at 1.25-1.75 Hz. In
+   that state any strong receptor drive gives the same population response as a random receptor set, so
+   population means carry no odour identity, valence or side.
+2. **Odour identity is present in a modest, structured form upstream.** With graded APL: 7 of 10 tested
+   glomeruli drive their own projection neurons above random PN sets (p < 0.05), and the Kenyon-cell code of the
+   same odour is more reproducible than between odours (identity index +0.14, the smallest attainable p) — but ≈ 74%
+   of two odours' Kenyon-cell codes still overlap.
+3. **It does not reach the descending output as odour identity** (index ≈ 0.001); a small ipsilateral side
+   difference of the numbered DNa family (+7.5 to +8.7 Hz, Bonferroni-significant, survives equal receptor counts
+   and disappears with shuffled sides) exists but is one-sided and ≈ 100 Hz-saturated.
+4. **A larger inhibition factor produces a sparser, more specific network.** Multiplying all inhibitory weights by
+   `g_I` = 4-12 lowers non-target PN rates from ≈ 120 to 8-40 Hz, Kenyon-cell activity from 26% to 8-13%, raises the
+   Kenyon identity index to +0.25 and gives descending neurons a side-specific pattern (p = 0.01-0.02) — but
+   silences the DNa group and removes the DNa lateralisation.
+5. **Side information is linearly decodable and spread through the network:** 78-85% on odour sets never seen,
+   equally from descending, projection and random central neurons.
+6. **In real time, graded bilateral input is decodable from projection neurons, not descending neurons:** 72% on
+   unseen concentration levels (250 ms windows; null 50%, p = 0.016), 61-68% at plume-like contrast, 77-81% at
+   high contrast; 1 s averaging is worse; descending neurons at chance.
+7. **A leg-free agent steered by a trained PN read-out reaches the food:** in the wide-antenna world (3 mm) 9 of 12
+   poses versus 0-1 of 12 in every control (shuffled-label decoder, reversed sign, shuffled receptor sides, no
+   gradient, diffusion only; Holm p ≤ 0.003).
+
+## What was NOT shown
+- **No learning of any kind inside the network.** Odour+sugar conditioning with fed/hungry states and a direct
+  dopamine positive control produced no sugar- or hunger-dependent change; sugar reaches no dopaminergic type
+  selectively (0 of 33), and the graph shows no sugar-specific route to reward cells.
+- **No evidence that hunger changes behaviour** (wide world 9 vs 5 of 12, p = 0.107 uncorrected; standard 3 vs 4).
+- **No odour recognition, no odour-dependent choice, no memory, no evolution experiment.**
+- **The brain does not steer by itself.** The agent uses a read-out trained on labelled side; projection neurons
+  are one synapse from the receptors; it works only after changing the world (3 mm antennae), and not in the
+  standard 1 mm world (3 of 12, indistinguishable from controls).
+- **`g_I` is a model assumption**, a 4-12-fold departure from the measured weights, justified only by the
+  resulting operating regime; the true cause of saturation (missing synapses, no neuromodulation, neuron model) is
+  untested. The first agent (DNa steering on the unscaled network) did not reach the food (0 of 4).
+- Single network calibration, small pose counts (12), no body, no real fly data comparison.
+- A significance-count error in an earlier table (6 vs the correct 7 glomeruli) was found and corrected; the p
+  floor of several permutation nulls is the attainable minimum, noted where it occurs.
+
+## Coordination with the locomotion track (proposal)
+Facts: the locomotion branch (V14, 2026-10-16) stands ≈ 89.5% of 5 s, no promoted candidate, tripod score
+unavailable; its brain runs with background 3 Hz × 60, which in this repo's operating-point scan on the corrected
+brain at `g_I` = 1 is the **saturated** regime (17% active, PN ≈ 116 Hz). It was validated at `g_I` = 1.
+
+1. **Do not change the shared brain.** `g_I` stays an opt-in parameter (default 1.0, `scale_inhibition` in
+   `ei_balance_scan.py`); nothing merged into the locomotion branch changes its default dynamics.
+2. **Step 2 done (brain only, `findings-network-calibration.md` section 7):** at `g_I` = 4-12 leg motor neurons are not silenced
+   but become input-driven (0.35-1.6 Hz at rest versus 21 Hz tonic at `g_I` = 1), the proprioceptive reflex survives at the same sign
+   and similar size, and the motor pools respond more strongly to injected current. So a body test needs a re-scaled rate-to-activation map.
+   **Step 3 done (`findings-body-ab-g-inh.md`): `g_I` = 4 is not a drop-in for the body** — with the unscaled actuator the body stands but slides
+   backward ≈ 50 mm; with activation re-matched it stands unreliably (0.95 / 0.41) and still drifts backward; the baseline itself varies
+   0.17-0.95 between two seeds, so standing differences are not interpretable; heading is the only comparison beyond that spread.
+   Original proposal for step 3, retained for the record (A/B on the locomotion pipeline, frozen weights, same seeds): run its standing protocol (V14 acceptance
+   gates: standing ≥ 90%, heading progress ≥ 1 mm, two cycles in four legs, slip ≥ 20% lower than original weights)
+   at `g_I` ∈ {1, 4, 12}. Before any body run, measure leg-motor and proprioceptive-pool rates at those `g_I`
+   (DN activity falls to 6-17%; motor pools may fall silent), reusing `ei_balance_scan.py`/`operating_point.py`.
+   If standing worsens or motor pools go silent at `g_I` > 1, the two tracks need different calibrations (e.g.
+   scale only the olfactory/central inhibitory populations, not motor circuits) — an open design question.
+3. **No agent-to-leg connection until walking passes its own gates.** The agent's decision comes from a PN
+   read-out, which is not a descending command. The interface to the body would be an assumed turn bias (an
+   asymmetric bias into left/right leg motor pools, or a DNa-group input) and must be labelled as such, like the
+   existing artificial body reward.
+4. **Process:** keep the two lines on separate branches; merge `feature/network-calibration` only after step 2;
+   run both test suites after any merge (257 tests on the locomotion branch, this repo's added tests on top);
+   write new results as dated `findings-*.md`; never overwrite the other track's checkpoints or outputs; use
+   one shared data directory read-only.
+5. **Decision for the user:** whether to spend the next effort on (a) the A/B above, (b) an evolution experiment
+   on the leg-free agent (genome: sensory gains, hunger coupling, read-out gain; fitness: reach/energy), or (c)
+   making hunger matter (e.g. making food scarce and energy loss real) — (a) is the prerequisite for any joint
+   use; (b) and (c) are self-contained.
