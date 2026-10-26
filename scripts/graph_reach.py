@@ -3,11 +3,13 @@
 Ad hoc graph check used in docs/findings-foraging-conditioning.md; counts neurons reachable, ignores weights
 and inhibition. Run from the repo root with PYTHONPATH=src and an edited data path.
 """
-import numpy as np, pandas as pd
 from pathlib import Path
-from scipy import sparse
+
+import numpy as np
+
 from noesis.embodiment import load_training_brain
 from noesis.mushroom_body import populations
+
 D=Path("C:/Users/heyma/OneDrive/Desktop/מדעי המחשב/פרוייקטים/Project Noesis/data")
 cn,_=load_training_brain(D,Path("outputs/selectivity-cache"),"corrected")
 pops=populations(cn.neurons); n=cn.n
