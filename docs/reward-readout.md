@@ -59,3 +59,42 @@ Final distance (mm) per pose, hungry model: 33 12 29 44 18 40 12 **3** 43 37 32 
   (effective level up to 2.9).
 - 12 poses; one training seed per model; hyper-parameters tuned on the surrogate; control weights matched only to the hungry model.
 - Even a success would be a trained external read-out of projection neurons (one synapse from the receptors), not learning inside the network.
+
+## Follow-up: fine-tuning with the real network in the loop (48 episodes per arm)
+Question: is the gap between the surrogate (76% success) and the real network (2 of 12) caused by the surrogate? Test: start from the hungry
+surrogate weights and continue REINFORCE with the REAL network in the loop (`reward_readout_run finetune`): 6 iterations x 8 episodes of 12 s,
+random start poses (never the 12 evaluation poses), exploration noise 0.5 on the score, learning rate 0.2, momentum 0.5, return x 1.7
+(hunger). Control arm: identical poses, identical start weights, but each episode's return is replaced by another episode's return of the same
+iteration (reward contingency broken). The learned weights were then frozen and evaluated on the same 12 poses as everything else.
+
+| Quantity | reward arm | shuffled-return arm |
+|---|---|---|
+| reached the food during training, per iteration of 8 | 2, 1, 3, 1, 2, 0 | 2, 3, 0, 4, 3, 3 |
+| mean return per iteration | 0.79, 0.75, 1.07, 0.41, 0.93, 0.30 | — |
+| change of the weight vector from the surrogate start (start norm 1.70) | 3.21 | 0.95 |
+| frozen evaluation, reached the food of 12 poses | **3** | **1** |
+Frozen evaluation per pose (final distance mm; * = reached): reward arm 4.5, 36, 40, 48, 2.7*, 2.9*, 2.9*, 28, 26, 14, 28, 40; shuffled arm 31, 40, 39, 12, 23, 52, 33, 16, 2.9*, 47, 40, 19.
+
+Comparison on the 12 evaluation poses (reached the food; one-sided Fisher against the fine-tuned reward arm, Holm-corrected over the seven
+controls):
+| Condition | reached | p (Holm) |
+|---|---|---|
+| fine-tuned reward arm | 3 | — |
+| surrogate-only hungry read-out (before fine-tuning) | 2 | 0.50 (1.00) |
+| fine-tuned shuffled-return arm | 1 | 0.30 (1.00) |
+| random read-out | 1 | 0.30 (1.00) |
+| shuffled reward (surrogate), reversed sign, no gradient | 0, 0, 0 | 0.11 (0.87) each |
+| diffusion only | 0 | 0.11 (0.87) |
+| surrogate-only fed read-out | 5 | 0.90 (1.00) |
+| label-trained read-out (reference) | 9 | — |
+
+- **Pre-registered criterion not met.** The fine-tuned reward arm (3 of 12) did not reach the food significantly more often than its shuffled-return
+  control or any other control, and its improvement over the surrogate-only model (2 of 12) is one pose.
+- During real-network fine-tuning there was no upward trend in success per iteration (2, 1, 3, 1, 2, 0 of 8) and the reward arm's weights drifted more
+  than three times as far as the control's (3.2 versus 0.95) without a behavioural gain; the last iteration was the worst.
+- **What this does and does not show.** It does not show that the simulator gap is the cause: 48 real episodes (about 2.6 simulated
+  hours of agent time) with a 20-weight read-out and a high-variance estimator is too little experience to learn from noisy returns. It also does
+  not show that reward learning cannot work in the real loop; the fed surrogate model's 5 of 12 shows the read-out can steer sometimes.
+  Learning rate, noise and the number of episodes were fixed in advance and not tuned. One training seed per arm.
+- Supports the earlier picture: the label-trained read-out (9 of 12) remains the only one that reliably steers; reward-only training of an
+  external read-out of projection neurons is much less efficient and was not reliably successful here.
