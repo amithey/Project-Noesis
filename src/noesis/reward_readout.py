@@ -25,20 +25,35 @@ FOOD = (0.0, 0.0)
 class FeatureLibrary:
     """Recorded PN feature vectors grouped by block (constant level and left/right ratio); nearest-block sampling in log space."""
 
-    def __init__(self, x: np.ndarray, level: np.ndarray, ratio: np.ndarray, block: np.ndarray, floor_sd: float = 1e-6):
+    def __init__(self, x: np.ndarray, level: np.ndarray, ratio: np.ndarray, block: np.ndarray, floor_sd: float = 1e-6,
+                 n_components: int | None = None):
         x = np.asarray(x, np.float64)
         if x.ndim != 2 or len(x) == 0:
             raise ValueError("x must be a non-empty 2-D array")
         self.mu = x.mean(axis=0)
         self.sd = np.where(x.std(axis=0) < floor_sd, 1.0, x.std(axis=0))
-        self.z = ((x - self.mu) / self.sd).astype(np.float32)
+        z = (x - self.mu) / self.sd
+        # Optional unsupervised dimensionality reduction (no labels, no reward): top principal components of the recorded
+        # features, each scaled to unit variance; the read-out then has ``n_components`` weights instead of one per neuron.
+        self.basis = None
+        if n_components is not None:
+            _, sv, vt = np.linalg.svd(z, full_matrices=False)
+            k = min(int(n_components), len(sv))
+            scale = sv[:k] / np.sqrt(len(z))
+            self.basis = (vt[:k].T / scale)                      # (d, k): z_pc = z @ basis has unit variance per component
+            z = z @ self.basis
+        self.z = z.astype(np.float32)
         ids = np.unique(block)
         self.rows = [np.flatnonzero(block == b) for b in ids]
         self.ln_level = np.array([np.log(level[r[0]]) for r in self.rows])
         self.ln_ratio = np.array([np.log(ratio[r[0]]) for r in self.rows])
         if not np.all(np.isfinite(self.ln_level)) or not np.all(np.isfinite(self.ln_ratio)):
             raise ValueError("levels and ratios must be positive and finite")
-        self.n_features = x.shape[1]
+        self.n_features = self.z.shape[1]
+
+    def full_weights(self, w: np.ndarray) -> np.ndarray:
+        """Weights on the standardised neuron features equivalent to weights ``w`` on the library's own feature space."""
+        return w if self.basis is None else self.basis @ w
 
     def nearest_block(self, level: float, ratio: float) -> int:
         ll = np.clip(np.log(max(level, 1e-9)), self.ln_level.min(), self.ln_level.max())

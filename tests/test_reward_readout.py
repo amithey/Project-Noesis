@@ -76,3 +76,17 @@ def test_hunger_multiplier_scales_the_update():
     w1 = train(lib, spec, params, reward_multiplier=1.0, **kw)["w"]
     w2 = train(lib, spec, params, reward_multiplier=2.0, **kw)["w"]
     assert np.allclose(w2, 2.0 * w1, rtol=1e-6, atol=1e-9)
+
+
+def test_pca_reduction_roundtrips_to_full_weights():
+    rng = np.random.default_rng(0)
+    x = rng.normal(size=(200, 12)) @ rng.normal(size=(12, 12))
+    level = np.repeat([0.1, 1.0], 100)
+    ratio = np.tile([0.5, 2.0], 100)
+    block = np.repeat(np.arange(10), 20)
+    lib = FeatureLibrary(x, level, ratio, block, n_components=4)
+    assert lib.n_features == 4 and lib.basis.shape == (12, 4)
+    w = rng.normal(size=4)
+    z_std = (x - lib.mu) / lib.sd
+    assert np.allclose(z_std @ lib.full_weights(w), (z_std @ lib.basis) @ w, atol=1e-8)
+    assert np.allclose((z_std @ lib.basis).std(axis=0), 1.0, atol=1e-6)
