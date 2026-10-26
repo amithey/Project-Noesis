@@ -33,7 +33,7 @@ CONDITIONS = {
     "random_readout": {"energy": 0.3, "decoder": "rw_random"},
     "reversed_sign": {"energy": 0.3, "decoder": "rw_hungry", "sign": -1.0},
     "no_gradient": {"energy": 0.3, "decoder": "rw_hungry", "no_gradient": True},
-    "diffusion_only": {"energy": 0.3, "steer": False},
+    "diffusion_only": {"energy": 0.3, "decoder": "label", "steer": False},   # decoder unused when not steering
     "label_decoder": {"energy": 0.3, "decoder": "label"},
 }
 
