@@ -88,7 +88,7 @@ def main() -> None:
         W = scale_inhibition(cn.W, g)
         runs = {c: [run_condition(W, sensory, mn, c, s, a) for s in range(a.seeds)]
                 for c in ("base", "rest", "flex", "extend", "current")}
-        mean = lambda c, k: float(np.mean([r[k] for r in runs[c]]))
+        mean = lambda c, k, runs=runs: float(np.mean([r[k] for r in runs[c]]))
         gains = [reflex_gain(f["lf_flexor_hz"], f["lf_extensor_hz"], e["lf_flexor_hz"], e["lf_extensor_hz"])
                  for f, e in zip(runs["flex"], runs["extend"], strict=True)]
         entry = {"mean": {c: {k: mean(c, k) for k in runs[c][0]} for c in runs},
