@@ -26,7 +26,7 @@ no better average than the original.
 | 12 further births on new seeds (exploration 1.0 -> 0.1), evaluated on 10 dev seeds, paired | candidate 0.64 vs original 0.74, difference -0.10, 95% bootstrap CI [-0.39, +0.21]; no evidence of improvement |
 | Soft start (body settles 0.5 s; brain warmed up 0.5 s; both) | no reduction of the seed spread (sd 0.30, 0.29, 0.39 vs 0.24) |
 | Inhibition scaling g_I = 4 (all inhibitory weights x4, actuator re-matched) | stands unreliably and slides backward (-3 to -51 mm vs +7 to +11 mm for g_I = 1) |
-| Evolution of 84 muscle-pool gains (sep-CMA-ES, 8 generations, population 8, fitness = mean standing over 3 fresh seeds, 2 s episodes) | per-generation difference between distribution mean and original averages about -0.04; final 10-seed evaluation **pending** (update this line) |
+| Evolution of 84 muscle-pool gains (sep-CMA-ES, 8 generations, population 8, fitness = mean standing over 3 fresh seeds, 2 s episodes) | per-generation difference between distribution mean and original averages about -0.04; final 10-seed evaluation of the evolved mean: standing 0.75 vs 0.74 (difference +0.01, 95% CI [-0.28, +0.29], sign test 6/10, p = 0.38); stands >= 0.9 on 7 of 10 seeds vs 4 of 10 but falls on seeds 11, 12 and 17: no evidence of improvement |
 Stable across all models and seeds: forward heading progress of +7 to +12 mm in 5 s.
 
 ## 4. What I would like from you (ranked)
