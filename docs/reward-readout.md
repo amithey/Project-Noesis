@@ -31,10 +31,10 @@ world (3 mm), calibrated network (`g_I` = 12, graded APL 1024), PN features = lo
 Reward-only learning works in the surrogate and is absent with shuffled reward; hunger did not speed it up (fed was as fast or faster).
 
 ## Closed loop with the real network (reached the food, of 12 poses)
-| Condition | reached | Fisher vs reward_hungry (Holm) | closer than reward_hungry in n/12 poses |
+| Condition | reached | Fisher vs reward_hungry (Holm) | reward_hungry ended closer to the food than this condition in n of 12 poses |
 |---|---|---|---|
 | **reward_hungry** (main) | **2** | — | — |
-| reward_fed (own weights, fed gain) | 5 | not an a priori comparison (hunger goes the wrong way) | 3 of 12 |
+| reward_fed (own weights, fed gain) | 5 | not an a priori comparison (hunger goes the wrong way) | 3 |
 | shuffled_reward | 0 | p = 0.24 (1.00) | 7 |
 | random_readout | 1 | p = 0.50 (1.00) | 10 |
 | reversed_sign | 0 | p = 0.24 (1.00) | 7 |
