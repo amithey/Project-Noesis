@@ -13,8 +13,9 @@ afferents feed back. Optional learning is a perturbation rule on synapses into t
 ## 2. The problem
 The outcome of a frozen episode depends mostly on the **random seed**, not on training. Standing fraction (share of time upright and
 supported) of the *original untrained weights* over development seeds 10-19 is `0.44 0.93 0.74 0.86 0.44 0.86 0.90 0.95 0.33 0.93`
-(mean 0.74, sd 0.24). Falls start in the first 1-2 s: the body spins about the vertical axis by ~2 rad with fewer than three feet on
-the floor, then ends on its back. Every training attempt so far produced candidates that stand on some seeds and fall on others, with
+(mean 0.74, sd 0.24). Falls are spread over the whole 5 s (first time uprightness < 0.3 at 0.4-2.9 s, median 1.8 s; see `docs/early-fall-analysis.md`);
+aggregate signals in the first second and in the 250 ms before a fall do not distinguish failing from surviving episodes, and every episode
+spins about the vertical axis at 5-6 rad/s, so spinning alone is not the cause. Falling bodies end on their back. Every training attempt so far produced candidates that stand on some seeds and fall on others, with
 no better average than the original.
 
 ## 3. What has been tried (all measured; no walking is established)
@@ -30,7 +31,7 @@ no better average than the original.
 Stable across all models and seeds: forward heading progress of +7 to +12 mm in 5 s.
 
 ## 4. What I would like from you (ranked)
-1. **Root cause of the early falls.** Read the body, contact, adhesion and muscle-model code and the failing episodes' logic, and propose
+1. **Root cause of the falls.** Read the body, contact, adhesion and muscle-model code and the failing episodes' logic, and propose
    the most likely mechanism(s) for the initial yaw spin / loss of support, with a falsifiable prediction for each.
    Likely places: spawn pose and height (1.2 mm drop), contact softness (`CONTACT_SOLREF`), foot adhesion release rule (at most two feet
    released by femur lift), `CollisionGuard`, the 0.06 rad/step slew limit, joint ranges and damping, tonic motor drive.
