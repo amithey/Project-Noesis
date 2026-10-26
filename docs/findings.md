@@ -320,3 +320,120 @@ APL (1024), eta 5e-3:
 - So either KC->MBON synapses are under-counted in BANC, or one detected synapse stands for much more than
   0.275 mV. The FAFB comparison (`compare_mb_coverage`, waiting for the download) decides between them.
 - Fixed on the way: `mean_weight_fraction` returned NaN when a plastic synapse had zero initial weight.
+## 2026-10-13 — where MBON input comes from (`compare_mb_coverage.py`)
+
+Per-synapse neuropil labels in `connections_princeton.csv` (BANC, all pairs incl. < 5 synapses):
+
+| | synapses onto MBONs | from Kenyon cells |
+|---|---|---|
+| inside the mushroom body (MB_*) | 10,799 (20%) | **71%** |
+| outside (mostly CRE, SMP, LAL) | 42,676 (80%) | 11% |
+
+- **Model limitation:** at their dendrites in the mushroom body, MBONs do get most input from Kenyon cells,
+  as expected. But 80% of their synapses are outside the mushroom body (axonal regions). A point-neuron LIF
+  gives those the same weight as dendritic input, which drowns the Kenyon-cell signal. This, not only the
+  data, explains why KC->MBON plasticity barely moves MBON output.
+- **Possible data limitation (unverified):** a Kenyon cell has a median of 9.6 output synapses in this table and
+  2.8 onto MBONs; an MBON receives ~121 KC synapses. These look very low for Kenyon cells, which suggests
+  under-detected synapses in the dense mushroom-body lobes of BANC. `compare_mb_coverage` reports the same
+  numbers for any other dataset (e.g. FAFB) to settle this.
+
+## 2026-10-13 — BANC vs FAFB: Kenyon-cell synapses are missing from BANC
+
+`compare_mb_coverage` on the BANC tables used by the model and on two FAFB v783 exports from
+codex.flywire.ai (same "princeton" table format; Buhmann = a different synapse detector, no threshold):
+
+| | BANC (model) | FAFB princeton | FAFB Buhmann |
+|---|---|---|---|
+| Kenyon cells / MBONs | 4,554 / 104 | 5,177 / 96 | 5,177 / 96 |
+| output synapses per KC | **9.6** | 129.5 | 190.2 |
+| KC -> MBON synapses per KC | **2.8** | 43.8 | 49.6 |
+| KC -> MBON synapses per MBON | **121** | 2,364 | 2,674 |
+| MBON input inside the mushroom body | 20% | 59% | 61% |
+| KC share of MBON input inside the MB | 71% | 84% | 88% |
+| KC share of all MBON input | 23% | 63% | 67% |
+
+- Two FAFB detectors agree with each other and both find **~15-20x more Kenyon-cell synapses** than BANC.
+  The BANC tables under-count KC output (most likely in the dense mushroom-body lobes). This, not the
+  learning rule, is why MBONs ignore Kenyon cells in the model (the earlier estimate: >30x short of threshold).
+- In FAFB, Kenyon cells are the dominant MBON input (63% of all, 84% inside the MB), as expected.
+- Consequence: learning in the mushroom body cannot work on BANC connectivity alone. Options: rescale BANC
+  KC synapses per (KC type -> target type) to FAFB totals, or take the mushroom-body circuit from FAFB.
+- The FAFB download (folder `FABA/`) also contains `coordinates.csv.gz` (positions of FAFB neurons; different
+  neuron IDs from BANC) and several 0-byte files whose download failed; none of those were needed here.
+
+## 2026-10-13 — mushroom body taken from FAFB (`with_fafb_mushroom_body`, `--mb-source fafb`)
+
+The edges among projection neurons, Kenyon cells, APL, MBONs and DANs are replaced by FAFB's
+(`connections_princeton`, summed over neuropils, signed by the BANC presynaptic neuron), mapped onto
+BANC neurons by cell type: PN/APL/MBON/DAN by primary type + side, then type alone; Kenyon cells by a
+seeded random one-to-one assignment within KC type + side, then lobe class (KCg / KCab / KCapbp) + side,
+then lobe class. BANC edges between two matched neurons are removed; unmatched BANC neurons keep their
+BANC edges; everything else (ORN -> PN, all inputs/outputs to the rest of the brain and VNC) stays BANC.
+
+| population | BANC | FAFB | matched | FAFB syn (from this population, inside the circuit) | mapped | BANC syn replaced |
+|---|---|---|---|---|---|---|
+| PN | 699 | 685 | 636 | 461,232 | 390,118 | 186,107 |
+| KC | 4,139 | 5,177 | 3,951 | 563,868 | 382,976 | 39,014 |
+| APL | 2 | 2 | 2 | 156,926 | 116,549 | 21,296 |
+| MBON | 104 | 96 | 93 | 36,358 | 34,317 | 10,942 |
+| DAN | 318 | 347 | 279 | 44,062 | 29,530 | 1,222 |
+| **total** | | | 4,961 | 1,262,446 (101,369 pairs) | **953,490 (72,739 pairs, 76%)** | 258,581 |
+
+- **Dropped (unmatched):** FAFB KCs 1,226 (mostly KCapbp: BANC has only 122 alpha'beta' KCs vs 916 in
+  FAFB, plus 432 surplus gamma KCs); BANC KCs 188 (alpha-beta KCs beyond FAFB's 1,771, and 17 untyped `KC`);
+  BANC DANs 39 (18 untyped `PAM`, surplus PAM08/02/05); FAFB DANs 68 (PAM12/14/03...); MBONs 11 BANC / 3
+  FAFB (`MBON15-like`, `MBON17-like`); PNs 63 BANC / 49 FAFB (types named differently, e.g. `CB1296`).
+- KC -> MBON in the model goes from 121 to **1,523 synapses per MBON** (FAFB itself: 2,364; the gap is the
+  unmatched alpha'beta' KCs and MBONs).
+- Caveat: the FAFB princeton table only contains pairs with >= 5 synapses (the no-threshold export failed to
+  download), so "pairs >= 1 synapse" is effectively >= 5 on the FAFB side, while the BANC side keeps 1-4.
+
+**Protocol fix (applies to all graded-APL runs):** `mb_conditioning` ran the 300 ms settle between test odours
+*without* the graded APL, so Kenyon cells were uninhibited while the antennal lobe was still active (PNs stay at
+~80 Hz after an odour ends, in BANC too) and fired a synchronous burst at the next odour's onset. That made the
+*second* test odour look much less sparse (FAFB, gain 1024: B 36% active, 1,212 KCs with exactly one spike;
+BANC, gain 1024: B 23% -> 17%). The settle now keeps the graded APL on. Earlier BANC tables above were made
+with the old protocol.
+
+**APL gain recalibrated on the FAFB circuit** (only parameter calibrated; target 10-20% active KCs per odour,
+same 5-glomerulus odours, 600 ms, seed 0, before training):
+
+| gain | KCs active A / B | KC rate A | MBON A / B | A/B overlap |
+|---|---|---|---|---|
+| spiking APL | 69% / 57% | 34 Hz | 58 / 41 Hz | 81% |
+| 128 | 30% / 25% | 7.7 Hz | 22 / 18 Hz | 67% |
+| 256 | 20% / 20% | 4.6 Hz | 15 / 12 Hz | 64% |
+| **512** (used) | **14% / 12%** | 2.8 Hz | 10.8 / 8.7 Hz | **60%** |
+| 1024 | 11% / 8% | 1.9 Hz | 8.3 / 6.4 Hz | 59% |
+
+With FAFB synapses the MBONs now follow Kenyon-cell activity (MBON rate falls with sparser KCs), which they did
+not on BANC (3.5 Hz at 21% active KCs).
+
+**Conditioning** (gain 512, seed 0, odour A + direct DAN stimulation 60 Hz for 2 s vs odour A alone; plasticity
+frozen in tests). Success criterion fixed in advance: A drops clearly more than in the control *and* B changes
+about as in the control.
+
+| MBON model | eta | control A | control B | rewarded A | rewarded B | plastic weights |
+|---|---|---|---|---|---|---|
+| point neuron | 5e-4 (default) | -16.9% | -0.2% | **-48.4%** | **-33.5%** | 0.95 |
+| point neuron | 5e-3 | -16.9% | -0.2% | -61.2% | -49.8% | 0.90 |
+| axonal weight 0.2 | 5e-4 | -13.3% | -4.8% | -59.1% | -42.9% | 0.95 |
+| axonal weight 0.2 | 5e-3 | -13.3% | -4.8% | -77.0% | -68.8% | 0.90 |
+
+(MBON odour response before training: 10.8 / 8.7 Hz point neuron, 7.6 / 6.3 Hz with axonal weight 0.2;
+on BANC with axonal weight 0.2 it was 0.03 Hz.)
+
+- **Learning now moves MBON output** (it did not on BANC): rewarded A drops 31-64 points more than the control.
+  Restoring the plastic weights to their connectome values after training puts the response back at control
+  level (A 9.0, B 8.5 Hz), so the drop is the plasticity, not a lingering network state.
+- **But it is not odour-specific: criterion not met.** B drops almost as much beyond the control as A
+  (point neuron, default eta: A -31.5 points beyond control, B -33.3).
+- **Why** (per-synapse depression, point neuron, default eta): synapses of KCs active for both odours fell to
+  0.52 of their value, those of KCs active only for A (0.96) or only for B (0.95) barely changed. 98% of the KCs
+  that respond to B were also active during A training. The KC code for the two odours overlaps 60% even at
+  12-14% sparseness, and the depressed synapses are the shared, odour-independent ones -- most likely driven
+  by the persistent (~80 Hz) antennal-lobe activity that outlasts each odour, which is a BANC/model property
+  (ORN -> PN and the antennal lobe are unchanged), not a mushroom-body one.
+- Single seed (0), one odour pair, one learning rule with a single global dopamine signal; no seed statistics.
+  eta 5e-3 is the value used in the earlier BANC tables, not tuned here.
