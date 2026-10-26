@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 
 from noesis.connectome import load_all_pairs, load_cached
+from noesis.fafb_tables import load_fafb_mushroom_body_from_types
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.mushroom_body import (
     DopamineGatedPlasticity,
@@ -85,8 +86,13 @@ def main() -> None:
         fcls = a.fafb_classification or next(
             (p for p in (fdir / "classification.csv.gz", a.data.parent / "FABA" / "classification.csv.gz")
              if p.exists()), fdir / "classification.csv.gz")
-        fneurons, fpairs = load_fafb_mushroom_body(fdir / "connections_princeton.csv.gz",
-                                                   fdir / "consolidated_cell_types.csv.gz", fcls)
+        if fcls.exists():
+            fneurons, fpairs = load_fafb_mushroom_body(fdir / "connections_princeton.csv.gz",
+                                                       fdir / "consolidated_cell_types.csv.gz", fcls)
+        else:
+            print("no FAFB classification table found; class and side rebuilt from cell types and connectivity")
+            fneurons, fpairs = load_fafb_mushroom_body_from_types(fdir / "connections_princeton.csv.gz",
+                                                                   fdir / "consolidated_cell_types.csv.gz")
         fmb = with_fafb_mushroom_body(W, cn.neurons, pops, fneurons, fpairs, seed=a.seed)
         W = fmb.W
         with pd.option_context("display.width", 200, "display.max_columns", 20):

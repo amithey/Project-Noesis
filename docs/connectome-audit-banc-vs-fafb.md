@@ -48,3 +48,8 @@ The experiments that depend on the mushroom body should be repeated on a brain w
 `feature/mb-from-fafb` implementation reports 1,523 KC -> MBON synapses per MBON instead of 121, MBONs that follow Kenyon-cell activity, and
 odour-A conditioning of -48% against -17% in the control, but also -34% for the unrewarded odour B, i.e. not yet odour-specific). That branch has not been
 merged into the current lineage.
+
+
+## Follow-up 2026-10-26: the FAFB mushroom-body transplant was run (`findings-fafb-mushroom-body.md`)
+Replacing the mushroom-body circuit by the FAFB one makes Kenyon-cell codes sparser and more odour-specific (identity index +0.14 → +0.33/+0.39) and lets Kenyon cells drive the MBONs (1.8 → 14.6 Hz),
+but sugar still does not raise dopamine-cell activity and no reward- or hunger-dependent learning appears. The audit's deficit explains the selectivity limit, not the missing reward route.

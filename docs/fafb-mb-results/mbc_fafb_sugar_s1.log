@@ -1,0 +1,12 @@
+no FAFB classification table found; class and side rebuilt from cell types and connectivity
+mushroom body from FAFB (matched by cell type):
+MBON inputs: dendritic (MB) x1, axonal x0
+ORN 3007  PN 699  KC 4139  MBON 104  DAN 318 | edges 1528585 -> 1585749 (+57164 weak olfactory/MB, net of the FAFB swap)
+plastic KC->MBON synapses: 19843 (1203 synapse-weights per MBON)
+odour A: 346 receptor neurons ['ORN_DA4l', 'ORN_DL2v', 'ORN_VA1v', 'ORN_VA3', 'ORN_VC4']
+odour B: 260 receptor neurons ['ORN_DM3', 'ORN_DP1l', 'ORN_DP1m', 'ORN_VA1d', 'ORN_VM6']
+before     KC / MBON / DAN Hz  odour A:  2.88   7.32  4.76   odour B:  2.61   5.85  4.49
+training (sugar): KC 2.62 Hz, MBON 5.87 Hz, DAN 4.39 Hz | plastic weights at 1.000 of connectome value
+after      KC / MBON / DAN Hz  odour A:  2.63   5.71  4.38   odour B:  2.68   6.14  4.52
+odour A: MBON response 7.32 -> 5.71 Hz (-22.1%)
+odour B: MBON response 5.85 -> 6.14 Hz (+4.9%)

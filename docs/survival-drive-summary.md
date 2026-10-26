@@ -110,3 +110,19 @@ can start with what remains (`data/fafb/connections_princeton.csv.gz`, `consolid
 The mushroom-body and dopamine pathways are 10-300x sparser in BANC than in FAFB (KC->MBON ~40x per Kenyon cell, PAM->KC 2 vs 1,084 pairs, PPL1->KC 5 vs 2,104). This was already
 known from the unmerged branch `feature/mb-from-fafb` (2026-10-13), which also contains a FAFB mushroom-body transplant; the sensory experiments above were run without it.
 All conclusions about learning and dopamine in this document should be read as limited by the BANC table, and repeated on a FAFB-based mushroom body before being relied on.
+
+
+### Update 2026-10-26 (later): the same experiments on a FAFB mushroom body (`findings-fafb-mushroom-body.md`, branch `feature/fafb-mushroom-body`)
+`feature/mb-from-fafb` was merged and the PN/KC/APL/MBON/dopamine edges were replaced by the FAFB ones (everything else unchanged, `g_I` = 1). The FAFB
+class/side table that was deleted with `FABA/` was rebuilt from cell types and connectivity (PN 570 instead of 685; others equal), so this is a close, not exact, reproduction.
+- **Kenyon-cell selectivity improved clearly:** KC active 26% → 17% (APL 512) / 11% (APL 1024); between-odour Jaccard 0.74 → 0.46 / 0.40; identity
+  index +0.14 → +0.33 / +0.39 (p = 0.013, the attainable floor). Point 2 above (≈ 74% KC overlap) was a limit of the BANC table, not of the brain in general.
+  Projection-neuron selectivity is unchanged (7 of 10 glomeruli; non-target PNs still ≈ 112 Hz).
+- **MBONs are now driven by Kenyon cells** (14.6 Hz on KC input alone versus 1.8 Hz on BANC), and direct dopamine drive depresses the MBON
+  response strongly (−64 to −67% versus −17 to −19% with no reward), but largely for both odours (unpaired odour −34 to −42%): at most a weak odour-specific part.
+- **Reward-driven and hunger-dependent learning is still not shown.** Sugar does not raise dopamine cells (≈ 10.0 versus 10.1 Hz; same on BANC),
+  sugar − no-reward learning-index differences are +0.06 (fed) and +0.14 (hungry) on 4 seeds (wrong sign, not significant), and with 10x plasticity direct dopamine
+  gives −0.08 ± 0.11 (3 of 4 seeds, not significant). The bottleneck for point 3 is therefore the sugar → dopamine route, not the Kenyon-cell/MBON stage.
+- So the conclusion "no learning inside the network" stands for reward-driven learning; what changed is where the limit is: selectivity and KC→MBON drive
+  were BANC under-count effects; the missing reward route is not. The next experiment that would test the learning machinery itself is an explicitly
+  **assumed** reward (drive a PAM subset in proportion to sugar contact, labelled as a shortcut), with the paired no-reward and shuffled controls.

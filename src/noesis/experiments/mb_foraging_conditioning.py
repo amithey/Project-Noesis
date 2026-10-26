@@ -17,15 +17,19 @@ import json
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 from noesis.connectome import load_all_pairs
 from noesis.drives import HomeostaticState
 from noesis.embodiment import load_training_brain
 from noesis.experiments.mb_conditioning import _run
+from noesis.fafb_tables import transplant_fafb_mushroom_body
 from noesis.lif import LIFNetwork, LIFParams
 from noesis.mushroom_body import (
     DopamineGatedPlasticity,
     GradedAPL,
+    compartmentalize_mbons,
+    mbon_input_compartments,
     populations,
     with_weak_pathway_edges,
 )
@@ -91,6 +95,10 @@ def main() -> None:
     ap.add_argument("--odor-hz", type=float, default=80.0)
     ap.add_argument("--sugar-hz", type=float, default=200.0)
     ap.add_argument("--apl-gain", type=float, default=1024.0)
+    ap.add_argument("--mb-source", choices=("banc", "fafb"), default="banc", help="where the PN/KC/APL/MBON/DAN edges come from")
+    ap.add_argument("--fafb", type=Path, default=None, help="FAFB table folder (default DATA/fafb)")
+    ap.add_argument("--mbon-axonal-weight", type=float, default=-1.0,
+                    help="weight of synapses onto MBON axons (outside the MB); <0 = point neurons")
     ap.add_argument("--glomeruli", type=int, default=5)
     a = ap.parse_args()
 
@@ -98,6 +106,17 @@ def main() -> None:
     pairs = load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons)
     pops = populations(cn.neurons)
     W = with_weak_pathway_edges(cn, pairs, pops)
+    fmb = None
+    if a.mb_source == "fafb":
+        fmb = transplant_fafb_mushroom_body(W, cn.neurons, pops, a.fafb or a.data / "fafb")
+        W = fmb.W
+    if a.mbon_axonal_weight >= 0:
+        comp = mbon_input_compartments(a.data / "raw", a.data / "processed", cn.neurons, pops.mbon)
+        if fmb is not None:  # replaced pairs take their dendrite/axon split from FAFB
+            replaced = fmb.mapped[comp["pre"].to_numpy(np.int64)] & fmb.mapped[comp["post"].to_numpy(np.int64)]
+            comp = pd.concat([comp[~replaced], fmb.compartments], ignore_index=True)
+        W = compartmentalize_mbons(W, comp, cn.neurons, a.mbon_axonal_weight)
+        print(f"MBON inputs: dendritic (MB) x1, axonal x{a.mbon_axonal_weight:g}", flush=True)
     sugar_idx = np.flatnonzero(cn.neurons["Function"].fillna("").str.contains("sugar").to_numpy())
     glom = cn.neurons.iloc[pops.orn]["Primary Cell Type"].fillna("?").to_numpy()
     results = {}
