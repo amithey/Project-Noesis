@@ -97,10 +97,16 @@ What the evidence supports:
    projection-neuron activity.
 
 Judgement: the sensory track is limited by the brain model (missing or undetected structure and its dynamics), not by the training procedure.
-Recommended next step: a graph-level audit of the same pathways in the second connectome that is already on disk (FAFB, `data/fafb`) versus the one
+Recommended next step (done in part, see `connectome-audit-banc-vs-fafb.md`): a graph-level audit of the same pathways in the second connectome that is on disk (FAFB, `data/fafb`) versus the one
 used (BANC): sugar receptors -> feeding/dopamine cells, odour receptors -> projection neurons -> Kenyon cells -> output neurons, and
 neurotransmitter/sign assignments. No simulation is needed. If FAFB shows the pathways BANC lacks, undetected synapses are the likely cause of
 points 1 and 3, and a brain built from FAFB-level counts is the experiment to run.
 Note on data: the FAFB neuron/classification tables that were in the untracked `FABA/` folder were removed during an earlier clean-up (they
 were judged duplicates; some were not); they can be re-downloaded from FlyWire or may be restorable from the OneDrive recycle bin. The audit
 can start with what remains (`data/fafb/connections_princeton.csv.gz`, `consolidated_cell_types.csv.gz`).
+
+
+### Result of that audit (2026-10-26)
+The mushroom-body and dopamine pathways are 10-300x sparser in BANC than in FAFB (KC->MBON ~40x per Kenyon cell, PAM->KC 2 vs 1,084 pairs, PPL1->KC 5 vs 2,104). This was already
+known from the unmerged branch `feature/mb-from-fafb` (2026-10-13), which also contains a FAFB mushroom-body transplant; the sensory experiments above were run without it.
+All conclusions about learning and dopamine in this document should be read as limited by the BANC table, and repeated on a FAFB-based mushroom body before being relied on.
