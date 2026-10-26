@@ -78,3 +78,29 @@ brain at `g_I` = 1 is the **saturated** regime (17% active, PN ≈ 116 Hz). It w
    on the leg-free agent (genome: sensory gains, hunger coupling, read-out gain; fitness: reach/energy), or (c)
    making hunger matter (e.g. making food scarce and energy loss real) — (a) is the prerequisite for any joint
    use; (b) and (c) are self-contained.
+
+## Update 2026-10-26: where the sensory track ends (the reward-only read-out is the last experiment of this line)
+Added since the summary above: inhibition scaling `g_I` (findings-network-calibration.md), side decoding and the label-trained read-out
+(9 of 12 poses reach the food with 3 mm antennae, 3 of 12 with 1 mm), the body A/B showing `g_I` = 4 is not a drop-in for the legs,
+and a read-out trained from reward only (reward-readout.md).
+
+What the evidence supports:
+1. The scanned network is **bistable and saturates**; population means carry no odour identity. Odour identity exists upstream (projection
+   neurons, Kenyon cells), modestly; it is absent from the descending output; the DNa lateralisation seen at `g_I` = 1 disappears at higher `g_I`.
+2. A sparser, more selective regime exists only after scaling **all** inhibition by 4-12, which is a model assumption (and breaks the body).
+3. **Sugar reaches no dopamine cell type selectively** (0 of 33), so associative learning from sugar failed and hunger changed nothing reliably, as
+   a receptor gain or as a reward multiplier.
+4. Side information is decodable from projection neurons (not descending neurons). A linear read-out trained WITH side labels steers a leg-free
+   point agent (9 of 12 vs 0-1 in controls) only with wide antennae. A read-out trained from reward alone learned on recorded data but did not
+   reliably steer the real network (2 and 3 of 12 vs 1 for its shuffled-return control; 48 real episodes per arm).
+5. **No learning inside the network has been demonstrated anywhere;** every working steering result is an external, supervised interface on
+   projection-neuron activity.
+
+Judgement: the sensory track is limited by the brain model (missing or undetected structure and its dynamics), not by the training procedure.
+Recommended next step: a graph-level audit of the same pathways in the second connectome that is already on disk (FAFB, `data/fafb`) versus the one
+used (BANC): sugar receptors -> feeding/dopamine cells, odour receptors -> projection neurons -> Kenyon cells -> output neurons, and
+neurotransmitter/sign assignments. No simulation is needed. If FAFB shows the pathways BANC lacks, undetected synapses are the likely cause of
+points 1 and 3, and a brain built from FAFB-level counts is the experiment to run.
+Note on data: the FAFB neuron/classification tables that were in the untracked `FABA/` folder were removed during an earlier clean-up (they
+were judged duplicates; some were not); they can be re-downloaded from FlyWire or may be restorable from the OneDrive recycle bin. The audit
+can start with what remains (`data/fafb/connections_princeton.csv.gz`, `consolidated_cell_types.csv.gz`).
