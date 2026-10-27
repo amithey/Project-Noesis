@@ -33,3 +33,25 @@ no training run, no real checkpoint loaded. Real-checkpoint load check is still 
 ## Next
 Gemini review of the slip/fall scenarios; Codex to select profile by stage name in the runner;
 load the real parent checkpoint (`078cfe3c...`) once the shared data/release is available.
+
+## Real-checkpoint integrity check (2026-10-28, read-only, no training)
+
+`check_checkpoint.py <core/src> <gpu-pilot/src> <data> <weights.npz> <cache_dir>` loads the real
+connectome and checkpoint through `LearningBrain` and compares to the original reference.
+Checkpoint `standing-001-train-11000/weights-last.npz`, SHA-256
+`fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8` (matches the recorded hash):
+
+- 562 learning targets, 85,390 plastic edges; 56,305 edges differ from the original.
+- Signs all preserved, no zero weights.
+- Weight ratio to original min 0.776, max 1.253; 0 edges outside the 0.5x-1.5x bound.
+- Loaded with learning inactive, 0 updates. Run used the pinned core `41b5fe6`, Python 3.11.
+
+This verifies load integrity only; it is not validation of standing, stepping or walking.
+
+## Training status
+
+No training was started in this round. The gripped-step stage (v8) is the next stage in
+`gpu-pilot/training-plan.md`, but the plan still lists the four-stage curriculum/restart
+manager as not ported (Codex, #18), and run budget on the shared machine and the main
+weights are Codex's. Gemini's evaluation (PR #22) shows the two standing probes are
+stepping-in-place/uncoordinated, not walking.
