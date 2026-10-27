@@ -70,3 +70,25 @@ stepping-in-place/uncoordinated, not walking.
   Integrity: signs preserved, ratio 0.780-1.247, 0 edges outside 0.5x-1.5x, 56,347 edges changed.
 - Training-time standing fraction 0.818 and slip 2.80 mm/s are under exploration and are NOT a
   frozen result. No frozen 10006/10007 evaluation yet; no stage advance, promotion or walking claim.
+
+## Frozen evaluation of the v8 candidate (2026-10-28)
+
+Candidate `d7afb1bc...daa` (seed-1000 v8 birth) vs its parent bank `fb80cfcc...26a8`
+(`standing-001-train-11000`), frozen: no learning, no exploration, 5 s, CPU, one world, seeds 10006
+and 10007, same `noesis_gpu.run` and pinned core. Metrics from Gemini's `gait-metrics-v1.0`
+(branch `gemini/flygym2-gait-validation`, read-only copy; not part of this PR).
+Raw output: `outputs/gripped-v8-002-evaluation.json` and `gripped-v8-002-candidate-1000{6,7}` (not in Git).
+
+| seed | bank | standing | slip mm/s | forward mm | steps | regime | tripod |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 10006 | parent | 0.9717 | 2.35 | 0.308 | 81 | in place | 0.052 |
+| 10006 | v8 candidate | 0.9697 | 2.78 | -0.030 | 83 | in place | 0.157 |
+| 10007 | parent | 0.9505 | 2.24 | 1.345 | 88 | uncoordinated | 0.041 |
+| 10007 | v8 candidate | 0.9242 | 2.91 | 0.627 | 71 | in place | 0.207 |
+
+Gripped-step criteria (>=0.25 mm forward, support/lift cycles, standing >=90%, slip <=10 mm/s):
+10006 fails forward progress (-0.03 mm); 10007 meets forward progress but forward distance fell vs
+parent; neither seed shows coordinated stepping. Slip rose 18.5% and 29.6% vs the parent. Result:
+**no improvement from one v8 birth; stage not advanced; not promoted; walking not proven.**
+Caveats: one birth, one training seed; tripod scores rose but remain far from coordinated; the
+"standing gate" field in the output is the old standing-stage gate and says nothing about v8.
