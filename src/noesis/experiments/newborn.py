@@ -79,6 +79,7 @@ def main() -> None:
     arena = habitat_arena() if enriched else floor_arena()
 
     from flygym.state import KinematicPose
+
     from noesis.body import standing_pose
 
     # contact sensors on every leg segment (default is tarsi only, which do not touch down)

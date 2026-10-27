@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "noesis-gpu-pilot"
+version = "0.1.0"
+description = "Isolated FlyGym 2 GPU body and frozen Noesis brain integration"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+  "flygym[warp] @ git+https://github.com/NeLy-EPFL/flygym.git@ca65a510c2afe6ac61c51df4f274c8d190c2f95f",
+  "pandas>=2.2,<4",
+  "pyarrow>=16",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+noesis-gpu = "noesis_gpu.run:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100

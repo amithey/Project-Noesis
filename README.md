@@ -2,6 +2,11 @@
 True awakening isn't seeing the light. It's realizing the dark you exist in is just an unrendered void.
 
 ## Status
+For the full training handoff, checkpoints and parallel-agent workflow, see
+[the shared project hub](https://github.com/amithey/Project-Noesis/tree/codex/github-project-sync)
+and [the continuation guide](docs/coordination.md). Start new work by reading
+[AGENTS.md](AGENTS.md). Experimental branches are preserved separately.
+
 **M1: whole-CNS connectome simulation.** 158k FlyWire neurons as an event-driven LIF network
 (see [ADR-0001](docs/adr/0001-whole-cns-connectome-simulation.md)). Driving the sugar-taste
 neurons activates the proboscis motor neuron MN9, as in Shiu et al., *Nature* 2024.

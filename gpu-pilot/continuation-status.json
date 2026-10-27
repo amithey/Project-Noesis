@@ -1,0 +1,42 @@
+{
+  "status": "one_training_birth_and_two_frozen_pairs_complete",
+  "original_training_source_unchanged": true,
+  "active_workers": false,
+  "source_pin_verified_unchanged": true,
+  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\standing-001-train-11000\\weights-last.npz",
+  "latest_experimental_training_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+  "best_validated_checkpoint": null,
+  "model_promoted": false,
+  "stage_advanced": false,
+  "walking_proven": false,
+  "cuda_verified": false,
+  "training_backend": "cpu",
+  "worlds": 1,
+  "last_training_seed": 11000,
+  "last_frozen_seed": 10007,
+  "standing_before": 0.9313131313131313,
+  "standing_after": 0.9717171717171718,
+  "slip_change_percent": -1.9898385950845698,
+  "next_steps": [
+    "Standing training gate passed; port and test curriculum manager before gripped-step training",
+    "Complete and test the four-stage curriculum and interruption/restart manager for FlyGym 2",
+    "Port leg-cycle/tripod metrics and external senses/obstacles with original acceptance thresholds",
+    "Keep training-last separate from validated-best; complete all final controls, real video and startup verification",
+    "Scale GPU physics and neural execution only after NVIDIA checks and measured one-world parity"
+  ],
+  "comparison": "outputs/standing-learning-001-comparison.json",
+  "active_plan": "training-plan.md",
+  "goal_text": "goal-text.md",
+  "plan_revision": "flygym2-brain-only-2026-10-21",
+  "legacy_runner_role": "historical controls only; not the active new-body route",
+  "app_goal_objective_updated": true,
+  "app_goal_status_observed": "active",
+  "curriculum_orchestration_port_complete": false,
+  "resume_flag_supported_by_new_commands": false,
+  "standing_training_gate_passed": true,
+  "standing_training_probe_seeds": [
+    10006,
+    10007
+  ],
+  "two_seed_gate": "outputs/standing-two-seed-gate.json"
+}
