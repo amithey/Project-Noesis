@@ -115,3 +115,30 @@ on both probes, but gait is still not coordinated (tripod 0.06-0.07, regimes in 
 and the leg support/lift-cycle criterion has not been separately reviewed. Birth-to-birth variance is
 large, so a single passing birth is not robust evidence. Not advanced, not promoted, walking not proven.
 Stage advancement belongs to Codex after Gemini's independent review; round count for the stage: 2 of 3.
+
+## Third v8 birth (seed 1002), frozen evaluation, and stage summary (2026-10-28)
+
+Same parent `fb80cfcc...26a8`, wrapper/profile, CPU, 5 s, 990 updates. Checkpoint SHA-256
+`3713a6308f462117ce8676f96f92a6ee30e3b13843772de87557712667fae383` (`outputs/gripped-v8-004-train-1002`).
+Stored rewards match v8 exactly; signs preserved, ratio 0.776-1.250, 0 edges outside 0.5x-1.5x.
+Frozen vs parent (raw: `outputs/gripped-v8-004-evaluation.json`):
+
+| seed | bank | standing | slip mm/s | forward mm | steps | regime | tripod |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 10006 | v8 seed 1002 | 0.9404 | 2.09 | 1.115 | 80 | uncoordinated | 0.054 |
+| 10007 | v8 seed 1002 | 0.8606 | 2.61 | 0.817 | 84 | in place | 0.150 |
+
+10007 standing 0.8606 < 0.90, so this candidate fails the standing requirement on one probe.
+
+Stage summary, v8 from the same parent, three births (the stage's 3-round budget is used):
+
+| training seed | 10006 | 10007 | meets all numeric v8 thresholds on both probes |
+| --- | --- | --- | --- |
+| 1000 | forward -0.03 mm (fail) | standing 0.924, forward 0.627 | no |
+| 1001 | standing 0.969, forward 0.989 | standing 0.903, forward 1.522 | yes (10007 standing marginal) |
+| 1002 | standing 0.940, forward 1.115 | standing 0.861 (fail) | no |
+
+Only 1 of 3 births meets the numeric thresholds, with large birth-to-birth variance; tripod stays
+<=0.21 and no probe is coordinated walking. The leg support/lift-cycle criterion is unreviewed.
+Not advanced, not promoted, walking not proven. Any further round needs Codex/user documentation
+of the failure and a decision; the plan forbids continuing rounds or relaxing thresholds silently.
