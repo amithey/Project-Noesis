@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 
+from .gait_metrics import SCHEMA_VERSION, compute_gait_summary
 from .learning import standing_mask
 
 MATCHED_SETTINGS = (
@@ -55,7 +56,9 @@ def summarize(directory, *, warmup_ms=50):
     slip = np.divide((speed * support[1:]).sum(axis=-1), counts,
                      out=np.zeros(total - 1), where=counts > 0)
     measured = slice(start, None)
+    gait = compute_gait_summary(observation, dt_ms, warmup_samples=start)
     summary = {
+        "schema_version": SCHEMA_VERSION,
         "seed": report["seeds"][0], "seconds": 5.0, "warmup_ms": warmup_ms,
         "warmup_samples": start, "measured_samples": total - start,
         "warmup_standing_fraction": float(standing[:start].mean()),
@@ -64,6 +67,14 @@ def summarize(directory, *, warmup_ms=50):
         "mean_supporting_feet": float(support[measured].sum(axis=-1).mean()),
         "mean_uprightness": float(observation["up_body"][measured, 2].mean()),
         "single_probe_standing_check": bool(standing[measured].mean() >= .9),
+        "heading_forward_distance_mm": gait["heading_forward_distance_mm"],
+        "net_displacement_mm": gait["net_displacement_mm"],
+        "net_forward_displacement_mm": gait["net_forward_displacement_mm"],
+        "total_leg_steps": gait["total_leg_steps"],
+        "mean_steps_per_leg": gait["mean_steps_per_leg"],
+        "leg_step_cycles": gait["leg_step_cycles"],
+        "tripod_coordination": gait["tripod_coordination"],
+        "locomotion_regime": gait["locomotion_regime"],
         "support_measurement": "tarsus5-to-floor-only",
         "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
         "weights_unchanged": True, "learning": False, "motor_exploration": 0,
@@ -82,10 +93,15 @@ def compare(parent, candidate):
     if any(key not in a or key not in b or a[key] != b[key] for key in keys):
         raise ValueError("Frozen comparison requires matched source, body, senses, seeds and settings")
     return {
+        "schema_version": SCHEMA_VERSION,
         "status": "completed_matched_frozen_pair", "cases": [before, after],
         "standing_change_percentage_points": 100 * (after["standing_fraction"] - before["standing_fraction"]),
         "slip_change_percent": (100 * (after["mean_stance_slip_mm_s"] / before["mean_stance_slip_mm_s"] - 1)
                                 if before["mean_stance_slip_mm_s"] > 0 else None),
+        "heading_forward_change_mm": after["heading_forward_distance_mm"] - before["heading_forward_distance_mm"],
+        "total_steps_change": after["total_leg_steps"] - before["total_leg_steps"],
+        "locomotion_regime_before": before["locomotion_regime"],
+        "locomotion_regime_after": after["locomotion_regime"],
         "same_conditions_verified": True, "only_one_frozen_seed_pair": True,
         "stage_advanced": False, "model_promoted": False, "walking_proven": False,
         "control_is_starting_training_bank_not_untrained_original": True,
@@ -110,7 +126,7 @@ def standing_gate(pairs):
             raise ValueError("Same parent and same candidate required across both seeds")
     return {
         "standing_training_gate_passed": all(r["cases"][1]["single_probe_standing_check"]
-                                            for r in results),
+                                             for r in results),
         "seeds": seeds, "pairs": results, "training_only": True,
         "stage_advanced": False, "model_promoted": False, "walking_proven": False,
     }
