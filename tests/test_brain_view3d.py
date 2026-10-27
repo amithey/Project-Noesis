@@ -231,15 +231,17 @@ def test_long_chords_drop_spikes_outsize_quiet_dots_and_shells_span_the_cns():
     assert col[:, 3].max() < 0.8
 
 
-def test_window_geometry_and_launchers_default_to_the_3d_view():
+def test_launcher_opens_the_2d_map_and_not_the_3d_window():
     assert parse_window_geometry("760x920+940+30") == ((760, 920), (940, 30))
     size, origin = parse_window_geometry(None)
     assert origin is None and size[0] > 0 and size[1] > 0
     root = Path(__file__).resolve().parents[1]
     run = (root / "Run-Fly.ps1").read_text(encoding="utf-8")
-    assert "noesis.viz.brain_view3d" in run
-    assert "Flat2D" in run
+    assert "noesis.viz.brain_map" in run
+    assert "noesis.viz.brain_view3d" not in run
     muscles = (root / "src" / "noesis" / "experiments" / "newborn_muscles.py").read_text(encoding="utf-8")
+    assert "launch_viewer" in muscles
+    assert "render_eyes = environmental_input and not a.viewer" in muscles
     assert "spike_histogram(pending_spikes, cn.n)" in muscles
     assert "write_activity(" in muscles
 

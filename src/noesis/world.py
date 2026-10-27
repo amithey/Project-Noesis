@@ -37,3 +37,25 @@ def floor_arena():
     # Remove the below-floor mirror image, so the floor boundary is unambiguous.
     arena.root_element.find("material", "grid").reflectance = 0
     return arena
+
+
+def launch_viewer(sim, enriched=False):
+    """Open a passive MuJoCo viewer after resetting offscreen GLFW window hints.
+
+    dm_control's eye renderer sets ``VISIBLE=0`` and ``DOUBLEBUFFER=0`` on the
+    process. A viewer created afterwards is a white window that never swaps a
+    frame. Reset the hints, then open the window.
+    """
+    import glfw
+    import mujoco.viewer
+
+    if glfw.init():
+        glfw.default_window_hints()
+        glfw.window_hint(glfw.VISIBLE, 1)
+        glfw.window_hint(glfw.DOUBLEBUFFER, 1)
+    viewer = mujoco.viewer.launch_passive(sim.physics.model.ptr, sim.physics.data.ptr)
+    if enriched and hasattr(viewer, "cam"):
+        viewer.cam.lookat[:] = (0.5, 0.0, 0.7)
+        viewer.cam.distance, viewer.cam.elevation = 22, -50
+    viewer.sync()
+    return viewer

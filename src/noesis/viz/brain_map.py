@@ -1,8 +1,6 @@
 """Map of every downloaded neuron that lights up when the neuron fires.
 
-``Run-Fly.ps1`` opens the 3D network (``noesis.viz.brain_view3d``) by default. This module is the
-2D schematic fallback (``Run-Fly.ps1 -Flat2D``) and the activity file the simulation writes for
-either viewer.
+``Run-Fly.ps1`` opens this 2D schematic. A neuron above 1 Hz lights up; the rest stay faint.
 
 The BANC tables carry no 3-D neuron positions, so the 2D layout is *schematic*: each neuron is
 placed around a hand-placed point for its main brain region (``Top in/out region``), on its own side
@@ -272,12 +270,12 @@ def main() -> None:
 
     from noesis.connectome import load_cached
 
-    neurons = load_cached(a.data / "raw", a.data / "processed").neurons
-    pos = neuron_positions(neurons, a.coords)
     layout = "real coordinates" if a.coords and a.coords.exists() else "schematic layout (not anatomical)"
     if a.snapshot:
         import matplotlib
         matplotlib.use("Agg")
+        neurons = load_cached(a.data / "raw", a.data / "processed").neurons
+        pos = neuron_positions(neurons, a.coords)
         m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
         rates, t, awake, note, triggers = read_activity_full(a.snapshot)
         m.update(rates, t, awake=awake, note=note, triggers=triggers)
@@ -289,10 +287,19 @@ def main() -> None:
         ap.error("use --watch FILE or --snapshot FILE")
     import matplotlib.pyplot as plt
 
-    m = BrainMap(pos, f"Noesis brain map - {layout}", labels=not a.coords)
-    position_window(m.fig, a.geometry)
     plt.ion()
+    fig, ax = plt.subplots(figsize=(9, 9), facecolor="black")
+    ax.set_facecolor("black")
+    ax.axis("off")
+    loading = ax.text(0.5, 0.5, "loading the neuron map...", color="white",
+                      ha="center", va="center", fontsize=14)
+    position_window(fig, a.geometry)
     plt.show()
+    plt.pause(0.05)
+    neurons = load_cached(a.data / "raw", a.data / "processed").neurons
+    pos = neuron_positions(neurons, a.coords)
+    loading.remove()
+    m = BrainMap(pos, f"Noesis brain map - {layout}", ax=ax, labels=not a.coords)
     m.text.set_text(f"waiting for the simulation to write {a.watch} ...")
     last = 0.0
     while plt.fignum_exists(m.fig.number):

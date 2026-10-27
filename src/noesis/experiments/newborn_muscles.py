@@ -116,11 +116,16 @@ def main() -> None:
         from noesis.habitat import habitat_arena
         arena = habitat_arena()
     environmental_input = habitat_world and not a.no_environment_senses
+    # FlyGym renders the eyes with a second GLFW window. That window is created
+    # with VISIBLE=0 and DOUBLEBUFFER=0, and GLFW is not thread-safe, so doing
+    # it while the MuJoCo viewer thread is alive leaves a white frozen fly.
+    # Smell, taste, heat and humidity stay on. The eyes stay dark in the live view.
+    render_eyes = environmental_input and not a.viewer
 
     params = BodyParams()
     fly = make_fly(params, spawn_pos=(0.0, 0.0, 1.2),
                    contact_sensor_placements=preprogrammed.get_collision_geometries("legs"),
-                   enable_olfaction=environmental_input, enable_vision=environmental_input,
+                   enable_olfaction=environmental_input, enable_vision=render_eyes,
                    vision_refresh_rate=20)
     cam = None
     if a.video:
@@ -144,7 +149,15 @@ def main() -> None:
           f"{int((g_neg.getnnz(axis=1) > 0).sum())} with an antagonist")
 
     guard = None if a.no_guard else CollisionGuard(sim.physics, fly, names)
-    environment = EnvironmentSenses(cn.neurons, fly.retina, seed=0) if environmental_input else None
+    if environmental_input:
+        if render_eyes:
+            retina = fly.retina
+        else:
+            from flygym.vision import Retina
+            retina = Retina()
+        environment = EnvironmentSenses(cn.neurons, retina, seed=0)
+    else:
+        environment = None
     senses = None if a.no_senses else SensoryMap(cn.neurons)
     balance = None if a.no_balance else BalanceMap(cn.neurons)
     internal = None if a.no_internal_state else InternalState(cn.neurons)
@@ -172,6 +185,9 @@ def main() -> None:
             parts.append((balance.idx, balance.drive(
                 np.array([cv[0][2], cv[1][2], cv[2][2]]), obs["fly"][3]), 400.0))
         if environment is not None:
+            if "vision" not in obs:
+                n_px = len(environment.retina.pale_type_mask)
+                obs["vision"] = np.zeros((2, n_px, 2))
             obs["surface_taste"] = contact_tastes(sim, fly, arena.habitat)
             rates_env, telemetry = environment.drive(obs, arena.habitat, mouth_position(sim, fly),
                                                      sim.curr_time)
@@ -197,11 +213,12 @@ def main() -> None:
 
     viewer = None
     if a.viewer:
-        import mujoco.viewer
-        viewer = mujoco.viewer.launch_passive(sim.physics.model.ptr, sim.physics.data.ptr)
-        if habitat_world:
+        from noesis.world import launch_viewer
+        viewer = launch_viewer(sim)
+        if habitat_world and hasattr(viewer, "cam"):
             viewer.cam.lookat[:] = (0.0, 0.0, 0.8)
             viewer.cam.distance, viewer.cam.elevation = 16.0, -35.0
+            viewer.sync()
 
     chunk_ms = 5.0
     phys_per_chunk = round(chunk_ms * 1e-3 / sim.timestep)
