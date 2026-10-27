@@ -7,6 +7,7 @@ import hashlib
 import numpy as np
 
 from .controller import FrozenBrain
+from .reward_profiles import resolve_objective
 
 
 class LearningBrain(FrozenBrain):
@@ -66,7 +67,8 @@ def score_transition(before, after, dt_ms, objective="curriculum-standing-v7"):
     return locomotion_reward(
         before["position"], after["position"], float(np.clip(after["up_body"][2], -1, 1)),
         after["velocity"], dt, before["heading"], after["foot_load"],
-        (after["feet_position"] - before["feet_position"]) / dt, objective=objective,
+        (after["feet_position"] - before["feet_position"]) / dt,
+        objective=resolve_objective(objective),
     )
 
 
