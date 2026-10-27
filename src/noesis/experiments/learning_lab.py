@@ -73,6 +73,12 @@ def parser() -> argparse.ArgumentParser:
                     help='JSON list of 2 x 42 log-gains for the leg muscle pools (frozen evaluation only; default none)')
     ap.add_argument('--warmup-ms', type=float, default=0.0,
                     help='run the brain on background activity alone for this long before it is first coupled to the body (default 0)')
+    ap.add_argument('--tonic-tau-ms', type=float, default=0.0,
+                    help='online tonic adaptation time constant in ms for MuscleModel (0 disables; default 0)')
+    ap.add_argument('--tonic-balance', type=float, default=0.85,
+                    help='fraction of tonic agonist/antagonist bias subtracted when --tonic-tau-ms > 0 (default 0.85)')
+    ap.add_argument('--femur-stance-bias', type=float, default=0.15,
+                    help='downward femur extensor stance bias when --tonic-tau-ms > 0 (default 0.15)')
     ap.add_argument('--training-fall-seconds', type=float, default=0.,
                     help='training-only terminal sustained fall duration; 0 keeps full horizon')
     ap.add_argument('--seed', type=int, default=0)
@@ -136,6 +142,12 @@ def validate_args(ap, args):
         ap.error('pool gains are for frozen evaluation only (do not combine with --learn)')
     if not np.isfinite(args.warmup_ms) or args.warmup_ms < 0:
         ap.error('--warmup-ms must be finite and nonnegative')
+    if not np.isfinite(getattr(args, 'tonic_tau_ms', 0.0)) or getattr(args, 'tonic_tau_ms', 0.0) < 0:
+        ap.error('--tonic-tau-ms must be finite and nonnegative')
+    if not np.isfinite(getattr(args, 'tonic_balance', 0.85)) or not 0 <= getattr(args, 'tonic_balance', 0.85) <= 1:
+        ap.error('--tonic-balance must be finite and in [0, 1]')
+    if not np.isfinite(getattr(args, 'femur_stance_bias', 0.15)) or not -1 <= getattr(args, 'femur_stance_bias', 0.15) <= 1:
+        ap.error('--femur-stance-bias must be finite and in [-1, 1]')
     if not np.isfinite(args.birth) or not 0 <= args.birth < args.seconds:
         ap.error('--birth must be between zero and --seconds')
     for name in ('learning_rate', 'sensory_weight', 'environment_weight', 'bg_hz', 'bg_weight'):
@@ -237,7 +249,12 @@ def run_episode(cn, args, episode, checkpoint, *, deadline=None):
             if pool_genome is not None:
                 from noesis.pool_genome import apply as apply_pool_genome
                 gp_leg, gn_leg = apply_pool_genome(gp_leg, gn_leg, pool_genome)
-            muscles = MuscleModel(gp_leg, gn_leg, [names[i] for i in leg_rows])
+            tonic_kw = ({
+                'tonic_tau_ms': args.tonic_tau_ms,
+                'tonic_balance': getattr(args, 'tonic_balance', 0.85),
+                'femur_stance_bias': getattr(args, 'femur_stance_bias', 0.15),
+            } if getattr(args, 'tonic_tau_ms', 0.0) > 0 else {})
+            muscles = MuscleModel(gp_leg, gn_leg, [names[i] for i in leg_rows], **tonic_kw)
         amplitude = args.motor_exploration
         if amplitude is None:
             amplitude = 1.5 if args.learn else 0.0

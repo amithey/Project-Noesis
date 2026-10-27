@@ -70,3 +70,35 @@ def test_muscle_matrices_split_agonists_and_antagonists_per_joint():
     gp, gn = build_muscle_matrices(df, ["joint_LFTibia"])
     assert np.allclose(gp.toarray(), [[0.5, 0.5, 0.0]])   # flexors pull positive (mean of the pool)
     assert np.allclose(gn.toarray(), [[0.0, 0.0, 1.0]])   # the extensor pulls negative
+
+
+def test_tonic_adaptation_rebalances_chronic_asymmetry_while_preserving_phasic_drive():
+    gp = sparse.csr_matrix([[1.0, 0.0], [1.0, 0.0]])
+    gn = sparse.csr_matrix([[0.0, 1.0], [0.0, 1.0]])
+    joints = ["joint_RHFemur", "joint_RHTibia"]
+    unadapted = MuscleModel(gp, gn, joints, tonic_tau_ms=0.0)
+    adapted = MuscleModel(gp, gn, joints, tonic_tau_ms=250.0, tonic_balance=1.0, femur_stance_bias=0.15)
+    tonic_rates = np.array([2.0, 80.0])  # strong antagonist tonic imbalance (like RH_Femur)
+    for _ in range(400):
+        eq_unadapted = unadapted.step(tonic_rates, 5.0)
+        eq_adapted = adapted.step(tonic_rates, 5.0)
+    # Without tonic adaptation, RHFemur is pulled strongly toward lo_eq (lifted above thorax)
+    assert eq_unadapted[0] < unadapted.stand[0] - 0.4 * (unadapted.stand[0] - unadapted.lo_eq[0])
+    # With tonic adaptation (balance=1.0) and femur_stance_bias=0.15, RHFemur settles slightly into stance (> stand)
+    # and RHTibia settles back at its standing angle
+    assert eq_adapted[0] > adapted.stand[0]
+    assert abs(eq_adapted[1] - adapted.stand[1]) < 0.02 * (adapted.hi_eq[1] - adapted.lo_eq[1])
+    # Phasic burst on agonist or antagonist still deflects the joint bidirectionally
+    eq_burst_pos = adapted.step(np.array([200.0, 80.0]), 5.0)
+    assert eq_burst_pos[1] > eq_adapted[1]
+
+
+def test_tonic_adaptation_rejects_invalid_parameters():
+    gp = sparse.csr_matrix([[1.0]])
+    gn = sparse.csr_matrix([[1.0]])
+    with pytest.raises(ValueError, match="tonic_tau_ms"):
+        MuscleModel(gp, gn, ["joint_LFTibia"], tonic_tau_ms=-1.0)
+    with pytest.raises(ValueError, match="tonic_balance"):
+        MuscleModel(gp, gn, ["joint_LFTibia"], tonic_tau_ms=100.0, tonic_balance=1.5)
+    with pytest.raises(ValueError, match="femur_stance_bias"):
+        MuscleModel(gp, gn, ["joint_LFTibia"], tonic_tau_ms=100.0, femur_stance_bias=2.0)

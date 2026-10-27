@@ -35,7 +35,8 @@ def run_job(a, model: str, seed: int) -> dict | None:
     log = out.with_suffix(".log")
     log.parent.mkdir(parents=True, exist_ok=True)
     with log.open("w", encoding="utf-8") as fh:
-        subprocess.run(cmd, stdout=fh, stderr=subprocess.STDOUT, env={**os.environ, "PYTHONPATH": "src"}, check=False)
+        subprocess.run(cmd, stdout=fh, stderr=subprocess.STDOUT,
+                       env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")}, check=False)
     for line in log.read_text(encoding="utf-8", errors="ignore").splitlines():
         if line.startswith("RESULT "):
             result = json.loads(line[7:])

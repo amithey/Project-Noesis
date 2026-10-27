@@ -26,6 +26,9 @@ def main() -> None:
     ap.add_argument('--pool-gains', type=Path, help='JSON list of 84 log-gains (leg muscle pools)')
     ap.add_argument('--birth', type=float, default=0.05, help='time the brain is first coupled to the body (s)')
     ap.add_argument('--warmup-ms', type=float, default=0.0, help='brain pre-activation on background alone before coupling')
+    ap.add_argument('--tonic-tau-ms', type=float, default=0.0, help='online tonic adaptation time constant in ms (0 disables)')
+    ap.add_argument('--tonic-balance', type=float, default=0.85, help='fraction of tonic bias removed when --tonic-tau-ms > 0')
+    ap.add_argument('--femur-stance-bias', type=float, default=0.15, help='femur extensor stance bias when --tonic-tau-ms > 0')
     ap.add_argument('--video', action='store_true', help='record an MP4 of the episode')
     a = ap.parse_args()
     if a.output.exists() and any(a.output.iterdir()):
@@ -44,6 +47,9 @@ def main() -> None:
     case.seconds, case.training_fall_seconds = a.seconds, 0.0
     case.motor_exploration = a.exploration
     case.birth, case.warmup_ms = a.birth, a.warmup_ms
+    case.tonic_tau_ms = a.tonic_tau_ms
+    case.tonic_balance = a.tonic_balance
+    case.femur_stance_bias = a.femur_stance_bias
     case.pool_gains = a.pool_gains
     case.diagnostic_frozen_exploration = a.exploration > 0
     case.import_weights, case.no_environment_senses, case.video = False, False, a.video

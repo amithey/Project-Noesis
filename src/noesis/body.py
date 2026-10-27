@@ -204,9 +204,18 @@ class MuscleModel:
     """Antagonistic muscle pair per joint; equilibrium angle from motor-neuron pool firing rates."""
 
     def __init__(self, g_pos: sparse.csr_matrix, g_neg: sparse.csr_matrix, joint_names: list[str],
-                 params: BodyParams | None = None):
+                 params: BodyParams | None = None, *, tonic_tau_ms: float = 0.0,
+                 tonic_balance: float = 0.85, femur_stance_bias: float = 0.15):
+        if not np.isfinite(tonic_tau_ms) or tonic_tau_ms < 0:
+            raise ValueError("tonic_tau_ms must be finite and nonnegative")
+        if not np.isfinite(tonic_balance) or not 0.0 <= tonic_balance <= 1.0:
+            raise ValueError("tonic_balance must be in [0, 1]")
+        if not np.isfinite(femur_stance_bias) or not -0.5 <= femur_stance_bias <= 0.5:
+            raise ValueError("femur_stance_bias must be in [-0.5, 0.5]")
         self.g_pos, self.g_neg = g_pos, g_neg
         self.p = params or BodyParams()
+        self.tonic_tau_ms = float(tonic_tau_ms)
+        self.tonic_balance = float(tonic_balance)
         pose, limits = standing_pose(), joint_limits(self.p)
         self.stand = np.array([pose[j] for j in joint_names])
         self.lo = np.array([limits[j][0] for j in joint_names])
@@ -214,23 +223,62 @@ class MuscleModel:
         r = self.p.muscle_reach
         self.hi_eq = self.stand + r * (self.hi - self.stand)  # what full agonist activation reaches
         self.lo_eq = self.stand - r * (self.stand - self.lo)
+        self.span_pos = self.hi_eq - self.stand
+        self.span_neg = self.stand - self.lo_eq
+        is_femur = np.array([j.endswith("Femur") for j in joint_names], dtype=float)
+        self.adapt_mask = np.array([j.endswith(("Femur", "Tibia")) for j in joint_names], dtype=float)
+        self.target_offset = is_femur * float(femur_stance_bias) * self.span_pos
         self.a_pos = np.zeros(len(joint_names))
         self.a_neg = np.zeros(len(joint_names))
+        self.tonic_pos = np.full(len(joint_names), self.p.r_half / 3.0)
+        self.tonic_neg = np.full(len(joint_names), self.p.r_half / 3.0)
+        self.tonic_offset = np.zeros(len(joint_names))
+        self._tonic_init = False
 
     def reset(self) -> None:
         self.a_pos[:] = 0.0
         self.a_neg[:] = 0.0
+        self.tonic_pos[:] = self.p.r_half / 3.0
+        self.tonic_neg[:] = self.p.r_half / 3.0
+        self.tonic_offset[:] = 0.0
+        self._tonic_init = False
 
     def step(self, rates_hz: np.ndarray, dt_ms: float) -> np.ndarray:
         """Advance muscle activation by ``dt_ms`` and return the joint equilibrium angles."""
         pos = np.maximum(self.g_pos @ rates_hz, 0.0)
         neg = np.maximum(self.g_neg @ rates_hz, 0.0)
+        if self.tonic_tau_ms > 0.0 and self.tonic_balance > 0.0:
+            b = self.tonic_balance * self.adapt_mask
+            if not self._tonic_init and (np.any(pos > 0.0) or np.any(neg > 0.0)):
+                self.tonic_pos[:] = pos
+                self.tonic_neg[:] = neg
+            elif self._tonic_init:
+                kt = 1.0 - np.exp(-dt_ms / self.tonic_tau_ms)
+                self.tonic_pos += kt * (pos - self.tonic_pos)
+                self.tonic_neg += kt * (neg - self.tonic_neg)
+            r_half_pos = (1.0 - b) * self.p.r_half + b * 3.0 * np.maximum(self.tonic_pos, 1.0)
+            r_half_neg = (1.0 - b) * self.p.r_half + b * 3.0 * np.maximum(self.tonic_neg, 1.0)
+        else:
+            r_half_pos = self.p.r_half
+            r_half_neg = self.p.r_half
         k = 1.0 - np.exp(-dt_ms / self.p.tau_act_ms)
-        self.a_pos += k * (pos / (pos + self.p.r_half) - self.a_pos)
-        self.a_neg += k * (neg / (neg + self.p.r_half) - self.a_neg)
+        u_pos = pos / (pos + r_half_pos)
+        u_neg = neg / (neg + r_half_neg)
+        self.a_pos += k * (u_pos - self.a_pos)
+        self.a_neg += k * (u_neg - self.a_neg)
+        if self.tonic_tau_ms > 0.0 and self.tonic_balance > 0.0:
+            inst_offset = u_pos * self.span_pos - u_neg * self.span_neg
+            if not self._tonic_init and (np.any(pos > 0.0) or np.any(neg > 0.0)):
+                self.tonic_offset[:] = inst_offset
+                self._tonic_init = True
+            elif self._tonic_init:
+                kt = 1.0 - np.exp(-dt_ms / self.tonic_tau_ms)
+                self.tonic_offset += kt * (inst_offset - self.tonic_offset)
         return self.equilibrium()
 
     def equilibrium(self) -> np.ndarray:
-        theta = (self.stand + self.a_pos * (self.hi_eq - self.stand)
-                 - self.a_neg * (self.stand - self.lo_eq))
+        raw_offset = self.a_pos * self.span_pos - self.a_neg * self.span_neg
+        if self.tonic_tau_ms > 0.0 and self.tonic_balance > 0.0 and self._tonic_init:
+            raw_offset = raw_offset - (self.tonic_balance * self.adapt_mask) * (self.tonic_offset - self.target_offset)
+        theta = self.stand + raw_offset
         return np.clip(theta, self.lo_eq, self.hi_eq)
