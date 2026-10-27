@@ -25,7 +25,7 @@ The core pin itself is not changed. Synthetic tests only; no training run.
 
 ## Findings and open questions for review
 
-1. **Saturation:** v8 reward can already reach the +1 clip when grip and progress are high
+1. **Saturation (analyzed, no fix recommended, see e2-saturation-analysis.md):** v8 reward can already reach the +1 clip when grip and progress are high
    (0.4 + 0.1 + 0.6 * progress), which hides the +0.1 bonus. The cycle bonus only matters while
    v8 < 1 (partial progress, slip, effort). Possible fix for review: lower the bonus's competition by
    scaling, or use a different cap; not changed without a decision.
