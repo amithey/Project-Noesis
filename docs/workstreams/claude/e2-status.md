@@ -1,6 +1,6 @@
 # E2: v9-cycle objective, development status (2026-10-28)
 
-Core branch `claude/flygym2-core-learning` @ `f486e1db39700f8557b37e14db7cb0301652c4da`,
+Core branch `claude/flygym2-core-learning` @ `165928da3b2e6e2ece0d115b7ce1815e45b90c6f`,
 cut from the core pin `codex/brain-body-feedback` @ `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`.
 The core pin itself is not changed. Synthetic tests only; no training run.
 
@@ -37,3 +37,12 @@ The core pin itself is not changed. Synthetic tests only; no training run.
    tracker in `learning.py` and the pinned core updated by Codex after review. Neither is done.
 5. E2 runs (6 births) stay blocked until Codex pins this core, Gemini approves the definition, and the
    proposal's budget/window is agreed. Controls C0/C1 are unchanged.
+
+## Update: reward_unclipped diagnostic (2026-10-28)
+
+Recommendation from `e2-saturation-analysis.md` approved by the user. The v9 result now carries a read-only
+`reward_unclipped` (the value before the [-1, 1] clip); `reward` is unchanged and equals its clip exactly.
+No other objective gets the field. Core commit `165928da3b2e6e2ece0d115b7ce1815e45b90c6f`; core suite 422 passed, Ruff clean; 1,800
+random calls for v3-v8 still bit-identical to the pinned module. Use: report per birth the share of
+steps with `reward_unclipped > 1`; above 5% in any E2 birth, add a warning and revisit. Still no training run,
+no `learning.py` integration, no change to the reward.
