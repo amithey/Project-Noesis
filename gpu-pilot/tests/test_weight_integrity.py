@@ -3,7 +3,6 @@ import importlib.util
 
 import numpy as np
 import pytest
-
 from test_learning import state
 
 pytestmark = pytest.mark.skipif(importlib.util.find_spec("noesis.circuit_learning") is None,

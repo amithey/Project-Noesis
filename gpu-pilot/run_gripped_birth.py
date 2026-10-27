@@ -13,9 +13,14 @@ from noesis_gpu.reward_profiles import resolve_objective
 
 args = train.parser()
 args.add_argument("--profile", default="gripped-steps")
+args.add_argument("--exploration-mv-ms", type=float, default=learning.MAX_EXPLORATION_MV_MS)
 args = args.parse_args()
 objective = resolve_objective(args.profile)
+if not 0 < args.exploration_mv_ms <= learning.MAX_EXPLORATION_MV_MS:
+    raise SystemExit("--exploration-mv-ms must be in (0, 1.5]")
 learning.score_transition = functools.partial(learning.score_transition, objective=objective)
+learning.LearningBrain = functools.partial(learning.LearningBrain,
+                                           exploration_mv_ms=args.exploration_mv_ms)
 code = 0
 try:
     train.run(args)
@@ -33,5 +38,6 @@ finally:
             data["reward_objective_note"] = ("train.py label may read standing-v7; actual "
                                              "objective is the wrapper value")
             data["reward_objective"] = objective
+            data["motor_exploration_mv_ms"] = args.exploration_mv_ms
             path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 sys.exit(code)
