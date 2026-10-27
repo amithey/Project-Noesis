@@ -149,7 +149,8 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     Both are training feedback only; physical acceptance remains independent.
     Opt-in v9 is v8 plus ``CYCLE_WEIGHT * cycle_credit * grip`` (cycle_credit from
     ``LegCycleTracker``, in [0, 1]); other objectives require ``cycle_credit == 0`` and v3-v8
-    results are unchanged. v9 adds a ``cycle_credit`` result field.
+    results are unchanged. v9 adds ``cycle_credit`` and a read-only ``reward_unclipped``
+    (the pre-clip value; it never alters ``reward``).
     """
     if objective not in GROUNDED_OBJECTIVES:
         raise ValueError("unknown grounded reward objective")
@@ -222,14 +223,17 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         slip_weight = .006 if objective == "curriculum-standing-v7" else .03
         cycle_term = (CYCLE_WEIGHT * cycle_credit * grip * standing
                       if objective == "curriculum-gripped-cycle-v9" else 0.)
-        reward = float(np.clip(stand_weight * standing - .8 * (1 - standing)
-                               + .1 * standing * support_quality + .6 * progress
-                               - .05 * base['effort'] - slip_weight * slip
-                               - .2 * obstacle_cost + cycle_term, -1, 1))
+        unclipped = float(stand_weight * standing - .8 * (1 - standing)
+                          + .1 * standing * support_quality + .6 * progress
+                          - .05 * base['effort'] - slip_weight * slip
+                          - .2 * obstacle_cost + cycle_term)
+        reward = float(np.clip(unclipped, -1, 1))
     result = {**base, 'reward': reward, 'forward_speed_mm_s': speed,
               'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
               'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,
               'standing_quality': standing_quality}
     if objective == "curriculum-gripped-cycle-v9":
         result['cycle_credit'] = float(cycle_credit)
+        # Diagnostic only: the value before the [-1, 1] clip, to count steps where it saturates.
+        result['reward_unclipped'] = unclipped
     return result
