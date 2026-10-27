@@ -142,3 +142,24 @@ Only 1 of 3 births meets the numeric thresholds, with large birth-to-birth varia
 <=0.21 and no probe is coordinated walking. The leg support/lift-cycle criterion is unreviewed.
 Not advanced, not promoted, walking not proven. Any further round needs Codex/user documentation
 of the failure and a decision; the plan forbids continuing rounds or relaxing thresholds silently.
+
+## Round 4: continuation from the seed-1001 candidate (2026-10-28, user-directed, beyond the 3-round stage budget)
+
+The stage's 3 sibling births were exhausted; at the user's direction one chained birth was run:
+parent = seed-1001 candidate (`626bde8d...5ff1`, itself unvalidated), v8, training seed 1003,
+CPU, 5 s, 990 updates. Child checkpoint SHA-256
+`2ae1d4f0f7a952946e2a7bf2ad6fad44a0eaf5c71e2246f74414ed02aaac60d7` (`outputs/gripped-v8-005-train-1003`).
+Rewards match v8 exactly; signs preserved; ratio 0.776-1.249 vs the ORIGINAL reference; 0 edges
+outside 0.5x-1.5x. Training-time standing fraction was only 0.371 (the fly fell often under exploration).
+Frozen vs its direct parent (raw: `outputs/gripped-v8-005-evaluation.json`):
+
+| seed | bank | standing | slip mm/s | forward mm | steps | regime | tripod |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 10006 | parent (1001) | 0.9687 | 1.92 | 0.989 | 84 | in place | 0.055 |
+| 10006 | child (1003) | 0.9040 | 2.73 | 0.355 | 71 | in place | 0.113 |
+| 10007 | parent (1001) | 0.9030 | 2.38 | 1.522 | 108 | uncoordinated | 0.067 |
+| 10007 | child (1003) | 0.9626 | 2.45 | 1.115 | 80 | uncoordinated | 0.045 |
+
+Mixed: standing improved on 10007 but fell on 10006 (0.904, marginal), forward distance and steps
+fell on both, slip +42% on 10006. Not an improvement over the parent. Not advanced, not promoted,
+walking not proven. Five v8 births in total; success on both probes occurred once (seed 1001).
