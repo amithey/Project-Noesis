@@ -83,25 +83,18 @@ def run_one(W, pops, odor, sugar_idx, state: str, reward: str, seed: int, a) -> 
             "train_dan_hz": float(dan), "weight_fraction": float(plast.mean_weight_fraction)}
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
+def add_brain_arguments(ap: argparse.ArgumentParser) -> None:
     ap.add_argument("--data", type=Path, default=Path("data"))
     ap.add_argument("--cache", type=Path, default=Path("outputs/foraging-cache"))
-    ap.add_argument("--out", type=Path, default=Path("outputs/mb_foraging.json"))
-    ap.add_argument("--seeds", type=int, default=3)
-    ap.add_argument("--train-ms", type=float, default=2000.0)
-    ap.add_argument("--test-ms", type=float, default=600.0)
-    ap.add_argument("--eta", type=float, default=5e-4)
-    ap.add_argument("--odor-hz", type=float, default=80.0)
-    ap.add_argument("--sugar-hz", type=float, default=200.0)
     ap.add_argument("--apl-gain", type=float, default=1024.0)
     ap.add_argument("--mb-source", choices=("banc", "fafb"), default="banc", help="where the PN/KC/APL/MBON/DAN edges come from")
     ap.add_argument("--fafb", type=Path, default=None, help="FAFB table folder (default DATA/fafb)")
     ap.add_argument("--mbon-axonal-weight", type=float, default=-1.0,
                     help="weight of synapses onto MBON axons (outside the MB); <0 = point neurons")
-    ap.add_argument("--glomeruli", type=int, default=5)
-    a = ap.parse_args()
 
+
+def build_brain(a):
+    """Corrected brain + weak olfactory/MB edges, optionally with the FAFB mushroom body and compartmentalised MBONs."""
     cn, _ = load_training_brain(a.data, a.cache, "corrected")
     pairs = load_all_pairs(a.data / "raw", a.data / "processed", cn.neurons)
     pops = populations(cn.neurons)
@@ -117,6 +110,23 @@ def main() -> None:
             comp = pd.concat([comp[~replaced], fmb.compartments], ignore_index=True)
         W = compartmentalize_mbons(W, comp, cn.neurons, a.mbon_axonal_weight)
         print(f"MBON inputs: dendritic (MB) x1, axonal x{a.mbon_axonal_weight:g}", flush=True)
+    return cn, pops, W
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
+    ap.add_argument("--out", type=Path, default=Path("outputs/mb_foraging.json"))
+    ap.add_argument("--seeds", type=int, default=3)
+    ap.add_argument("--train-ms", type=float, default=2000.0)
+    ap.add_argument("--test-ms", type=float, default=600.0)
+    ap.add_argument("--eta", type=float, default=5e-4)
+    ap.add_argument("--odor-hz", type=float, default=80.0)
+    ap.add_argument("--sugar-hz", type=float, default=200.0)
+    ap.add_argument("--glomeruli", type=int, default=5)
+    add_brain_arguments(ap)
+    a = ap.parse_args()
+
+    cn, pops, W = build_brain(a)
     sugar_idx = np.flatnonzero(cn.neurons["Function"].fillna("").str.contains("sugar").to_numpy())
     glom = cn.neurons.iloc[pops.orn]["Primary Cell Type"].fillna("?").to_numpy()
     results = {}
