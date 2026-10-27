@@ -92,3 +92,26 @@ parent; neither seed shows coordinated stepping. Slip rose 18.5% and 29.6% vs th
 **no improvement from one v8 birth; stage not advanced; not promoted; walking not proven.**
 Caveats: one birth, one training seed; tripod scores rose but remain far from coordinated; the
 "standing gate" field in the output is the old standing-stage gate and says nothing about v8.
+
+## Second v8 birth (seed 1001) and its frozen evaluation (2026-10-28)
+
+Same parent (`fb80cfcc...26a8`), same wrapper/profile, CPU, one world, 5 s, 990 updates.
+Training-seed 1001 checkpoint SHA-256 `626bde8dce2f996ef181650ba4c3812abdc0dfdd3a969bbfc1e0e1ed57b95ff1`
+(`outputs/gripped-v8-003-train-1001`, not in Git). Stored rewards match v8 exactly (diff 0.0).
+Integrity: signs preserved, ratio 0.772-1.257, 0 edges outside 0.5x-1.5x, 56,430 edges changed.
+Frozen, same conditions, Gemini `gait-metrics-v1.0` (raw: `outputs/gripped-v8-003-evaluation.json`):
+
+| seed | bank | standing | slip mm/s | forward mm | steps | regime | tripod |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 10006 | parent | 0.9717 | 2.35 | 0.308 | 81 | in place | 0.052 |
+| 10006 | v8 seed 1001 | 0.9687 | 1.92 | 0.989 | 84 | in place | 0.055 |
+| 10007 | parent | 0.9505 | 2.24 | 1.345 | 88 | uncoordinated | 0.041 |
+| 10007 | v8 seed 1001 | 0.9030 | 2.38 | 1.522 | 108 | uncoordinated | 0.067 |
+
+Reading: the two births disagree (seed 1000 worsened both probes; seed 1001 improved forward
+distance in both, slip -18% on 10006, +6% on 10007, standing 0.903 on 10007 only just above 0.90).
+The numeric gripped-step thresholds (>=0.25 mm, standing >=90%, slip <=10 mm/s) are met by seed 1001
+on both probes, but gait is still not coordinated (tripod 0.06-0.07, regimes in place/uncoordinated)
+and the leg support/lift-cycle criterion has not been separately reviewed. Birth-to-birth variance is
+large, so a single passing birth is not robust evidence. Not advanced, not promoted, walking not proven.
+Stage advancement belongs to Codex after Gemini's independent review; round count for the stage: 2 of 3.
