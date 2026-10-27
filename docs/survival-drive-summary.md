@@ -126,3 +126,10 @@ class/side table that was deleted with `FABA/` was rebuilt from cell types and c
 - So the conclusion "no learning inside the network" stands for reward-driven learning; what changed is where the limit is: selectivity and KC→MBON drive
   were BANC under-count effects; the missing reward route is not. The next experiment that would test the learning machinery itself is an explicitly
   **assumed** reward (drive a PAM subset in proportion to sugar contact, labelled as a shortcut), with the paired no-reward and shuffled controls.
+
+### Update 2026-10-28: assumed reward on the FAFB mushroom body (`findings-assumed-reward.md`) — a SHORTCUT, not a connectome result
+With the sugar → dopamine route missing, reward was assumed: PAM01-PAM08 driven at 20 Hz x hunger gain during "sugar contact", with paired, unpaired (adjacent and 1.25 s gap) and
+no-reward controls, fed and hungry, 6 seeds, plasticity at 1x and 10x. The assumed reward does depress the KC→MBON weights further (0.987 vs 0.996; more when hungry), but no
+odour-specific learning appears: paired is not more negative than the controls (|t| < 2.3), and hunger changes nothing reliably. One nominal hit (hungry paired - unpaired at 10x plasticity, 6 of 6 seeds,
+t -3.6) comes from the unpaired control being weak, contradicts the fed result, and does not survive correction over ≈ 15 comparisons; it needs new seeds. Conclusion: the bottleneck is also inside the
+machinery (the depression is small next to odour adaptation and not odour-specific because Kenyon-cell codes still overlap), not only in the missing sugar route. Untested: repeated pairing trials, other reward subsets, potentiation.
