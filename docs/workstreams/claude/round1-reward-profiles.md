@@ -55,3 +55,18 @@ No training was started in this round. The gripped-step stage (v8) is the next s
 manager as not ported (Codex, #18), and run budget on the shared machine and the main
 weights are Codex's. Gemini's evaluation (PR #22) shows the two standing probes are
 stepping-in-place/uncoordinated, not walking.
+
+## Gripped-step (v8) training birth (2026-10-28, exploratory)
+
+- Finding: the existing `outputs/gripped-001-train-11001` was trained with
+  `curriculum-standing-v7`, not v8. Recomputing its stored rewards from the stored observations
+  matches v7 exactly (max diff 0.0) and v8 differs (0.80). `train.py` hard-codes v7. It is a second
+  standing birth, so its failed gate (gripped-001-evaluation.json) is not evidence about v8.
+- Run: `gpu-pilot/run_gripped_birth.py` (wrapper; `train.py` untouched) with `--profile gripped-steps`,
+  seed 1000, 5 s, CPU, one world, parent `standing-001-train-11000/weights-last.npz`
+  (SHA `fb80cfcc...26a8`, unchanged). Output `outputs/gripped-v8-002-train-1000` (not in Git).
+- Verified: stored rewards match v8 exactly (max diff 0.0); 990 updates; exploration max 1.499 mV/ms.
+- Result checkpoint SHA-256 `d7afb1bca9990e17cc2c3dd5bb9d73e2fa8692052d3eddb71e66687cea917daa`.
+  Integrity: signs preserved, ratio 0.780-1.247, 0 edges outside 0.5x-1.5x, 56,347 edges changed.
+- Training-time standing fraction 0.818 and slip 2.80 mm/s are under exploration and are NOT a
+  frozen result. No frozen 10006/10007 evaluation yet; no stage advance, promotion or walking claim.
