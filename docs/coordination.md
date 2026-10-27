@@ -76,14 +76,23 @@ acceptance criteria. Use separate branches/checkouts and avoid shared output
 directories. Record progress in that task's issue/PR and push coherent commits.
 At handoff include the exact commit, artifact release/hash, checks and next step.
 
-Suggested task boundaries, **currently unassigned**:
+## Assigned three-agent team
 
-| Task | Likely files | Completion evidence |
+The user appointed Codex to coordinate Codex, Claude/Anthropic and Gemini.
+[The team plan](team-training-plan.md) and [ownership map](team-assignments.json)
+define the current assignments; the earlier `coordination.json` is a historical
+backup inventory and is not the active ownership table.
+
+| Owner | Responsibility | Task |
 | --- | --- | --- |
-| Curriculum manager | new pilot orchestration module/tests | interruption and restart checks; unchanged gates |
-| Physical gait metrics | pilot metric module/tests | stance/lift cycles and slip fixtures |
-| External senses/obstacles | pilot adapters and sensory tests | matched frozen controls |
-| NVIDIA validation | hardware reports, separate run folders | real CUDA execution and measured parity |
+| Codex | Integration, reproducible environment, curriculum runner, checkpoint lifecycle and shared training runs | [#18](https://github.com/amithey/Project-Noesis/issues/18) |
+| Claude / Anthropic | Neural learning, existing reward objectives and weight invariants | [#19](https://github.com/amithey/Project-Noesis/issues/19) |
+| Gemini | Physical gait metrics, independent frozen evaluation, then body/sensory validation | [#20](https://github.com/amithey/Project-Noesis/issues/20) |
+
+[Team tracker #17](https://github.com/amithey/Project-Noesis/issues/17) records
+cross-agent dependencies. Claude and Gemini are assigned but have not yet
+acknowledged or been observed starting these tasks. Forward the handoffs in
+`docs/handoffs/claude.md` and `docs/handoffs/gemini.md` to their actual sessions.
 
 Agree ownership before editing shared bridge/controller/core files. There is no
 automatic messaging or synchronization between bots: commits, issues, PRs and

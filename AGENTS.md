@@ -2,6 +2,11 @@
 
 Read `docs/coordination.md`, `docs/coordination.json`, and the current
 `gpu-pilot/continuation-status.json` before changing training behavior.
+For active team ownership, read `docs/team-training-plan.md` and
+`docs/team-assignments.json`. These assignments supersede the historical
+"unassigned" ownership entries in the backup inventory. Team tracker: issue #17;
+Codex #18, Claude/Anthropic #19, Gemini #20. Acknowledge your assigned issue before
+implementation; do not claim a second overlapping task.
 
 - GitHub is the shared record. Use a separate branch and checkout per agent.
   Never commit, reset, merge, or rewrite another agent's working branch.

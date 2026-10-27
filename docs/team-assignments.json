@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "assigned_date": "2026-10-27",
+  "tracker_issue": 17,
+  "integration_owner": "codex",
+  "hub_branch": "codex/github-project-sync",
+  "implementation_baseline": "6a67a5da43897f5b7dd64f0b56e8a11201959b6a",
+  "core_branch": "codex/brain-body-feedback",
+  "core_commit": "41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953",
+  "artifact_release": "training-backup-2026-10-27",
+  "plan": "docs/team-training-plan.md",
+  "runtime_monitor": false,
+  "live_status_source": "GitHub task issue updates; this file records assignments only",
+  "shared_checkpoint_writer": "codex",
+  "agents": [
+    {
+      "id": "codex",
+      "issue": 18,
+      "branch": "codex/flygym2-training-orchestration",
+      "assignment_status": "accepted_planning",
+      "role": "Integration, reproducibility, curriculum orchestration and shared run/checkpoint lifecycle",
+      "primary_files": [
+        "gpu-pilot/src/noesis_gpu/train.py",
+        "gpu-pilot/src/noesis_gpu/run.py",
+        "gpu-pilot/src/noesis_gpu/curriculum_runner.py",
+        "gpu-pilot/src/noesis_gpu/curriculum_state.py",
+        "gpu-pilot/pyproject.toml",
+        "gpu-pilot/continuation-status.json",
+        "gpu-pilot/training-plan.json",
+        "gpu-pilot/training-plan.md"
+      ]
+    },
+    {
+      "id": "claude",
+      "provider": "Anthropic",
+      "issue": 19,
+      "branch": "claude/flygym2-learning-rewards",
+      "assignment_status": "assigned_awaiting_ack",
+      "role": "Neural learning, existing reward objectives and checkpoint invariants",
+      "primary_files": [
+        "gpu-pilot/src/noesis_gpu/learning.py",
+        "gpu-pilot/src/noesis_gpu/reward_profiles.py",
+        "gpu-pilot/tests/test_learning.py"
+      ],
+      "optional_core_branch": "claude/flygym2-core-learning",
+      "handoff": "docs/handoffs/claude.md"
+    },
+    {
+      "id": "gemini",
+      "issue": 20,
+      "branch": "gemini/flygym2-gait-validation",
+      "assignment_status": "assigned_awaiting_ack",
+      "role": "Independent physical metrics, frozen evaluation and later body/sensory validation",
+      "primary_files": [
+        "gpu-pilot/src/noesis_gpu/evaluate.py",
+        "gpu-pilot/src/noesis_gpu/gait_metrics.py",
+        "gpu-pilot/tests/test_evaluate.py"
+      ],
+      "later_phase_files": [
+        "gpu-pilot/src/noesis_gpu/backend.py",
+        "gpu-pilot/src/noesis_gpu/bridge.py",
+        "gpu-pilot/src/noesis_gpu/controller.py",
+        "gpu-pilot/src/noesis_gpu/compare.py"
+      ],
+      "handoff": "docs/handoffs/gemini.md"
+    }
+  ]
+}
