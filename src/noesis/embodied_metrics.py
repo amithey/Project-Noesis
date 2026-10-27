@@ -11,7 +11,9 @@ import numpy as np
 
 GROUNDED_OBJECTIVES = ("standing-first-linear-slip-v3", "standing-gate-linear-slip-v4",
                        "standing-gate-linear-slip-v5", "standing-gate-smooth-grip-v6",
-                       "curriculum-standing-v7", "curriculum-gripped-step-v8")
+                       "curriculum-standing-v7", "curriculum-gripped-step-v8",
+                       "curriculum-gripped-cycle-v9")
+CYCLE_WEIGHT = .1
 
 
 def body_reward(
@@ -68,9 +70,67 @@ def body_reward(
     }
 
 
+class LegCycleTracker:
+    """Causal count of physical lift -> touchdown cycles per leg for the opt-in v9 objective.
+
+    Per control step it takes the six foot loads (tarsus5-to-floor), debounces each leg's
+    contact causally (a flip is accepted only after it persists ``min_phase_ms``; this delays
+    events by that much and differs slightly from an offline debounce), and counts a cycle at
+    each debounced touchdown that follows a debounced lift. ``update`` returns the fraction of
+    the six legs completing a cycle in the last ``window_ms``, or 0 unless all gates hold:
+    upright/height-valid now, >=3 feet supporting on average over a full window, and mean
+    forward speed over the window >= ``min_forward_mm_s``. No leg order, phase or alternation
+    is rewarded or inferred. Thresholds are explicit assumptions pending independent review.
+    """
+
+    def __init__(self, dt_seconds=.005, window_ms=250., min_phase_ms=15., min_forward_mm_s=.5):
+        if not all(np.isfinite(x) and x > 0 for x in (dt_seconds, window_ms, min_phase_ms)):
+            raise ValueError("dt, window and minimum phase must be finite and positive")
+        if not np.isfinite(min_forward_mm_s) or min_forward_mm_s < 0:
+            raise ValueError("minimum forward speed must be finite and nonnegative")
+        self.window = max(1, round(window_ms / 1000 / dt_seconds))
+        self.min_samples = max(1, round(min_phase_ms / 1000 / dt_seconds))
+        self.min_forward = float(min_forward_mm_s)
+        self.reset()
+
+    def reset(self):
+        self.state = np.zeros(6, bool)    # debounced contact
+        self.pending = np.zeros(6, int)   # consecutive samples disagreeing with state
+        self.lifted = np.zeros(6, bool)   # a debounced lift happened since the last touchdown
+        self.cycles = []                  # per step: bool[6], cycle completed this step
+        self.support = []
+        self.speed = []
+
+    def update(self, leg_loads, forward_speed_mm_s, standing):
+        loads = np.asarray(leg_loads, float)
+        if loads.shape != (6,) or not np.isfinite(loads).all() or np.any(loads < 0):
+            raise ValueError("six finite nonnegative leg loads required")
+        if not np.isfinite(forward_speed_mm_s):
+            raise ValueError("nonfinite forward speed")
+        raw = loads > 1e-5
+        self.pending = np.where(raw != self.state, self.pending + 1, 0)
+        flip = self.pending >= self.min_samples
+        touchdown = flip & raw
+        done = touchdown & self.lifted
+        self.lifted[flip & ~raw] = True
+        self.lifted[touchdown] = False
+        self.state = np.where(flip, raw, self.state)
+        self.pending[flip] = 0
+        self.cycles.append(done)
+        self.support.append(float(self.state.sum()))
+        self.speed.append(float(forward_speed_mm_s))
+        for history in (self.cycles, self.support, self.speed):
+            del history[:-self.window]
+        if len(self.cycles) < self.window or not standing:
+            return 0.
+        if np.mean(self.support) < 3 or np.mean(self.speed) < self.min_forward:
+            return 0.
+        return float(np.any(self.cycles, axis=0).mean())
+
+
 def locomotion_reward(previous_position, position, uprightness, joint_velocity, dt_seconds,
                       heading, leg_loads, foot_velocity, obstacle_contact_seconds=0., *,
-                      objective="standing-first-linear-slip-v3"):
+                      objective="standing-first-linear-slip-v3", cycle_credit=0.):
     """Artificial grounded-forward objective with a measured stance-slip penalty.
 
     Uses horizontal thorax heading, >=3 force-bearing legs, and leg joint effort.
@@ -87,9 +147,16 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     Curriculum v7 removes advancement credit to isolate standing. Curriculum v8
     uses a 2 mm/s advancement target before returning to v6 for continuous gait.
     Both are training feedback only; physical acceptance remains independent.
+    Opt-in v9 is v8 plus ``CYCLE_WEIGHT * cycle_credit * grip`` (cycle_credit from
+    ``LegCycleTracker``, in [0, 1]); other objectives require ``cycle_credit == 0`` and v3-v8
+    results are unchanged. v9 adds a ``cycle_credit`` result field.
     """
     if objective not in GROUNDED_OBJECTIVES:
         raise ValueError("unknown grounded reward objective")
+    if not np.isfinite(cycle_credit) or not 0 <= cycle_credit <= 1:
+        raise ValueError("cycle credit must be finite and within [0, 1]")
+    if cycle_credit and objective != "curriculum-gripped-cycle-v9":
+        raise ValueError("cycle credit is only used by the v9 objective")
     base = body_reward(previous_position, position, uprightness, joint_velocity, dt_seconds)
     heading = np.asarray(heading, float)
     loads = np.asarray(leg_loads, float)
@@ -112,12 +179,12 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         raise ValueError("obstacle contact duration must be finite and nonnegative")
     grip = float(np.clip(1 - slip / (abs(speed) + .1), 0, 1))
     if objective in ("standing-gate-smooth-grip-v6", "curriculum-standing-v7",
-                     "curriculum-gripped-step-v8"):
+                     "curriculum-gripped-step-v8", "curriculum-gripped-cycle-v9"):
         grip = float(1 / (1 + slip / (abs(speed) + .1)))
     progress *= grip
     if objective == "curriculum-standing-v7":
         progress = 0.
-    elif objective == "curriculum-gripped-step-v8":
+    elif objective in ("curriculum-gripped-step-v8", "curriculum-gripped-cycle-v9"):
         # Smaller speed target gives credit for early grounded advancement.
         progress = float(np.clip(speed / 2., -1, 1)) * grip if grounded and abs(speed) <= 30 else 0.
     obstacle_cost = float(np.clip(obstacle_contact_seconds, 0, 1))
@@ -148,15 +215,21 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         reward = float(np.clip(.7 * standing - .8 * (1 - standing)
                                + .1 * standing * support_quality + .5 * progress
                                - .05 * base['effort'] - .15 * slip_cost - .2 * obstacle_cost, -1, 1))
-    if objective in ("curriculum-standing-v7", "curriculum-gripped-step-v8"):
+    if objective in ("curriculum-standing-v7", "curriculum-gripped-step-v8",
+                     "curriculum-gripped-cycle-v9"):
         standing = bool(support.any() and .3 <= base['height_mm'] <= 1.5 and uprightness >= .7)
         stand_weight = .7 if objective == "curriculum-standing-v7" else .4
         slip_weight = .006 if objective == "curriculum-standing-v7" else .03
+        cycle_term = (CYCLE_WEIGHT * cycle_credit * grip * standing
+                      if objective == "curriculum-gripped-cycle-v9" else 0.)
         reward = float(np.clip(stand_weight * standing - .8 * (1 - standing)
                                + .1 * standing * support_quality + .6 * progress
                                - .05 * base['effort'] - slip_weight * slip
-                               - .2 * obstacle_cost, -1, 1))
-    return {**base, 'reward': reward, 'forward_speed_mm_s': speed,
-            'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
-            'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,
-            'standing_quality': standing_quality}
+                               - .2 * obstacle_cost + cycle_term, -1, 1))
+    result = {**base, 'reward': reward, 'forward_speed_mm_s': speed,
+              'supporting_feet': int(support.sum()), 'stance_slip_mm_s': slip,
+              'grounded_progress': progress, 'grip_factor': grip, 'obstacle_cost': obstacle_cost,
+              'standing_quality': standing_quality}
+    if objective == "curriculum-gripped-cycle-v9":
+        result['cycle_credit'] = float(cycle_credit)
+    return result
