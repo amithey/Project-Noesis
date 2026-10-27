@@ -48,8 +48,9 @@ def package(root, output):
     if not files:
         return None
     entries = []
-    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED,
-                         compresslevel=1, allowZip64=True) as bundle:
+    # NPZ, MP4 and PNG are already compressed; storing avoids expensive re-compression.
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_STORED,
+                         allowZip64=True) as bundle:
         for path in files:
             before = path.stat()
             relative = path.relative_to(root).as_posix()
