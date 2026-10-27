@@ -1,0 +1,162 @@
+{
+  "observed_date": "2026-10-27",
+  "hub_branch": "codex/github-project-sync",
+  "release_tag": "training-backup-2026-10-27",
+  "workstreams": [
+    {
+      "source_branch": "feature/habitat-in-view",
+      "source_commit": "eecc140456827a6a7cc365b7c53d56417b9fa98a",
+      "backup_branch": "codex/github-project-sync",
+      "uncommitted_files_observed": [
+        "M .gitignore",
+        " M README.md",
+        " M Start-Fly.ps1",
+        " M docs/learning-lab.md",
+        " M src/noesis/connectome.py",
+        " M src/noesis/experiments/learning_lab.py",
+        " M src/noesis/experiments/newborn.py",
+        " M src/noesis/viz/brain_map.py",
+        " M tests/test_brain_map.py",
+        " M tests/test_connectome.py",
+        " M tests/test_learning_lab.py",
+        "?? AGENTS.md",
+        "?? Start-Gemini.ps1",
+        "?? docs/brain-body-results.json",
+        "?? docs/coordination.md",
+        "?? docs/findings-brain-body.md",
+        "?? docs/gemini-collaboration.md",
+        "?? gpu-pilot/",
+        "?? scripts/",
+        "?? src/noesis/embodiment.py",
+        "?? src/noesis/gait.py",
+        "?? tests/test_embodiment.py",
+        "?? tests/test_gait.py"
+      ],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "feature/kc-rescale",
+      "source_commit": "6700b9175e276421b89a21fd281f55619c704f28",
+      "backup_branch": "feature/kc-rescale",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "feature/fafb-mushroom-body",
+      "source_commit": "35ac25f40c677b1d7222e551e3dafec2372be93a",
+      "backup_branch": "codex/snapshot-20261027-feature-fafb-mushroom-body",
+      "uncommitted_files_observed": [
+        "M src/noesis/experiments/mb_foraging_conditioning.py",
+        "?? src/noesis/experiments/mb_assumed_reward.py",
+        "?? tests/test_mb_assumed_reward.py"
+      ],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker",
+      "backup_commit": "239c56006bd1d78b9edb825f87d61edf319114aa"
+    },
+    {
+      "source_branch": "feature/fly-survival-drive",
+      "source_commit": "5524d843800e1649a1ec6fb3f7ca7e843d0a6f36",
+      "backup_branch": "feature/fly-survival-drive",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "claude/locomotion-v25",
+      "source_commit": "49aee42f813e4cdf9a6032aa526d6b3955b1fccf",
+      "backup_branch": "claude/locomotion-v25",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "docs/project-brief",
+      "source_commit": "dedf4a5eebdd4e00e68344cd9f0c7cf8395577c4",
+      "backup_branch": "docs/project-brief",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "codex/synaptic-depression",
+      "source_commit": "24b25d010b9ee06d8d5e50dea07547474e37e13f",
+      "backup_branch": "codex/synaptic-depression",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "feature/gait-rhythm",
+      "source_commit": "83ac912f0b1eba77287cc2f8d709f1b9f6f1708e",
+      "backup_branch": "feature/gait-rhythm",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "gemini/embodied-live-brain-view",
+      "source_commit": "314c474021579065d47e175a770317f170493839",
+      "backup_branch": "codex/snapshot-20261027-gemini-embodied-live-brain-view",
+      "uncommitted_files_observed": [
+        "M Run-Fly.ps1",
+        " M src/noesis/experiments/newborn_muscles.py",
+        " M src/noesis/viz/brain_map.py",
+        " M src/noesis/world.py",
+        " M tests/test_brain_view3d.py"
+      ],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker",
+      "backup_commit": "0b06458e7d4f854065c4adee539468a252c26c2c"
+    },
+    {
+      "source_branch": "gemini/locomotion-review",
+      "source_commit": "c529c4b884b27273d7d527bebb6366f5e24f3999",
+      "backup_branch": "codex/snapshot-20261027-gemini-locomotion-review",
+      "uncommitted_files_observed": [
+        "M scripts/dev_eval.py",
+        " M scripts/frozen_probe.py",
+        " M src/noesis/body.py",
+        " M src/noesis/experiments/learning_lab.py",
+        " M tests/test_body.py"
+      ],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker",
+      "backup_commit": "da22603daac23cfd63d7de3fd760bb3bd0e3bdbf"
+    },
+    {
+      "source_branch": "gemini/monoamines-recovery",
+      "source_commit": "24b25d010b9ee06d8d5e50dea07547474e37e13f",
+      "backup_branch": "gemini/monoamines-recovery",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "feature/mb-from-fafb",
+      "source_commit": "312337dd92b25dc8483e85a30ed1f9b1ee662658",
+      "backup_branch": "feature/mb-from-fafb",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "codex/brain-body-feedback",
+      "source_commit": "41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953",
+      "backup_branch": "codex/brain-body-feedback",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    },
+    {
+      "source_branch": "codex/olfactory-specificity",
+      "source_commit": "c7a4f571d367d56cd2ada212831afd8ae810d6cf",
+      "backup_branch": "codex/olfactory-specificity",
+      "uncommitted_files_observed": [],
+      "activity": "not confirmed",
+      "owner": "unassigned in shared tracker"
+    }
+  ]
+}

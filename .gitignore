@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+# raw + derived data are large and licensed (FlyWire, CC-BY-NC): never commit
+data/
+outputs/
+downloaded file/
+MANC/
+.antigravitycli/
+.env
+.env.*
+!.env.example
+*.pem
+*.key

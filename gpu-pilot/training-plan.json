@@ -1,0 +1,52 @@
+{
+  "revision": "flygym2-brain-only-2026-10-21",
+  "updated_at_utc": "2026-10-21T12:43:45.304414+00:00",
+  "plan": "training-plan.md",
+  "goal_text": "goal-text.md",
+  "runtime_state": "continuation-status.json",
+  "supersedes_active_route": "noesis.experiments.curriculum_training on the legacy body",
+  "historical_protocols_preserved": true,
+  "backend": "official FlyGym 2.1.0",
+  "upstream_commit": "ca65a510c2afe6ac61c51df4f274c8d190c2f95f",
+  "brain": "original Noesis connectome",
+  "topology_and_signs_fixed": true,
+  "original_weight_bound_fraction": 0.5,
+  "external_gait_controller": false,
+  "current_training_entrypoint": "noesis_gpu.train",
+  "current_frozen_entrypoint": "noesis_gpu.run",
+  "current_worlds": 1,
+  "current_compute": "CPU",
+  "cuda_verified": false,
+  "multi_world_training_verified": false,
+  "curriculum_orchestration_port_complete": false,
+  "resume_flag_supported": false,
+  "max_cycle_wall_seconds": 3600,
+  "current_default_pilot_wall_seconds": 600,
+  "training_probe_seconds": 5,
+  "training_probes_required_per_stage": 2,
+  "next_training_probe_seed": null,
+  "validation_seeds": [
+    10,
+    11
+  ],
+  "test_seeds": [
+    200,
+    201,
+    202
+  ],
+  "final_controls_required": 25,
+  "stage_advanced": false,
+  "walking_proven": false,
+  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\standing-001-train-11000\\weights-last.npz",
+  "latest_experimental_training_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+  "best_validated_checkpoint": null,
+  "model_promoted": false,
+  "ordinary_startup_changed": false,
+  "app_goal_objective_updated": true,
+  "app_goal_status_observed": "active",
+  "standing_training_gate_passed": true,
+  "standing_training_probe_seeds": [
+    10006,
+    10007
+  ]
+}
