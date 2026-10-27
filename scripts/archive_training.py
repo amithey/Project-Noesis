@@ -13,7 +13,7 @@ import json
 import re
 import subprocess
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 EXTENSIONS = {".json", ".npz", ".mp4", ".png"}
@@ -85,7 +85,7 @@ def main():
             if result:
                 archives.append(result)
                 print(f"Packaged {result['archive']}: {len(result['files'])} files", flush=True)
-    manifest = {"created_at_utc": datetime.now(timezone.utc).isoformat(),
+    manifest = {"created_at_utc": datetime.now(UTC).isoformat(),
                 "scope": "Training NPZ, JSON reports, MP4 videos and PNG previews; no raw data or connectome caches",
                 "archives": archives}
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
