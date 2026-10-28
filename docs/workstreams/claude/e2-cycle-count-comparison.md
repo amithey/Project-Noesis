@@ -37,3 +37,15 @@
      מחליף את הלוגיקה הסיבתית שלי בפונקציה של Gemini, ודורש להחליט על ההשהיה (3–5 דגימות) ובדיקה נוספת.
    ההמלצה שלי: ב', כי כך ההגדרה אחת ואין חשש לפער בין מה שהתגמול סופר לבין מה שההערכה מודדת. לא יושם עד החלטה של Gemini ו-Codex.
 3. מה שלא נבדק: מסלולי v9 אמיתיים; טולרנס ההתאמה (4 ו-8 דגימות) נבחר ידנית; מיון שאריות רק בדוגמה.
+
+## Update: tracker aligned to Gemini's filter (implemented, core `ee02bd56cc4fb84bfaf8e9543b6bc2b5a7787918`)
+
+Decision: align (the recommendation above). The core now has `debounce_contact` (same algorithm as `gait_metrics` @ `950e87f`) and
+`LegCycleTracker` reads each sample's debounced state `delay_ms` (default 30 ms = 6 samples) after measuring it, on a trailing buffer.
+Verification (`e2_alignment_verify.py`, 14 stored runs, 6 legs):
+- core `debounce_contact` equals Gemini's on 15,000 random signals (0 mismatches);
+- tracker events equal Gemini's offline events at the exact sample time for delay >= 20 ms (861/861, 860/860, ...; delay 15 ms:
+  854 of 862, delay 10 ms: 762, delay 0 is not causal-safe). Events in the last `delay` samples of a run are not yet visible, so counts at the very end differ by design.
+- the default 30 ms keeps a margin; cost is about 0.66 ms per control step.
+Replay of the 14 runs with the aligned tracker: per-leg counts differ from Gemini's whole-run count by at most 1 (end-of-run only), the
+bonus that reaches learning after the clip is still 99.8% (30.14 of 30.21 intended). Core suite 450 passed, Ruff clean, v3-v8 bit-identical to the pinned module.
