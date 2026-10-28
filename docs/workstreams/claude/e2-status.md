@@ -56,3 +56,11 @@ with no net progress over 2 s: 0%, was 40.6%); 1,800 random calls for v3-v8 stil
 passed, Ruff clean; 13 new/updated synthetic tests (`tests/test_cycle_speed_gate.py`; the older tracker tests now run 2.5 s so their
 "no credit" checks are not vacuous). Not solved: the parent still earns credit on 7.7% of steps, since it also progresses; separating
 uncoordinated stepping from walking needs a coordination measure, not a progress gate. Still no `learning.py` integration, no pin change, no training.
+
+## Update: cycle-count comparison with Gemini (2026-10-28)
+
+See `e2-cycle-count-comparison.md`. Event-by-event on 14 stored runs: with Gemini's earlier `debounce_contact` (3d0fb0a) the causal
+tracker found 830 of 1,145 events (all 830 matched; the other 315, 27.5%, are lifts made only of alternating <15 ms contact flips).
+After Gemini's `950e87f` the counts are 862 vs 830 (3.7%); the residual is timing (5-7 samples) plus ~4% brief contacts with one-sample
+dropouts that the offline filter bridges and the tracker (3 consecutive samples) does not. Decision requested: accept ~4% or have the
+tracker run Gemini's `debounce_contact` on a delayed trailing buffer (single definition). No code changed in this step.
