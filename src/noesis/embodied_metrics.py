@@ -71,73 +71,74 @@ def body_reward(
 
 
 def debounce_contact(contact, dt_ms, min_phase_ms=15.0):
-    """Merge contact phases shorter than ``min_phase_ms`` into their surroundings (offline).
+    """Persistence (hysteresis) debounce of a boolean contact signal; offline reference.
 
     Same algorithm as ``noesis_gpu.gait_metrics.debounce_contact`` (gemini/flygym2-gait-validation
-    @ 950e87f), so the training reward and the evaluation count contact cycles identically:
-    1. morphological closing: False dropouts shorter than the minimum, flanked by contact, become True;
-    2. morphological opening: True pulses shorter than the minimum become False.
+    @ 3bf6594): the state starts at the first sample, and a flip is confirmed only after the new
+    value has persisted for ``min_phase_ms`` (default 15 ms = 3 samples at 5 ms); shorter flutter is
+    rejected. The output at sample i depends only on samples <= i, so it is causal; the training
+    reward (``LegCycleTracker``) and the evaluation therefore count contact cycles identically,
+    at the same sample, with no read-out delay.
     """
-    c = np.asarray(contact, dtype=bool).copy()
-    if len(c) == 0:
-        return c
+    c = np.asarray(contact, dtype=bool)
+    n = len(c)
+    if n == 0:
+        return c.copy()
     min_samples = max(1, round(min_phase_ms / dt_ms))
     if min_samples <= 1:
-        return c
-    diffs = np.diff(np.concatenate(([True], c, [True])).astype(int))
-    for s, e in zip(np.where(diffs == -1)[0], np.where(diffs == 1)[0]):
-        if s > 0 and e < len(c) and (e - s < min_samples):
-            c[s:e] = True
-    diffs = np.diff(np.concatenate(([False], c, [False])).astype(int))
-    for s, e in zip(np.where(diffs == 1)[0], np.where(diffs == -1)[0]):
-        if e - s < min_samples:
-            c[s:e] = False
-    return c
+        return c.copy()
+    out = np.zeros(n, bool)
+    cur = bool(c[0])
+    pending = 0
+    for i in range(n):
+        x = bool(c[i])
+        if x != cur:
+            pending += 1
+            if pending >= min_samples:
+                cur = x
+                pending = 0
+        else:
+            pending = 0
+        out[i] = cur
+    return out
 
 
 class LegCycleTracker:
     """Online count of physical lift -> touchdown cycles per leg for the opt-in v9 objective.
 
-    Per control step it takes the six foot loads (tarsus5-to-floor) and applies ``debounce_contact``
-    (the evaluation's own filter, see above) to a trailing buffer, reading each sample's debounced
-    state ``delay_ms`` after it was measured so that the later samples it needs are known. Events are
-    therefore identical to the offline count on the same signal, only ``delay_ms`` late (default 30 ms
-    = 6 samples; the tests check exact equality against the offline result). A cycle is counted at
-    each debounced touchdown that follows a debounced lift. ``update`` returns the fraction of the
-    six legs completing a cycle in the last ``window_ms``, or 0 unless all gates hold:
-    upright/height-valid now, >=3 feet supporting on average over a full ``window_ms``, and
-    mean forward speed over a full trailing ``speed_window_ms`` >= ``min_forward_mm_s``. The long
-    speed window rejects the jittery, net-zero motion a short window lets through (replay of stored
-    runs: 40.6% of credited steps had no net progress over 2 s with a 250 ms window, 0% with the 2 s
-    window); the cost is no credit during the first ``speed_window_ms``. No leg order, phase or
-    alternation is rewarded or inferred. Thresholds are explicit assumptions pending review.
+    Per control step it takes the six foot loads (tarsus5-to-floor) and debounces each leg's contact
+    with the persistence filter of ``debounce_contact`` (same state machine, run incrementally, so its
+    events equal the offline ones at the same sample; the tests check exact equality). A cycle is
+    counted at each debounced touchdown that follows a debounced lift; a landing with no earlier lift
+    in the episode does not count. ``update`` returns the fraction of the six legs completing a cycle
+    in the last ``window_ms``, or 0 unless all gates hold: upright/height-valid now, >=3 feet
+    supporting on average over a full ``window_ms``, and mean forward speed over a full trailing
+    ``speed_window_ms`` >= ``min_forward_mm_s``. The long speed window rejects the jittery, net-zero
+    motion a short window lets through (replay of stored runs: 40.6% of credited steps had no net
+    progress over 2 s with a 250 ms window, 0% with the 2 s window); the cost is no credit during the
+    first ``speed_window_ms``. No leg order, phase or alternation is rewarded or inferred.
+    Thresholds are explicit assumptions pending review.
     """
 
     def __init__(self, dt_seconds=.005, window_ms=250., min_phase_ms=15., min_forward_mm_s=.25,
-                 speed_window_ms=2000., delay_ms=30.):
+                 speed_window_ms=2000.):
         if not all(np.isfinite(x) and x > 0
                    for x in (dt_seconds, window_ms, min_phase_ms, speed_window_ms)):
             raise ValueError("dt, windows and minimum phase must be finite and positive")
         if not np.isfinite(min_forward_mm_s) or min_forward_mm_s < 0:
             raise ValueError("minimum forward speed must be finite and nonnegative")
-        if not np.isfinite(delay_ms) or delay_ms < 0:
-            raise ValueError("delay must be finite and nonnegative")
-        self.dt_ms = dt_seconds * 1000
-        self.min_phase_ms = float(min_phase_ms)
         self.window = max(1, round(window_ms / 1000 / dt_seconds))
         self.speed_window = max(1, round(speed_window_ms / 1000 / dt_seconds))
         self.min_samples = max(1, round(min_phase_ms / 1000 / dt_seconds))
-        self.delay = round(delay_ms / 1000 / dt_seconds)
-        self.buffer = max(64, self.delay + 8 * self.min_samples)
         self.min_forward = float(min_forward_mm_s)
         self.reset()
 
     def reset(self):
-        self.count = 0                    # samples seen
-        self.raw = []                     # trailing raw contact, bool[6] per sample
-        self.state = np.zeros(6, bool)    # debounced contact of the sample being read out
+        self.started = False
+        self.state = np.zeros(6, bool)    # debounced contact
+        self.pending = np.zeros(6, int)   # consecutive samples disagreeing with state
         self.lifted = np.zeros(6, bool)   # a debounced lift happened since the last touchdown
-        self.cycles = []                  # per step: bool[6], cycle completed at the read-out sample
+        self.cycles = []                  # per step: bool[6], cycle completed at this sample
         self.support = []
         self.speed = []
 
@@ -147,26 +148,27 @@ class LegCycleTracker:
             raise ValueError("six finite nonnegative leg loads required")
         if not np.isfinite(forward_speed_mm_s):
             raise ValueError("nonfinite forward speed")
-        self.raw.append(loads > 1e-5)
-        del self.raw[:-self.buffer]
-        self.count += 1
-        done = np.zeros(6, bool)
-        read = self.count - 1 - self.delay            # global index of the sample to read out
-        if read >= 0:
-            local = read - (self.count - len(self.raw))
-            history = np.array(self.raw)
-            current = np.array([debounce_contact(history[:, leg], self.dt_ms, self.min_phase_ms)[local]
-                                for leg in range(6)])
-            touchdown = current & ~self.state
-            done = touchdown & self.lifted
-            self.lifted[~current & self.state] = True
-            self.lifted[touchdown] = False
-            self.state = current
+        raw = loads > 1e-5
+        flip = np.zeros(6, bool)
+        if not self.started:              # the debounced state starts at the first sample
+            self.started = True
+            self.state = raw.copy()
+        elif self.min_samples > 1:
+            self.pending = np.where(raw != self.state, self.pending + 1, 0)
+            flip = self.pending >= self.min_samples
+            self.pending[flip] = 0
+        else:
+            flip = raw != self.state
+        touchdown = flip & raw
+        done = touchdown & self.lifted
+        self.lifted[flip & ~raw] = True
+        self.lifted[touchdown] = False
+        self.state = np.where(flip, raw, self.state)
         self.cycles.append(done)
         self.support.append(float(self.state.sum()))
         self.speed.append(float(forward_speed_mm_s))
-        for history_list in (self.cycles, self.support):
-            del history_list[:-self.window]
+        for history in (self.cycles, self.support):
+            del history[:-self.window]
         del self.speed[:-self.speed_window]
         if len(self.cycles) < self.window or len(self.speed) < self.speed_window or not standing:
             return 0.

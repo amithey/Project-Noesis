@@ -1,19 +1,19 @@
-"""The v9 tracker must count contact cycles exactly like the evaluation's offline debounce."""
+"""The v9 tracker must count contact cycles exactly like the evaluation's debounce, at the same sample."""
 import numpy as np
 import pytest
 
 from noesis.embodied_metrics import LegCycleTracker, debounce_contact
 
 # Expected strings were produced by noesis_gpu.gait_metrics.debounce_contact (gemini/flygym2-gait-validation
-# @ 950e87f) with dt = 5 ms and min_phase = 15 ms; T = contact, . = no contact.
+# @ 3bf6594, persistence filter) with dt = 5 ms and min_phase = 15 ms; T = contact, . = no contact.
 GEMINI_VECTORS = [
     ("TTTT.T..TTTTT", "TTTTTTTTTTTTT"),
     ("TTTTT.T.T.TTTTT", "TTTTTTTTTTTTTTT"),
-    ("..T.TT...TTTT..", "..TTTT...TTTT.."),
+    ("..T.TT...TTTT..", "...........TTTT"),
     ("TTTT..TTTT", "TTTTTTTTTT"),
-    ("T.T.T.T.T.T.", "TTTTTTTTTTT."),
-    ("TTTTTTTT...TTT", "TTTTTTTT...TTT"),
-    ("..TT..TTT..T..", "..TTTTTTTTTT.."),
+    ("T.T.T.T.T.T.", "TTTTTTTTTTTT"),
+    ("TTTTTTTT...TTT", "TTTTTTTTTT...T"),
+    ("..TT..TTT..T..", "........TTTTTT"),
     ("TTT.TT.TTTT.T", "TTTTTTTTTTTTT"),
 ]
 
@@ -31,6 +31,15 @@ def test_debounce_matches_the_evaluation_filter(raw, expected):
     assert text(debounce_contact(bits(raw), 5., 15.)) == expected
 
 
+def test_debounce_is_causal_each_sample_depends_only_on_the_past():
+    rng = np.random.default_rng(3)
+    for _ in range(50):
+        signal = rng.random(80) < .5
+        full = debounce_contact(signal, 5., 15.)
+        for cut in (10, 33, 61):
+            assert np.array_equal(debounce_contact(signal[:cut], 5., 15.), full[:cut])
+
+
 def offline_events(raw):
     debounced = debounce_contact(raw, 5., 15.)
     diff = np.diff(debounced.astype(int))
@@ -45,14 +54,13 @@ def tracker_events(signal):
     for i, row in enumerate(signal):
         tracker.update(row.astype(float), 1., True)
         for leg in np.flatnonzero(tracker.cycles[-1]):
-            events[leg].append(i - tracker.delay)
-    return events, tracker.delay
+            events[leg].append(i)  # same sample as the evaluation's touchdown: no read-out delay
+    return events
 
 
 @pytest.mark.parametrize("seed", range(8))
 def test_tracker_events_equal_the_offline_events_exactly(seed):
     rng = np.random.default_rng(seed)
-    # contact with long phases plus flutter bursts, the case that used to differ by ~30%
     n = 600
     signal = np.zeros((n, 6), bool)
     for leg in range(6):
@@ -64,33 +72,24 @@ def test_tracker_events_equal_the_offline_events_exactly(seed):
                 for j in range(i, min(i + length, n), int(rng.integers(2, 4))):
                     signal[j, leg] = not state
             state, i = not state, i + length
-    events, delay = tracker_events(signal)
+    events = tracker_events(signal)
     for leg in range(6):
-        visible = [t for t in offline_events(signal[:, leg]) if t <= n - 1 - delay]
-        assert events[leg] == visible
+        assert events[leg] == offline_events(signal[:, leg])
 
 
-def test_flutter_inside_a_lift_counts_the_same_way_as_in_the_evaluation():
-    # a long lift whose end is a fluttering landing: closing bridges the dropouts into one touchdown
-    leg = bits("TTTTTTTT" + "." * 20 + "T.T.TTTTTTTTTT" + "." * 10 + "TTTTTTTT")
-    signal = np.tile(leg[:, None], (1, 6))
-    signal = np.vstack([signal, np.ones((20, 6), bool)])  # trailing stance lets the last event surface
-    events, _ = tracker_events(signal)
-    assert events[0] == offline_events(signal[:, 0]) and len(events[0]) == 2
-
-
-def test_delay_is_validated_and_exposed():
-    assert LegCycleTracker().delay == 6  # 30 ms at 5 ms
-    assert LegCycleTracker(delay_ms=0.).delay == 0
-    for bad in (-1., float("nan"), float("inf")):
-        with pytest.raises(ValueError):
-            LegCycleTracker(delay_ms=bad)
+def test_flutter_is_stance_not_a_lift_and_a_first_landing_is_not_a_cycle():
+    flutter = bits("T" * 12 + "T.T.T.T.T.T." + "T" * 12)  # alternating one-sample dropouts: still contact
+    assert tracker_events(np.tile(flutter[:, None], (1, 6)))[0] == []
+    landing = bits("." * 12 + "T" * 12)  # first landing with no earlier lift
+    assert tracker_events(np.tile(landing[:, None], (1, 6)))[0] == []
+    real = bits("T" * 8 + "." * 12 + "T" * 10)
+    assert tracker_events(np.tile(real[:, None], (1, 6)))[0] == offline_events(real) and len(offline_events(real)) == 1
 
 
 def test_reset_restarts_the_stream():
-    signal = np.tile(bits("TTTTTTTT" + "." * 12 + "TTTTTTTTTT")[:, None], (1, 6))
+    signal = np.tile(bits("T" * 8 + "." * 12 + "T" * 10)[:, None], (1, 6))
     tracker = LegCycleTracker()
     for row in signal:
         tracker.update(row.astype(float), 1., True)
     tracker.reset()
-    assert tracker.count == 0 and not tracker.lifted.any() and not tracker.raw
+    assert not tracker.started and not tracker.lifted.any() and not tracker.cycles
