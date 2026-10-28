@@ -15,7 +15,8 @@ from .run import file_digest, source_digest, timing_steps
 
 
 def parser():
-    ap = argparse.ArgumentParser(description=__doc__)
+    # Transitional profile_run wrapper may override these options with its defaults.
+    ap = argparse.ArgumentParser(description=__doc__, conflict_handler="resolve")
     ap.add_argument("--noesis-source", type=Path, required=True)
     ap.add_argument("--data", type=Path, required=True)
     ap.add_argument("--checkpoint", type=Path, required=True)
@@ -24,10 +25,18 @@ def parser():
     ap.add_argument("--seconds", type=float, default=5.)
     ap.add_argument("--wall-seconds", type=float, default=600.)
     ap.add_argument("--seed", type=int, default=11000)
+    ap.add_argument("--profile", default="standing")
+    ap.add_argument("--exploration-mv-ms", type=float, default=1.5)
     return ap
 
 
 def run(args):
+    from .reward_profiles import resolve_objective
+
+    objective = resolve_objective(getattr(args, "profile", "standing"))
+    amplitude = getattr(args, "exploration_mv_ms", 1.5)
+    if not np.isfinite(amplitude) or not 0 < amplitude <= 1.5:
+        raise ValueError("Exploration must be finite and in (0, 1.5] mV/ms")
     chunks, substeps = timing_steps(args.seconds, 5., .0001)
     if (not np.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 3600
             or args.seconds <= .05 or not 0 <= args.seed < 2**32):
@@ -50,8 +59,8 @@ def run(args):
               "upstream_commit": UPSTREAM_COMMIT, "noesis_source_sha256": source_digest(source),
               "import_checkpoint": str(args.checkpoint.resolve()),
               "import_checkpoint_sha256": file_digest(args.checkpoint),
-              "reward_objective": "curriculum-standing-v7", "learning_rate": .2,
-              "eligibility_ms": 100, "motor_exploration_mv_ms": 1.5,
+              "reward_objective": objective, "learning_rate": .2,
+              "eligibility_ms": 100, "motor_exploration_mv_ms": amplitude,
               "original_weight_bound": .5, "control_ms": 5., "physics_dt": .0001,
               "birth_ms": 50, "requested_seconds": args.seconds, "completed_chunks": 0,
               "latest_training_checkpoint": None, "best_validated_checkpoint": None,
@@ -64,7 +73,8 @@ def run(args):
         body = FlyGymBatch(1, args.backend)
         cn, _ = load_training_brain(data, output / "brain-cache")
         brain = LearningBrain(cn, body.rest, body.lo, body.hi,
-                              checkpoint=args.checkpoint, seed=args.seed)
+                              checkpoint=args.checkpoint, seed=args.seed,
+                              exploration_mv_ms=amplitude)
         report.update(neurons=cn.n, edges=cn.W.nnz,
                       plasticity_targets=len(brain.learner.motor_indices),
                       plasticity_edges=len(brain.learner.edge_indices))
@@ -77,7 +87,7 @@ def run(args):
             command, adhesion = brain.step(before, 5.)
             body.advance(command[None], adhesion[None], substeps)
             after = {key: value[0] for key, value in body.observe().items()}
-            score = score_transition(before, after, 5.)
+            score = score_transition(before, after, 5., objective=objective)
             learning = brain.learn(score["reward"], 5.)
             records.append({**after, "command": command.copy(), "adhesion": adhesion.copy(),
                             "reward": score["reward"], "standing": bool(standing_mask(after)),
@@ -101,7 +111,7 @@ def run(args):
         name = "weights-last.npz" if report["status"] == "completed_training_birth" else "weights-partial.npz"
         checkpoint = output / name
         brain.learner.save(checkpoint)
-        context = {**report, "context": "experimental-v2-standing-only; not a validated curriculum bank"}
+        context = {**report, "context": "experimental-v2-profile-birth; not a validated curriculum bank"}
         checkpoint.with_suffix(".model.json").write_text(json.dumps(context, indent=2), encoding="utf-8")
         report["saved_checkpoint_sha256"] = file_digest(checkpoint)
         if report["status"] == "completed_training_birth":
