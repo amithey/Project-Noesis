@@ -72,3 +72,13 @@ and Gemini `3bf6594` with the persistence filter) were NOT equivalent (0 events 
 debounce as `3bf6594`, with no read-out delay: 1,192/1,192 events identical at the same sample on 20 stored runs, equal to Gemini's `step_count`.
 The `delay_ms` option of `ee02bd5` no longer exists; the earlier "30 ms" statements are superseded. Core suite 450 passed; v3-v8 bit-identical; still no
 `learning.py` integration, no pin change, no training run.
+
+## Update: v9 wired into the pilot, synthetic only (2026-10-28)
+
+`learning.py`: `CycleScoring` (one per brain and episode; owns a core `LegCycleTracker`, feeds it once per control step, passes the credit to the core
+reward; records credited-step share, mean credit, intended bonus and the share of steps with `reward_unclipped > 1`). `score_transition` keeps its API
+(`cycle_credit` is an optional keyword; the core rejects it for non-v9 objectives). `reward_profiles.py`: profile `gripped-cycle` -> v9. `profile_run.py`:
+for v9 it installs a fresh `CycleScoring` for the run, restores the module afterwards, and writes `cycle_scoring` into `profile-run.json`; if the core has no
+tracker it fails before creating any output. Tests (`tests/test_cycle_scoring.py`, synthetic): 68 passed / 3 skipped with the v9 core (`54828ca`);
+61 passed / 10 skipped with the pinned core `41b5fe6` (the v9 tests skip, nothing else changes). Ruff clean. A test caught a real recursion bug (the scorer
+called the patched public name); fixed. No training run, pin unchanged, `train.py` untouched. Protocol precondition P2 is now met in code (not yet reviewed).

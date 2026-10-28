@@ -29,11 +29,14 @@ SIDECAR = "profile-run.json"
 
 @contextmanager
 def _patched(objective, exploration_mv_ms):
+    """Yield the CycleScoring in use (v9 only, else None); restore the learning module on exit."""
     score, brain = learning.score_transition, learning.LearningBrain
-    learning.score_transition = functools.partial(score, objective=objective)
+    scorer = (learning.CycleScoring(objective) if objective == "curriculum-gripped-cycle-v9"
+              else None)  # built first: a core without the v9 tracker fails before anything is patched
+    learning.score_transition = scorer or functools.partial(score, objective=objective)
     learning.LearningBrain = functools.partial(brain, exploration_mv_ms=exploration_mv_ms)
     try:
-        yield
+        yield scorer
     finally:
         learning.score_transition, learning.LearningBrain = score, brain
 
@@ -71,9 +74,9 @@ def run_birth(args, train_module=train) -> int:
     if output.exists():
         print(f"Refusing to run: output directory already exists: {output}", file=sys.stderr)
         return 2
-    report, error = None, None
+    report, error, scorer = None, None, None
     try:
-        with _patched(objective, args.exploration_mv_ms):
+        with _patched(objective, args.exploration_mv_ms) as scorer:
             report = train_module.run(args)
     except BaseException as caught:  # noqa: BLE001 - recorded, then re-raised below
         error = caught
@@ -81,10 +84,13 @@ def run_birth(args, train_module=train) -> int:
     if output.is_dir():  # created by this run
         if error is None and status == COMPLETED:
             _annotate(output, objective, args.exploration_mv_ms)
-        _write_json(output / SIDECAR, {
+        sidecar = {
             "profile": args.profile, "reward_objective": objective,
             "motor_exploration_mv_ms": args.exploration_mv_ms, "seed": args.seed,
-            "status": status, "checkpoint": str(args.checkpoint)})
+            "status": status, "checkpoint": str(args.checkpoint)}
+        if scorer is not None:  # v9: how much cycle bonus was credited and how often the reward clipped
+            sidecar["cycle_scoring"] = scorer.summary()
+        _write_json(output / SIDECAR, sidecar)
     if error is not None:
         raise error
     return 0 if status == COMPLETED else 3

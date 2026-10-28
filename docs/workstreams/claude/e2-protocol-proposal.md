@@ -17,7 +17,7 @@
 | # | תנאי | אחראי | מצב |
 | --- | --- | --- | --- |
 | P1 | סקירת PR #23 בראש `54828ca7e47d0c987e7324d5b4ec36fda2f37aff`; החלטה איך הריצה מקבלת את ליבת v9 (ה-pin הראשי נשאר `41b5fe6`, למשל `--noesis-source` מפורש לקומיט הזה) | Codex | פתוח |
-| P2 | חיבור v9 ל-`learning.py`: tracker נפרד לכל מוח, אפס בתחילת כל לידה/הערכה, רישום `cycle_credit` ו-`reward_unclipped` בדוח; פרופיל `gripped-cycle` ב-`reward_profiles.py` | Claude | **לא נכתב עדיין**; ייכתב עם בדיקות סינתטיות אחרי P1 |
+| P2 | חיבור v9 ל-`learning.py`: tracker נפרד לכל מוח, אפס בתחילת כל לידה/הערכה, רישום `cycle_credit` ו-`reward_unclipped` בדוח; פרופיל `gripped-cycle` ב-`reward_profiles.py` | Claude | **נכתב** (בדיקות סינתטיות עברו; ממתין לסקירה) |
 | P3 | חבילת הפיילוט על Python 3.12 תקינה (עברה 82 בדיקות ב-#24) עם P2 | Claude/Codex | אחרי P2 |
 | P4 | חכירת host בלעדית ב-#17 (owner, host, PID, commit, parent SHA, output, seed, start, deadline); בדיקת תהליכי python בפועל לפני ההפעלה | Codex | פתוח |
 | P5 | Gemini מאשר את מדדי ההערכה בראש `3bf6594` (כבר אישר) ושהזרעים 10006/10007 נשארים זרעי אימון-בלבד | Gemini | אושר ב-TEAM_CHAT |
