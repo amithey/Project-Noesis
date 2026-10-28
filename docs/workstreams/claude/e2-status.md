@@ -1,6 +1,6 @@
 # E2: v9-cycle objective, development status (2026-10-28)
 
-Core branch `claude/flygym2-core-learning` @ `165928da3b2e6e2ece0d115b7ce1815e45b90c6f`,
+Core branch `claude/flygym2-core-learning` @ `81909f74e01cbe069ae5c2ff31e1ee145a84f1e5`,
 cut from the core pin `codex/brain-body-feedback` @ `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`.
 The core pin itself is not changed. Synthetic tests only; no training run.
 
@@ -46,3 +46,13 @@ No other objective gets the field. Core commit `165928da3b2e6e2ece0d115b7ce1815e
 random calls for v3-v8 still bit-identical to the pinned module. Use: report per birth the share of
 steps with `reward_unclipped > 1`; above 5% in any E2 birth, add a warning and revisit. Still no training run,
 no `learning.py` integration, no change to the reward.
+
+## Update: progress gate tightened in the core (2026-10-28)
+
+Per `e2-progress-gate.md` (approved by the user): `LegCycleTracker` now gates on the mean forward speed over a full trailing
+`speed_window_ms` = 2000 ms `>= 0.25` mm/s (was 250 ms `>= 0.5`). Core commit `81909f74e01cbe069ae5c2ff31e1ee145a84f1e5`. No credit during the first 2 s of an episode.
+Checks: the implemented tracker reproduces the prototype gate exactly on 14/14 stored runs (10.4% of steps credited; credited steps
+with no net progress over 2 s: 0%, was 40.6%); 1,800 random calls for v3-v8 still bit-identical to the pinned module; core suite 431
+passed, Ruff clean; 13 new/updated synthetic tests (`tests/test_cycle_speed_gate.py`; the older tracker tests now run 2.5 s so their
+"no credit" checks are not vacuous). Not solved: the parent still earns credit on 7.7% of steps, since it also progresses; separating
+uncoordinated stepping from walking needs a coordination measure, not a progress gate. Still no `learning.py` integration, no pin change, no training.
