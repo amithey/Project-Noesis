@@ -179,7 +179,7 @@ class LegCycleTracker:
 
 def locomotion_reward(previous_position, position, uprightness, joint_velocity, dt_seconds,
                       heading, leg_loads, foot_velocity, obstacle_contact_seconds=0., *,
-                      objective="standing-first-linear-slip-v3", cycle_credit=0.):
+                      objective="standing-first-linear-slip-v3", cycle_credit=0., cycle_weight=CYCLE_WEIGHT):
     """Artificial grounded-forward objective with a measured stance-slip penalty.
 
     Uses horizontal thorax heading, >=3 force-bearing legs, and leg joint effort.
@@ -196,7 +196,8 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
     Curriculum v7 removes advancement credit to isolate standing. Curriculum v8
     uses a 2 mm/s advancement target before returning to v6 for continuous gait.
     Both are training feedback only; physical acceptance remains independent.
-    Opt-in v9 is v8 plus ``CYCLE_WEIGHT * cycle_credit * grip`` (cycle_credit from
+    Opt-in v9 is v8 plus ``cycle_weight * cycle_credit * grip`` (``cycle_weight`` defaults to
+    ``CYCLE_WEIGHT`` = 0.1 and may be raised up to 1 for an experiment; cycle_credit from
     ``LegCycleTracker``, in [0, 1]); other objectives require ``cycle_credit == 0`` and v3-v8
     results are unchanged. v9 adds ``cycle_credit`` and a read-only ``reward_unclipped``
     (the pre-clip value; it never alters ``reward``).
@@ -207,6 +208,10 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         raise ValueError("cycle credit must be finite and within [0, 1]")
     if cycle_credit and objective != "curriculum-gripped-cycle-v9":
         raise ValueError("cycle credit is only used by the v9 objective")
+    if not np.isfinite(cycle_weight) or not 0 < cycle_weight <= 1:
+        raise ValueError("cycle weight must be finite and within (0, 1]")
+    if cycle_weight != CYCLE_WEIGHT and objective != "curriculum-gripped-cycle-v9":
+        raise ValueError("cycle weight is only used by the v9 objective")
     base = body_reward(previous_position, position, uprightness, joint_velocity, dt_seconds)
     heading = np.asarray(heading, float)
     loads = np.asarray(leg_loads, float)
@@ -270,7 +275,7 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
         standing = bool(support.any() and .3 <= base['height_mm'] <= 1.5 and uprightness >= .7)
         stand_weight = .7 if objective == "curriculum-standing-v7" else .4
         slip_weight = .006 if objective == "curriculum-standing-v7" else .03
-        cycle_term = (CYCLE_WEIGHT * cycle_credit * grip * standing
+        cycle_term = (cycle_weight * cycle_credit * grip * standing
                       if objective == "curriculum-gripped-cycle-v9" else 0.)
         unclipped = float(stand_weight * standing - .8 * (1 - standing)
                           + .1 * standing * support_quality + .6 * progress
@@ -283,6 +288,7 @@ def locomotion_reward(previous_position, position, uprightness, joint_velocity, 
               'standing_quality': standing_quality}
     if objective == "curriculum-gripped-cycle-v9":
         result['cycle_credit'] = float(cycle_credit)
+        result['cycle_weight'] = float(cycle_weight)
         # Diagnostic only: the value before the [-1, 1] clip, to count steps where it saturates.
         result['reward_unclipped'] = unclipped
     return result
