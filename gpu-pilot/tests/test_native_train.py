@@ -37,3 +37,24 @@ def test_legacy_wrapper_can_override_defaults_without_argument_conflict(tmp_path
         "--output", str(tmp_path / "out"),
     ])
     assert selected.profile == "gripped-steps"
+
+
+def test_native_v9_uses_fresh_tracker_and_old_objective_stays_stateless():
+    import noesis.embodied_metrics as metrics
+    if not hasattr(metrics, "LegCycleTracker"):
+        pytest.skip("experimental v9 core required")
+    from noesis_gpu.train import episode_scorer
+    from noesis_gpu.learning import CycleScoring
+    a = episode_scorer("curriculum-gripped-cycle-v9")
+    b = episode_scorer("curriculum-gripped-cycle-v9")
+    assert isinstance(a, CycleScoring) and isinstance(b, CycleScoring)
+    assert a._tracker is not b._tracker
+    assert not isinstance(episode_scorer("curriculum-gripped-step-v8"), CycleScoring)
+
+
+def test_native_v9_rejects_core_without_tracker(monkeypatch):
+    import noesis.embodied_metrics as metrics
+    from noesis_gpu.train import episode_scorer
+    monkeypatch.delattr(metrics, "LegCycleTracker", raising=False)
+    with pytest.raises(ValueError, match="LegCycleTracker"):
+        episode_scorer("curriculum-gripped-cycle-v9")
