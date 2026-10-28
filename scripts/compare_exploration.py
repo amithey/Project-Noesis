@@ -23,6 +23,17 @@ def digest(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def tree_digest(root):
+    paths = sorted(root.rglob("*.py"))
+    if not paths:
+        raise ValueError(f"No Python source found in {root}")
+    result = hashlib.sha256()
+    for path in paths:
+        result.update(path.relative_to(root).as_posix().encode())
+        result.update(path.read_bytes())
+    return result.hexdigest()
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--shared-root", type=Path, required=True)
@@ -41,7 +52,7 @@ def main():
         raise ValueError("Unexpected core pin")
     core_digest = source_digest(source)
     pilot_source = Path(__file__).resolve().parents[1] / "gpu-pilot/src"
-    pilot_digest = source_digest(pilot_source)
+    pilot_digest = tree_digest(pilot_source)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     lock = root / "gpu-pilot/outputs/codex-training-host.lock"
     token = uuid.uuid4().hex
@@ -54,10 +65,11 @@ def main():
         json.dump(lease, handle)
     started = time.monotonic()
     receipts = []
+    created_output = False
     try:
         processes = subprocess.check_output([
             "powershell", "-NoProfile", "-Command",
-            ("Get-CimInstance Win32_Process | Where-Object { $_.Name -match '^python(w)?\\.exe$' } | "
+            ("$ErrorActionPreference='Stop'; Get-CimInstance Win32_Process | Where-Object { $_.Name -match '^python(w)?\\.exe$' } | "
              "Select-Object ProcessId,CommandLine | ConvertTo-Json -Compress")
         ], text=True)
         inventory = json.loads(processes) if processes.strip() else []
@@ -66,6 +78,7 @@ def main():
         if any(p["ProcessId"] != os.getpid() for p in inventory):
             raise RuntimeError("Another Python process is active; inspect before training")
         output.mkdir(parents=True, exist_ok=False)
+        created_output = True
         write(output / "protocol.json", {**lease, "core_commit": pin,
               "core_source_sha256": core_digest, "pilot_source_sha256": pilot_digest,
               "training_seed": 2100, "probe_seeds": [10008, 10009],
@@ -92,7 +105,7 @@ def main():
             write(output / "receipts.json", receipts)
             if result.returncode or report["status"] not in {"completed_training_birth", "completed_transport_pilot"}:
                 raise RuntimeError(f"Incomplete or failed job: {name}")
-            if digest(parent) != expected or source_digest(source) != core_digest or source_digest(pilot_source) != pilot_digest:
+            if digest(parent) != expected or source_digest(source) != core_digest or tree_digest(pilot_source) != pilot_digest:
                 raise RuntimeError("Parent or source changed during experiment")
             print(f"Completed {name}", flush=True)
 
@@ -115,7 +128,7 @@ def main():
               "parent_unchanged": digest(parent) == expected,
               "wall_seconds": time.monotonic() - started})
     finally:
-        if output.is_dir():
+        if created_output:
             write(output / "worker-exit.json", {"pid": os.getpid(), "wall_seconds": time.monotonic()-started,
                   "jobs_completed": len(receipts), "comparison_complete": (output / "comparison.json").is_file()})
         if json.loads(lock.read_text()).get("token") == token:

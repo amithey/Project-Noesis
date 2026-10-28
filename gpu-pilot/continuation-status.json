@@ -1,10 +1,10 @@
 {
-  "status": "one_training_birth_and_two_frozen_pairs_complete",
+  "status": "matched_exploration_pilot_complete_not_promoted",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
-  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\standing-001-train-11000\\weights-last.npz",
-  "latest_experimental_training_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\train-lower\\weights-last.npz",
+  "latest_experimental_training_sha256": "224b1e797c9add1d2ff3e9f37a9d2eb9d4f515f22615fc521f721835cea98070",
   "best_validated_checkpoint": null,
   "model_promoted": false,
   "stage_advanced": false,
@@ -12,19 +12,16 @@
   "cuda_verified": false,
   "training_backend": "cpu",
   "worlds": 1,
-  "last_training_seed": 11000,
-  "last_frozen_seed": 10007,
-  "standing_before": 0.9313131313131313,
-  "standing_after": 0.9717171717171718,
-  "slip_change_percent": -1.9898385950845698,
+  "last_training_seed": 2100,
+  "last_frozen_seed": 10009,
   "next_steps": [
-    "Standing training gate passed; port and test curriculum manager before gripped-step training",
-    "Complete and test the four-stage curriculum and interruption/restart manager for FlyGym 2",
-    "Port leg-cycle/tripod metrics and external senses/obstacles with original acceptance thresholds",
-    "Keep training-last separate from validated-best; complete all final controls, real video and startup verification",
-    "Scale GPU physics and neural execution only after NVIDIA checks and measured one-world parity"
+    "Review the matched pilot: lower exploration improved control standing but failed the preregistered rule and reduced standing vs parent",
+    "Do not promote either child; register a new hypothesis before more method-training births",
+    "Complete the full interruption-safe curriculum manager; the current runner only executes a bounded method pilot",
+    "Keep v9/core pin unchanged pending cycle-definition and reward-saturation review",
+    "Perform final held-out controls only after the unchanged scientific gates pass"
   ],
-  "comparison": "outputs/standing-learning-001-comparison.json",
+  "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
   "goal_text": "goal-text.md",
   "plan_revision": "flygym2-brain-only-2026-10-21",
@@ -38,5 +35,23 @@
     10006,
     10007
   ],
-  "two_seed_gate": "outputs/standing-two-seed-gate.json"
+  "two_seed_gate": "outputs/standing-two-seed-gate.json",
+  "historical_standing_result": {
+    "standing_before": 0.9313131313131313,
+    "standing_after": 0.9717171717171718,
+    "slip_change_percent": -1.9898385950845698
+  },
+  "latest_method_pilot": {
+    "date": "2026-10-28",
+    "training_births_completed": 2,
+    "frozen_probes_completed": 6,
+    "wall_seconds": 1967.5,
+    "lower_exploration_met_preregistered_rule": false,
+    "audit": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\audit.json",
+    "source_commit": "0398b0346a8b0e0e701e85228fb419592cb0a19c",
+    "artifact_release": "exploration-pilot-2026-10-28",
+    "parent_sha256": "626bde8dce2f996ef181650ba4c3812abdc0dfdd3a969bbfc1e0e1ed57b95ff1",
+    "parent_status": "provisional experimental anchor; not validated-best",
+    "latest_child_is_recommended_parent": false
+  }
 }
