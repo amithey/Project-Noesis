@@ -64,3 +64,11 @@ tracker found 830 of 1,145 events (all 830 matched; the other 315, 27.5%, are li
 After Gemini's `950e87f` the counts are 862 vs 830 (3.7%); the residual is timing (5-7 samples) plus ~4% brief contacts with one-sample
 dropouts that the offline filter bridges and the tracker (3 consecutive samples) does not. Decision requested: accept ~4% or have the
 tracker run Gemini's `debounce_contact` on a delayed trailing buffer (single definition). No code changed in this step.
+
+## Update: single cycle definition, zero delay (2026-10-28, core `54828ca`)
+
+Codex asked for an exact head pair. `e2-head-pair-verification.md`: the earlier heads (core `ee02bd5` with the closing/opening filter @ `950e87f`
+and Gemini `3bf6594` with the persistence filter) were NOT equivalent (0 events identical, counts 1,220 vs 1,186). The core now uses the same persistence
+debounce as `3bf6594`, with no read-out delay: 1,192/1,192 events identical at the same sample on 20 stored runs, equal to Gemini's `step_count`.
+The `delay_ms` option of `ee02bd5` no longer exists; the earlier "30 ms" statements are superseded. Core suite 450 passed; v3-v8 bit-identical; still no
+`learning.py` integration, no pin change, no training run.
