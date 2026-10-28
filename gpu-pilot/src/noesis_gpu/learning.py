@@ -7,14 +7,20 @@ import hashlib
 import numpy as np
 
 from .controller import FrozenBrain
+from .reward_profiles import resolve_objective
+
+MAX_EXPLORATION_MV_MS = 1.5  # original exploration cap; options may only lower it
 
 
 class LearningBrain(FrozenBrain):
     """Original-reference bounds are captured BEFORE importing any learned weights."""
 
-    def __init__(self, connectome, rest, lo, hi, *, checkpoint, seed=0, **options):
+    def __init__(self, connectome, rest, lo, hi, *, checkpoint, seed=0,
+                 exploration_mv_ms=MAX_EXPLORATION_MV_MS, **options):
         if "shared_weights" in options:
             raise ValueError("Learning brains require independent mutable weights")
+        if not np.isfinite(exploration_mv_ms) or not 0 < exploration_mv_ms <= MAX_EXPLORATION_MV_MS:
+            raise ValueError("exploration_mv_ms must be in (0, 1.5]; the original cap is not raised")
         from noesis.circuit_learning import CircuitExploration
         from noesis.plasticity import MotorPlasticity
 
@@ -32,9 +38,10 @@ class LearningBrain(FrozenBrain):
         circuit = self.learner.motor_indices[classes.isin(
             ("single_leg_neuromere", "sequential_leg_neuromeres")).to_numpy()]
         self.exploration = CircuitExploration(connectome.neurons, circuit,
-                                              amplitude_mv_ms=1.5, tau_ms=100, seed=seed)
+                                              amplitude_mv_ms=exploration_mv_ms, tau_ms=100, seed=seed)
         if not np.isin(self.exploration.idx, self.learner.motor_indices).all():
             raise ValueError("Checkpoint does not cover all explored leg motor neurons")
+        self.exploration_mv_ms = float(exploration_mv_ms)
         self.learning_active = False
         self.updates = 0
         self.max_observed_exploration = 0.0
@@ -66,7 +73,8 @@ def score_transition(before, after, dt_ms, objective="curriculum-standing-v7"):
     return locomotion_reward(
         before["position"], after["position"], float(np.clip(after["up_body"][2], -1, 1)),
         after["velocity"], dt, before["heading"], after["foot_load"],
-        (after["feet_position"] - before["feet_position"]) / dt, objective=objective,
+        (after["feet_position"] - before["feet_position"]) / dt,
+        objective=resolve_objective(objective),
     )
 
 
