@@ -78,17 +78,24 @@ class LegCycleTracker:
     events by that much and differs slightly from an offline debounce), and counts a cycle at
     each debounced touchdown that follows a debounced lift. ``update`` returns the fraction of
     the six legs completing a cycle in the last ``window_ms``, or 0 unless all gates hold:
-    upright/height-valid now, >=3 feet supporting on average over a full window, and mean
-    forward speed over the window >= ``min_forward_mm_s``. No leg order, phase or alternation
-    is rewarded or inferred. Thresholds are explicit assumptions pending independent review.
+    upright/height-valid now, >=3 feet supporting on average over a full ``window_ms``, and
+    mean forward speed over a full trailing ``speed_window_ms`` >= ``min_forward_mm_s``. The
+    long speed window rejects the jittery, net-zero motion a short window lets through (replay
+    of stored runs: 40.6% of credited steps had no net progress over 2 s with a 250 ms window,
+    0% with the 2 s window); the cost is no credit during the first ``speed_window_ms``.
+    No leg order, phase or alternation is rewarded or inferred. Thresholds are explicit
+    assumptions pending independent review.
     """
 
-    def __init__(self, dt_seconds=.005, window_ms=250., min_phase_ms=15., min_forward_mm_s=.5):
-        if not all(np.isfinite(x) and x > 0 for x in (dt_seconds, window_ms, min_phase_ms)):
-            raise ValueError("dt, window and minimum phase must be finite and positive")
+    def __init__(self, dt_seconds=.005, window_ms=250., min_phase_ms=15., min_forward_mm_s=.25,
+                 speed_window_ms=2000.):
+        if not all(np.isfinite(x) and x > 0
+                   for x in (dt_seconds, window_ms, min_phase_ms, speed_window_ms)):
+            raise ValueError("dt, windows and minimum phase must be finite and positive")
         if not np.isfinite(min_forward_mm_s) or min_forward_mm_s < 0:
             raise ValueError("minimum forward speed must be finite and nonnegative")
         self.window = max(1, round(window_ms / 1000 / dt_seconds))
+        self.speed_window = max(1, round(speed_window_ms / 1000 / dt_seconds))
         self.min_samples = max(1, round(min_phase_ms / 1000 / dt_seconds))
         self.min_forward = float(min_forward_mm_s)
         self.reset()
@@ -119,9 +126,10 @@ class LegCycleTracker:
         self.cycles.append(done)
         self.support.append(float(self.state.sum()))
         self.speed.append(float(forward_speed_mm_s))
-        for history in (self.cycles, self.support, self.speed):
+        for history in (self.cycles, self.support):
             del history[:-self.window]
-        if len(self.cycles) < self.window or not standing:
+        del self.speed[:-self.speed_window]
+        if len(self.cycles) < self.window or len(self.speed) < self.speed_window or not standing:
             return 0.
         if np.mean(self.support) < 3 or np.mean(self.speed) < self.min_forward:
             return 0.

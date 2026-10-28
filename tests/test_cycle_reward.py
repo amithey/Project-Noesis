@@ -9,7 +9,7 @@ from noesis.embodied_metrics import (
 )
 
 V8, V9 = "curriculum-gripped-step-v8", "curriculum-gripped-cycle-v9"
-STEPS = 100  # 500 ms at 5 ms
+STEPS = 500  # 2.5 s at 5 ms: covers the 2 s speed window, so "no credit" assertions are not vacuous
 
 
 def drive(tracker, loads_at, speed=2., standing=True, steps=STEPS):
@@ -44,7 +44,8 @@ def test_real_lift_touchdown_cycles_earn_credit_after_a_full_window():
 def test_static_standing_and_stepping_in_place_earn_no_credit():
     assert drive(LegCycleTracker(), lambda i: np.ones(6)) == 0.
     assert drive(LegCycleTracker(), stepping_legs, speed=0.) == 0.
-    assert drive(LegCycleTracker(), stepping_legs, speed=.4) == 0.  # below 0.5 mm/s
+    assert drive(LegCycleTracker(), stepping_legs, speed=.2) == 0.  # below 0.25 mm/s
+    assert drive(LegCycleTracker(), stepping_legs, speed=.3) > 0.  # same stepping, enough progress
 
 
 def test_contact_chatter_is_not_a_cycle():
