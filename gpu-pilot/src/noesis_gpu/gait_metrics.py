@@ -133,21 +133,21 @@ def debounce_contact(
     if min_samples <= 1:
         return c
 
-    # Step 1: Suppress short True pulses (< min_samples)
-    diffs = np.diff(np.concatenate(([False], c, [False])).astype(int))
-    starts = np.where(diffs == 1)[0]
-    ends = np.where(diffs == -1)[0]
-    for s, e in zip(starts, ends):
-        if e - s < min_samples:
-            c[s:e] = False
-
-    # Step 2: Bridge short False dropouts (< min_samples) flanked by True
+    # Step 1: Bridge short False dropouts (< min_samples) flanked by True (morphological closing)
     diffs = np.diff(np.concatenate(([True], c, [True])).astype(int))
     gap_starts = np.where(diffs == -1)[0]
     gap_ends = np.where(diffs == 1)[0]
     for s, e in zip(gap_starts, gap_ends):
         if s > 0 and e < len(c) and (e - s < min_samples):
             c[s:e] = True
+
+    # Step 2: Suppress short True pulses (< min_samples) (morphological opening)
+    diffs = np.diff(np.concatenate(([False], c, [False])).astype(int))
+    starts = np.where(diffs == 1)[0]
+    ends = np.where(diffs == -1)[0]
+    for s, e in zip(starts, ends):
+        if e - s < min_samples:
+            c[s:e] = False
 
     return c
 

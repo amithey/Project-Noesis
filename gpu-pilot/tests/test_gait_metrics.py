@@ -89,6 +89,14 @@ def test_debounce_contact_eliminates_chatter():
     debounced_floor = debounce_contact(floor, dt_ms, min_phase_ms=15.0)
     assert not debounced_floor.any()
 
+    # Alternating contact chatter (T, F, T, F, T) within sustained stance
+    # Should not artificially turn into a multi-sample false swing
+    chatter = np.ones(50, dtype=bool)
+    chatter[15] = False
+    chatter[17] = False
+    debounced_chatter = debounce_contact(chatter, dt_ms, min_phase_ms=15.0)
+    assert debounced_chatter.all()
+
 
 def test_synthetic_static_standing():
     """Static standing: 6 feet firmly on ground, zero motion, zero steps."""
