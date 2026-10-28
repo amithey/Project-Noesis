@@ -66,7 +66,18 @@ def test_stepping_with_progress_earns_credit_only_after_the_speed_window():
     assert any(r["cycle_credit"] > 0 for r in results[400:])
     summary = scorer.summary()
     assert summary["steps"] == 900 and 0 < summary["credit_step_share"] < 1
-    assert summary["intended_bonus_sum"] > 0 and summary["reward_unclipped_over_1_share"] == 0
+    assert summary["intended_bonus_sum_before_clipping"] > 0 and summary["reward_unclipped_over_1_share"] == 0
+    # nothing clipped here, so the bonus that reached learning equals the intended one
+    assert summary["actual_bonus_sum_after_clipping"] == pytest.approx(summary["intended_bonus_sum_before_clipping"])
+
+
+@needs_v9
+def test_actual_bonus_after_clipping_is_lower_when_the_reward_saturates():
+    scorer = CycleScoring()
+    episode(scorer, 900, speed_mm_s=3.)  # 3 mm/s: the v8 part saturates, so the bonus is partly lost
+    summary = scorer.summary()
+    assert summary["reward_unclipped_over_1_share"] > 0
+    assert 0 <= summary["actual_bonus_sum_after_clipping"] < summary["intended_bonus_sum_before_clipping"]
 
 
 @needs_v9
@@ -94,14 +105,28 @@ def test_credit_never_lowers_the_reward_versus_v8_and_stays_bounded():
 
 
 @needs_v9
-def test_each_scorer_has_its_own_tracker_and_reset_restarts_the_window():
+def test_scorers_share_no_state_and_reset_restores_the_warmup():
     a, b = CycleScoring(), CycleScoring()
-    episode(a, 900)
-    assert sum(r["cycle_credit"] > 0 for r in episode(b, 450)) == 0 or True
-    assert b.summary()["steps"] == 450 and a.summary()["steps"] == 900  # independent counters
+    assert a._tracker is not b._tracker  # distinct objects, so no shared history
+    first = episode(a, 900)
+    assert any(r["cycle_credit"] > 0 for r in first)  # A actually accumulated state
+    # B is untouched by A's whole episode: empty history, empty counters
+    assert b._tracker.speed == [] and b._tracker.cycles == [] and not b._tracker.started
+    assert b.summary()["steps"] == 0 and b.summary()["credit_step_share"] == 0
+    snapshot = (list(a._tracker.speed), a.summary())
+    second = episode(b, 900)  # same inputs on B reproduce A's results exactly
+    assert [r["cycle_credit"] for r in second] == [r["cycle_credit"] for r in first]
+    assert [r["reward"] for r in second] == [r["reward"] for r in first]
+    # and updating B did not change A's history or counters
+    assert (list(a._tracker.speed), a.summary()) == snapshot
+    # warm-up: a fresh scorer pays nothing until the 2 s speed window is full ...
+    assert all(r["cycle_credit"] == 0 for r in first[:399])
+    # ... and reset restores exactly that behaviour on a used scorer
     a.reset()
-    assert a.summary()["steps"] == 0
-    assert all(r["cycle_credit"] == 0 for r in episode(a, 399))  # window must refill after reset
+    assert a.summary()["steps"] == 0 and a._tracker.speed == [] and not a._tracker.started
+    again = episode(a, 900)
+    assert all(r["cycle_credit"] == 0 for r in again[:399])
+    assert [r["cycle_credit"] for r in again] == [r["cycle_credit"] for r in first]
 
 
 @needs_v9

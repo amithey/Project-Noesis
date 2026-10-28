@@ -116,7 +116,7 @@ class CycleScoring:
     def reset(self):
         self._tracker.reset()
         self.steps = self.credit_steps = self.unclipped_over_one = 0
-        self.credit_sum = self.bonus_sum = 0.
+        self.credit_sum = self.bonus_sum = self.actual_bonus_sum = 0.
 
     def __call__(self, before, after, dt_ms, objective=None):
         if dt_ms != self.dt_ms:
@@ -131,7 +131,10 @@ class CycleScoring:
         if credit > 0:
             self.credit_steps += 1
             self.credit_sum += credit
-            self.bonus_sum += self._weight * credit * result["grip_factor"]
+            self.bonus_sum += self._weight * credit * result["grip_factor"]  # before the [-1, 1] clip
+            # what actually reached learning: the v9 reward minus the v8 reward of the same step
+            self.actual_bonus_sum += result["reward"] - _base_score_transition(
+                before, after, dt_ms, "curriculum-gripped-step-v8")["reward"]
         self.unclipped_over_one += result["reward_unclipped"] > 1
         return result
 
@@ -139,5 +142,6 @@ class CycleScoring:
         steps = max(self.steps, 1)
         return {"steps": self.steps, "credit_step_share": self.credit_steps / steps,
                 "mean_credit_when_paid": self.credit_sum / max(self.credit_steps, 1),
-                "intended_bonus_sum": self.bonus_sum,
+                "intended_bonus_sum_before_clipping": self.bonus_sum,
+                "actual_bonus_sum_after_clipping": self.actual_bonus_sum,
                 "reward_unclipped_over_1_share": self.unclipped_over_one / steps}
