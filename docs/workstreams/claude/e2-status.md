@@ -82,3 +82,12 @@ for v9 it installs a fresh `CycleScoring` for the run, restores the module after
 tracker it fails before creating any output. Tests (`tests/test_cycle_scoring.py`, synthetic): 68 passed / 3 skipped with the v9 core (`54828ca`);
 61 passed / 10 skipped with the pinned core `41b5fe6` (the v9 tests skip, nothing else changes). Ruff clean. A test caught a real recursion bug (the scorer
 called the patched public name); fixed. No training run, pin unchanged, `train.py` untouched. Protocol precondition P2 is now met in code (not yet reviewed).
+
+## Update: cycle_weight option for E3 (2026-10-28, core `42c20769376bda5694b4c1c66ca75e52cbd9f1f4`)
+
+Q1 of `e2-summary-and-e3-proposal.md`, synthetic only, no training run. Core: `locomotion_reward(..., cycle_weight=CYCLE_WEIGHT)`, default 0.1, range (0, 1], used only by
+v9 (other objectives reject a non-default weight); v9 results carry `cycle_weight`. Pilot: `CycleScoring(cycle_weight=...)` (summary reports it), `score_transition(..., cycle_weight=None)`
+(None keeps the core default and still works on the pinned core), `profile_run --cycle-weight` (valid only with the gripped-cycle profile; refused with exit 2 before any output otherwise;
+recorded in `profile-run.json` and the annotated report). Checks: core suite 464 passed; v3-v8 bit-identical to the pinned module (1,800 calls); pilot suite 83 passed / 3 skipped with the
+v9 core and 69 / 17 with the pinned core; the three stored E2 training trajectories still replay to the stored rewards exactly (max diff 0.0) with the new core and default weight. Ruff clean.
+`train.py` (Codex) untouched; Q2 and Q3 remain open.
