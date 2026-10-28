@@ -8,7 +8,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .gait_metrics import SCHEMA_VERSION, compute_gait_summary
+from .gait_metrics import SCHEMA_VERSION, compute_gait_summary, extract_leg_step_counts
 from .learning import standing_mask
 
 MATCHED_SETTINGS = (
@@ -73,6 +73,7 @@ def summarize(directory, *, warmup_ms=50):
         "total_leg_steps": gait["total_leg_steps"],
         "mean_steps_per_leg": gait["mean_steps_per_leg"],
         "leg_step_cycles": gait["leg_step_cycles"],
+        "leg_step_counts": gait["leg_step_counts"],
         "tripod_coordination": gait["tripod_coordination"],
         "locomotion_regime": gait["locomotion_regime"],
         "support_measurement": "tarsus5-to-floor-only",

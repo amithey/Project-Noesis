@@ -115,7 +115,7 @@ def test_synthetic_static_standing():
     assert summary["total_leg_steps"] == 0
     assert summary["tripod_coordination"]["tripod_gait_detected"] is False
     assert summary["locomotion_regime"] == "STATIC_STANDING"
-    assert summary["true_walking_proven"] is False
+    assert summary["diagnostic_tripod_walking"] is False
 
 
 def test_synthetic_dragging_and_sliding():
@@ -155,7 +155,7 @@ def test_synthetic_dragging_and_sliding():
     assert summary["total_leg_steps"] == 0
     assert summary["tripod_coordination"]["tripod_gait_detected"] is False
     assert summary["locomotion_regime"] == "DRAGGING_OR_SLIPPING"
-    assert summary["true_walking_proven"] is False
+    assert summary["diagnostic_tripod_walking"] is False
 
 
 def test_synthetic_contact_chatter_threshold():
@@ -196,7 +196,7 @@ def test_synthetic_fall():
 
     summary = compute_gait_summary(obs, dt_ms, warmup_samples=10)
     assert summary["locomotion_regime"] == "FALL"
-    assert summary["true_walking_proven"] is False
+    assert summary["diagnostic_tripod_walking"] is False
 
 
 def test_synthetic_true_tripod_walking():
@@ -293,4 +293,63 @@ def test_synthetic_true_tripod_walking():
 
     # 5. Regime classified as COORDINATED_TRIPOD_WALKING
     assert summary["locomotion_regime"] == "COORDINATED_TRIPOD_WALKING"
-    assert summary["true_walking_proven"] is True
+    assert summary["diagnostic_tripod_walking"] is True
+
+
+def test_pure_vertical_with_pitch_heading_does_not_count_as_forward():
+    """Regression test (PR #22 review finding):
+    Pure vertical motion (dz = 1 mm) with a pitched heading [0.6, 0, 0.8]
+    must yield zero horizontal forward progress and zero net forward displacement.
+    """
+    pos = np.array([
+        [0.0, 0.0, 0.0],
+        [0.0, 0.0, 1.0],
+    ])
+    heading = np.array([
+        [0.6, 0.0, 0.8],
+        [0.6, 0.0, 0.8],
+    ])
+    fwd = compute_heading_forward_distance(pos, heading)
+    assert fwd["heading_forward_distance_mm"] == pytest.approx(0.0)
+    assert fwd["net_displacement_mm"] == pytest.approx(0.0)
+    assert fwd["net_forward_displacement_mm"] == pytest.approx(0.0)
+
+
+def test_degenerate_horizontal_heading_handling():
+    """When the body points purely vertically (norm_xy < 1e-6), horizontal heading
+    is undefined and displacements must safely yield zero forward progress without crash.
+    """
+    pos = np.array([
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+    # Heading points purely along +z (no horizontal component)
+    heading = np.array([
+        [0.0, 0.0, 1.0],
+        [0.0, 0.0, 1.0],
+    ])
+    fwd = compute_heading_forward_distance(pos, heading)
+    assert fwd["heading_forward_distance_mm"] == pytest.approx(0.0)
+    assert fwd["net_displacement_mm"] == pytest.approx(1.0)
+    assert fwd["net_forward_displacement_mm"] == pytest.approx(0.0)
+
+
+def test_extract_leg_step_counts_adapter():
+    """Integration contract test:
+    Verify extract_leg_step_counts extracts a flat leg -> int mapping for core phase_decision.
+    """
+    from noesis_gpu.gait_metrics import extract_leg_step_counts
+
+    mock_cycles = {
+        "LF": {"step_count": 15, "duty_factor": 0.6},
+        "LM": {"step_count": 12, "duty_factor": 0.5},
+        "LH": {"step_count": 18, "duty_factor": 0.7},
+        "RF": {"step_count": 14, "duty_factor": 0.6},
+        "RM": {"step_count": 16, "duty_factor": 0.55},
+        "RH": {"step_count": 11, "duty_factor": 0.65},
+    }
+    counts = extract_leg_step_counts({"leg_step_cycles": mock_cycles})
+    assert counts == {"LF": 15, "LM": 12, "LH": 18, "RF": 14, "RM": 16, "RH": 11}
+    for leg in LEGS:
+        assert isinstance(counts[leg], int)
+

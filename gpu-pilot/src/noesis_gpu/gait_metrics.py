@@ -26,21 +26,21 @@ def compute_heading_forward_distance(
     position: np.ndarray,
     heading: np.ndarray,
 ) -> dict[str, float]:
-    """Compute forward displacement along the instantaneous body heading vector.
+    """Compute forward displacement along the instantaneous horizontal body heading vector.
 
     Parameters
     ----------
     position : np.ndarray, shape (T, 3)
-        Center of mass / thorax position across time in mm.
+        Center of mass / thorax position across time in mm (x, y, z).
     heading : np.ndarray, shape (T, 3)
-        Unit heading vector of the body in world coordinates across time.
+        Unit heading vector of the body in world coordinates across time (hx, hy, hz).
 
     Returns
     -------
     dict containing:
-        - heading_forward_distance_mm: Cumulative forward displacement along heading.
-        - net_displacement_mm: Euclidean distance between final and initial positions.
-        - net_forward_displacement_mm: (P_end - P_start) projected onto initial heading.
+        - heading_forward_distance_mm: Cumulative forward displacement along horizontal heading.
+        - net_displacement_mm: Euclidean horizontal distance between final and initial positions.
+        - net_forward_displacement_mm: (P_end - P_start) horizontal vector projected onto initial horizontal heading.
     """
     pos = np.asarray(position, dtype=float)
     head = np.asarray(heading, dtype=float)
@@ -48,6 +48,8 @@ def compute_heading_forward_distance(
         raise ValueError("position and heading must have matching shape (T, 3)")
     if not np.isfinite(pos).all() or not np.isfinite(head).all():
         raise ValueError("position and heading must be finite")
+    if np.any(np.linalg.norm(head, axis=1) < 1e-12):
+        raise ValueError("Heading vector cannot have zero magnitude")
     if len(pos) < 2:
         return {
             "heading_forward_distance_mm": 0.0,
@@ -55,25 +57,61 @@ def compute_heading_forward_distance(
             "net_forward_displacement_mm": 0.0,
         }
 
-    head_norm = np.linalg.norm(head, axis=1, keepdims=True)
-    if np.any(head_norm < 1e-12):
-        raise ValueError("Heading vector cannot have zero magnitude")
-    unit_head = head / head_norm
+    # Step-wise displacement in the horizontal ground plane (x, y)
+    d_pos_xy = np.diff(pos[:, :2], axis=0)  # shape (T-1, 2)
 
-    # Step-wise displacement
-    d_pos = np.diff(pos, axis=0)  # shape (T-1, 3)
-    # Project each step displacement onto the heading at the start of that step
-    step_forward = np.sum(d_pos * unit_head[:-1], axis=-1)  # shape (T-1,)
+    # Horizontal heading component (hx, hy)
+    head_xy = head[:, :2]  # shape (T, 2)
+    norm_xy = np.linalg.norm(head_xy, axis=1, keepdims=True)  # shape (T, 1)
+
+    # Degenerate horizontal heading handling (e.g. body pitched 90 degrees vertically)
+    # When norm_xy < 1e-6, horizontal heading is undefined; unit vector is set to 0.
+    valid_head = (norm_xy >= 1e-6)
+    unit_head_xy = np.zeros_like(head_xy)
+    np.divide(head_xy, norm_xy, out=unit_head_xy, where=valid_head)
+
+    # Project each step's horizontal displacement onto the horizontal heading at step start
+    step_forward = np.sum(d_pos_xy * unit_head_xy[:-1], axis=-1)  # shape (T-1,)
     cumulative_forward = float(np.sum(step_forward))
 
-    net_disp = float(np.linalg.norm(pos[-1] - pos[0]))
-    net_fwd = float(np.dot(pos[-1] - pos[0], unit_head[0]))
+    # Horizontal net displacement
+    diff_xy = pos[-1, :2] - pos[0, :2]
+    net_disp = float(np.linalg.norm(diff_xy))
+    net_fwd = float(np.dot(diff_xy, unit_head_xy[0])) if valid_head[0, 0] else 0.0
 
     return {
         "heading_forward_distance_mm": cumulative_forward,
         "net_displacement_mm": net_disp,
         "net_forward_displacement_mm": net_fwd,
     }
+
+
+def extract_leg_step_counts(
+    cycles_or_summary: dict[str, Any],
+) -> dict[str, int]:
+    """Adapter converting nested leg_step_cycles into a flat leg -> step_count mapping.
+
+    This satisfies the integration contract expected by pinned core phase_decision,
+    which requires mapping each leg ('LF', 'LM', 'LH', 'RF', 'RM', 'RH') directly to an integer,
+    while preserving the full rich diagnostic metrics in leg_step_cycles.
+    """
+    if "leg_step_cycles" in cycles_or_summary:
+        source = cycles_or_summary["leg_step_cycles"]
+    elif "legs" in cycles_or_summary:
+        source = cycles_or_summary["legs"]
+    else:
+        source = cycles_or_summary
+
+    counts = {}
+    for leg in LEGS:
+        leg_data = source.get(leg, 0)
+        if isinstance(leg_data, dict):
+            counts[leg] = int(leg_data.get("step_count", 0))
+        elif isinstance(leg_data, (int, float, np.integer)):
+            counts[leg] = int(leg_data)
+        else:
+            counts[leg] = 0
+    return counts
 
 
 def debounce_contact(
@@ -487,8 +525,9 @@ def compute_gait_summary(
         "total_leg_steps": cycles["total_leg_steps"],
         "mean_steps_per_leg": cycles["mean_steps_per_leg"],
         "leg_step_cycles": leg_steps,
+        "leg_step_counts": extract_leg_step_counts(leg_steps),
         "tripod_coordination": tripod,
         "mean_stance_slip_mm_s": slip["mean_stance_slip_mm_s"],
         "locomotion_regime": regime,
-        "true_walking_proven": bool(regime == "COORDINATED_TRIPOD_WALKING"),
+        "diagnostic_tripod_walking": bool(regime == "COORDINATED_TRIPOD_WALKING"),
     }
