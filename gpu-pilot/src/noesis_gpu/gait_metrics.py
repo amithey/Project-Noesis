@@ -121,35 +121,32 @@ def debounce_contact(
 ) -> np.ndarray:
     """Filter out contact chatter/jitter where state flips for less than min_phase_ms.
 
-    A physical leg contact or lift cannot realistically last for only a single 5ms step.
-    Short transient flips are merged into their surrounding sustained phase:
-    1. Short isolated contact spikes (< min_samples) are suppressed to False.
-    2. Short contact dropouts (< min_samples) flanked by contact are bridged to True.
+    Uses persistence/hysteresis debouncing matching causal tracking:
+    A state transition (contact <-> lift) is confirmed only after persisting for at least
+    min_samples consecutive steps. Short transient chatter (< min_phase_ms) is rejected.
     """
-    c = np.asarray(contact, dtype=bool).copy()
-    if len(c) == 0:
-        return c
+    c = np.asarray(contact, dtype=bool)
+    n = len(c)
+    if n == 0:
+        return c.copy()
     min_samples = max(1, round(min_phase_ms / dt_ms))
     if min_samples <= 1:
-        return c
+        return c.copy()
 
-    # Step 1: Bridge short False dropouts (< min_samples) flanked by True (morphological closing)
-    diffs = np.diff(np.concatenate(([True], c, [True])).astype(int))
-    gap_starts = np.where(diffs == -1)[0]
-    gap_ends = np.where(diffs == 1)[0]
-    for s, e in zip(gap_starts, gap_ends):
-        if s > 0 and e < len(c) and (e - s < min_samples):
-            c[s:e] = True
-
-    # Step 2: Suppress short True pulses (< min_samples) (morphological opening)
-    diffs = np.diff(np.concatenate(([False], c, [False])).astype(int))
-    starts = np.where(diffs == 1)[0]
-    ends = np.where(diffs == -1)[0]
-    for s, e in zip(starts, ends):
-        if e - s < min_samples:
-            c[s:e] = False
-
-    return c
+    out = np.zeros(n, bool)
+    cur = bool(c[0])
+    pending = 0
+    for i in range(n):
+        x = bool(c[i])
+        if x != cur:
+            pending += 1
+            if pending >= min_samples:
+                cur = x
+                pending = 0
+        else:
+            pending = 0
+        out[i] = cur
+    return out
 
 
 def extract_leg_step_cycles(
@@ -469,6 +466,16 @@ def compute_gait_summary(
     head = observation["heading"][measured]
     feet = observation["feet_position"][measured]
     load = observation["foot_load"][measured]
+
+    # Handle optional world dimension (T, 1, ...)
+    if pos.ndim == 3 and pos.shape[1] == 1:
+        pos = pos[:, 0]
+    if head.ndim == 3 and head.shape[1] == 1:
+        head = head[:, 0]
+    if feet.ndim == 4 and feet.shape[1] == 1:
+        feet = feet[:, 0]
+    if load.ndim == 3 and load.shape[1] == 1:
+        load = load[:, 0]
 
     fwd = compute_heading_forward_distance(pos, head)
     cycles = compute_all_leg_cycles(

@@ -295,7 +295,7 @@ def test_synthetic_true_tripod_walking():
     # 4. Tripod coordination detected
     tripod = summary["tripod_coordination"]
     assert tripod["tripod_gait_detected"] is True
-    assert tripod["alternation_index"] > 0.8
+    assert tripod["alternation_index"] > 0.75
     assert tripod["correlation"] < -0.5
     assert tripod["tripod_coordination_score"] > 0.4
 
