@@ -1,6 +1,6 @@
 # E2: v9-cycle objective, development status (2026-10-28)
 
-Core branch `claude/flygym2-core-learning` @ `165928da3b2e6e2ece0d115b7ce1815e45b90c6f`,
+Core branch `claude/flygym2-core-learning` @ `81909f74e01cbe069ae5c2ff31e1ee145a84f1e5`,
 cut from the core pin `codex/brain-body-feedback` @ `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`.
 The core pin itself is not changed. Synthetic tests only; no training run.
 
@@ -46,3 +46,39 @@ No other objective gets the field. Core commit `165928da3b2e6e2ece0d115b7ce1815e
 random calls for v3-v8 still bit-identical to the pinned module. Use: report per birth the share of
 steps with `reward_unclipped > 1`; above 5% in any E2 birth, add a warning and revisit. Still no training run,
 no `learning.py` integration, no change to the reward.
+
+## Update: progress gate tightened in the core (2026-10-28)
+
+Per `e2-progress-gate.md` (approved by the user): `LegCycleTracker` now gates on the mean forward speed over a full trailing
+`speed_window_ms` = 2000 ms `>= 0.25` mm/s (was 250 ms `>= 0.5`). Core commit `81909f74e01cbe069ae5c2ff31e1ee145a84f1e5`. No credit during the first 2 s of an episode.
+Checks: the implemented tracker reproduces the prototype gate exactly on 14/14 stored runs (10.4% of steps credited; credited steps
+with no net progress over 2 s: 0%, was 40.6%); 1,800 random calls for v3-v8 still bit-identical to the pinned module; core suite 431
+passed, Ruff clean; 13 new/updated synthetic tests (`tests/test_cycle_speed_gate.py`; the older tracker tests now run 2.5 s so their
+"no credit" checks are not vacuous). Not solved: the parent still earns credit on 7.7% of steps, since it also progresses; separating
+uncoordinated stepping from walking needs a coordination measure, not a progress gate. Still no `learning.py` integration, no pin change, no training.
+
+## Update: cycle-count comparison with Gemini (2026-10-28)
+
+See `e2-cycle-count-comparison.md`. Event-by-event on 14 stored runs: with Gemini's earlier `debounce_contact` (3d0fb0a) the causal
+tracker found 830 of 1,145 events (all 830 matched; the other 315, 27.5%, are lifts made only of alternating <15 ms contact flips).
+After Gemini's `950e87f` the counts are 862 vs 830 (3.7%); the residual is timing (5-7 samples) plus ~4% brief contacts with one-sample
+dropouts that the offline filter bridges and the tracker (3 consecutive samples) does not. Decision requested: accept ~4% or have the
+tracker run Gemini's `debounce_contact` on a delayed trailing buffer (single definition). No code changed in this step.
+
+## Update: single cycle definition, zero delay (2026-10-28, core `54828ca`)
+
+Codex asked for an exact head pair. `e2-head-pair-verification.md`: the earlier heads (core `ee02bd5` with the closing/opening filter @ `950e87f`
+and Gemini `3bf6594` with the persistence filter) were NOT equivalent (0 events identical, counts 1,220 vs 1,186). The core now uses the same persistence
+debounce as `3bf6594`, with no read-out delay: 1,192/1,192 events identical at the same sample on 20 stored runs, equal to Gemini's `step_count`.
+The `delay_ms` option of `ee02bd5` no longer exists; the earlier "30 ms" statements are superseded. Core suite 450 passed; v3-v8 bit-identical; still no
+`learning.py` integration, no pin change, no training run.
+
+## Update: v9 wired into the pilot, synthetic only (2026-10-28)
+
+`learning.py`: `CycleScoring` (one per brain and episode; owns a core `LegCycleTracker`, feeds it once per control step, passes the credit to the core
+reward; records credited-step share, mean credit, intended bonus and the share of steps with `reward_unclipped > 1`). `score_transition` keeps its API
+(`cycle_credit` is an optional keyword; the core rejects it for non-v9 objectives). `reward_profiles.py`: profile `gripped-cycle` -> v9. `profile_run.py`:
+for v9 it installs a fresh `CycleScoring` for the run, restores the module afterwards, and writes `cycle_scoring` into `profile-run.json`; if the core has no
+tracker it fails before creating any output. Tests (`tests/test_cycle_scoring.py`, synthetic): 68 passed / 3 skipped with the v9 core (`54828ca`);
+61 passed / 10 skipped with the pinned core `41b5fe6` (the v9 tests skip, nothing else changes). Ruff clean. A test caught a real recursion bug (the scorer
+called the patched public name); fixed. No training run, pin unchanged, `train.py` untouched. Protocol precondition P2 is now met in code (not yet reviewed).

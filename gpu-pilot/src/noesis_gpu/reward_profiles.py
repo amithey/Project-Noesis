@@ -14,6 +14,8 @@ PROFILES = {
     "gripped-steps": "curriculum-gripped-step-v8",
     "continuous-walking": "standing-gate-smooth-grip-v6",
     "obstacles": "standing-gate-smooth-grip-v6",
+    # experimental (E2): v8 plus a bonus for physical lift->touchdown cycles; needs the v9 core and a CycleScoring
+    "gripped-cycle": "curriculum-gripped-cycle-v9",
 }
 
 
