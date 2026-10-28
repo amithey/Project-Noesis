@@ -3,6 +3,13 @@
 This backup preserves existing experimental work. It does not certify training
 or merge alternative implementations.
 
+Artifact verification: **10 archives, 8,334 files, 1,226,136,980 archive bytes**.
+Every included file passed ZIP CRC and SHA-256 verification; JSON reports passed
+the credential-pattern scan, and raw-data/cache paths were checked for exclusion.
+The documented parent and candidate checkpoint hashes matched the archived files.
+The release includes `manifest.json` and `verification.json` for independent checks.
+All local branch heads matched their GitHub counterparts after the scoped push.
+
 Current hub core: `.venv/Scripts/python.exe -m pytest -q` produced **118 passed,
 4 failed**. Three failures are in `tests/test_brain_map.py`: the local Matplotlib
 installation loads incompatible `matplotlib` and `mpl_toolkits` components
