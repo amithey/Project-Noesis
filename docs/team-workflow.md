@@ -1,5 +1,21 @@
 # Automated E2 team review
 
+## Model and transport update — 2026-10-29
+
+Claude subscription authentication is now verified. At the user's request,
+Antigravity is explicitly pinned to `gemini-3.8-flash-medium`, confirmed by
+the installed `agy models`. An actual OK-only call on that model succeeded;
+the earlier quota rejection was observed on an unpinned call and must not be
+treated as proof that every offered model is currently blocked.
+
+The installed Antigravity does not attach plain stdin to `-p` as Gemini CLI did.
+Its first review explicitly reported missing evidence and was rejected. The
+adapter now sends a documented JSONL user message using `--input-format
+stream-json`, consumes result events from `--output-format stream-json`, and
+requires final status SUCCESS. The completed Claude first review was preserved
+while only the invalid Antigravity review was retried. Prior attempts remain
+available for audit. Read the live queue for completion, not this historical log.
+
 ## Connection update — 2026-10-29
 
 The default Google provider is now **Antigravity (`agy`)**, replacing Gemini CLI.

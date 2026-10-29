@@ -91,6 +91,7 @@ def test_auth_errors_are_actionable_without_exposing_credentials():
 
 def test_antigravity_only_accepts_success():
     assert w.parse_response("antigravity", '{"status":"SUCCESS","response":"ok"}') == "ok"
+    assert w.parse_response("antigravity", '{"event":"init","init":{}}\n{"event":"result","result":{"status":"SUCCESS","response":"review"}}') == "review"
     for status in ("ERROR", "CANCELLED", "RUNNING"):
         with pytest.raises(ValueError):
             w.parse_response("antigravity", json.dumps({"status": status, "response": "partial"}))
@@ -102,6 +103,8 @@ def test_antigravity_is_bounded_and_tools_disabled(tmp_path, monkeypatch):
     cmd = w.command("antigravity", work)
     assert "--dangerously-skip-permissions" not in cmd
     assert cmd[cmd.index("--mode") + 1] == "plan"
+    assert cmd[cmd.index("--input-format") + 1] == "stream-json"
+    assert cmd[cmd.index("--model") + 1] == "gemini-3.8-flash-medium"
     assert cmd[cmd.index("--print-timeout") + 1] == "210s"
     assert "tools: []" in (work / ".agents/agents/noesis-reviewer/agent.md").read_text()
     assert "--disable-slash-commands" not in cmd  # installed agy says it disables plan mode

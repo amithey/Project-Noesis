@@ -126,8 +126,9 @@ def prepare_workspace(state, provider):
 def command(provider, work):
     if provider == "antigravity":
         return cli(provider) + ["--agent", "noesis-reviewer", "--mode", "plan",
-               "--print-timeout", "210s", "--output-format", "json",
-               "-p", "Review the evidence provided on stdin; do not use tools."]
+               "--model", "gemini-3.8-flash-medium",
+               "--print-timeout", "210s", "--input-format", "stream-json",
+               "--output-format", "stream-json"]
     if provider == "claude":
         return cli(provider) + ["--safe-mode", "-p", "Review the evidence provided on stdin.",
                "--output-format", "json", "--tools", "", "--no-session-persistence",
@@ -139,7 +140,13 @@ def command(provider, work):
 
 
 def parse_response(provider, raw):
-    data = json.loads(raw)
+    if provider == "antigravity":
+        events = [json.loads(line) for line in raw.splitlines() if line.strip()]
+        results = [event["result"] for event in events if event.get("event") == "result"]
+        # Plain JSON accepted for standalone connection checks only.
+        data = results[-1] if results else (events[0] if len(events) == 1 else {})
+    else:
+        data = json.loads(raw)
     if data.get("is_error") or data.get("error"):
         raise ValueError("Provider reported an error; inspect its local response")
     if provider == "antigravity" and data.get("status") != "SUCCESS":
@@ -228,7 +235,9 @@ def execute(state, task):
             proc = subprocess.Popen(command(task["provider"], work), cwd=work, stdin=subprocess.PIPE,
                                     stdout=out, stderr=err, text=True, encoding="utf-8", shell=False)
             try:
-                proc.communicate(prompt, timeout=240)
+                payload = (json.dumps({"event": "user", "message": {"content": prompt}}, ensure_ascii=False) + "\n"
+                           if task["provider"] == "antigravity" else prompt)
+                proc.communicate(payload, timeout=240)
             except BaseException:
                 if os.name == "nt":
                     subprocess.run(["taskkill", "/PID", str(proc.pid), "/T", "/F"], capture_output=True)
