@@ -1,5 +1,34 @@
 # Automated E2 team review
 
+## Connection update — 2026-10-29
+
+The default Google provider is now **Antigravity (`agy`)**, replacing Gemini CLI.
+The new queue is `outputs/team-workflow-e2-antigravity`; the old reviewed queue
+and its failed attempts remain untouched. The root launcher selects the new
+queue automatically. Antigravity uses a workspace-scoped `noesis-reviewer` agent
+with `tools: []`, plan mode, and a210s provider timeout within the240s watchdog.
+The installed CLI warns that disabling slash commands disables plan mode, so
+that conflicting flag is intentionally omitted. Terminal responses must have
+status `SUCCESS`; partial/error responses cannot complete a task.
+
+A live OK-only connection check reached Antigravity but returned HTTP429
+`RESOURCE_EXHAUSTED`: individual quota reached, reset in approximately93h15m
+at the time of checking. No project evidence was sent in this check. Claude's
+auth status still reported loggedIn=false; its official subscription sign-in
+flow was opened for the user. These are account blockers, not successful reviews.
+Quota errors are separate from authentication failures and are never retried
+automatically. No subscriptions, billing routes or global permissions changed.
+
+After signing in and resolving/waiting for quota, use:
+
+```powershell
+.\Team-Workflow.cmd retry claude-1
+.\Team-Workflow.cmd retry antigravity-1
+.\Team-Workflow.cmd run
+```
+
+The older Gemini notes below describe the initial deployment, not the new default.
+
 The local coordinator dispatches two independent reviews to Claude and Gemini,
 then automatically passes both reviews to each provider for cross-review.
 It collects all four responses into one report and HTML status page. It does

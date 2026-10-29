@@ -87,3 +87,27 @@ def test_auth_errors_are_actionable_without_exposing_credentials():
     assert "not logged in" in w.authentication_problem("Not logged in · Please run /login")
     assert "unsupported" in w.authentication_problem("IneligibleTierError")
     assert w.authentication_problem("ordinary error") is None
+
+
+def test_antigravity_only_accepts_success():
+    assert w.parse_response("antigravity", '{"status":"SUCCESS","response":"ok"}') == "ok"
+    for status in ("ERROR", "CANCELLED", "RUNNING"):
+        with pytest.raises(ValueError):
+            w.parse_response("antigravity", json.dumps({"status": status, "response": "partial"}))
+
+
+def test_antigravity_is_bounded_and_tools_disabled(tmp_path, monkeypatch):
+    monkeypatch.setattr(w, "cli", lambda provider: ["agy"])
+    work = w.prepare_workspace(tmp_path, "antigravity")
+    cmd = w.command("antigravity", work)
+    assert "--dangerously-skip-permissions" not in cmd
+    assert cmd[cmd.index("--mode") + 1] == "plan"
+    assert cmd[cmd.index("--print-timeout") + 1] == "210s"
+    assert "tools: []" in (work / ".agents/agents/noesis-reviewer/agent.md").read_text()
+    assert "--disable-slash-commands" not in cmd  # installed agy says it disables plan mode
+
+
+def test_exhausted_quota_is_not_an_authentication_failure():
+    assert w.quota_problem("RESOURCE_EXHAUSTED Individual quota reached")
+    assert not w.authentication_problem("RESOURCE_EXHAUSTED Individual quota reached")
+    assert w.quota_problem("ok") is None

@@ -1,4 +1,4 @@
-"""Persistent, bounded, analysis-only Claude/Gemini workflow. Python standard library only."""
+"""Persistent, bounded, analysis-only Claude/Antigravity workflow. Standard library only."""
 from __future__ import annotations
 
 import argparse
@@ -79,6 +79,11 @@ def coordinator_lock(state):
 
 
 def cli(provider):
+    if provider == "antigravity":
+        executable = shutil.which("agy")
+        if not executable:
+            raise RuntimeError("Antigravity CLI (agy) is not installed/on PATH")
+        return [executable]
     shim = shutil.which(provider) or shutil.which(provider + ".cmd")
     if not shim:
         raise RuntimeError(f"{provider} CLI is not installed/on PATH")
@@ -101,6 +106,14 @@ def cli(provider):
 def prepare_workspace(state, provider):
     work = state / "workers" / provider
     work.mkdir(parents=True, exist_ok=True)
+    if provider == "antigravity":
+        agents = work / ".agents/agents/noesis-reviewer"
+        agents.mkdir(parents=True, exist_ok=True)
+        (agents / "agent.md").write_text(
+            "---\nname: noesis-reviewer\ndescription: Analyze supplied Noesis evidence only\n"
+            "tools: []\nmainAgent: true\nsubagent: false\ncommandExecutionPolicy: off\n---\n"
+            "Analyze only the evidence in the prompt. Do not use tools, read files, modify files, "
+            "run commands, delegate tasks or browse. Return the requested review as text.\n", encoding="utf-8")
     if provider == "gemini":
         (work / ".gemini").mkdir(exist_ok=True)
         dump(work / ".gemini/settings.json", {"hooksConfig": {"enabled": False},
@@ -111,6 +124,10 @@ def prepare_workspace(state, provider):
 
 
 def command(provider, work):
+    if provider == "antigravity":
+        return cli(provider) + ["--agent", "noesis-reviewer", "--mode", "plan",
+               "--print-timeout", "210s", "--output-format", "json",
+               "-p", "Review the evidence provided on stdin; do not use tools."]
     if provider == "claude":
         return cli(provider) + ["--safe-mode", "-p", "Review the evidence provided on stdin.",
                "--output-format", "json", "--tools", "", "--no-session-persistence",
@@ -125,6 +142,8 @@ def parse_response(provider, raw):
     data = json.loads(raw)
     if data.get("is_error") or data.get("error"):
         raise ValueError("Provider reported an error; inspect its local response")
+    if provider == "antigravity" and data.get("status") != "SUCCESS":
+        raise ValueError("Antigravity did not finish successfully")
     response = data.get("result" if provider == "claude" else "response")
     if not isinstance(response, str) or not response.strip():
         raise ValueError("Missing nonempty provider response")
@@ -132,11 +151,18 @@ def parse_response(provider, raw):
 
 
 def authentication_problem(raw):
+    if "authentication required" in raw.lower() or "please sign in" in raw.lower():
+        return "Provider requires local sign-in; authenticate in its official application/CLI."
     if "Not logged in" in raw:
         return "Claude CLI is not logged in. Authenticate locally; do not paste credentials into chat."
     if "IneligibleTierError" in raw or "UNSUPPORTED_CLIENT" in raw:
         return "Gemini rejected this CLI/account route as unsupported. Configure a supported authenticated route before retrying."
     return None
+
+
+def quota_problem(raw):
+    return "Provider usage quota exhausted; wait for reset or change the subscription yourself. No automatic retry." if (
+        "RESOURCE_EXHAUSTED" in raw or "Individual quota reached" in raw) else None
 
 
 def initialize(state, root):
@@ -164,7 +190,7 @@ def initialize(state, root):
                  "evidence_sha256": hashlib.sha256((state / "evidence.json").read_bytes()).hexdigest(),
                  "mode": "analysis_only", "maximum_calls": 4, "timeout_per_call_seconds": 240})
             for phase in (1, 2):
-                for provider in ("claude", "gemini"):
+                for provider in ("claude", "antigravity"):
                     db.execute("INSERT INTO tasks(id,provider,phase,status) VALUES(?,?,?,?)",
                                (f"{provider}-{phase}", provider, phase, "queued"))
     render(state)
@@ -210,8 +236,11 @@ def execute(state, task):
                     proc.kill()
                 proc.wait()
                 raise
-        auth = authentication_problem((folder / "stdout.json").read_text(encoding="utf-8") +
-                                      (folder / "stderr.log").read_text(encoding="utf-8"))
+        output_text = ((folder / "stdout.json").read_text(encoding="utf-8") +
+                       (folder / "stderr.log").read_text(encoding="utf-8"))
+        if quota_problem(output_text):
+            raise BlockingIOError(quota_problem(output_text))
+        auth = authentication_problem(output_text)
         if auth:
             raise PermissionError(auth)
         if proc.returncode:
@@ -219,7 +248,9 @@ def execute(state, task):
         result = parse_response(task["provider"], (folder / "stdout.json").read_text(encoding="utf-8"))
         status, error = "complete", None
     except Exception as exc:
-        result, status, error = None, ("blocked_auth" if isinstance(exc, PermissionError) else "failed"), f"{type(exc).__name__}: {exc}"
+        result, error = None, f"{type(exc).__name__}: {exc}"
+        status = ("blocked_quota" if isinstance(exc, BlockingIOError) else
+                  "blocked_auth" if isinstance(exc, PermissionError) else "failed")
     with database(state) as db:
         db.execute("UPDATE tasks SET status=?,result=?,error=?,finished=? WHERE id=?",
                    (status, result, error, time.time(), task["id"]))
@@ -277,7 +308,7 @@ def main():
     if args.state is None:
         common = subprocess.check_output(["git", "-C", str(Path(__file__).resolve().parents[1]),
                  "rev-parse", "--path-format=absolute", "--git-common-dir"], encoding="utf-8").strip()
-        args.state = Path(common).parent / "outputs/team-workflow-e2-reviewed"
+        args.state = Path(common).parent / "outputs/team-workflow-e2-antigravity"
     state = args.state.resolve()
     if args.action == "init":
         initialize(state, args.root.resolve())
@@ -286,7 +317,7 @@ def main():
     elif args.action == "retry":
         with coordinator_lock(state), database(state) as db:
             row = db.execute("SELECT * FROM tasks WHERE id=?", (args.task,)).fetchone()
-            if not row or row["status"] not in ("failed", "interrupted", "blocked_auth"):
+            if not row or row["status"] not in ("failed", "interrupted", "blocked_auth", "blocked_quota"):
                 raise ValueError("Only failed/interrupted tasks may be retried")
             db.execute("UPDATE tasks SET status='queued',error=NULL WHERE id=?", (args.task,))
         render(state)
