@@ -14,6 +14,7 @@ import numpy as np
 
 from compare_exploration import digest, tree_digest, write
 from run_e2_reproduction import EXPECTED
+from training_power import keep_system_awake
 PARENT = "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c"
 
 CORE = "42c20769376bda5694b4c1c66ca75e52cbd9f1f4"
@@ -64,6 +65,7 @@ def main():
              "simulation_seconds": 5, "job_wall_seconds": 300, "process_wall_seconds": 330,
              "objective": "curriculum-gripped-cycle-v9", "exploration_mv_ms": 1.5,
              "cycle_weight": 0.1, "actual_operator": "codex", "experiment": "E5",
+             "scoped_idle_sleep_prevention": os.name == "nt",
              "primary_progress_metric": "heading_forward_distance_mm",
              "sensitivity_progress_metric": "net_forward_displacement_mm",
              "model_promoted": False, "walking_proven": False}
@@ -99,6 +101,7 @@ def main():
                 raise TimeoutError("Insufficient remaining budget for another full job")
             command = [sys.executable, "-m", module, *common, *options, "--output", str(output / name)]
             print(f"Starting {name}", flush=True)
+            job_started = time.monotonic()
             with (output / f"{name}.log").open("w", encoding="utf-8") as log:
                 child = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=330, check=False)
             report = json.loads((output / name / "report.json").read_text())
@@ -106,6 +109,8 @@ def main():
                        "elapsed_seconds": time.monotonic() - started}
             receipts.append(receipt)
             write(output / "receipts.json", receipts)
+            if time.monotonic() - job_started > 335:
+                raise TimeoutError("Process watchdog overrun (possible suspend/scheduling gap); reject late output")
             if child.returncode or report["status"] != expected_status:
                 raise RuntimeError(f"Job did not complete: {name}")
             verify_sources()
@@ -151,4 +156,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    with keep_system_awake():
+        main()
