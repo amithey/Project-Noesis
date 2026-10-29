@@ -28,10 +28,10 @@ SIDECAR = "profile-run.json"
 
 
 @contextmanager
-def _patched(objective, exploration_mv_ms):
+def _patched(objective, exploration_mv_ms, cycle_weight=None):
     """Yield the CycleScoring in use (v9 only, else None); restore the learning module on exit."""
     score, brain = learning.score_transition, learning.LearningBrain
-    scorer = (learning.CycleScoring(objective) if objective == "curriculum-gripped-cycle-v9"
+    scorer = (learning.CycleScoring(objective, cycle_weight=cycle_weight) if objective == "curriculum-gripped-cycle-v9"
               else None)  # built first: a core without the v9 tracker fails before anything is patched
     learning.score_transition = scorer or functools.partial(score, objective=objective)
     learning.LearningBrain = functools.partial(brain, exploration_mv_ms=exploration_mv_ms)
@@ -47,7 +47,7 @@ def _write_json(path: Path, data) -> None:
     os.replace(temporary, path)
 
 
-def _annotate(output: Path, objective, exploration_mv_ms) -> None:
+def _annotate(output: Path, objective, exploration_mv_ms, cycle_weight=None) -> None:
     for path in (output / "report.json", *output.glob("*.model.json")):
         if not path.is_file():
             continue
@@ -55,6 +55,8 @@ def _annotate(output: Path, objective, exploration_mv_ms) -> None:
         data["reward_objective_trainpy_label"] = data.get("reward_objective")
         data["reward_objective"] = objective
         data["motor_exploration_mv_ms"] = exploration_mv_ms
+        if cycle_weight is not None:
+            data["cycle_weight"] = cycle_weight
         _write_json(path, data)
 
 
@@ -62,6 +64,8 @@ def build_parser(train_module=train):
     ap = train_module.parser()
     ap.add_argument("--profile", default="gripped-steps")
     ap.add_argument("--exploration-mv-ms", type=float, default=learning.MAX_EXPLORATION_MV_MS)
+    ap.add_argument("--cycle-weight", type=float, default=None,
+                    help="v9 only: weight of the cycle bonus in (0, 1]; default is the core's 0.1")
     return ap
 
 
@@ -70,24 +74,33 @@ def run_birth(args, train_module=train) -> int:
     if not 0 < args.exploration_mv_ms <= learning.MAX_EXPLORATION_MV_MS:
         print("--exploration-mv-ms must be in (0, 1.5]", file=sys.stderr)
         return 2
+    if args.cycle_weight is not None:
+        if objective != "curriculum-gripped-cycle-v9":
+            print("--cycle-weight is only valid with the gripped-cycle profile", file=sys.stderr)
+            return 2
+        if not 0 < args.cycle_weight <= 1:
+            print("--cycle-weight must be in (0, 1]", file=sys.stderr)
+            return 2
     output = Path(args.output)
     if output.exists():
         print(f"Refusing to run: output directory already exists: {output}", file=sys.stderr)
         return 2
     report, error, scorer = None, None, None
     try:
-        with _patched(objective, args.exploration_mv_ms) as scorer:
+        with _patched(objective, args.exploration_mv_ms, args.cycle_weight) as scorer:
             report = train_module.run(args)
     except BaseException as caught:  # noqa: BLE001 - recorded, then re-raised below
         error = caught
     status = "failed" if error is not None else (report or {}).get("status")
     if output.is_dir():  # created by this run
         if error is None and status == COMPLETED:
-            _annotate(output, objective, args.exploration_mv_ms)
+            _annotate(output, objective, args.exploration_mv_ms, args.cycle_weight)
         sidecar = {
             "profile": args.profile, "reward_objective": objective,
             "motor_exploration_mv_ms": args.exploration_mv_ms, "seed": args.seed,
             "status": status, "checkpoint": str(args.checkpoint)}
+        if args.cycle_weight is not None:
+            sidecar["cycle_weight"] = args.cycle_weight
         if scorer is not None:  # v9: how much cycle bonus was credited and how often the reward clipped
             sidecar["cycle_scoring"] = scorer.summary()
         _write_json(output / SIDECAR, sidecar)

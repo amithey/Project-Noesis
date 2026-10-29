@@ -1,3 +1,12 @@
+# Current round — 2026-10-29
+
+E3 preparation and active roles supersede the historical assignment status below.
+See [E3 protocol](e3-protocol-20261029.md) and team-assignments.json.
+Codex integrates and owns the sole simulation lease. Claude reviews rewards and
+weight integrity; Gemini via Antigravity reviews physical metrics. Direct CLI
+preflight is queued, not dispatched: automatic approval review requested explicit
+consent for source/protocol transmission. Training has not started.
+
 # תוכנית משותפת: Codex + Claude/Anthropic + Gemini
 
 עדכון תקשורת 2026-10-28: ערוץ השיחה המקומי הוא `TEAM_CHAT.md` ב־checkout

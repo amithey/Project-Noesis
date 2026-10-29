@@ -15,11 +15,14 @@ from .backend import UPSTREAM_COMMIT, FlyGymBatch
 from .run import file_digest, source_digest, timing_steps
 
 
-def episode_scorer(objective):
+def episode_scorer(objective, cycle_weight=None):
     from .learning import CycleScoring, score_transition
 
+    if cycle_weight is not None:
+        if objective != "curriculum-gripped-cycle-v9" or not np.isfinite(cycle_weight) or not 0 < cycle_weight <= 1:
+            raise ValueError("cycle_weight requires v9 and a finite value in (0, 1]")
     if objective == "curriculum-gripped-cycle-v9":
-        return CycleScoring(objective)
+        return CycleScoring(objective, cycle_weight=cycle_weight)
     return functools.partial(score_transition, objective=objective)
 
 
@@ -36,6 +39,7 @@ def parser():
     ap.add_argument("--seed", type=int, default=11000)
     ap.add_argument("--profile", default="standing")
     ap.add_argument("--exploration-mv-ms", type=float, default=1.5)
+    ap.add_argument("--cycle-weight", type=float, default=None)
     return ap
 
 
@@ -61,7 +65,7 @@ def run(args):
 
     from .learning import LearningBrain, standing_mask
 
-    scorer = episode_scorer(objective)  # fail before output creation if v9 core is unavailable
+    scorer = episode_scorer(objective, getattr(args, "cycle_weight", None))  # fail before output creation if v9 core is unavailable
 
     output.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
@@ -128,6 +132,7 @@ def run(args):
             report["mean_stance_slip_mm_s"] = float(np.mean([r["stance_slip_mm_s"] for r in records[10:]]))
         if objective == "curriculum-gripped-cycle-v9":
             report["cycle_scoring"] = scorer.summary()
+            report["cycle_weight"] = report["cycle_scoring"]["cycle_weight"]
             report["actual_bonus_after_clipping_learning_steps"] = float(sum(
                 r["actual_bonus_after_clipping"] for r in records if r["learning_active"]))
         name = "weights-last.npz" if report["status"] == "completed_training_birth" else "weights-partial.npz"
