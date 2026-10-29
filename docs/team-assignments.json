@@ -28,7 +28,8 @@
         "gpu-pilot/continuation-status.json",
         "gpu-pilot/training-plan.json",
         "gpu-pilot/training-plan.md"
-      ]
+      ],
+      "managed_session_status": ""
     },
     {
       "id": "claude",
@@ -44,7 +45,7 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "preflight_complete_READY_result_review_pending",
+      "managed_session_status": "separate_development_assignment_pending_dispatch",
       "managed_assignment": "Reward and weight review"
     },
     {
@@ -65,7 +66,7 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "preflight_complete_READY_result_review_pending",
+      "managed_session_status": "separate_development_assignment_pending_dispatch",
       "managed_assignment": "Physical metrics and paired frozen probe review",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium"
@@ -76,11 +77,21 @@
     "date": "2026-10-29",
     "protocol": "docs/e3-protocol-20261029.md",
     "simulation_owner": "codex",
-    "status": "training_running",
+    "status": "completed_9_jobs_pending_review",
     "training_started": true,
     "provider_dispatch": "both_preflight_complete_READY",
     "experimental_core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
     "default_core_pin_changed": false,
     "output": "gpu-pilot/outputs/e3-v9-weight05-20261029"
+  },
+  "parallel_development": {
+    "date": "2026-10-29",
+    "user_direction": "Separate development domains, not three reviewers of gait",
+    "codex": "Standing and walking; integration and shared simulation scheduling",
+    "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
+    "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
+    "status": "assigned_not_yet_observed_implementation",
+    "shared_host": "one full simulation at a time; code and synthetic tests parallel",
+    "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits"
   }
 }
