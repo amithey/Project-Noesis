@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "training_running",
+      "assignment_status": "locomotion_analysis_and_parallel_integration",
       "role": "Integration, reproducibility, curriculum orchestration and shared run/checkpoint lifecycle",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -45,8 +45,10 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "separate_development_assignment_pending_dispatch",
-      "managed_assignment": "Reward and weight review"
+      "managed_session_status": "development_dispatched",
+      "managed_assignment": "Offline checkpoint retention/invariant audit",
+      "managed_checkout": "outputs/team-dev-claude",
+      "managed_branch": "codex/team-claude-retention"
     },
     {
       "id": "gemini",
@@ -66,10 +68,12 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "separate_development_assignment_pending_dispatch",
-      "managed_assignment": "Physical metrics and paired frozen probe review",
+      "managed_session_status": "development_dispatched",
+      "managed_assignment": "Opt-in external neural sensory adapter",
       "managed_provider": "Antigravity",
-      "managed_model": "gemini-3.8-flash-medium"
+      "managed_model": "gemini-3.8-flash-medium",
+      "managed_checkout": "outputs/team-dev-gemini",
+      "managed_branch": "codex/team-gemini-senses"
     }
   ],
   "active_round": {
@@ -90,8 +94,11 @@
     "codex": "Standing and walking; integration and shared simulation scheduling",
     "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
     "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
-    "status": "assigned_not_yet_observed_implementation",
+    "status": "two_managed_file_editing_workers_dispatched",
     "shared_host": "one full simulation at a time; code and synthetic tests parallel",
-    "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits"
+    "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits",
+    "state": "outputs/team-development-20261029",
+    "coordinator": "scripts/team_development.py",
+    "automatic_merge": false
   }
 }
