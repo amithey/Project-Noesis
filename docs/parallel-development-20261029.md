@@ -22,6 +22,7 @@ Full simulations on this shared host remain sequential under the exclusive lease
 E3 completed nine jobs; no model promotion. Its reviewers do not count as active
 implementation workers in these newly assigned development domains.
 
-Assignments are recorded, not evidence that provider implementation sessions
-have been launched. Existing managed sessions have tools disabled and only
-produce analysis. A development-capable dispatch must be configured separately.
+Implementation update: two file-editing provider sessions were actually launched
+in isolated worktrees. Both produced code, tests and contracts. See
+[development workflow](team-development.md) and [first-round verification](team-development-first-round.json).
+These bounded workers complete and stop; no unlimited background loop is enabled.

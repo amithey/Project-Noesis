@@ -75,6 +75,9 @@ def render(state):
         rows = [dict(r) for r in db.execute('SELECT id,status,attempts,result,error FROM tasks ORDER BY id')]
     review.dump(state/'status.json', rows)
     lines = ['# Parallel development status', '', 'Provider file edits → ownership check → independent pytest. No automatic merge.', '']
+    verification = state/'integration-verification.json'
+    if verification.exists():
+        lines += ['## Coordinator integration verification', '', verification.read_text(encoding='utf-8'), '']
     for r in rows:
         lines.extend([f"## {r['id']}: {r['status']}", '', r['result'] or r['error'] or 'Pending', ''])
     (state/'report.md').write_text('\n'.join(lines), encoding='utf-8')
@@ -91,9 +94,15 @@ def execute(state, task, config):
     try:
         if git(work, 'rev-parse', 'HEAD') != config['base_commit']:
             raise ValueError('Worker base changed; explicit coordinator review required')
-        if changed_paths(work):
+        repair = config.get('repairs', {}).get(task['id'])
+        changes = changed_paths(work)
+        if changes and not repair:
             raise ValueError('Worker workspace already contains changes; do not overwrite')
+        if changes - set(OWNED[provider]):
+            raise ValueError('Unexpected pre-existing changes in repair workspace')
         prompt = (work/'WORK_ORDER.md').read_text(encoding='utf-8')
+        if repair:
+            prompt += '\nCOORDINATOR REVIEW: Repair existing deliverables only.\n' + repair
         (folder/'prompt.txt').write_text(prompt, encoding='utf-8')
         with (folder/'stdout.json').open('w', encoding='utf-8') as out, (folder/'stderr.log').open('w', encoding='utf-8') as err:
             proc = subprocess.Popen(commands(provider, work), cwd=work, stdin=subprocess.PIPE,
@@ -152,7 +161,7 @@ def main():
     state = args.state.resolve()
     if args.action == 'status':
         render(state)
-        print((state/'status.json').read_text(encoding='utf-8'))
+        print(json.dumps(json.loads((state/'status.json').read_text(encoding='utf-8')), ensure_ascii=True))
         return
     with review.coordinator_lock(state):
         config = json.loads((state/'config.json').read_text(encoding='utf-8'))

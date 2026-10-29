@@ -45,7 +45,7 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "development_dispatched",
+      "managed_session_status": "delivered_and_tested_14_passed",
       "managed_assignment": "Offline checkpoint retention/invariant audit",
       "managed_checkout": "outputs/team-dev-claude",
       "managed_branch": "codex/team-claude-retention"
@@ -68,7 +68,7 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "development_dispatched",
+      "managed_session_status": "delivered_provider_error_preserved_coordinator_integration_fixed_and_tested",
       "managed_assignment": "Opt-in external neural sensory adapter",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium",
@@ -94,11 +94,12 @@
     "codex": "Standing and walking; integration and shared simulation scheduling",
     "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
     "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
-    "status": "two_managed_file_editing_workers_dispatched",
+    "status": "first_development_round_completed_and_reviewed",
     "shared_host": "one full simulation at a time; code and synthetic tests parallel",
     "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits",
     "state": "outputs/team-development-20261029",
     "coordinator": "scripts/team_development.py",
-    "automatic_merge": false
+    "automatic_merge": false,
+    "verification": "docs/team-development-first-round.json"
   }
 }
