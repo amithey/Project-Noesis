@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "integration_tested_training_pending",
+      "assignment_status": "training_running",
       "role": "Integration, reproducibility, curriculum orchestration and shared run/checkpoint lifecycle",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -44,7 +44,7 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "preflight_queued_not_dispatched",
+      "managed_session_status": "preflight_complete_READY_result_review_pending",
       "managed_assignment": "Reward and weight review"
     },
     {
@@ -65,7 +65,7 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "preflight_queued_not_dispatched",
+      "managed_session_status": "preflight_complete_READY_result_review_pending",
       "managed_assignment": "Physical metrics and paired frozen probe review",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium"
@@ -76,10 +76,11 @@
     "date": "2026-10-29",
     "protocol": "docs/e3-protocol-20261029.md",
     "simulation_owner": "codex",
-    "status": "prepared_pending_provider_preflight",
-    "training_started": false,
-    "provider_dispatch": "awaiting_explicit_source_payload_consent",
+    "status": "training_running",
+    "training_started": true,
+    "provider_dispatch": "both_preflight_complete_READY",
     "experimental_core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
-    "default_core_pin_changed": false
+    "default_core_pin_changed": false,
+    "output": "gpu-pilot/outputs/e3-v9-weight05-20261029"
   }
 }

@@ -3,9 +3,8 @@
 E3 preparation and active roles supersede the historical assignment status below.
 See [E3 protocol](e3-protocol-20261029.md) and team-assignments.json.
 Codex integrates and owns the sole simulation lease. Claude reviews rewards and
-weight integrity; Gemini via Antigravity reviews physical metrics. Direct CLI
-preflight is queued, not dispatched: automatic approval review requested explicit
-consent for source/protocol transmission. Training has not started.
+weight integrity; Gemini via Antigravity reviews physical metrics. Both direct CLI preflight reviews completed READY after explicit user consent.
+Codex started E3 under an exclusive host lease. Result reviews follow completion.
 
 # תוכנית משותפת: Codex + Claude/Anthropic + Gemini
 

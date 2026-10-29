@@ -1,0 +1,29 @@
+{
+  "observed_status": "training_started",
+  "preflight": {
+    "claude": "READY",
+    "antigravity": "READY"
+  },
+  "pid": 34224,
+  "commit": "58e28344829bff09f32c45f654883001534d2d88",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "a0105e2922fb53a40181b66e0a9bce7917b061d0a149fbef840ffe047e7368c1"
+  },
+  "start_unix": 1793300007.175569,
+  "deadline_unix": 1793303307.175569,
+  "budget_seconds": 3300,
+  "parent_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+  "training_seeds": [
+    1001,
+    1000,
+    1002
+  ],
+  "probe_seeds": [
+    10006,
+    10007
+  ],
+  "cycle_weight": 0.5,
+  "actual_operator": "codex"
+}
