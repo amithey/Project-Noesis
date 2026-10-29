@@ -77,14 +77,14 @@
     }
   ],
   "active_round": {
-    "name": "E4 exploration1.5vs1.0",
-    "protocol": "docs/e4-protocol-20261029.md",
+    "name": "E5 continuation",
     "status": "running",
     "simulation_owner": "codex",
-    "pilot_commit": "a4fba124a977096437f1378894f997614ec34f3c",
-    "parent_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
-    "output": "gpu-pilot/outputs/e4-exploration-20261029",
-    "budget_seconds": 2400,
+    "protocol": "docs/e5-protocol-20261029.md",
+    "pilot_commit": "c255919913e6e83187226f396ae6c03ea48bf2e6",
+    "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "output": "gpu-pilot/outputs/e5-continuation-20261029",
+    "budget_seconds": 3300,
     "model_promoted": false
   },
   "parallel_development": {
