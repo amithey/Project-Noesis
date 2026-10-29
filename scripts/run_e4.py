@@ -78,7 +78,12 @@ def main():
         inventory = json.loads(raw) if raw.strip() else []
         if isinstance(inventory, dict):
             inventory = [inventory]
-        if any(item["ProcessId"] != os.getpid() for item in inventory):
+        # Observed unrelated Streamlit dashboards are not training workers.
+        # Preserve them; still reject every other unknown Python process.
+        dashboards = [item for item in inventory
+                      if " -m streamlit run " in (item.get("CommandLine") or "")]
+        lease["excluded_nontraining_dashboard_pids"] = [item["ProcessId"] for item in dashboards]
+        if any(item["ProcessId"] != os.getpid() and item not in dashboards for item in inventory):
             raise RuntimeError("Another Python worker is active")
         output.mkdir(parents=True, exist_ok=False)
         created = True
