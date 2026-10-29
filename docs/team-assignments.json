@@ -45,7 +45,7 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "round2_22_tests_passed_pending_semantic_review",
+      "managed_session_status": "primary_heading_fix_dispatched",
       "managed_assignment": "Offline checkpoint retention/invariant audit",
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2"
@@ -68,7 +68,7 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "round2_timeout_empty_response_artifacts_pending_tests",
+      "managed_session_status": "sensory_composition_finalization_dispatched",
       "managed_assignment": "Opt-in external neural sensory adapter",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium",
@@ -78,14 +78,16 @@
   ],
   "active_round": {
     "name": "E5 continuation",
-    "status": "running",
+    "status": "retry1_running",
     "simulation_owner": "codex",
     "protocol": "docs/e5-protocol-20261029.md",
-    "pilot_commit": "c255919913e6e83187226f396ae6c03ea48bf2e6",
+    "pilot_commit": "08ee76fa34def23fa6d05d17dece28d08b65979e",
     "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
-    "output": "gpu-pilot/outputs/e5-continuation-20261029",
+    "output": "gpu-pilot/outputs/e5-continuation-retry1-20261029",
     "budget_seconds": 3300,
-    "model_promoted": false
+    "model_promoted": false,
+    "original_attempt": "incomplete481chunks_partial_excluded",
+    "scoped_idle_sleep_prevention": true
   },
   "parallel_development": {
     "date": "2026-10-29",
