@@ -45,10 +45,10 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "delivered_and_tested_14_passed",
+      "managed_session_status": "round2_22_tests_passed_pending_semantic_review",
       "managed_assignment": "Offline checkpoint retention/invariant audit",
-      "managed_checkout": "outputs/team-dev-claude",
-      "managed_branch": "codex/team-claude-retention"
+      "managed_checkout": "outputs/team-dev-claude-r2",
+      "managed_branch": "codex/team-claude-retention-r2"
     },
     {
       "id": "gemini",
@@ -68,25 +68,24 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "delivered_provider_error_preserved_coordinator_integration_fixed_and_tested",
+      "managed_session_status": "round2_timeout_empty_response_artifacts_pending_tests",
       "managed_assignment": "Opt-in external neural sensory adapter",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium",
-      "managed_checkout": "outputs/team-dev-gemini",
-      "managed_branch": "codex/team-gemini-senses"
+      "managed_checkout": "outputs/team-dev-gemini-r2",
+      "managed_branch": "codex/team-gemini-senses-r2"
     }
   ],
   "active_round": {
-    "name": "E3 weight 0.5",
-    "date": "2026-10-29",
-    "protocol": "docs/e3-protocol-20261029.md",
+    "name": "E4 exploration1.5vs1.0",
+    "protocol": "docs/e4-protocol-20261029.md",
+    "status": "running",
     "simulation_owner": "codex",
-    "status": "completed_9_jobs_pending_review",
-    "training_started": true,
-    "provider_dispatch": "both_preflight_complete_READY",
-    "experimental_core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
-    "default_core_pin_changed": false,
-    "output": "gpu-pilot/outputs/e3-v9-weight05-20261029"
+    "pilot_commit": "a4fba124a977096437f1378894f997614ec34f3c",
+    "parent_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+    "output": "gpu-pilot/outputs/e4-exploration-20261029",
+    "budget_seconds": 2400,
+    "model_promoted": false
   },
   "parallel_development": {
     "date": "2026-10-29",
@@ -94,10 +93,10 @@
     "codex": "Standing and walking; integration and shared simulation scheduling",
     "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
     "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
-    "status": "first_development_round_completed_and_reviewed",
+    "status": "round2_development_finished_pending_review",
     "shared_host": "one full simulation at a time; code and synthetic tests parallel",
     "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits",
-    "state": "outputs/team-development-20261029",
+    "state": "outputs/team-development-r2-20261029",
     "coordinator": "scripts/team_development.py",
     "automatic_merge": false,
     "verification": "docs/team-development-first-round.json"
