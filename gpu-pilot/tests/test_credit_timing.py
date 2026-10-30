@@ -44,11 +44,24 @@ def test_assign_legs_uses_side_and_neuromere_and_marks_ambiguous_neurons():
     assert list(legs) == [0, 4, 2, 5, -1, -1]  # LF, RM, LH, RH, ambiguous, other
 
 
-def test_reward_residual_removes_a_slow_baseline_and_keeps_fast_changes():
+def test_ema_residual_removes_a_slow_baseline_and_keeps_fast_changes():
     reward = np.concatenate([np.zeros(400), np.ones(400)])
-    residual = ct.reward_residual(reward)
+    residual = ct.ema2s_reward_residual(reward)
     assert residual[:400].max() == 0 and residual[400] == pytest.approx(1.0)
     assert residual[-1] == pytest.approx(np.exp(-399 * 5 / 2000), rel=.02)  # 2 s after the jump the baseline has closed 63%
+
+
+def test_learning_signal_is_the_learners_own_normalized_error_and_differs_from_the_plain_residual():
+    rng = np.random.default_rng(2)
+    reward = 0.2 + 0.1 * rng.normal(size=600)
+    signal = ct.learning_signal(reward)
+    assert signal[0] == 0.0  # bias correction: the first observation only sets the baseline
+    assert np.abs(signal).max() <= 1.0 and signal.std() > 0
+    # normalization makes it independent of the reward scale (away from the 0.01 floor and the clip)
+    np.testing.assert_allclose(ct.learning_signal(reward * 0.5), ct.learning_signal(reward), atol=1e-6)
+    plain = ct.ema2s_reward_residual(reward)
+    assert plain.std() < signal.std()  # the plain residual is not on the learner's normalized scale
+    assert not np.allclose(plain / plain.std(), signal / signal.std(), atol=0.05)  # and not the same signal
 
 
 def test_a_planted_effect_is_recovered_at_the_right_leg_and_lag():

@@ -2,7 +2,7 @@
 
 Reads the ``exploration-log.npz`` written by ``profile_run --log-exploration`` and the run's
 ``training-observations.npz``. For each leg it asks how well that leg's exploration current (a few principal
-components of the injected current) explains (a) the leg's own joint velocity and (b) the reward residual,
+components of the injected current) explains (a) the leg's own joint velocity and (b) the learner's actual normalized error signal,
 at lags of 0..max_lag control steps (5 ms each). Significance comes from circularly shifting the response
 inside each birth (keeps its autocorrelation), taking the maximum R^2 over lags and legs for every shift
 (family-wise). Descriptive and read-only: it never touches weights, learning or checkpoints.
@@ -31,8 +31,27 @@ def assign_legs(neurons, neuron_ids):
     return out
 
 
-def reward_residual(reward, tau_ms=2000.0):
-    """Reward minus its 2 s exponential baseline: what the learner's error is made of before normalization."""
+def learning_signal(reward):
+    """The learner's ACTUAL normalized error signal for a reward sequence, from the core's own code.
+
+    Replays ``MotorPlasticity.update`` (perturbation rule, normalized and bias-corrected error, as in the pilot)
+    on a one-edge network with zero perturbation, so ``learning_signal`` is exactly what the learner used (reward
+    minus its bias-corrected 2 s baseline, divided by the 2 s RMS, clipped to [-1, 1]); the first value is 0.
+    Not interchangeable with ``ema2s_reward_residual``.
+    """
+    from types import SimpleNamespace
+
+    from noesis.plasticity import MotorPlasticity
+
+    net = SimpleNamespace(n=2, data=np.array([1.0]), indptr=np.array([0, 1, 1]), indices=np.array([1]))
+    learner = MotorPlasticity(net, [1], learning_rate=0.2, tau_eligibility_ms=100, max_change=0.5, rule="perturbation",
+                              normalize_reward_error=True, bias_correct_reward_error=True)
+    empty, zero = np.empty(0, dtype=np.int64), np.zeros(1)
+    return np.array([learner.update(empty, DT_MS, float(r), perturbation=zero)["learning_signal"] for r in reward])
+
+
+def ema2s_reward_residual(reward, tau_ms=2000.0):
+    """Reward minus a plain 2 s exponential baseline (no normalization, no bias correction): an approximation only."""
     a = 1 - np.exp(-DT_MS / tau_ms)
     out, baseline = np.empty(len(reward)), float(reward[0])
     for i, value in enumerate(reward):
@@ -134,7 +153,7 @@ def load_birth(log_path, observations_path, neurons, components=4):
     if len(rows) != len(drive):
         raise ValueError("exploration log rows must equal the number of learning-active observation rows")
     legs = assign_legs(neurons, drive_idx)
-    reward_res = reward_residual(reward)[rows]
+    signal = learning_signal(reward[rows])  # exactly the learner's error signal over the learning-active steps
     joint = velocity[rows].reshape(len(rows), 6, JOINTS_PER_LEG)
     features, joint_response = {}, {}
     for leg in range(6):
@@ -142,7 +161,7 @@ def load_birth(log_path, observations_path, neurons, components=4):
         block = joint[:, leg, :] - joint[:, leg, :].mean(axis=0)
         u, s, _ = np.linalg.svd(block, full_matrices=False)
         joint_response[leg] = u[:, 0] * s[0]  # first principal component of the leg's joint velocities
-    return features, joint_response, reward_res, legs
+    return features, joint_response, signal, legs
 
 
 def run(log_dirs, neurons, max_lag=100, permutations=200, seed=0, components=4):
@@ -156,7 +175,7 @@ def run(log_dirs, neurons, max_lag=100, permutations=200, seed=0, components=4):
     reward_result, reward_null = analyse(features, reward, max_lag, permutations, seed)
     joint_result, joint_null = analyse(features, joints, max_lag, permutations, seed + 1)
     return {"legs": LEGS, "births": len(births), "max_lag_ms": max_lag * DT_MS,
-            "reward_residual": {"per_leg": reward_result, "null": reward_null},
+            "learning_signal": {"per_leg": reward_result, "null": reward_null},
             "joint_velocity": {"per_leg": joint_result, "null": joint_null}}
 
 
@@ -180,7 +199,7 @@ def main(argv=None):
         raise SystemExit(f"refusing to overwrite {args.out}")
     result = run(args.births, pd.read_parquet(args.neurons), args.max_lag, args.permutations, args.seed, args.components)
     args.out.write_text(json.dumps(result, indent=1), encoding="utf-8")
-    for kind in ("joint_velocity", "reward_residual"):
+    for kind in ("joint_velocity", "learning_signal"):
         for leg, entry in result[kind]["per_leg"].items():
             print(f"{kind:16s} {LEGS[leg]}: best lag {entry['best_lag_ms']:5.0f} ms  R2 {entry['r2']:.4f}  family p {entry['family_p']:.4f}")
         print(f"{kind:16s} null max R2: p95 {result[kind]['null']['null_max_p95']:.4f}  p99 {result[kind]['null']['null_max_p99']:.4f}")
