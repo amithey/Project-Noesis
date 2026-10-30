@@ -1,5 +1,5 @@
 {
-  "status": "active_after_stocktake_resource_watch_terminal_refused",
+  "status": "active_gemini_delivery_reviewed_changes_requested_no_simulation",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -87,10 +87,11 @@
   "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
   "credit_replication": "docs/credit-replication-c2-result.json",
   "duration_study": "docs/duration-t1-incomplete-result.json",
-  "resource_observation": "docs/stocktake-resume1-result.json",
+  "resource_observation": "docs/stocktake-resume2-result.json",
   "motor_transport_audit": "docs/exploration-motor-m1-result.json",
   "user_resource_preference": "Opportunistic measured availability, no fixed reservation",
   "leg_assignment_review": "docs/leg-assignment-audit-20261030.json",
   "evaluation_continuation": "docs/duration-evaluation-continuation-20261030.md",
-  "evaluation_continuation_physical_tested": false
+  "evaluation_continuation_physical_tested": false,
+  "sensory_review": "docs/gemini-sensory-review-4a78e0b.json"
 }
