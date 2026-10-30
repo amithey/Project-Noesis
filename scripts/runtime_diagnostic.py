@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import uuid
+import hashlib
 
 import numpy as np
 import psutil
@@ -51,7 +52,33 @@ def compare_traces(first, second):
         return results
 
 
-def inventory():
+def command_digest(command):
+    return hashlib.sha256(json.dumps(command,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
+
+
+def allowed_test_worker(identity,allowed):
+    """One reviewed test invocation only; PID reuse/argv/cwd/source changes fail closed."""
+    command=identity['cmdline']
+    if not any(command[i:i+2]==['-m','pytest'] for i in range(len(command)-1)):
+        return False
+    for item in allowed:
+        if (identity['pid']!=item['pid'] or identity['create_time']!=item['create_time']
+                or command_digest(command)!=item['command_sha256']
+                or Path(identity['cwd']).resolve()!=Path(item['cwd']).resolve()):
+            continue
+        source=Path(item['test_source']).resolve()
+        if not source.name.startswith('test_') or source.suffix!='.py' or not source.is_file():
+            continue
+        arguments=command[command.index('-m')+2:]
+        if not any(not arg.startswith('-') and (Path(identity['cwd'])/arg.split('::')[0]).resolve()==source for arg in arguments):
+            continue
+        if digest(source)!=item['test_source_sha256']:
+            continue
+        return True
+    return False
+
+
+def inventory(allowed_workers=None):
     excluded = []
     for process in psutil.process_iter(['pid', 'name', 'cmdline']):
         if not (process.info['name'] or '').lower().startswith(('python.exe', 'pythonw.exe')):
@@ -63,6 +90,9 @@ def inventory():
             raise RuntimeError('Cannot identify Python process')
         if any(command[i:i+3] == ['-m', 'streamlit', 'run'] for i in range(len(command)-2)):
             excluded.append(process.pid)
+        elif allowed_workers and allowed_test_worker(dict(pid=process.pid,create_time=process.create_time(),
+                cmdline=command,cwd=process.cwd()),allowed_workers):
+            continue
         else:
             raise RuntimeError(f'Other Python worker active: {process.pid}')
     return excluded

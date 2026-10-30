@@ -8,6 +8,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
 from runtime_diagnostic import compare_traces, validate_report, PARENT
 
 
+def test_only_exact_reviewed_pytest_identity_is_allowed(tmp_path):
+    from runtime_diagnostic import allowed_test_worker,command_digest
+    from compare_exploration import digest
+    source=tmp_path/'test_synthetic.py';source.write_text('def test_small(): pass\n')
+    identity=dict(pid=123,create_time=10.,cmdline=['python.exe','-m','pytest','test_synthetic.py','-q'],cwd=str(tmp_path))
+    approved=dict(pid=123,create_time=10.,command_sha256=command_digest(identity['cmdline']),cwd=str(tmp_path),test_source=str(source),test_source_sha256=digest(source))
+    assert allowed_test_worker(identity,[approved])
+    assert not allowed_test_worker(dict(identity,pid=124),[approved])
+    assert not allowed_test_worker(dict(identity,create_time=11.),[approved])
+    assert not allowed_test_worker(dict(identity,cmdline=['python.exe','-m','noesis_gpu.train']),[approved])
+    assert not allowed_test_worker(dict(identity,cwd=str(tmp_path.parent)),[approved])
+    source.write_text('def test_changed(): pass\n')
+    assert not allowed_test_worker(identity,[approved])
+
+
 def report():
     return dict(status='completed_transport_pilot', learning=False, motor_exploration=0,
                 weights_unchanged=True, completed_control_chunks=1000,

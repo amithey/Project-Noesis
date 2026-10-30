@@ -74,8 +74,10 @@ def prefix_check(long_birth,control_birth):
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--shared-root',type=Path,required=True);ap.add_argument('--core-source',type=Path,required=True);ap.add_argument('--output',type=Path,required=True)
+    ap.add_argument('--allow-reviewed-test-workers',type=Path)
     args=ap.parse_args();root,core,out=args.shared_root.resolve(),args.core_source.resolve(),args.output.resolve()
     own=Path(__file__).resolve().parents[1];pilot=own/'gpu-pilot/src'
+    allowed_workers=json.loads(args.allow_reviewed_test_workers.read_text(encoding='utf-8')) if args.allow_reviewed_test_workers else []
     parent=root/'gpu-pilot/outputs/e4-exploration-20261029/train-control-1000/weights-last.npz'
     control_birth=root/'gpu-pilot/outputs/logging-parity-d3-20261030/logged';control=control_birth/'weights-last.npz'
     if digest(parent)!=PARENT or digest(control)!=CONTROL or subprocess.check_output(['git','-C',str(core.parent),'rev-parse','HEAD'],text=True).strip()!=CORE:
@@ -95,7 +97,8 @@ def main():
     result=dict(status='running',jobs=[],model_promoted=False,walking_proven=False)
     cases={arm:{} for arm in ('parent','control5','child25')};reports={arm:{} for arm in cases}
     try:
-        protocol['excluded_dashboard_pids']=inventory()
+        protocol['allowed_reviewed_test_workers']=allowed_workers
+        protocol['excluded_dashboard_pids']=inventory(allowed_workers)
         samples=sample_quiescence();decision=assess(samples)
         preflight=out.with_name(out.name+'-resource-preflight.json')
         with preflight.open('x',encoding='utf-8') as stream:
@@ -107,7 +110,7 @@ def main():
             if digest(parent)!=PARENT or digest(control)!=CONTROL or tree_digest(core)!=hashes['core'] or tree_digest(pilot)!=hashes['pilot']:
                 raise RuntimeError('Parent/control/source changed')
         def execute(name,module,options,timeout,expected_status):
-            verify();inventory();samples=sample_quiescence();resources=assess(samples)
+            verify();inventory(allowed_workers);samples=sample_quiescence();resources=assess(samples)
             write(out/f'{name}-resource-preflight.json',dict(samples=samples,decision=resources))
             remaining=3600-(time.monotonic()-started)
             available=psutil.virtual_memory().available/2**30

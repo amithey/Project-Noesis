@@ -29,3 +29,18 @@ Offline budget60seconds,>=.5GiB available before reading metadata, no full graph
 no physics, no retry. Output unique primary:
 gpu-pilot/outputs/exploration-motor-m1-20261030/result.json.
 Keep raw neuron metadata local; only its hash and compact joint metrics in Git.
+
+## Observed outcome
+
+All42channels had varying projected input and commands. Fixed25ms current-level
+to command-level correlations were positive in all3seeds for10channels; median
+per-seed r=.0524/.0623/.0166. Innovation-to-command-change correlations were
+positive in all3seeds for7channels; medians=.0081/.0112/.0042. These are DIFFERENT
+signal/output pairs and their coefficient magnitudes cannot rank credit rules
+or establish better learning SNR. No causal or no-coupling conclusion follows.
+
+Command slew-cap hits were.147%/.089%/.260%; this gives no reason to relax the
+existing cap. Historical metadata hashes are absent from the training reports;
+this audit records the current cache hash rather than claiming verified historic
+metadata identity. Complete joint rows and input hashes are archived; compact
+result: exploration-motor-m1-result.json. No raw metadata is published.

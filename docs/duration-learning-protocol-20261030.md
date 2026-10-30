@@ -62,3 +62,20 @@ was launched. A stable~40min resource window was requested from the user; do not
 infer a reply from elapsed time. Any future attempt starts from the original
 complete parent, never the partial bank or an alleged mid-episode resume.
 See duration-t1-incomplete-result.json and artifact manifest.
+
+## Opportunistic resource scheduling and parallel unit work
+
+User replied to use availability opportunistically. Resource-only watcher R1
+samples for at most900s, never starts a simulation or alters another process.
+It exited0 after window2(min3.061GiB,maxCPU29.9%,10samples). A fresh allocation
+still requires a NEW sustained gate; an earlier pass is not future availability.
+
+Attempt3 refused before output/simulation because old inventory rejected Claude's
+verified synthetic pytest credit-timing test. Its source was inspected read-only;
+AGENTS permits parallel unit/code work. An opt-in reviewed-worker identity file
+can now allow only exact PID+creation-time+argv-hash+cwd+test-source-hash matches
+with an actual '-m pytest' invocation and that source argument. Changed/reused/
+unknown Python workers still fail closed. Memory/CPU gates and exclusive full
+simulation lease remain unchanged. The observed tests ended naturally; no worker
+was killed or another branch changed.18focused tests pass. No blanket pytest
+exception exists. Every new run remains an explicit allocation, not a retry loop.
