@@ -1,5 +1,5 @@
 {
-  "status": "duration_T1_incomplete_resource_window_required",
+  "status": "opportunistic_resource_gate_refused_no_new_training",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,10 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "Obtain a stable~40min host resource window; user question pending, no automatic retry.",
-    "Future allocation must pass10samples>=3GiB available and<=30percenthostCPU; budgets and scientific gates unchanged.",
-    "Restart any explicitly allocated25s attempt from complete9fd7d411 parent, not the excluded partial bank; require exact5s prefix and all frozen controls.",
-    "Continue independent Claude learning/Gemini sensory evidence review without changing current scientific conditions."
+    "Revalidate sustained resource availability before any explicit freshT1 allocation; no repeated same-turn retry loop.",
+    "Keep original complete9fd7d411 parent, exclude T1partial bank, preserve unchanged scientific gates/budgets and full frozen controls.",
+    "Review Claude committed credit-timing work when provided; exact normalized signal differs from generic2sEMA residual.",
+    "Do not infer better credit rules from M1 differing signal/output correlation families or relax the rarely reached command slew cap."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -86,5 +86,8 @@
   "full_training_reproducibility": "docs/logging-parity-d3-result.json",
   "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
   "credit_replication": "docs/credit-replication-c2-result.json",
-  "duration_study": "docs/duration-t1-incomplete-result.json"
+  "duration_study": "docs/duration-t1-incomplete-result.json",
+  "resource_observation": "docs/resource-r1-result.json",
+  "motor_transport_audit": "docs/exploration-motor-m1-result.json",
+  "user_resource_preference": "Opportunistic measured availability, no fixed reservation"
 }

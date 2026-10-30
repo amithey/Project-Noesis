@@ -50,7 +50,9 @@
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2",
       "independent_branch": "claude/learning-retention",
-      "independent_commit": "2db4d119e56c78a7497a0be26d576b920bdb1f95"
+      "independent_commit": "2db4d119e56c78a7497a0be26d576b920bdb1f95",
+      "independent_observation": "Owner10971afa3493 acknowledges EMA-vs-learning_signal correction locally untested; db5465b old version explicitly held from integration. Synthetic test window granted; PCA pooling counterexample sent.",
+      "independent_commit_pending_review": "db5465b24144a1539d80028ef52b6676964e1ded (DO NOT INTEGRATE: superseded correction pending)"
     },
     {
       "id": "gemini",
@@ -111,7 +113,7 @@
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "T1incomplete_stable_resource_window_needed",
+    "status": "T1incomplete_fresh_resource_gate_refused",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
@@ -126,7 +128,10 @@
     "credit_replication": "docs/credit-replication-c2-result.json",
     "next_proposal": "docs/duration-learning-proposal-20261030.md",
     "duration_study": "docs/duration-t1-incomplete-result.json",
-    "training_active": false
+    "training_active": false,
+    "motor_transport_audit": "docs/exploration-motor-m1-result.json",
+    "motor_audit": "docs/exploration-motor-m1-result.json",
+    "credit_timing_review": "docs/credit-timing-review-counterexample.json"
   },
   "previous_round": {
     "name": "C2 fixed credit association replication",
@@ -139,5 +144,13 @@
     "budget_seconds": 720,
     "actual_seconds": 283.141,
     "model_promoted": false
+  },
+  "resource_schedule": {
+    "status": "watcher_terminal_and_fresh_preflight_refused",
+    "summary": "docs/resource-r1-result.json",
+    "watcher_active": false,
+    "simulation_active": false,
+    "user_preference": "opportunistic_when_measured_resources_allow",
+    "next_allocation_requires_fresh_gate": true
   }
 }

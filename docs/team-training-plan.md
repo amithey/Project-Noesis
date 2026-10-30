@@ -1,24 +1,30 @@
 # Current round — 2026-10-30
 
-Codex owns standing/walking, overall training and integration; Claude owns learning
-and behavioral retention; Gemini owns external sensing/environmental reactions.
-Current assignments are in team-assignments.json. Historical tables below are
-provenance, not live worker activity claims.
+Codex owns standing/walking, training and integration; Claude learning/retention;
+Gemini external sensing/environment reactions. team-assignments.json is current;
+historical tables below do not establish worker activity.
 
-T1 duration25s-versus5s attempt411475c stopped at21.18s/4236chunks after900s inner
-budget. Only a partial bank exists; no frozen probe ran and no25s acquisition or
-retention conclusion is justified. All19first5s fields match D3, original bounds
-and source/parent/control hashes passed. Partial bank is excluded from training-last.
-The preceding complete checkpoint pointers remain unchanged.
+T1 remains incomplete21.18/25s, no frozen controls or completed child. Partial is
+excluded; source/parent/control hashes and all19first5s fields passed. No duration
+or walking conclusion. Current resource gate is10samples>=3GiB/<=30percentCPU.
+User prefers opportunistic availability. Resource-only watcher R1 exited0 after
+one passed window; fresh attempt4 still refused CPU70.3percent before simulation.
+No simulation, watcher or lease remains active; no retry loop or app termination.
 
-Initial resource preflight refused without simulation. A later explicit fresh
-allocation passed its launch snapshot but near-end pressure reached100percentCPU
-and.622GiB available. Cause is not isolated. Future allocation now requires10
-one-second samples>=3GiB/<=30percentCPU, unchanged scientific/wall-budget gates.
-A stable~40min resource window was requested; no reply or retry is inferred from
-elapsed time. No simulation or managed worker remains active. Five focused
-runner/retention/resource tests pass. See duration-t1-incomplete-result.json and
-protocol for evidence, artifact hash and limitations. Full goal stays active.
+Unblocked M1 audit of3complete physical logs found some corresponding anatomical
+input/command associations and rare(.089-.260percent) command slew-cap hits.
+These different signal/output pairs cannot rank credit rules or prove learning.
+Raw metadata stays local; compact results/hash manifest are archived.
+
+Claude owner reports db5465b is old and explicitly not ready for integration;
+actual learning_signal correction remains local pending tests. Closed synthetic
+test window granted. Codex also verified a mathematical PCA-sign pooling
+counterexample against old immutable LagFit (R2~1 to~0 under equivalent coordinate
+sign change). This is tool validation, not fly evidence. Correct before inference.
+Scoped exact reviewed pytest identities can coexist with code work while unknown
+Python stays refused.18focused tests passed. See resource-r1-result.json,
+exploration-motor-m1-result.json and credit-timing-review-counterexample.json.
+Full goal remains active; no promoted model, walking proof or weight averaging.
 
 # תוכנית משותפת: Codex + Claude/Anthropic + Gemini
 

@@ -76,6 +76,13 @@ AGENTS permits parallel unit/code work. An opt-in reviewed-worker identity file
 can now allow only exact PID+creation-time+argv-hash+cwd+test-source-hash matches
 with an actual '-m pytest' invocation and that source argument. Changed/reused/
 unknown Python workers still fail closed. Memory/CPU gates and exclusive full
-simulation lease remain unchanged. The observed tests ended naturally; no worker
-was killed or another branch changed.18focused tests pass. No blanket pytest
+simulation lease remain unchanged. The observed test processes were later absent; no worker
+was killed by Codex or another branch changed. Their exit status was not
+observed; disappearance is not evidence their tests passed.18focused tests pass. No blanket pytest
 exception exists. Every new run remains an explicit allocation, not a retry loop.
+
+Attempt4 used the new sourcec16454b after those test processes were no longer
+live. It refused its fresh10sample gate(min3.017GiB,maxCPU70.3%) before output
+directory/simulation creation. This confirms why R1's earlier passed window
+must not be treated as a reserved40min slot. No additional same-turn attempts
+were launched; no resource/scientific threshold or wall budget was relaxed.
