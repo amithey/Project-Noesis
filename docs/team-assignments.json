@@ -155,13 +155,13 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "new_host_diagnosis_user_application_requirement_pending",
+    "status": "fresh_after_pause_preflight_refused",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
     "user_preference": "opportunistic_when_measured_resources_allow",
     "next_allocation_requires_fresh_gate": true,
-    "latest_observation": "docs/host-resource-ownership-20261030.json"
+    "latest_observation": "docs/runtime-availability-current.json"
   },
   "status_entrypoint": "docs/project-status-20261030.md",
   "current_integration_branch": "codex/training-pilot-20261028",
