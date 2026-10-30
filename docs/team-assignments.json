@@ -78,7 +78,7 @@
   ],
   "active_round": {
     "name": "E6 reward ablation",
-    "status": "running",
+    "status": "stopped_incomplete_control_no_comparison",
     "simulation_owner": "codex",
     "protocol": "docs/e6-protocol-20261030.md",
     "pilot_commit": "8ab908935c2b13f70d885b453f63e8586746ecae",
@@ -100,5 +100,15 @@
     "coordinator": "scripts/team_development.py",
     "automatic_merge": false,
     "verification": "docs/team-development-first-round.json"
+  },
+  "training_review": {
+    "date": "2026-10-30",
+    "status": "organizing_new_method_no_active_training",
+    "proposal": "docs/training-reset-20261030.md",
+    "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
+    "learning_rate_control": 0.2,
+    "learning_rate_treatment": 0.02,
+    "new_method_implemented": false,
+    "new_training_started": false
   }
 }
