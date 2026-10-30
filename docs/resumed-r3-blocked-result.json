@@ -1,0 +1,99 @@
+{
+  "status": "resource_watch_deadline_no_quiescent_window",
+  "budget_seconds": 11.0,
+  "windows": [
+    {
+      "start_elapsed": 0.0,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 3.3565216064453125,
+        "maximum_host_cpu_percent": 31.4,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793370043.8070376,
+          "available_gib": 3.3816680908203125,
+          "host_cpu_percent": 10.7
+        },
+        {
+          "unix_time": 1793370044.808217,
+          "available_gib": 3.385417938232422,
+          "host_cpu_percent": 27.0
+        },
+        {
+          "unix_time": 1793370045.8090506,
+          "available_gib": 3.382061004638672,
+          "host_cpu_percent": 9.1
+        },
+        {
+          "unix_time": 1793370046.8108747,
+          "available_gib": 3.375316619873047,
+          "host_cpu_percent": 31.4
+        },
+        {
+          "unix_time": 1793370047.8129587,
+          "available_gib": 3.376659393310547,
+          "host_cpu_percent": 22.2
+        },
+        {
+          "unix_time": 1793370048.8150234,
+          "available_gib": 3.381519317626953,
+          "host_cpu_percent": 9.4
+        },
+        {
+          "unix_time": 1793370049.8170474,
+          "available_gib": 3.3800277709960938,
+          "host_cpu_percent": 10.6
+        },
+        {
+          "unix_time": 1793370050.81958,
+          "available_gib": 3.383190155029297,
+          "host_cpu_percent": 9.5
+        },
+        {
+          "unix_time": 1793370051.82144,
+          "available_gib": 3.3842201232910156,
+          "host_cpu_percent": 13.0
+        },
+        {
+          "unix_time": 1793370052.8231409,
+          "available_gib": 3.3565216064453125,
+          "host_cpu_percent": 13.1
+        }
+      ]
+    }
+  ],
+  "simulation_started": false,
+  "elapsed_seconds": 11.0,
+  "blocked_audit": {
+    "after_explicit_user_resume": true,
+    "consecutive_resumed_turns_with_same_resource_blocker": 3,
+    "previous_turn_classification": "Verified wait on terminal resource watcher, followed by actual allocated attempt5 prejob refusal; no simulation",
+    "checked_team_log": true,
+    "checked_github_issues": [
+      19,
+      20
+    ],
+    "latest_checked_owner_commits": {
+      "claude": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
+      "gemini_reported_branch": "2d35d0a"
+    },
+    "new_reviewable_owner_correction_available": false,
+    "cited_gemini_report_present": false,
+    "current_host_lease_present": false,
+    "live_managed_session": false,
+    "available_independent_work_completed": [
+      "Exact learning signal replay comparison",
+      "PCA sign invariance counterexample",
+      "Anatomical transport and leg coverage audits",
+      "Bounded frozen evaluation continuation with24focused tests"
+    ],
+    "next_owned_simulation": "Registered T1 from complete9fd7d411 parent, fresh explicit allocation and unchanged resource/budget/scientific gates",
+    "resume_condition": "Sustained suitable host resources or committed owner corrections/artifacts; no elapsed-time inference",
+    "goal_achieved": false
+  }
+}

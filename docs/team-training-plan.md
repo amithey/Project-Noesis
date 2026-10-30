@@ -1,5 +1,13 @@
 # Current round — 2026-10-30
 
+Goal blocked audit satisfied again AFTER user resume:three consecutive resumed
+turns with same resource blocker. Fresh resumedR3 min3.357GiB/maxCPU31.4percent
+refused, no simulation. TEAM/issue19/20 and owner branch heads unchanged; cited
+Gemini report still absent. Independent audits/continuation software completed,
+no current useful unblocked next action. Resume needs sustained measured compute
+or committed owner fixes/artifacts. No livewatcher/worker/lease; full objective
+unachieved, budgets/scientific gates untouched. See resumed-r3-blocked-result.json.
+
 ResumedR2 resource-only watcher terminal pass:window2min3.388GiB/maxCPU21.5.
 Fresh explicitly allocated T1attempt5 passed initialgate3.392GiB/18.5percent,
 but prejobgate refused36.2percentCPU(min3.390GiB). Terminal20.078s; zero jobs,
