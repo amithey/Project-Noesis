@@ -25,3 +25,12 @@ training reliability, walking, behavioral retention or model promotion.
 
 Next test depends on the dominant observed cost. Do not change physics timestep,
 brain dynamics, JIT fastmath or sensory calibration merely to increase throughput.
+
+## Observed outcome
+
+Completed100chunks and exact equality of all10D1 prefix fields. Process39.125s;
+setup26.811s, loop10.245s,total37.090s. LIF.run8.962s cumulative versus native
+physics mj_step0.756s. Brain loading19.056s includes repeated CSV parsing/scaling.
+Minimum available host memory2.656GiB. This local profile identifies neural and
+setup costs; it does not prove the cause of D1/E6 slowdowns. Profiler overhead
+precludes treating its time as a matched speedup. See runtime-profile-d2-result.json.

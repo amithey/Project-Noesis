@@ -1,10 +1,23 @@
-# Current round — 2026-10-29
+# Current round — 2026-10-30
 
-E3 preparation and active roles supersede the historical assignment status below.
-See [E3 protocol](e3-protocol-20261029.md) and team-assignments.json.
-Codex integrates and owns the sole simulation lease. Claude reviews rewards and
-weight integrity; Gemini via Antigravity reviews physical metrics. Both direct CLI preflight reviews completed READY after explicit user consent.
-Codex started E3 under an exclusive host lease. Result reviews follow completion.
+Codex owns standing/walking, overall training and integration; Claude owns learning
+and behavioral retention; Gemini owns external sensing and environmental reactions.
+The authoritative current assignment state is team-assignments.json. Historical
+assignment tables below are retained as provenance, not worker activity claims.
+
+D2 profiled a physical0.5s frozen episode with exact10field prefix reproduction.
+D3 completed two full5s training births (logging disabled/enabled), both reproducing
+2074b1e2 checkpoint and all19observation/reward fields, with990aligned log rows.
+210tests passed/1skipped. Sourcef3baf9f/core42c2076; unchanged original reference,
+topology/sign/bounds, body, reward, LR and exploration. No model promotion.
+
+Next priority is preregistered L1 exploration/reward association and credit-lag
+measurement after Claude draft review; LR-only contrast is deferred as an
+acquisition fix. Resource lease is released; no further run allocated by this
+file. Gemini calibration hypothesis requires exact source and physical controls.
+Do not infer walking, memory or causal learning from reproduction, weight geometry
+or a synthetic audit. See training-reset-20261030.md, logging-parity-d3-result.json,
+and runtime-profile-d2-result.json for evidence and limitations.
 
 # תוכנית משותפת: Codex + Claude/Anthropic + Gemini
 

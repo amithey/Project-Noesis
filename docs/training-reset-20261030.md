@@ -1,5 +1,48 @@
 # Training review and proposed replacement method
 
+## Current decision update, 2026-10-30
+
+D2 completed a0.5s physical frozen prefix identical to all10D1 observation
+fields. The profiled loop cost10.245s, dominated by LIF.run8.962s versus physics
+mj_step0.756s; load_training_brain cost19.056s during setup. Available memory
+stayed>=2.656GiB. Profiler overhead prevents a direct speedup claim; historical
+stall causality remains unresolved. Compact evidence: runtime-profile-d2-result.json.
+
+D3 is the next reliability gate: two full5s births (logging disabled/enabled)
+must both reproduce historical2074b1e2 under unchanged conditions, including
+every observation/reward array and explicitly aligned exploration rows. See
+logging-parity-d3-20261030.md. No learning-method improvement follows merely
+from reproducibility.
+
+Claude's independent diagnosis2db4d11 supplies useful descriptive checkpoint
+geometry and a synthetic credit experiment, plus optional learning/logging
+plumbing. The initial LR.2vs.02 trial below is deferred as an acquisition method:
+in the synthetic setup LR scales both signal and noise. It could test drift or
+retention magnitude, not establish that lowering LR improves acquisition.
+
+Before modifying reward or learning, prioritize L1: directly measure logged
+exploration innovation versus subsequent reward at preregistered lags. Claude
+owns the draft; Codex owns source review, physical logging parity and final
+resource allocation. Preserve parent/reward/body/senses/LR/exploration in this
+diagnostic. Temporal nulls must preserve autocorrelation and account for the
+lag/channel search. Closed-loop association is not proof of causal credit.
+Failure to detect dependence is inconclusive without adequate power, not proof
+that learning is impossible.
+
+Review limits of the initial diagnosis: parent-only sibling grouping can mix
+different objectives/source/exploration; edge counts are not independent sample
+counts because neural inputs/perturbations are shared; high same-seed cosine
+under a tiny reward-bonus change does not remove the common base reward. Reward
+spectral power alone cannot identify its causal source. Weights alone do not
+prove noise, memory or forgetting. The E5 matched behavioral regressions remain
+descriptive evidence on reused, parent-selected development probes.
+
+Future L2 reward filtering and L3 consensus updates remain unallocated
+hypotheses. Do not average independently trained checkpoints or weaken any
+physical/invariant gate. Gemini's reported resting-sensory calibration issue
+also remains a separate hypothesis pending exact source and physical controls;
+76Hz at zero rest offset was already documented as a transfer-model assumption.
+
 User requested a pause for organization and a new training approach,2026-10-30.
 No active training lease was present at inspection; no new run is authorized
 by a historical running status. Existing failed/partial outputs remain intact.

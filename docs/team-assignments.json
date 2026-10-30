@@ -36,7 +36,7 @@
       "provider": "Anthropic",
       "issue": 19,
       "branch": "claude/flygym2-learning-rewards",
-      "assignment_status": "assigned_awaiting_ack",
+      "assignment_status": "independent_diagnosis_received_L1_draft_requested",
       "role": "Neural learning, existing reward objectives and checkpoint invariants",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/learning.py",
@@ -46,15 +46,17 @@
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
       "managed_session_status": "strict_context37tests_reviewed_and_copied_to_integration",
-      "managed_assignment": "Learning/memory retention; focused validation repair before LR hypothesis",
+      "managed_assignment": "Learning and behavioral retention; independent L1 design and reviewed log plumbing",
       "managed_checkout": "outputs/team-dev-claude-r2",
-      "managed_branch": "codex/team-claude-retention-r2"
+      "managed_branch": "codex/team-claude-retention-r2",
+      "independent_branch": "claude/learning-retention",
+      "independent_commit": "2db4d119e56c78a7497a0be26d576b920bdb1f95"
     },
     {
       "id": "gemini",
       "issue": 20,
       "branch": "gemini/flygym2-gait-validation",
-      "assignment_status": "assigned_awaiting_ack",
+      "assignment_status": "independent_sensory_audit_received_pending_provenance",
       "role": "Independent physical metrics, frozen evaluation and later body/sensory validation",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/evaluate.py",
@@ -73,18 +75,20 @@
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium",
       "managed_checkout": "outputs/team-dev-gemini-r2",
-      "managed_branch": "codex/team-gemini-senses-r2"
+      "managed_branch": "codex/team-gemini-senses-r2",
+      "independent_evidence_message": "036166c1347f"
     }
   ],
   "active_round": {
-    "name": "E6 reward ablation",
-    "status": "stopped_incomplete_control_no_comparison",
+    "name": "D3 full physical training reproduction/logging parity",
+    "status": "complete_exact_checkpoint_and_all19trace_fields",
     "simulation_owner": "codex",
-    "protocol": "docs/e6-protocol-20261030.md",
-    "pilot_commit": "8ab908935c2b13f70d885b453f63e8586746ecae",
+    "protocol": "docs/logging-parity-d3-20261030.md",
+    "pilot_commit": "f3baf9f5ed3f9bc88760a84abd58eaf909e66d1b",
     "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
-    "output": "gpu-pilot/outputs/e6-reward-ablation-20261030",
-    "budget_seconds": 2400,
+    "output": "gpu-pilot/outputs/logging-parity-d3-20261030",
+    "budget_seconds": 720,
+    "actual_seconds": 248.438,
     "model_promoted": false
   },
   "parallel_development": {
@@ -107,13 +111,27 @@
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "D1_one_complete_frozen_repeat_reproduces_historical_trace_training_still_gated",
+    "status": "full_training_reliability_and_logging_parity_verified_L1_design_pending",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
     "learning_rate_treatment": 0.02,
     "new_method_implemented": false,
     "new_training_started": false,
-    "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json"
+    "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
+    "runtime_profile": "docs/runtime-profile-d2-result.json",
+    "full_training_reproducibility": "docs/logging-parity-d3-result.json",
+    "current_priority": "L1 diagnostic of exploration/reward association; LR contrast deferred to drift/retention scope"
+  },
+  "previous_round": {
+    "name": "E6 reward ablation",
+    "status": "stopped_incomplete_control_no_comparison",
+    "simulation_owner": "codex",
+    "protocol": "docs/e6-protocol-20261030.md",
+    "pilot_commit": "8ab908935c2b13f70d885b453f63e8586746ecae",
+    "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "output": "gpu-pilot/outputs/e6-reward-ablation-20261030",
+    "budget_seconds": 2400,
+    "model_promoted": false
   }
 }

@@ -30,3 +30,17 @@ Default-compatible synthetic small-brain/fixed-body checks passed before launch;
 those do not establish physical parity. Full D3 completion establishes local
 full training reproducibility and logging transparency only. No promotion or
 walking/retention/generalization claim. Held-out seeds remain unused.
+
+## Observed outcome
+
+Both physical births completed1000chunks/990updates. Plain inner117.153s,
+process120.828s; logged inner123.518s,process127.141s; total248.438s.
+Available memory at starts3.434/3.382GiB. Both checkpoint hashes exactly equal
+the preregistered2074b1e2... value. All19observation/reward/command arrays are
+exactly equal. Logged990rows align to chunks10..999 with finite bounded values.
+Original-reference/topology/sign/parameters/rule audits passed. Lease released.
+
+This establishes full training reproducibility and read-only logging parity for
+this parent/seed under the observed resource envelope. It does not establish a
+new learned ability, biological correctness or reliability for every host state.
+See logging-parity-d3-result.json and the artifact SHA256 manifest.

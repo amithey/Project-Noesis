@@ -1,10 +1,10 @@
 {
-  "status": "runtime_diagnosed_learning_gated_pending_resource_and_integration_checks",
+  "status": "full_training_reproduction_and_logging_parity_verified_L1_protocol_pending",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
-  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\e5-continuation-retry1-20261029\\train-v9-1002\\weights-last.npz",
-  "latest_experimental_training_sha256": "d7013c88af9aa5a20e150f2aad6e2d4395aa2c58603ada775016e470393d1dc1",
+  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\logging-parity-d3-20261030\\logged\\weights-last.npz",
+  "latest_experimental_training_sha256": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
   "best_validated_checkpoint": null,
   "model_promoted": false,
   "stage_advanced": false,
@@ -12,13 +12,14 @@
   "cuda_verified": false,
   "training_backend": "cpu",
   "worlds": 1,
-  "last_training_seed": 1002,
-  "last_frozen_seed": 10009,
+  "last_training_seed": 1000,
+  "last_frozen_seed": 10006,
   "next_steps": [
-    "Finish semantic review of Claude retention and Gemini sensory repairs without changing active physics/controller.",
-    "Establish a resource envelope and matched complete training throughput before testing learning-rate hypothesis.",
-    "Preregister conservative LR comparison with same complete parent and frozen-parent retention controls; no arbitrary weight averaging.",
-    "Keep held-out seeds10,11,200,201,202 reserved; no promotion from reused development probes."
+    "Review Claude L1 preregistered credit-association protocol, matching contexts and temporal null/multiple-lag controls.",
+    "Reconstruct exact learner baseline/normalization from raw rewards with core-parity checks, or export actual normalized learning_signal in a log-only increment.",
+    "Allocate L1 only with exact common parent/source/seeds/budget and physical logging controls; keep reward/senses/LR unchanged.",
+    "Review Gemini calibration evidence with source/units and physical-vs-synthetic distinction; do not combine it with learning changes.",
+    "Keep held-out seeds10,11,200,201,202 and original scientific/invariant gates unchanged; no promotion."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -73,5 +74,12 @@
     "conclusion": "No ablation comparison"
   },
   "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
-  "training_lease_active": false
+  "training_lease_active": false,
+  "prior_completed_training_candidate": {
+    "checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\e5-continuation-retry1-20261029\\train-v9-1002\\weights-last.npz",
+    "sha256": "d7013c88af9aa5a20e150f2aad6e2d4395aa2c58603ada775016e470393d1dc1",
+    "seed": 1002
+  },
+  "runtime_profile": "docs/runtime-profile-d2-result.json",
+  "full_training_reproducibility": "docs/logging-parity-d3-result.json"
 }
