@@ -80,15 +80,15 @@
     }
   ],
   "active_round": {
-    "name": "D3 full physical training reproduction/logging parity",
-    "status": "complete_exact_checkpoint_and_all19trace_fields",
+    "name": "C2 fixed credit association replication",
+    "status": "completed_fixed_positive_signature_not_replicated",
     "simulation_owner": "codex",
-    "protocol": "docs/logging-parity-d3-20261030.md",
-    "pilot_commit": "f3baf9f5ed3f9bc88760a84abd58eaf909e66d1b",
+    "protocol": "docs/credit-replication-c2-20261030.md",
+    "pilot_commit": "811499e7bdfbcdd699fc02731275566b58edd812",
     "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
-    "output": "gpu-pilot/outputs/logging-parity-d3-20261030",
+    "output": "gpu-pilot/outputs/credit-replication-c2-20261030",
     "budget_seconds": 720,
-    "actual_seconds": 248.438,
+    "actual_seconds": 283.141,
     "model_promoted": false
   },
   "parallel_development": {
@@ -97,21 +97,18 @@
     "codex": "Standing and walking; integration and shared simulation scheduling",
     "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
     "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
-    "status": "focused_repairs_integrated_offline186passed1skipped",
+    "status": "reviewed_offline_integration213passed1skipped_no_sensor_controller_hook",
     "shared_host": "one full simulation at a time; code and synthetic tests parallel",
     "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits",
     "state": "outputs/team-development-r2-20261029",
     "coordinator": "scripts/team_development.py",
     "automatic_merge": false,
     "verification": "docs/team-integration-20261030.json",
-    "review_blockers": [
-      "retention: canonical six legs/source match/frozen provenance",
-      "sensory: reject complex input and finite aggregation"
-    ]
+    "review_blockers": []
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "full_training_reliability_and_logging_parity_verified_L1_design_pending",
+    "status": "C2_fixed_association_not_replicated_duration_test_proposed",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
@@ -121,17 +118,21 @@
     "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
     "runtime_profile": "docs/runtime-profile-d2-result.json",
     "full_training_reproducibility": "docs/logging-parity-d3-result.json",
-    "current_priority": "L1 diagnostic of exploration/reward association; LR contrast deferred to drift/retention scope"
+    "current_priority": "Single-factor25s-vs5s duration and matched behavioral retention; implement/test runner before allocation",
+    "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
+    "credit_replication": "docs/credit-replication-c2-result.json",
+    "next_proposal": "docs/duration-learning-proposal-20261030.md"
   },
   "previous_round": {
-    "name": "E6 reward ablation",
-    "status": "stopped_incomplete_control_no_comparison",
+    "name": "D3 full physical training reproduction/logging parity",
+    "status": "complete_exact_checkpoint_and_all19trace_fields",
     "simulation_owner": "codex",
-    "protocol": "docs/e6-protocol-20261030.md",
-    "pilot_commit": "8ab908935c2b13f70d885b453f63e8586746ecae",
+    "protocol": "docs/logging-parity-d3-20261030.md",
+    "pilot_commit": "f3baf9f5ed3f9bc88760a84abd58eaf909e66d1b",
     "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
-    "output": "gpu-pilot/outputs/e6-reward-ablation-20261030",
-    "budget_seconds": 2400,
+    "output": "gpu-pilot/outputs/logging-parity-d3-20261030",
+    "budget_seconds": 720,
+    "actual_seconds": 248.438,
     "model_promoted": false
   }
 }

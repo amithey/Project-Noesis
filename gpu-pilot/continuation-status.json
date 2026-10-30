@@ -1,10 +1,10 @@
 {
-  "status": "full_training_reproduction_and_logging_parity_verified_L1_protocol_pending",
+  "status": "fixed_credit_lag_failed_replication_next_duration_test_proposed",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
-  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\logging-parity-d3-20261030\\logged\\weights-last.npz",
-  "latest_experimental_training_sha256": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
+  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\credit-replication-c2-20261030\\train-1002\\weights-last.npz",
+  "latest_experimental_training_sha256": "d7013c88af9aa5a20e150f2aad6e2d4395aa2c58603ada775016e470393d1dc1",
   "best_validated_checkpoint": null,
   "model_promoted": false,
   "stage_advanced": false,
@@ -12,14 +12,14 @@
   "cuda_verified": false,
   "training_backend": "cpu",
   "worlds": 1,
-  "last_training_seed": 1000,
+  "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "Review Claude L1 preregistered credit-association protocol, matching contexts and temporal null/multiple-lag controls.",
-    "Reconstruct exact learner baseline/normalization from raw rewards with core-parity checks, or export actual normalized learning_signal in a log-only increment.",
-    "Allocate L1 only with exact common parent/source/seeds/budget and physical logging controls; keep reward/senses/LR unchanged.",
-    "Review Gemini calibration evidence with source/units and physical-vs-synthetic distinction; do not combine it with learning changes.",
-    "Keep held-out seeds10,11,200,201,202 and original scientific/invariant gates unchanged; no promotion."
+    "Implement/review bounded25s-versus5s duration runner with exact5s prefix and four-probe matched parent/control/child retention, then allocate exact source/output/budget.",
+    "Do not tune eligibility from unreplicated single-cell180ms peak; C2 is not proof that all learning signal is absent.",
+    "Continue Claude formal L1 null/power design and source-controlled learning diagnosis; no arbitrary weight averaging.",
+    "Obtain Gemini exact calibration/force-unit evidence and physical controls before sensory changes; keep separate from duration experiment.",
+    "Preserve held-out seeds, original-reference invariants and validated-best separation; no promotion."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -81,5 +81,7 @@
     "seed": 1002
   },
   "runtime_profile": "docs/runtime-profile-d2-result.json",
-  "full_training_reproducibility": "docs/logging-parity-d3-result.json"
+  "full_training_reproducibility": "docs/logging-parity-d3-result.json",
+  "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
+  "credit_replication": "docs/credit-replication-c2-result.json"
 }

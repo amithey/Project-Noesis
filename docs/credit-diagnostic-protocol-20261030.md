@@ -35,3 +35,16 @@ gpu-pilot/outputs/credit-diagnostic-c1-20261030/result.json.
 Claude owns the independent formal L1 draft; C1 supplies instrumentation parity
 and development evidence for review. A future preregistered multi-seed experiment
 must specify null validity/power and frozen behavioral retention independently.
+
+## Observed C1 development outcome
+
+Exact actual-core replay matched saved baseline.3431295071796494,
+variance.18232238840335277 and mass.9158370097426899. All returned normalization
+fields also match a real small LearningBrain test, not just a hand-coded EMA.
+
+There were453varying and109constant credit columns. The searched positive-lag
+maximum was r+.161698 at motor117575/180ms; negative-lag maxabsr.146616.499circular
+reference maxima gave99th percentile.154905 and rank.002. These are development
+descriptors, not calibrated significance or proof of a physical credit delay.
+C2 preregisters this exact neuron/lag/sign for separate seed1001/1002 logs;
+secondary peaks cannot replace that fixed-target replication result.

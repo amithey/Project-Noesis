@@ -36,3 +36,19 @@ gpu-pilot/outputs/credit-replication-c2-20261030. Held-out seeds remain reserved
 
 Claude's formal independent L1 design remains separate. C2 narrows the immediate
 question using C1 only for discovery and these seeds for a fixed-target check.
+
+## Observed outcome
+
+Both full5s reproductions completed;1001 took139.609s and1002 took140.234s,
+283.141s aggregate. Historical checkpoint AND all19trace arrays reproduced for
+both;990log rows/normalizer-state replay/invariant audits passed.
+
+The fixed C1 motor117575/180ms association did NOT reproduce its positive sign:
+1001 r=-.027298;1002 r=-.004728, versus discovery+.161698. Secondary searched
+peaks changed neuron and lag and cannot rescue the primary result. Do not tune
+eligibility to180ms or infer absence of all learning from this failure.
+
+Offline annotation audit explains109constant credit columns:60wing and49neck
+motor targets, none directly driven. Varying targets comprise389leg motor and
+64CNS circuit targets. This is expected scope, not a missing log signal.
+See credit-replication-c2-result.json and the SHA256 artifact manifest.
