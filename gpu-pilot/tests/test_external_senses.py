@@ -790,5 +790,3 @@ def test_process_signals_overflow_validation():
     # Each produces finite rate 1e308, but 1e308 + 1e308 overflows float64 to inf
     with pytest.raises(ValueError, match="non-finite or overflowed"):
         adapter_sum.process_signals({"c1": 1e308, "c2": 1e308})
-
-
