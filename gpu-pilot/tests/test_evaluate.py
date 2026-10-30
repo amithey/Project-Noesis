@@ -85,3 +85,27 @@ def test_standing_gate_requires_distinct_training_seeds_same_candidate(tmp_path)
     path.write_text(json.dumps(report))
     with pytest.raises(ValueError, match="Same parent and same candidate"):
         standing_gate(pairs)
+
+
+def test_summarize_includes_versioned_gait_metrics(tmp_path):
+    fixture(tmp_path / "case")
+    _, result = summarize(tmp_path / "case")
+    assert result["schema_version"] == "gait-metrics-v1.0"
+    assert "heading_forward_distance_mm" in result
+    assert "leg_step_cycles" in result
+    assert "locomotion_regime" in result
+    assert result["locomotion_regime"] in ("STATIC_STANDING", "DRAGGING_OR_SLIPPING", "COORDINATED_TRIPOD_WALKING")
+    for leg in ("LF", "LM", "LH", "RF", "RM", "RH"):
+        assert leg in result["leg_step_cycles"]
+        assert "step_count" in result["leg_step_cycles"][leg]
+
+
+def test_compare_includes_gait_differences(tmp_path):
+    fixture(tmp_path / "parent")
+    fixture(tmp_path / "cand")
+    comp = compare(tmp_path / "parent", tmp_path / "cand")
+    assert comp["schema_version"] == "gait-metrics-v1.0"
+    assert "heading_forward_change_mm" in comp
+    assert "total_steps_change" in comp
+    assert "locomotion_regime_before" in comp
+    assert "locomotion_regime_after" in comp

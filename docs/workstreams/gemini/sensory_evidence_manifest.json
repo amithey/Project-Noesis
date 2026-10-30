@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "owner": "gemini",
+  "issue": 20,
+  "branch": "gemini/flygym2-gait-validation",
+  "base_commit": "99db49f50e8a798a63be3d5e2397ebce58448937",
+  "checkout": "C:/dev/noesis-gemini-gait",
+  "files": {
+    "gpu-pilot/src/noesis_gpu/external_senses.py": {
+      "sha256": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4",
+      "bytes": 37001
+    },
+    "gpu-pilot/tests/test_external_senses.py": {
+      "sha256": "ed8ea4fb8937e56663c44c9211b58797d4117ae806dd1b24b9b007231b6963b3",
+      "bytes": 35436
+    },
+    "docs/workstreams/gemini/sensory_mapping_and_validation_report.md": {
+      "sha256": "709ffdf0290386fcb0ec65ecd15ccf667602fab9758cc7a3c7b5347b67aadffd",
+      "bytes": 13677
+    },
+    "docs/workstreams/gemini/sensory_rectification_experiment_proposal.md": {
+      "sha256": "e8d3e845aefc1b05f48fd14cf3cb8f3a7a49bd556f79ec755cf9626b88ef304f",
+      "bytes": 3757
+    }
+  }
+}
