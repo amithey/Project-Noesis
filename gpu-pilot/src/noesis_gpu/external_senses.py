@@ -105,11 +105,25 @@ class ChannelSpec:
             indices_list.append(idx_val)
 
         # Validate gain
+        if isinstance(gain, (bool, np.bool_)):
+            raise TypeError(f"gain must be numeric, got boolean: {gain!r}")
+        if isinstance(gain, (complex, np.complexfloating)):
+            raise TypeError(f"gain must be real numeric, got complex: {gain!r}")
+        if not isinstance(gain, (int, float, np.integer, np.floating)):
+            raise TypeError(f"gain must be real numeric, got {type(gain).__name__}: {gain!r}")
         gain_val = float(gain)
         if not math.isfinite(gain_val) or gain_val < 0.0:
             raise ValueError(f"gain must be a finite non-negative float, got {gain!r}")
 
         # Validate signal bounds
+        for s_name, s_val in (("min_signal", min_signal), ("max_signal", max_signal), ("threshold", threshold)):
+            if isinstance(s_val, (bool, np.bool_)):
+                raise TypeError(f"{s_name} must be numeric, got boolean: {s_val!r}")
+            if isinstance(s_val, (complex, np.complexfloating)):
+                raise TypeError(f"{s_name} must be real numeric, got complex: {s_val!r}")
+            if not isinstance(s_val, (int, float, np.integer, np.floating)):
+                raise TypeError(f"{s_name} must be real numeric, got {type(s_val).__name__}: {s_val!r}")
+
         min_s = float(min_signal)
         max_s = float(max_signal)
         if not math.isfinite(min_s):
@@ -192,6 +206,10 @@ class ExternalSensoryAdapter:
 
         if isinstance(default_weight, (bool, np.bool_)):
             raise TypeError(f"default_weight must be numeric, got boolean: {default_weight!r}")
+        if isinstance(default_weight, (complex, np.complexfloating)):
+            raise TypeError(f"default_weight must be numeric, got complex: {default_weight!r}")
+        if not isinstance(default_weight, (int, float, np.integer, np.floating)):
+            raise TypeError(f"default_weight must be numeric, got {type(default_weight).__name__}: {default_weight!r}")
         weight_val = float(default_weight)
         if not math.isfinite(weight_val) or weight_val < 0.0:
             raise ValueError(f"default_weight must be a finite non-negative float, got: {default_weight!r}")
@@ -385,6 +403,12 @@ class ExternalSensoryAdapter:
                 raise TypeError(
                     f"Signal for channel '{ch_name}' must be numeric scalar, got boolean: {raw_val!r}"
                 )
+            if isinstance(raw_val, (complex, np.complexfloating)) or (
+                isinstance(raw_val, np.ndarray) and (np.iscomplexobj(raw_val) or raw_val.dtype.kind == "c")
+            ):
+                raise TypeError(
+                    f"Signal for channel '{ch_name}' must be real numeric scalar, got complex: {raw_val!r}"
+                )
             if isinstance(raw_val, (np.ndarray, list, tuple)):
                 arr = np.asarray(raw_val)
                 if arr.ndim != 0:
@@ -396,8 +420,12 @@ class ExternalSensoryAdapter:
                     raise TypeError(
                         f"Signal for channel '{ch_name}' must be numeric scalar, got boolean: {item!r}"
                     )
+                if isinstance(item, (complex, np.complexfloating)):
+                    raise TypeError(
+                        f"Signal for channel '{ch_name}' must be real numeric scalar, got complex: {item!r}"
+                    )
                 scalar_val = float(item)
-            elif isinstance(raw_val, (int, float, np.number)):
+            elif isinstance(raw_val, (int, float, np.integer, np.floating)):
                 scalar_val = float(raw_val)
             else:
                 raise TypeError(
@@ -426,6 +454,11 @@ class ExternalSensoryAdapter:
             else:
                 rate_hz = float((clamped_val - ch.threshold) * ch.gain)
 
+            if not math.isfinite(rate_hz):
+                raise ValueError(
+                    f"Computed firing rate for channel '{ch_name}' is non-finite or overflowed: {rate_hz}"
+                )
+
             if rate_hz <= 0.0:
                 continue
 
@@ -451,6 +484,11 @@ class ExternalSensoryAdapter:
                 agg = sum(channel_rates) / len(channel_rates)
             else:
                 agg = sum(channel_rates)
+
+            if not math.isfinite(agg):
+                raise ValueError(
+                    f"Aggregated firing rate for neuron {idx} is non-finite or overflowed: {agg}"
+                )
 
             final_rates.append(agg)
 
@@ -487,6 +525,10 @@ class ExternalSensoryAdapter:
         if weight is not None:
             if isinstance(weight, (bool, np.bool_)):
                 raise TypeError(f"weight must be numeric, got boolean: {weight!r}")
+            if isinstance(weight, (complex, np.complexfloating)):
+                raise TypeError(f"weight must be numeric and real, got complex: {weight!r}")
+            if not isinstance(weight, (int, float, np.integer, np.floating)):
+                raise TypeError(f"weight must be real numeric, got {type(weight).__name__}: {weight!r}")
             w = float(weight)
         else:
             w = self._default_weight
@@ -523,4 +565,214 @@ class ExternalSensoryAdapter:
             "drive_idx": drive_idx,
             "drive_rate_hz": drive_rate_hz,
             "drive_weight": drive_weight,
+        }
+
+    def augment_drive(
+        self,
+        base_drive: Mapping[str, Any],
+        signals: Optional[Mapping[str, Any]] = None,
+        weight: Optional[float] = None,
+    ) -> Dict[str, np.ndarray]:
+        """Augment a base drive dictionary with external sensory drive.
+
+        Validates the base drive dictionary against core `merge_drive` contract,
+        checks for neuron target overlaps, and returns a composed drive dictionary.
+
+        Args:
+            base_drive: Mapping containing existing drive arrays with keys:
+                - 'drive_idx': 1D sequence or ndarray of integer neuron indices.
+                - 'drive_rate_hz': 1D sequence or ndarray of finite, non-negative firing rates (Hz).
+                - 'drive_weight': 1D sequence or ndarray of finite, non-negative synaptic weights.
+            signals: Optional mapping from channel names to scalar measurements.
+            weight: Optional synaptic weight override for external channels.
+                If None, uses `default_weight`.
+
+        Returns:
+            Dictionary matching core `merge_drive` schema:
+            {
+                'drive_idx': 1D np.ndarray[np.int64],
+                'drive_rate_hz': 1D np.ndarray[np.float64],
+                'drive_weight': 1D np.ndarray[np.float64],
+            }
+
+        Raises:
+            TypeError: If base_drive is not a Mapping, or fields contain invalid types (e.g. booleans, floats in indices).
+            KeyError: If base_drive is missing required keys or contains unexpected keys.
+            ValueError: If array dimensions != 1, shapes mismatch, indices exceed n_neurons or are negative/duplicate,
+                rates/weights are negative or non-finite, or external drive targets overlap with base_drive.
+        """
+        if not isinstance(base_drive, Mapping):
+            raise TypeError(f"base_drive must be a Mapping, got {type(base_drive).__name__}")
+
+        required_keys = ("drive_idx", "drive_rate_hz", "drive_weight")
+        missing_keys = [k for k in required_keys if k not in base_drive]
+        if missing_keys:
+            raise KeyError(f"base_drive missing required key(s): {missing_keys}")
+        extra_keys = [k for k in base_drive if k not in required_keys]
+        if extra_keys:
+            raise KeyError(f"base_drive contains unexpected key(s): {extra_keys}")
+
+        raw_idx = base_drive["drive_idx"]
+        raw_rate = base_drive["drive_rate_hz"]
+        raw_weight = base_drive["drive_weight"]
+
+        # Validate drive_idx
+        if isinstance(raw_idx, (bool, np.bool_)):
+            raise TypeError(f"drive_idx must be an integer sequence or array, got boolean: {raw_idx!r}")
+
+        if isinstance(raw_idx, np.ndarray):
+            if raw_idx.dtype.kind == "b":
+                raise TypeError("drive_idx must have integer dtype, got boolean array")
+            if not np.issubdtype(raw_idx.dtype, np.integer):
+                raise TypeError(f"drive_idx must have integer dtype, got {raw_idx.dtype}")
+            if raw_idx.ndim != 1:
+                raise ValueError(f"drive_idx must be a 1D array, got ndim={raw_idx.ndim} with shape {raw_idx.shape}")
+            base_idx = raw_idx.astype(np.int64, copy=False)
+        elif isinstance(raw_idx, (list, tuple)):
+            for item in raw_idx:
+                if isinstance(item, (bool, np.bool_)):
+                    raise TypeError(f"drive_idx elements must be integers, got boolean: {item!r}")
+                if not isinstance(item, (int, np.integer)):
+                    raise TypeError(f"drive_idx elements must be integers, got {type(item).__name__}: {item!r}")
+            base_idx = np.asarray(raw_idx, dtype=np.int64)
+            if base_idx.ndim != 1:
+                raise ValueError(f"drive_idx must be a 1D sequence, got ndim={base_idx.ndim} with shape {base_idx.shape}")
+        else:
+            raise TypeError(f"drive_idx must be a 1D array or sequence, got {type(raw_idx).__name__}")
+
+        if len(base_idx) > 0:
+            if np.any(base_idx < 0):
+                raise ValueError("drive_idx must contain non-negative integer indices")
+            if np.any(base_idx >= self._n_neurons):
+                raise ValueError(
+                    f"drive_idx contains indices exceeding connectome size n_neurons={self._n_neurons}"
+                )
+            if len(np.unique(base_idx)) != len(base_idx):
+                raise ValueError("drive_idx contains duplicate neuron indices")
+
+        # Validate drive_rate_hz
+        if isinstance(raw_rate, (bool, np.bool_)):
+            raise TypeError(f"drive_rate_hz must be numeric, got boolean: {raw_rate!r}")
+        if isinstance(raw_rate, (complex, np.complexfloating)):
+            raise TypeError(f"drive_rate_hz must be numeric, got complex: {raw_rate!r}")
+
+        if isinstance(raw_rate, np.ndarray):
+            if raw_rate.dtype.kind == "b":
+                raise TypeError("drive_rate_hz must be numeric, got boolean array")
+            if raw_rate.dtype.kind == "c" or np.iscomplexobj(raw_rate) or np.issubdtype(raw_rate.dtype, np.complexfloating):
+                raise TypeError(f"drive_rate_hz must be numeric, got complex dtype {raw_rate.dtype}")
+            if raw_rate.dtype.kind not in "fiu":
+                raise TypeError(f"drive_rate_hz must be numeric, got dtype {raw_rate.dtype}")
+            if raw_rate.ndim != 1:
+                raise ValueError(f"drive_rate_hz must be a 1D array, got ndim={raw_rate.ndim} with shape {raw_rate.shape}")
+            if raw_rate.dtype == object:
+                for item in raw_rate:
+                    if isinstance(item, (bool, np.bool_)):
+                        raise TypeError(f"drive_rate_hz elements must be numeric, got boolean: {item!r}")
+                    if isinstance(item, (complex, np.complexfloating)):
+                        raise TypeError(f"drive_rate_hz elements must be numeric, got complex: {item!r}")
+                    if not isinstance(item, (int, float, np.integer, np.floating)):
+                        raise TypeError(f"drive_rate_hz elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_rate = raw_rate.astype(np.float64, copy=False)
+        elif isinstance(raw_rate, (list, tuple)):
+            for item in raw_rate:
+                if isinstance(item, (bool, np.bool_)):
+                    raise TypeError(f"drive_rate_hz elements must be numeric, got boolean: {item!r}")
+                if isinstance(item, (complex, np.complexfloating)):
+                    raise TypeError(f"drive_rate_hz elements must be numeric, got complex: {item!r}")
+                if not isinstance(item, (int, float, np.integer, np.floating)):
+                    raise TypeError(f"drive_rate_hz elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_rate = np.asarray(raw_rate, dtype=np.float64)
+            if base_rate.ndim != 1:
+                raise ValueError(f"drive_rate_hz must be a 1D sequence, got ndim={base_rate.ndim} with shape {base_rate.shape}")
+        else:
+            raise TypeError(f"drive_rate_hz must be a 1D array or sequence, got {type(raw_rate).__name__}")
+
+        if len(base_rate) != len(base_idx):
+            raise ValueError(
+                f"drive_rate_hz length ({len(base_rate)}) does not match drive_idx length ({len(base_idx)})"
+            )
+
+        if len(base_rate) > 0:
+            if not np.all(np.isfinite(base_rate)):
+                raise ValueError("drive_rate_hz contains non-finite values (NaN or Inf)")
+            if np.any(base_rate < 0.0):
+                raise ValueError("drive_rate_hz contains negative rates")
+
+        # Validate drive_weight
+        if isinstance(raw_weight, (bool, np.bool_)):
+            raise TypeError(f"drive_weight must be numeric, got boolean: {raw_weight!r}")
+        if isinstance(raw_weight, (complex, np.complexfloating)):
+            raise TypeError(f"drive_weight must be numeric, got complex: {raw_weight!r}")
+
+        if isinstance(raw_weight, np.ndarray):
+            if raw_weight.dtype.kind == "b":
+                raise TypeError("drive_weight must be numeric, got boolean array")
+            if raw_weight.dtype.kind == "c" or np.iscomplexobj(raw_weight) or np.issubdtype(raw_weight.dtype, np.complexfloating):
+                raise TypeError(f"drive_weight must be numeric, got complex dtype {raw_weight.dtype}")
+            if raw_weight.dtype.kind not in "fiu":
+                raise TypeError(f"drive_weight must be numeric, got dtype {raw_weight.dtype}")
+            if raw_weight.ndim != 1:
+                raise ValueError(f"drive_weight must be a 1D array, got ndim={raw_weight.ndim} with shape {raw_weight.shape}")
+            if raw_weight.dtype == object:
+                for item in raw_weight:
+                    if isinstance(item, (bool, np.bool_)):
+                        raise TypeError(f"drive_weight elements must be numeric, got boolean: {item!r}")
+                    if isinstance(item, (complex, np.complexfloating)):
+                        raise TypeError(f"drive_weight elements must be numeric, got complex: {item!r}")
+                    if not isinstance(item, (int, float, np.integer, np.floating)):
+                        raise TypeError(f"drive_weight elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_weight = raw_weight.astype(np.float64, copy=False)
+        elif isinstance(raw_weight, (list, tuple)):
+            for item in raw_weight:
+                if isinstance(item, (bool, np.bool_)):
+                    raise TypeError(f"drive_weight elements must be numeric, got boolean: {item!r}")
+                if isinstance(item, (complex, np.complexfloating)):
+                    raise TypeError(f"drive_weight elements must be numeric, got complex: {item!r}")
+                if not isinstance(item, (int, float, np.integer, np.floating)):
+                    raise TypeError(f"drive_weight elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_weight = np.asarray(raw_weight, dtype=np.float64)
+            if base_weight.ndim != 1:
+                raise ValueError(f"drive_weight must be a 1D sequence, got ndim={base_weight.ndim} with shape {base_weight.shape}")
+        else:
+            raise TypeError(f"drive_weight must be a 1D array or sequence, got {type(raw_weight).__name__}")
+
+        if len(base_weight) != len(base_idx):
+            raise ValueError(
+                f"drive_weight length ({len(base_weight)}) does not match drive_idx length ({len(base_idx)})"
+            )
+
+        if len(base_weight) > 0:
+            if not np.all(np.isfinite(base_weight)):
+                raise ValueError("drive_weight contains non-finite values (NaN or Inf)")
+            if np.any(base_weight < 0.0):
+                raise ValueError("drive_weight contains negative weights")
+
+        # Evaluate external drive
+        ext_dict = self.as_drive_dict(signals, weight=weight)
+        ext_idx = ext_dict["drive_idx"]
+        ext_rate = ext_dict["drive_rate_hz"]
+        ext_weight = ext_dict["drive_weight"]
+
+        # If disabled or no signal produces drive, preserve base drive values exactly
+        if len(ext_idx) == 0:
+            return {
+                "drive_idx": np.array(base_idx, dtype=np.int64, copy=True),
+                "drive_rate_hz": np.array(base_rate, dtype=np.float64, copy=True),
+                "drive_weight": np.array(base_weight, dtype=np.float64, copy=True),
+            }
+
+        # Check for overlap between external target neurons and base drive neurons
+        overlap = np.intersect1d(base_idx, ext_idx)
+        if len(overlap) > 0:
+            raise ValueError(
+                f"sensory pathways overlap: external targets {overlap.tolist()} "
+                f"already present in base_drive"
+            )
+
+        # Deterministic disjoint composition
+        return {
+            "drive_idx": np.concatenate([base_idx, ext_idx]).astype(np.int64),
+            "drive_rate_hz": np.concatenate([base_rate, ext_rate]).astype(np.float64),
+            "drive_weight": np.concatenate([base_weight, ext_weight]).astype(np.float64),
         }

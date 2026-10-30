@@ -401,3 +401,394 @@ def test_core_merge_drive_contract_compatibility():
     overlapping_part = (np.array([15, 20], dtype=np.int64), np.array([10.0, 10.0]), 400.0)
     with pytest.raises(ValueError, match="sensory pathways overlap"):
         merge_drive([overlapping_part, part])
+
+
+def test_augment_drive_actual_core_schema():
+    """augment_drive accepts actual core merge_drive output and performs deterministic disjoint composition."""
+    # Build a base drive dictionary directly via core merge_drive
+    mock_proprio = (np.array([1, 2, 3], dtype=np.int64), np.array([10.0, 20.0, 30.0], dtype=np.float64), 400.0)
+    mock_balance = (np.array([4, 5], dtype=np.int64), np.array([15.0, 25.0], dtype=np.float64), 400.0)
+    base_drive = merge_drive([mock_proprio, mock_balance])
+
+    # Configure external sensory adapter
+    ch = ChannelSpec("light", neuron_indices=[10, 12], gain=50.0)
+    adapter = ExternalSensoryAdapter(n_neurons=50, channels=[ch], default_weight=300.0)
+
+    # Augment base drive with external signal
+    augmented = adapter.augment_drive(base_drive, signals={"light": 0.5})
+
+    assert isinstance(augmented, dict)
+    assert set(augmented.keys()) == {"drive_idx", "drive_rate_hz", "drive_weight"}
+
+    # Validate deterministic disjoint composition: base targets followed by external targets
+    expected_idx = np.array([1, 2, 3, 4, 5, 10, 12], dtype=np.int64)
+    expected_rates = np.array([10.0, 20.0, 30.0, 15.0, 25.0, 25.0, 25.0], dtype=np.float64)
+    expected_weights = np.array([400.0, 400.0, 400.0, 400.0, 400.0, 300.0, 300.0], dtype=np.float64)
+
+    np.testing.assert_array_equal(augmented["drive_idx"], expected_idx)
+    np.testing.assert_allclose(augmented["drive_rate_hz"], expected_rates)
+    np.testing.assert_allclose(augmented["drive_weight"], expected_weights)
+
+    assert augmented["drive_idx"].dtype == np.int64
+    assert augmented["drive_rate_hz"].dtype == np.float64
+    assert augmented["drive_weight"].dtype == np.float64
+
+    # Test custom weight override
+    aug_override = adapter.augment_drive(base_drive, signals={"light": 0.5}, weight=500.0)
+    np.testing.assert_allclose(aug_override["drive_weight"][-2:], np.array([500.0, 500.0]))
+
+
+def test_augment_drive_disabled_and_no_signal_preserves_base_drive():
+    """Disabled adapter or absence of driving signals preserves base drive values exactly with NO random or baseline drive."""
+    mock_part = (np.array([6, 7], dtype=np.int64), np.array([45.0, 55.0], dtype=np.float64), 350.0)
+    base_drive = merge_drive([mock_part])
+
+    base_idx_orig = base_drive["drive_idx"].copy()
+    base_rate_orig = base_drive["drive_rate_hz"].copy()
+    base_weight_orig = base_drive["drive_weight"].copy()
+
+    ch = ChannelSpec("odor", neuron_indices=[20], gain=100.0, threshold=0.3)
+    adapter = ExternalSensoryAdapter(n_neurons=50, channels=[ch])
+
+    # 1. signals=None -> exact base drive values preserved
+    res_none = adapter.augment_drive(base_drive, signals=None)
+    np.testing.assert_array_equal(res_none["drive_idx"], base_idx_orig)
+    np.testing.assert_allclose(res_none["drive_rate_hz"], base_rate_orig)
+    np.testing.assert_allclose(res_none["drive_weight"], base_weight_orig)
+
+    # 2. Empty signals dict -> exact base drive values preserved
+    res_empty = adapter.augment_drive(base_drive, signals={})
+    np.testing.assert_array_equal(res_empty["drive_idx"], base_idx_orig)
+    np.testing.assert_allclose(res_empty["drive_rate_hz"], base_rate_orig)
+    np.testing.assert_allclose(res_empty["drive_weight"], base_weight_orig)
+
+    # 3. Sub-threshold signal -> rate is 0 -> exact base drive values preserved
+    res_subthresh = adapter.augment_drive(base_drive, signals={"odor": 0.2})
+    np.testing.assert_array_equal(res_subthresh["drive_idx"], base_idx_orig)
+    np.testing.assert_allclose(res_subthresh["drive_rate_hz"], base_rate_orig)
+    np.testing.assert_allclose(res_subthresh["drive_weight"], base_weight_orig)
+
+    # 4. Disabled adapter with strong supra-threshold signal -> exact base drive values preserved
+    adapter.disable()
+    assert not adapter.enabled
+    res_disabled = adapter.augment_drive(base_drive, signals={"odor": 1.0})
+    np.testing.assert_array_equal(res_disabled["drive_idx"], base_idx_orig)
+    np.testing.assert_allclose(res_disabled["drive_rate_hz"], base_rate_orig)
+    np.testing.assert_allclose(res_disabled["drive_weight"], base_weight_orig)
+
+    # Ensure caller input dict and arrays were NOT modified in place
+    np.testing.assert_array_equal(base_drive["drive_idx"], base_idx_orig)
+    np.testing.assert_array_equal(base_drive["drive_rate_hz"], base_rate_orig)
+    np.testing.assert_array_equal(base_drive["drive_weight"], base_weight_orig)
+
+
+def test_augment_drive_overlap_failure():
+    """External drive targeting any neuron already present in base_drive raises ValueError."""
+    # Base drive targets neurons 5 and 8
+    base_drive = {
+        "drive_idx": np.array([5, 8], dtype=np.int64),
+        "drive_rate_hz": np.array([50.0, 50.0], dtype=np.float64),
+        "drive_weight": np.array([400.0, 400.0], dtype=np.float64),
+    }
+
+    # External channel also targets neuron 8
+    ch = ChannelSpec("conflict", neuron_indices=[8, 15], gain=10.0)
+    adapter = ExternalSensoryAdapter(n_neurons=50, channels=[ch])
+
+    with pytest.raises(ValueError, match="sensory pathways overlap"):
+        adapter.augment_drive(base_drive, signals={"conflict": 1.0})
+
+
+def test_augment_drive_invalid_base_drive_inputs():
+    """Verify strict validation of base_drive types, keys, shapes, rates, indices, and weights."""
+    adapter = ExternalSensoryAdapter(n_neurons=50)
+
+    valid_drive = {
+        "drive_idx": np.array([1, 2], dtype=np.int64),
+        "drive_rate_hz": np.array([10.0, 20.0], dtype=np.float64),
+        "drive_weight": np.array([400.0, 400.0], dtype=np.float64),
+    }
+
+    # 1. Non-mapping base_drive
+    for bad_base in (None, [1, 2], 123, "dict", True):
+        with pytest.raises(TypeError, match="must be a Mapping"):
+            adapter.augment_drive(bad_base)  # type: ignore
+
+    # 2. Missing required keys
+    with pytest.raises(KeyError, match="missing required key"):
+        adapter.augment_drive({})
+    with pytest.raises(KeyError, match="missing required key"):
+        adapter.augment_drive({"drive_idx": np.array([1])})
+    with pytest.raises(KeyError, match="missing required key"):
+        adapter.augment_drive({"drive_idx": np.array([1]), "drive_rate_hz": np.array([10.0])})
+
+    # 3. Unexpected keys
+    with pytest.raises(KeyError, match="unexpected key"):
+        adapter.augment_drive({**valid_drive, "unexpected": 123})
+
+    # 4. Invalid drive_idx
+    # Boolean
+    with pytest.raises(TypeError, match="must be an integer"):
+        adapter.augment_drive({**valid_drive, "drive_idx": True})
+    with pytest.raises(TypeError, match="must have integer dtype"):
+        adapter.augment_drive({**valid_drive, "drive_idx": np.array([True, False])})
+    with pytest.raises(TypeError, match="must be integers"):
+        adapter.augment_drive({**valid_drive, "drive_idx": [True, 1]})
+
+    # Float (rejection without silent truncation)
+    with pytest.raises(TypeError, match="must have integer dtype"):
+        adapter.augment_drive({**valid_drive, "drive_idx": np.array([1.5, 2.5])})
+    with pytest.raises(TypeError, match="must be integers"):
+        adapter.augment_drive({**valid_drive, "drive_idx": [1.5, 2.5]})
+
+    # Multidimensional drive_idx
+    with pytest.raises(ValueError, match="1D"):
+        adapter.augment_drive({
+            "drive_idx": np.ones((2, 2), dtype=np.int64),
+            "drive_rate_hz": np.ones((2, 2)),
+            "drive_weight": np.ones((2, 2)),
+        })
+
+    # Negative index
+    with pytest.raises(ValueError, match="non-negative"):
+        adapter.augment_drive({**valid_drive, "drive_idx": np.array([-1, 2], dtype=np.int64)})
+
+    # Index exceeding n_neurons
+    with pytest.raises(ValueError, match="exceeding connectome size"):
+        adapter.augment_drive({**valid_drive, "drive_idx": np.array([1, 50], dtype=np.int64)})
+
+    # Duplicate neuron indices in base_drive
+    with pytest.raises(ValueError, match="duplicate neuron indices"):
+        adapter.augment_drive({**valid_drive, "drive_idx": np.array([2, 2], dtype=np.int64)})
+
+    # 5. Invalid drive_rate_hz
+    # Boolean
+    with pytest.raises(TypeError, match="must be numeric"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": True})
+    with pytest.raises(TypeError, match="must be numeric"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": np.array([True, False])})
+    with pytest.raises(TypeError, match="must be numeric"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": [True, 10.0]})
+
+    # Length mismatch
+    with pytest.raises(ValueError, match="length .* does not match"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": np.array([10.0])})
+
+    # Multidimensional rate
+    with pytest.raises(ValueError, match="1D"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": np.array([[10.0], [20.0]])})
+
+    # Negative rate
+    with pytest.raises(ValueError, match="negative rates"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": np.array([-10.0, 20.0])})
+
+    # Non-finite rate (NaN / Inf)
+    with pytest.raises(ValueError, match="non-finite"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": np.array([float("nan"), 20.0])})
+    with pytest.raises(ValueError, match="non-finite"):
+        adapter.augment_drive({**valid_drive, "drive_rate_hz": np.array([float("inf"), 20.0])})
+
+    # 6. Invalid drive_weight
+    # Boolean
+    with pytest.raises(TypeError, match="must be numeric"):
+        adapter.augment_drive({**valid_drive, "drive_weight": True})
+    with pytest.raises(TypeError, match="must be numeric"):
+        adapter.augment_drive({**valid_drive, "drive_weight": np.array([True, False])})
+
+    # Length mismatch
+    with pytest.raises(ValueError, match="length .* does not match"):
+        adapter.augment_drive({**valid_drive, "drive_weight": np.array([400.0])})
+
+    # Multidimensional weight
+    with pytest.raises(ValueError, match="1D"):
+        adapter.augment_drive({**valid_drive, "drive_weight": np.array([[400.0], [400.0]])})
+
+    # Negative weight
+    with pytest.raises(ValueError, match="negative weights"):
+        adapter.augment_drive({**valid_drive, "drive_weight": np.array([-400.0, 400.0])})
+
+    # Non-finite weight
+    with pytest.raises(ValueError, match="non-finite"):
+        adapter.augment_drive({**valid_drive, "drive_weight": np.array([float("nan"), 400.0])})
+
+    # 7. Invalid weight override argument
+    with pytest.raises(TypeError, match="must be numeric"):
+        adapter.augment_drive(valid_drive, weight=True)
+    with pytest.raises(ValueError, match="weight"):
+        adapter.augment_drive(valid_drive, weight=-10.0)
+    with pytest.raises(ValueError, match="weight"):
+        adapter.augment_drive(valid_drive, weight=float("nan"))
+
+
+def test_augment_drive_preserves_caller_arrays_immutability():
+    """Modifying arrays in the returned augmented drive dictionary never mutates caller arrays."""
+    orig_idx = np.array([1, 3], dtype=np.int64)
+    orig_rate = np.array([20.0, 30.0], dtype=np.float64)
+    orig_weight = np.array([400.0, 400.0], dtype=np.float64)
+
+    base_drive = {
+        "drive_idx": orig_idx,
+        "drive_rate_hz": orig_rate,
+        "drive_weight": orig_weight,
+    }
+
+    ch = ChannelSpec("gust", neuron_indices=[10], gain=20.0)
+    adapter = ExternalSensoryAdapter(n_neurons=50, channels=[ch])
+
+    # Augment with signals
+    res = adapter.augment_drive(base_drive, signals={"gust": 1.0})
+
+    # Mutate returned arrays
+    res["drive_idx"][0] = 999
+    res["drive_rate_hz"][0] = -999.0
+    res["drive_weight"][0] = -999.0
+
+    # Verify original arrays remain unaltered
+    assert orig_idx[0] == 1
+    assert orig_rate[0] == 20.0
+    assert orig_weight[0] == 400.0
+
+    # Also test disabled / no-signal branch
+    adapter.disable()
+    res_dis = adapter.augment_drive(base_drive, signals={"gust": 1.0})
+    res_dis["drive_idx"][0] = 888
+    res_dis["drive_rate_hz"][0] = -888.0
+    res_dis["drive_weight"][0] = -888.0
+
+    assert orig_idx[0] == 1
+    assert orig_rate[0] == 20.0
+    assert orig_weight[0] == 400.0
+
+
+def test_augment_drive_empty_base_drive_schema():
+    """An empty base drive conforming to schema keys merges cleanly with external senses."""
+    empty_base = {
+        "drive_idx": np.empty(0, dtype=np.int64),
+        "drive_rate_hz": np.empty(0, dtype=np.float64),
+        "drive_weight": np.empty(0, dtype=np.float64),
+    }
+
+    ch = ChannelSpec("signal_a", neuron_indices=[5], gain=75.0)
+    adapter = ExternalSensoryAdapter(n_neurons=20, channels=[ch])
+
+    # When external signal present: augmented drive contains external targets
+    aug = adapter.augment_drive(empty_base, signals={"signal_a": 1.0})
+    np.testing.assert_array_equal(aug["drive_idx"], np.array([5], dtype=np.int64))
+    np.testing.assert_allclose(aug["drive_rate_hz"], np.array([75.0], dtype=np.float64))
+
+    # When external signals absent/disabled: returns empty arrays
+    aug_empty = adapter.augment_drive(empty_base, signals=None)
+    assert len(aug_empty["drive_idx"]) == 0
+    assert len(aug_empty["drive_rate_hz"]) == 0
+    assert len(aug_empty["drive_weight"]) == 0
+
+
+def test_augment_drive_rejects_complex_rates_and_weights():
+    """Verify that complex rates and weights are rejected before any cast for ndarray and sequence."""
+    adapter = ExternalSensoryAdapter(n_neurons=50)
+    base_idx = np.array([1], dtype=np.int64)
+    valid_rate = np.array([10.0], dtype=np.float64)
+    valid_weight = np.array([400.0], dtype=np.float64)
+
+    # 1. Complex ndarray for drive_rate_hz (with non-zero and zero imaginary parts)
+    for bad_rate in (
+        np.array([1 + 7j]),
+        np.array([1 + 0j]),
+        np.array([1.0 + 0.0j], dtype=np.complex64),
+        np.array([1.0 + 0.0j], dtype=np.complex128),
+        np.array([1 + 7j], dtype=object),
+        np.array([1 + 0j], dtype=object),
+    ):
+        with pytest.raises(TypeError, match="must be numeric"):
+            adapter.augment_drive({
+                "drive_idx": base_idx,
+                "drive_rate_hz": bad_rate,
+                "drive_weight": valid_weight,
+            })
+
+    # 2. Complex sequence for drive_rate_hz
+    for bad_rate_seq in (
+        [1 + 7j],
+        [1 + 0j],
+        [np.complex128(1 + 0j)],
+        (1 + 7j,),
+        (np.complex64(1 + 0j),),
+    ):
+        with pytest.raises(TypeError, match="must be numeric"):
+            adapter.augment_drive({
+                "drive_idx": base_idx,
+                "drive_rate_hz": bad_rate_seq,
+                "drive_weight": valid_weight,
+            })
+
+    # 3. Complex ndarray for drive_weight (with non-zero and zero imaginary parts)
+    for bad_weight in (
+        np.array([400 + 5j]),
+        np.array([400 + 0j]),
+        np.array([400.0 + 0.0j], dtype=np.complex64),
+        np.array([400.0 + 0.0j], dtype=np.complex128),
+        np.array([400 + 5j], dtype=object),
+        np.array([400 + 0j], dtype=object),
+    ):
+        with pytest.raises(TypeError, match="must be numeric"):
+            adapter.augment_drive({
+                "drive_idx": base_idx,
+                "drive_rate_hz": valid_rate,
+                "drive_weight": bad_weight,
+            })
+
+    # 4. Complex sequence for drive_weight
+    for bad_weight_seq in (
+        [400 + 5j],
+        [400 + 0j],
+        [np.complex128(400 + 0j)],
+        (400 + 5j,),
+        (np.complex64(400 + 0j),),
+    ):
+        with pytest.raises(TypeError, match="must be numeric"):
+            adapter.augment_drive({
+                "drive_idx": base_idx,
+                "drive_rate_hz": valid_rate,
+                "drive_weight": bad_weight_seq,
+            })
+
+    # 5. Complex weight override argument
+    for bad_w in (400 + 0j, 400 + 5j, np.complex128(400 + 0j)):
+        with pytest.raises(TypeError, match="must be numeric"):
+            adapter.augment_drive(
+                {
+                    "drive_idx": base_idx,
+                    "drive_rate_hz": valid_rate,
+                    "drive_weight": valid_weight,
+                },
+                weight=bad_w,
+            )
+
+
+def test_process_signals_overflow_validation():
+    """Verify that rate computation and multi-channel aggregation overflow raise clear ValueError."""
+    # 1. Per-channel rate computation overflow
+    ch_overflow = ChannelSpec(
+        "huge",
+        neuron_indices=[2],
+        gain=1e300,
+        min_signal=0.0,
+        max_signal=1e300,
+    )
+    adapter = ExternalSensoryAdapter(n_neurons=10, channels=[ch_overflow])
+    with pytest.raises(ValueError, match="non-finite or overflowed"):
+        adapter.process_signals({"huge": 1e300})
+
+    # 2. Multi-channel aggregation sum overflow (finite individual rates summing to inf)
+    ch1 = ChannelSpec("c1", neuron_indices=[7], gain=1.0, min_signal=0.0, max_signal=1.5e308)
+    ch2 = ChannelSpec("c2", neuron_indices=[7], gain=1.0, min_signal=0.0, max_signal=1.5e308)
+    adapter_sum = ExternalSensoryAdapter(
+        n_neurons=10,
+        channels=[ch1, ch2],
+        aggregation_mode="sum",
+    )
+    # Each produces finite rate 1e308, but 1e308 + 1e308 overflows float64 to inf
+    with pytest.raises(ValueError, match="non-finite or overflowed"):
+        adapter_sum.process_signals({"c1": 1e308, "c2": 1e308})
+
+

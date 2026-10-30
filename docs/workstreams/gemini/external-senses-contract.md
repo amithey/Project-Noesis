@@ -3,9 +3,9 @@
 **Workstream**: External Senses and Environmental Response  
 **Owner / Role**: Gemini via Antigravity (#20)  
 **Deliverables**:
-- Implementation: [`gpu-pilot/src/noesis_gpu/external_senses.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini/gpu-pilot/src/noesis_gpu/external_senses.py)
-- Synthetic Tests: [`gpu-pilot/tests/test_external_senses.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini/gpu-pilot/tests/test_external_senses.py)
-- Specification Contract: [`docs/workstreams/gemini/external-senses-contract.md`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini/docs/workstreams/gemini/external-senses-contract.md)
+- Implementation: [`gpu-pilot/src/noesis_gpu/external_senses.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini-r2/gpu-pilot/src/noesis_gpu/external_senses.py)
+- Synthetic Tests: [`gpu-pilot/tests/test_external_senses.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini-r2/gpu-pilot/tests/test_external_senses.py)
+- Specification Contract: [`docs/workstreams/gemini/external-senses-contract.md`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini-r2/docs/workstreams/gemini/external-senses-contract.md)
 
 ---
 
@@ -23,7 +23,7 @@ This increment provides an **opt-in neural sensory-drive adapter** that bridges 
 
 ## 2. Core Drive Contract Matching `merge_drive`
 
-In the core Noesis architecture ([`src/noesis/environment_senses.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini/src/noesis/environment_senses.py#L242-L251)), sensory pathways are merged into network Poisson stimulation parameters via `merge_drive(parts)`:
+In the core Noesis architecture ([`src/noesis/environment_senses.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini-r2/src/noesis/environment_senses.py#L242-L251)), sensory pathways are merged into network Poisson stimulation parameters via `merge_drive(parts)`:
 
 ```python
 def merge_drive(parts):
@@ -40,18 +40,31 @@ def merge_drive(parts):
     }
 ```
 
-The adapter provides two direct representations matching this contract:
+The adapter provides three direct representations matching this contract:
 
-1. **Drive Part Tuple** (`adapter.as_drive_part(signals)`):
+1. **Drive Part Tuple** (`adapter.as_drive_part(signals, weight=None)`):
    - Returns `(drive_idx, drive_rate_hz, weight)`:
      - `drive_idx`: `np.ndarray` of `np.int64`, strictly unique target neuron indices in canonical ascending order.
      - `drive_rate_hz`: `np.ndarray` of `np.float64`, non-negative Poisson event rates in Hz.
      - `weight`: `float`, synaptic conductance weight (dimensionless).
    - Can be passed directly into `merge_drive([..., adapter.as_drive_part(signals)])`.
 
-2. **Drive Dictionary** (`adapter.as_drive_dict(signals)`):
+2. **Drive Dictionary** (`adapter.as_drive_dict(signals, weight=None)`):
    - Returns `{ 'drive_idx': ..., 'drive_rate_hz': ..., 'drive_weight': ... }`.
    - Matches the dictionary format expected by `net.run(..., **drive)`.
+
+3. **Drive Dict Augmentation** (`adapter.augment_drive(base_drive, signals=None, weight=None)`):
+   - Directly augments an existing `base_drive` dictionary (such as returned by `merge_drive`) with external sensory drive.
+   - **Validation of `base_drive`**:
+     - Must be a `Mapping` with required keys `drive_idx`, `drive_rate_hz`, `drive_weight`.
+     - Validates shapes (all 1D arrays matching in length).
+     - Validates indices (strictly integers, bounded by `0 <= idx < n_neurons`, non-negative, unique).
+     - Validates rates (finite numeric values, non-negative rates >= 0.0 Hz).
+     - Validates weights (finite numeric values, non-negative conductance weights >= 0.0).
+   - **Overlap Enforcement**: Fails with `ValueError('sensory pathways overlap: ...')` if external channels target neurons already present in `base_drive`.
+   - **Deterministic Disjoint Composition**: Disjoint neuron drives are composed deterministically via concatenation.
+   - **Preservation of Caller Arrays**: Input arrays and dictionaries are never mutated.
+   - **Zero-Signal / Disabled Guarantee**: When adapter is disabled or external signals evoke no drive, `base_drive` values are preserved exactly with NO spontaneous bias, random activity, or baseline drive.
 
 ---
 
@@ -104,7 +117,7 @@ Caller-provided dictionaries and numpy arrays are never modified in-place.
 
 ## 5. Integration Proposal with `FrozenBrain`
 
-In [`gpu-pilot/src/noesis_gpu/controller.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini/gpu-pilot/src/noesis_gpu/controller.py), `FrozenBrain` manages sensory merging and network advancement:
+In [`gpu-pilot/src/noesis_gpu/controller.py`](file:///C:/Users/heyma/OneDrive/Desktop/מדעי%20המחשב/פרוייקטים/Project%20Noesis/outputs/team-dev-gemini-r2/gpu-pilot/src/noesis_gpu/controller.py), `FrozenBrain` manages sensory merging and network advancement:
 
 ```python
 class FrozenBrain:
@@ -121,6 +134,7 @@ class FrozenBrain:
     def step(self, observation, dt_ms):
         from noesis.environment_senses import merge_drive
         ...
+        # Option A: Merge via parts tuple
         parts = [
             (self.senses.idx, self.senses.drive(states), self.sensory_weight),
             (self.balance.idx, self.balance.drive(observation["up_body"], observation["omega"]),
@@ -130,12 +144,16 @@ class FrozenBrain:
             ext_part = self.external_adapter.as_drive_part(observation.get("external_senses"))
             if len(ext_part[0]) > 0:
                 parts.append(ext_part)
-
         drive = merge_drive(parts)
+
+        # Option B: Direct drive augmentation on base_drive dictionary
+        # base_drive = merge_drive(parts)
+        # if self.external_adapter is not None:
+        #     drive = self.external_adapter.augment_drive(base_drive, observation.get("external_senses"))
         ...
 ```
 
-Per current work order boundaries, `controller.py` remains unmodified. When the coordinator schedules controller integration, this pattern enables clean plug-and-play wiring.
+Per current work order boundaries, `controller.py` remains unmodified. When the coordinator schedules controller integration, either pattern enables clean plug-and-play wiring.
 
 ---
 

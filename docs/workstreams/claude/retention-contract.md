@@ -132,6 +132,109 @@ is meaningful for its experiment.
 - First increment: a practical structural/statistical audit, not a claim of
   biological memory fidelity.
 
+## Rollout-summary retention comparison (round two)
+
+`noesis_gpu.retention_audit.compare_rollout_summaries(before, after)` complements
+the checkpoint audit. Where `compare_checkpoints` inspects *stored weights*, this
+compares two *rollout evaluation summaries* — a `before` **parent** rollout and
+an `after` **candidate** rollout — to describe how locomotion behaviour moved.
+It never runs physics, never loads a connectome and never mutates its inputs; it
+reads already-computed summary dicts (of the shape produced by
+`noesis_gpu.evaluate.summarize`, with the context/provenance fields below
+attached by the caller).
+
+### Mandatory matched context — exact contract
+
+Both summaries MUST carry, and MUST agree on, this evaluation context by
+**strict equality**; a missing key raises `missing comparison metadata`, a
+differing value raises `mismatched comparison metadata`. Two rollouts run under
+different timing are not comparable, so we refuse rather than silently compare.
+
+| key | kind | match rule |
+| --- | --- | --- |
+| `seed` | int ≥ 0 (no bool) | strict equality |
+| `duration_s` | float > 0, finite | strict equality |
+| `body` | str | strict equality (body setup) |
+| `control_ms` | float > 0, finite | strict equality (control setup) |
+
+### Mandatory frozen evaluation metadata — exact contract
+
+A matched behavioural comparison is only meaningful across a **frozen**
+evaluation (weights held fixed, no learning/exploration during the rollout).
+Both summaries MUST carry these keys with exactly these values, or a
+`ValueError` is raised (`missing frozen evaluation metadata` /
+`frozen evaluation metadata ...`):
+
+| key | required value |
+| --- | --- |
+| `status` | `"completed_transport_pilot"` |
+| `learning` | `False` |
+| `motor_exploration` | `0` (integer; a bool is rejected) |
+| `weights_unchanged` | `True` |
+
+### Provenance — source must match, weight may differ
+
+Both summaries must **supply** `source_sha256` and `weight_sha256`; a missing
+one raises `missing provenance`. These are treated **differently**:
+
+- `source_sha256` identifies the evaluation source (fixed body/control/eval code
+  path). A matched comparison **requires the same source**, so a differing
+  `source_sha256` raises `mismatched provenance` (reported `source_sha256_match`
+  is therefore always `True` on a returned report).
+- `weight_sha256` is **expected to differ** between parent and candidate (that is
+  the point of the comparison); the report records both values and
+  `weight_sha256_match` but never requires equality.
+
+### Required metrics
+
+Both summaries must provide finite `standing_fraction` (in `[0, 1]`),
+`heading_forward_distance_mm`, `net_forward_displacement_mm`, non-negative
+`mean_stance_slip_mm_s`, and a `leg_step_counts` mapping. The mapping must hold
+**exactly the six canonical legs** `LF LM LH RF RM RH`, each with an integer,
+non-negative count (bools and fractional counts are rejected) so a fabricated or
+partial leg set cannot inflate the `>= 4`-legs gate. A missing metric key raises
+`missing rollout metric data`; a non-finite value raises.
+
+### Report contents
+
+- `context`, `frozen_evaluation`, `provenance`: the matched context, the frozen
+  evaluation metadata snapshot, and the hashes with match flags (`source` always
+  matching, `weight` possibly differing).
+- `standing`, `heading`, `net_forward_displacement`, `stance_slip`: each a
+  `{before, after, delta}` block (delta = candidate − parent).
+- `thresholds` and `threshold_checks`: per-rollout pass/fail for each
+  engineering gate, reported for **both** parent and candidate. Each check
+  carries a `role` of `"primary"` or `"sensitivity"`.
+
+  **Primary gates** (decide the headline verdict):
+  - `standing_fraction >= 0.90`
+  - `heading_forward_distance_mm >= 0.25` — **preregistered primary** forward
+    metric (distance along the commanded heading)
+  - `mean_stance_slip_mm_s <= 10.0`
+  - `>= 2` step cycles on `>= 4` legs
+
+  **Sensitivity gate** (reported, never decides the primary verdict):
+  - `net_forward_displacement_mm >= 0.25` — net straight-line displacement
+
+  The two forward metrics are **not interchangeable** and **both fields are
+  required**, so the primary heading gate can never be silently replaced by the
+  net displacement metric. `primary_gate_names` and `sensitivity_gate_names`
+  list the roles explicitly.
+- `candidate_meets_all_thresholds` / `parent_met_all_thresholds` are decided by
+  the **primary** gates only; `candidate_meets_sensitivity_thresholds` /
+  `parent_met_sensitivity_thresholds` report the sensitivity gate separately.
+- `regressed_gates` (any gate the parent passed but the candidate failed) and
+  `regressed_primary_gates` (that subset restricted to primary gates).
+
+### What it is **not**
+
+Threshold pass/fail is a per-rollout engineering gate, **not** a retention
+score. The comparison makes **no** claim of memory retention, **no** claim of
+forgetting, and **no** claim of statistical significance — a single matched pair
+proves none of those. A differing `weight_sha256` does not by itself imply a
+behavioural change; it is reported for traceability only (`source_sha256` must
+match or the comparison is refused).
+
 ## Tests
 
 `gpu-pilot/tests/test_retention_audit.py` builds tiny synthetic NPZ files (no
@@ -139,4 +242,14 @@ connectome/physics) covering: full retention, bounded learned change (with
 quantities), reset-state differences ignored, the ±50% boundary, and rejection
 of missing/non-finite/sign-flipped/out-of-bounds weights and incompatible
 topology/reference/motor-indices, plus a non-mutation (byte-identical files)
-check and JSON serializability.
+check and JSON serializability. For `compare_rollout_summaries` it adds
+synthetic stable, regressed, incompatible-context, missing-context,
+missing-provenance, missing-metric and non-finite cases, plus two cases
+isolating the primary/sensitivity split (heading passes while net fails, and
+net passes while heading fails), a missing-heading case, JSON serializability
+and an input non-mutation check. Focused repair regressions additionally cover:
+a differing `source_sha256` rejected while a differing `weight_sha256` is
+permitted and reported; fabricated/partial leg sets, bool and fractional leg
+counts rejected; missing/wrong frozen metadata (including `motor_exploration`
+rejecting a bool) rejected; strict-equality timing (sub-`isclose` `control_ms`
+drift now fatal); and negative-seed / non-positive-duration rejection.

@@ -1,0 +1,81 @@
+{
+  "status": "retrospective_development_comparison_not_memory_proof",
+  "source_runtime_snapshot": "40e3c2a92dd49b7f018a6053a1d1517b0c78d43831ec1e356b1288078e7ef6c1",
+  "runtime_commits": [
+    "a4fba124a977096437f1378894f997614ec34f3c",
+    "08ee76fa34def23fa6d05d17dece28d08b65979e"
+  ],
+  "rows": [
+    {
+      "training_seed": 1001,
+      "probe": 10006,
+      "standing_delta": -0.08181818181818179,
+      "heading_delta_mm": -0.03637075864250561,
+      "net_delta_mm": -0.016651710922657808,
+      "regressed_primary_gates": [
+        "standing_fraction"
+      ],
+      "parent_primary_pass": true,
+      "candidate_primary_pass": false
+    },
+    {
+      "training_seed": 1001,
+      "probe": 10007,
+      "standing_delta": -0.07070707070707072,
+      "heading_delta_mm": 0.8143450849426854,
+      "net_delta_mm": 0.4171664064095093,
+      "regressed_primary_gates": [
+        "standing_fraction"
+      ],
+      "parent_primary_pass": true,
+      "candidate_primary_pass": false
+    },
+    {
+      "training_seed": 1000,
+      "probe": 10006,
+      "standing_delta": -0.033333333333333326,
+      "heading_delta_mm": -1.8658978456820954,
+      "net_delta_mm": -1.2583756339035905,
+      "regressed_primary_gates": [
+        "heading_forward_distance_mm"
+      ],
+      "parent_primary_pass": true,
+      "candidate_primary_pass": false
+    },
+    {
+      "training_seed": 1000,
+      "probe": 10007,
+      "standing_delta": -0.03232323232323231,
+      "heading_delta_mm": 0.6030323964725077,
+      "net_delta_mm": 0.6923011172888163,
+      "regressed_primary_gates": [],
+      "parent_primary_pass": true,
+      "candidate_primary_pass": true
+    },
+    {
+      "training_seed": 1002,
+      "probe": 10006,
+      "standing_delta": -0.0575757575757575,
+      "heading_delta_mm": 0.21056160903704252,
+      "net_delta_mm": 0.25458469586122806,
+      "regressed_primary_gates": [],
+      "parent_primary_pass": true,
+      "candidate_primary_pass": true
+    },
+    {
+      "training_seed": 1002,
+      "probe": 10007,
+      "standing_delta": 0.025252525252525304,
+      "heading_delta_mm": -0.3810040928238443,
+      "net_delta_mm": -0.486700777088984,
+      "regressed_primary_gates": [
+        "heading_forward_distance_mm"
+      ],
+      "parent_primary_pass": true,
+      "candidate_primary_pass": false
+    }
+  ],
+  "model_promoted": false,
+  "walking_proven": false,
+  "notes": "Reused development probes; exact matching frozen runtime/body/core/package context checked. A single paired evaluation does not prove retention/forgetting statistically."
+}

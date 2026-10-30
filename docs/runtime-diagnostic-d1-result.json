@@ -24,5 +24,11 @@
   "walking_proven": false,
   "validator_defect": "Expected scalar seed; actual frozen schema uses seeds list. Corrected after run; original result preserved.",
   "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30",
-  "archive_sha256": "e3bd201ea6493d5c6776f2afda46f071ef546ea370dd6faeee2b9b3a5e079483"
+  "archive_sha256": "e3bd201ea6493d5c6776f2afda46f071ef546ea370dd6faeee2b9b3a5e079483",
+  "additional_archived_evidence": {
+    "archive": "locomotion-e3-e6-evidence.zip",
+    "files": 103,
+    "sha256": "74304ec3c7f8dab3417366e6a72faa57906aa40355662c77c1d53296f382a82b",
+    "includes": "Completed E3/E4/E5retry and explicitly partial E5original/E6; no raw data/cache"
+  }
 }

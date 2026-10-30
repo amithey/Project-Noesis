@@ -45,7 +45,7 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "strict_context_repair_ready_for_review_37tests",
+      "managed_session_status": "strict_context37tests_reviewed_and_copied_to_integration",
       "managed_assignment": "Learning/memory retention; focused validation repair before LR hypothesis",
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2"
@@ -68,7 +68,7 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "real_finite_sensory_repair_developing",
+      "managed_session_status": "provider_failed_remote_connection_edits_preserved_coordinator_fixed_integration_copy",
       "managed_assignment": "External senses/environment reactions; focused drive validation repair",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium",
@@ -93,13 +93,13 @@
     "codex": "Standing and walking; integration and shared simulation scheduling",
     "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
     "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
-    "status": "focused_round2_semantic_repairs_dispatched_20261030",
+    "status": "focused_repairs_integrated_offline186passed1skipped",
     "shared_host": "one full simulation at a time; code and synthetic tests parallel",
     "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits",
     "state": "outputs/team-development-r2-20261029",
     "coordinator": "scripts/team_development.py",
     "automatic_merge": false,
-    "verification": "docs/team-development-first-round.json",
+    "verification": "docs/team-integration-20261030.json",
     "review_blockers": [
       "retention: canonical six legs/source match/frozen provenance",
       "sensory: reject complex input and finite aggregation"
