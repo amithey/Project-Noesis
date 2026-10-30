@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "runtime_diagnosis_and_capability_integration",
+      "assignment_status": "stocktake_and_github_cleanup_no_training_allocated",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -35,8 +35,8 @@
       "id": "claude",
       "provider": "Anthropic",
       "issue": 19,
-      "branch": "claude/flygym2-learning-rewards",
-      "assignment_status": "independent_diagnosis_received_L1_draft_requested",
+      "branch": "claude/learning-retention",
+      "assignment_status": "credit_timing_fix_delivery_pending_fresh_ack",
       "role": "Neural learning, existing reward objectives and checkpoint invariants",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/learning.py",
@@ -50,17 +50,19 @@
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2",
       "independent_branch": "claude/learning-retention",
-      "independent_commit": "2db4d119e56c78a7497a0be26d576b920bdb1f95",
-      "independent_observation": "Owner10971afa3493 acknowledges EMA-vs-learning_signal correction locally untested; db5465b old version explicitly held from integration. Synthetic test window granted; PCA pooling counterexample sent.",
+      "independent_commit": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
+      "independent_observation": "Actual normalized signal accepted by exact replay parity only; full tool awaits PCA invariance, leg assignment coverage, null/provenance corrections.",
       "independent_commit_pending_review": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac: normalizer parity verified, whole tool held for PCA/null/provenance",
       "normalizer_review": "docs/credit-timing-normalizer-review.json",
-      "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated"
+      "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated",
+      "display_name": "Opus / Claude",
+      "next_deliverable": "One reviewed PR +3existing-log analysis; no new training births"
     },
     {
       "id": "gemini",
       "issue": 20,
       "branch": "gemini/flygym2-gait-validation",
-      "assignment_status": "independent_sensory_audit_received_pending_provenance",
+      "assignment_status": "sensory_evidence_delivery_pending_fresh_ack",
       "role": "Independent physical metrics, frozen evaluation and later body/sensory validation",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/evaluate.py",
@@ -81,7 +83,9 @@
       "managed_checkout": "outputs/team-dev-gemini-r2",
       "managed_branch": "codex/team-gemini-senses-r2",
       "independent_evidence_message": "49b80a797dad",
-      "independent_observation": "Raw simulation force-unit correction acknowledged; arithmetic checked only. Reported 200ms brain-only seed42 evidence is not physical validation. Cited report absent from primary HEAD2d35d0a; committed source and hashed paired artifacts requested. See docs/sensory-provenance-review-20261030.json."
+      "independent_observation": "Raw simulation force-unit correction acknowledged; arithmetic checked only. Reported 200ms brain-only seed42 evidence is not physical validation. Cited report absent from primary HEAD2d35d0a; committed source and hashed paired artifacts requested. See docs/sensory-provenance-review-20261030.json.",
+      "next_deliverable": "Committed source/report and hashed paired sensory evidence; proposed isolated candidate checkout requires owner acknowledgement",
+      "owner_reported_branch_unverified": "feature/habitat-in-view"
     }
   ],
   "active_round": {
@@ -156,5 +160,9 @@
     "user_preference": "opportunistic_when_measured_resources_allow",
     "next_allocation_requires_fresh_gate": true,
     "latest_observation": "docs/resumed-r3-blocked-result.json"
-  }
+  },
+  "status_entrypoint": "docs/project-status-20261030.md",
+  "current_integration_branch": "codex/training-pilot-20261028",
+  "experimental_core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "historical_fields_note": "hub/core baseline and managed_* fields preserve prior setup; not proof of current activity"
 }

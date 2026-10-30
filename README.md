@@ -2,6 +2,12 @@
 True awakening isn't seeing the light. It's realizing the dark you exist in is just an unrendered void.
 
 ## Status
+**Current stocktake and team queue (30 October 2026):**
+[project status](docs/project-status-20261030.md) ·
+[team tracker](https://github.com/amithey/Project-Noesis/issues/17).
+Stable learned walking and a validated-best model remain unproven. This branch is
+an experimental integration snapshot; see draft PR24 before choosing a runtime.
+
 For the full training handoff, checkpoints and parallel-agent workflow, see
 [the shared project hub](https://github.com/amithey/Project-Noesis/tree/codex/github-project-sync)
 and [the continuation guide](docs/coordination.md). Start new work by reading

@@ -1,218 +1,34 @@
-# Current round — 2026-10-30
+# תוכנית הצוות הנוכחית — 30 באוקטובר 2026
 
-Goal blocked audit satisfied again AFTER user resume:three consecutive resumed
-turns with same resource blocker. Fresh resumedR3 min3.357GiB/maxCPU31.4percent
-refused, no simulation. TEAM/issue19/20 and owner branch heads unchanged; cited
-Gemini report still absent. Independent audits/continuation software completed,
-no current useful unblocked next action. Resume needs sustained measured compute
-or committed owner fixes/artifacts. No livewatcher/worker/lease; full objective
-unachieved, budgets/scientific gates untouched. See resumed-r3-blocked-result.json.
+נקודת כניסה: [תמונת המצב וחלוקת העבודה](project-status-20261030.md).
+לוח עבודה: [#17](https://github.com/amithey/Project-Noesis/issues/17).
+זהו ארגון עבודה בלבד; אין הקצאת אימון חדשה ואין שינוי בקריטריונים המדעיים.
 
-ResumedR2 resource-only watcher terminal pass:window2min3.388GiB/maxCPU21.5.
-Fresh explicitly allocated T1attempt5 passed initialgate3.392GiB/18.5percent,
-but prejobgate refused36.2percentCPU(min3.390GiB). Terminal20.078s; zero jobs,
-no simulation/checkpoint or livewatcher/lease. No more attempts this round.
-See resumed-r2-result.json; source/parent/control/scientific gates unchanged.
+| עובד | משימה יחידה בסבב הבא | תוצר |
+|---|---|---|
+| Codex | #18 — עמידה/הליכה, אימון ואינטגרציה | ביקורת תוצרי העמיתים; ניסוי פיזיקלי מתועד רק כשיש משאבים |
+| Opus / Claude | #19 — תיקון credit-timing | PCA חסין לסימן/סיבוב, כיסוי שיוך מפורש, null תיאורי, בדיקה על3 לוגים קיימים |
+| Gemini | #20 — חושים ואימות מדידה | מקור מחויב וארטיפקטים חתומים, יחידות עומס, no-signal baseline והפרדת בדיקת מוח מפיזיקה |
 
-User explicitly resumed goal; new blocked audit starts fresh. Resource-only
-resumedR1 refused min3.008GiB/maxCPU43.5percent. No simulation. Codex implemented
-frozen T1 evaluation continuation from a verified COMPLETE25s child only, outside
-the pinned pilot/core tree;24focused tests pass including fake process failures,
-journal/lease cleanup and artifact mutation. Actual21.18s partial rejected before
-output/lease. Physical continuation remains untested; no full25s child yet.
-See duration-evaluation-continuation-20261030.md and resumed-r1-result.json.
+## כללי העבודה המחייבים
 
-## Previous blocked audit (historical; superseded by user resume)
+- קריאת AGENTS, תוכנית זו, מפת האחריות ו־TEAM_CHAT לפני עבודה. קבלה/תוצאה/חסם נרשמים במשימה וביומן באמצעות helper עם נעילה; הודעה אינה מפעילה עובד.
+- ענף ו־checkout נפרדים לכל עובד. מאשרים בעלות על קבצים לפני מימוש; אין איפוס, commit, מיזוג או דריסה של ענף עמית. ה־checkout הראשי כולל שינויים קיימים ואינו שטח עבודה חדש.
+- Codex מרכז ומפרסם snapshots. Opus ו־Gemini מוסרים PR קטן, SHA, בדיקות וארטיפקטים; Codex סוקר לפני שילוב. רישום משימה אינו הוכחת פעילות.
+- הקונקטום, סימני החיבורים וחסמי±50% ביחס למשקולות המקור נשמרים. פעילות עצבית מניעה שרירים; אין gait generator, סדר רגליים מתוכנת או עקיפת המוח.
+- כל ניסוי משנה גורם אחד כשאפשר, משתמש בהורה משותף ומתועד ובמועמדים נפרדים. אין מיזוג משקולות שאומנו בנפרד. תיקון חושים ותיקון למידה נבדקים תחילה בנפרד.
+- סימולציה כבדה אחת בכל רגע תחת lease. לפני אימון נרשמים קוד/הורה/זרעים/פלט/תקציב ותנאי עצירה. אין אימון מוקצה כעת. בדיקות יחידה ועבודה קלה מותרות במקביל.
+- training-last, הורה ניסוי ו־validated-best נפרדים. partial אינו checkpoint מושלם; אין שחזור אמצע פרק. חידוש בקרות קפואות מותר רק לפי הפרוטוקול והיומן ובתקציב המצטבר המקורי.
+- נדרשת השלמת אופק ההרצה וקריאות/חתימות תקינות לפני מסקנה. ריצות קפואות משוות עמידה, החלקה, התקדמות בכיוון הגוף ומחזורי רגליים. תנועה, reward או בדיקה סינתטית אינם הוכחת הליכה.
+- שערי התוכנית המדעית נשמרים; זרעים10,11,200,201,202 נשארים לאימות סופי, מחוץ לכוונון. אין קידום אוטומטי או ריכוך שערים.
+- קוד ותוצאות קומפקטיות ב־Git; ארטיפקטים ב־Releases עם SHA256 manifests. נתונים גולמיים, caches, credentials וסביבות אינם ב־Git.
 
-Current goal blocked audit satisfied: repeated resource pressure across at least
-three goal turns; fresh R3 measured min2.978GiB/maxCPU95.4percent. No simulation
-or live watcher/lease. No new owner correction in checked TEAM/GitHub sources.
-Offline audits are published; next physical experiment needs sustained resources,
-and integration reviews need committed owner fixes/artifacts. No periodic retry
-loop, budget/gate relaxation or checkpoint promotion. Full objective unachieved.
-See resource-r3-blocked-result.json.
+## מסמכי ביצוע
 
-Fresh resource-only R2b window refused(min2.160GiB,maxCPU84.9percent); no new
-simulation or lease. Offline immutable Claude bbbfd776 annotation audit finds
-221/389 logged leg MNs excluded by exact region keys that omit .NO_CONS suffixes.
-Nerve-side priority changes0 and does not fix coverage. All168 assigned logged
-MNs agree with actual motor table; this is tool consistency, not biological proof.
-Correction/coverage regressions requested from owner alongside pending PCA fix.
-See leg-assignment-audit-20261030.json and resource-r2-result.json.
-
-Codex owns standing/walking, training and integration; Claude learning/retention;
-Gemini external sensing/environment reactions. team-assignments.json is current;
-historical tables below do not establish worker activity.
-
-T1 remains incomplete21.18/25s, no frozen controls or completed child. Partial is
-excluded; source/parent/control hashes and all19first5s fields passed. No duration
-or walking conclusion. Current resource gate is10samples>=3GiB/<=30percentCPU.
-User prefers opportunistic availability. Resource-only watcher R1 exited0 after
-one passed window; fresh attempt4 still refused CPU70.3percent before simulation.
-No simulation, watcher or lease remains active; no retry loop or app termination.
-
-Unblocked M1 audit of3complete physical logs found some corresponding anatomical
-input/command associations and rare(.089-.260percent) command slew-cap hits.
-These different signal/output pairs cannot rank credit rules or prove learning.
-Raw metadata stays local; compact results/hash manifest are archived.
-
-Claude committed bbbfd776 actual learning_signal correction; Codex verified exact
-parity with all990active values in3complete physical logs. The whole tool remains
-held for PCA/null/provenance review. Closed synthetic test window granted. Codex also verified a mathematical PCA-sign pooling
-counterexample against old immutable LagFit (R2~1 to~0 under equivalent coordinate
-sign change). This is tool validation, not fly evidence. Correct before inference.
-Scoped exact reviewed pytest identities can coexist with code work while unknown
-Python stays refused.18focused tests passed. See resource-r1-result.json,
-exploration-motor-m1-result.json and credit-timing-review-counterexample.json.
-Full goal remains active; no promoted model, walking proof or weight averaging.
-
-# תוכנית משותפת: Codex + Claude/Anthropic + Gemini
-
-עדכון תקשורת 2026-10-28: ערוץ השיחה המקומי הוא `TEAM_CHAT.md` ב־checkout
-הראשי. כל בוט פעיל קורא ומעדכן דרך `scripts/team_chat.py`; ראו
-[הוראות הערוץ](team-chat.md). GitHub ממשיך לשמור משימות, קוד ותוצאות.
-
-עודכן: 2026-10-27. המשתמש מינה את Codex לחלק את העבודה ולרכז את השילוב.
-לוח התיאום: [#17](https://github.com/amithey/Project-Noesis/issues/17).
-היעד המשותף: עמידה, צעדים עם אחיזה, הליכה רציפה ותגובה למכשולים באמצעות
-המוח והלמידה של Noesis בתוך FlyGym 2, לפי הקריטריונים הקיימים.
-
-## אחריות וסמכות
-
-| בוט | תחום אחריות | תוצר ראשון | משימה |
-| --- | --- | --- | --- |
-| **Codex** | ניהול ושילוב, סביבת הרצה, מנהל שלבי האימון, שמירה והמשך | סביבת baseline תקינה ומנהל ריצות שנבדק בהפסקה ובהמשך | [#18](https://github.com/amithey/Project-Noesis/issues/18) |
-| **Claude / Anthropic** | מוח, כלל למידה, תגמולים ותקינות משקולות | מטרות v7/v8/v6 מחוברות ונבדקות, עם שמירת מגבלות המקור | [#19](https://github.com/amithey/Project-Noesis/issues/19) |
-| **Gemini** | גוף, מדדי תנועה והערכה עצמאית | מדדי צעדים/החלקה תקינים ודוח שחזור של שני הפרובים הקיימים | [#20](https://github.com/amithey/Project-Noesis/issues/20) |
-
-Codex מרכז את סדר העבודה, פותר חפיפות בקבצים ומבצע את השילוב לאחר סקירה
-ובדיקות. Claude בודק שהשילוב שומר על משמעות הלמידה והמשקולות. Gemini בודק
-באופן עצמאי שהשיפור המדווח הוא פיזיקלי ונמדד בהרצה קפואה. קידום שלב דורש
-עמידה בשערים הקיימים; החלוקה אינה אישור לפריסת מודל או שינוי הפעלה רגילה.
-
-מצב התחלתי: Codex קיבל את משימת התיאום; Claude ו־Gemini הוקצו וממתינים
-לאישור קבלה בשיחות שלהם. שום בוט לא מסומן כעובד רק מפני שנוצרו issue וענף.
-תיעוד הפעילות השוטף הוא ב־issues; קובץ החלוקה הוא תוכנית, לא ניטור חי.
-
-## מקור משותף ומשקולות
-
-- מרכז הפרויקט ויעד ה־PRs: `codex/github-project-sync`. בסיס הקוד שנבדק בעת
-  החלוקה: `6a67a5da43897f5b7dd64f0b56e8a11201959b6a`; מסמכי החלוקה מתווספים מעליו.
-- ליבת המוח הנדרשת נמצאת ב־checkout נפרד של `codex/brain-body-feedback`,
-  commit `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`. יש להעביר את ה־`src/`
-  הזה במפורש ל־`--noesis-source`. ליבת ה־hub הישנה אינה תחליף.
-- נתונים ומשקולות: שחזור לפי [coordination.md](coordination.md) ו־Release
-  `training-backup-2026-10-27`. משתמשים באותן חתימות הורה ומועמד המופיעות שם.
-- הושלם שער עמידה ניסיוני בשני זרעים. הליכה, אימות סופי ו־CUDA לא הוכחו.
-- קיימים חסמי סביבה/בדיקות המתועדים ב־[github-sync-validation.md](github-sync-validation.md).
-  לפני ריצה חדשה Codex יפרסם baseline עדכני; היסטוריית בדיקות אינה pass נוכחי.
-
-כל בוט יתחיל מענף ה־hub המעודכן, ב־checkout ובסביבה נפרדים, ויתעד את SHA
-הבסיס בפועל. אין לשנות checkout של בוט אחר. ענפי העבודה המיועדים:
-
-| בוט | ענף |
-| --- | --- |
-| Codex | `codex/flygym2-training-orchestration` |
-| Claude | `claude/flygym2-learning-rewards` |
-| Gemini | `gemini/flygym2-gait-validation` |
-
-## בעלות על קבצים
-
-הנתיבים הבאים הם ביחס לשורש ה־hub. מודולים המסומנים כחדשים הם תוצרים
-מתוכננים, ואינם יכולות שכבר מומשו. קובץ חדש נוסף נרשם ב־issue לפני עריכתו.
-
-**Codex:** `gpu-pilot/src/noesis_gpu/train.py`, `run.py`, המודולים החדשים
-`curriculum_runner.py`, `curriculum_state.py`; `test_run.py` ובדיקות חדשות
-ל־train/runner/state; `gpu-pilot/pyproject.toml`, קובצי תלויות ו־CI; סקריפטי
-הרצה/ארכוב; מסמכי התיאום, תוכנית האימון ו־continuation-status.
-
-**Claude:** `gpu-pilot/src/noesis_gpu/learning.py`, המודול החדש
-`reward_profiles.py`, `gpu-pilot/tests/test_learning.py`, בדיקות reward חדשות
-ו־`docs/workstreams/claude/`. במקרה הצורך בלבד: ענף core נפרד
-`claude/flygym2-core-learning` מה־core pin, לקבצי `circuit_learning.py`,
-`plasticity.py`, `embodied_metrics.py` ובדיקותיהם. שינוי core מוגש בנפרד
-ואינו משנה את ה־pin המשותף עד ש־Codex משלב אותו לאחר בדיקות.
-
-**Gemini, סבב ראשון:** `gpu-pilot/src/noesis_gpu/evaluate.py`, המודול החדש
-`gait_metrics.py`, `gpu-pilot/tests/test_evaluate.py`, בדיקות gait חדשות
-ו־`docs/workstreams/gemini/`. **בהמשך:** `backend.py`, `bridge.py`,
-`controller.py`, `compare.py` והבדיקות התואמות לחיבור חושים/מכשולים ולאימות
-הגוף ו־CUDA. ממשקי הגוף הקיימים נשארים יציבים בסבב הראשון.
-
-אין לערוך קובץ שבאחריות בוט אחר. שינוי ממשק מתואם ב־#17 עם בעליו, ו־Codex
-קובע מי מבצע את השינוי. מסמכי המדע והספים הקיימים גוברים על נוחות המימוש.
-ה־PRs ההיסטוריים #1–#16 נשמרים; הם אינם תור מיזוג אוטומטי לסבב הזה.
-
-## הסבב הראשון — אפשר לעבוד במקביל
-
-1. **Codex:** להקים סביבת Python 3.12 מבודדת עם תלויות תואמות, לבדוק טעינה
-   ו־baseline, ולממש מנהל ריצות/שלבים עם נעילת עובד ושמירה אטומית. לבדוק
-   הפסקה, פלט חלקי, כישלון, ניסיון חוזר מההורה ומניעת קידום שגוי. מכסת שלב:
-   עד שלושה סבבים; אין לפרש את טווח האינדקסים הגלובלי בקוד הישן כמכסה לשלב.
-2. **Claude:** לבדוק את העברת מטרות התגמול הקיימות ואת תקינות הלמידה והמשקולות.
-   לשמר את v7 כברירת מחדל ולספק בחירה מפורשת ב־v8/v6 בלי לשנות את הנוסחאות
-   תוך כדי ההעברה. לבדוק load/save, חסמים ביחס למקור, סימנים וטופולוגיה,
-   חקירה כבויה בהערכה ומשקולות עצמאיות לכל מוח לומד.
-3. **Gemini:** לייצר מדדי תמיכה/הרמה/מחזורי רגל, התקדמות בכיוון הגוף,
-   החלקה ו־tripod. לבדוק עמידה סטטית, גרירה, החלקה, רעידות מגע, נפילה
-   ומחזורי רגל אמיתיים. לשחזר את תוצאות 10006/10007 מהארכיונים הקיימים.
-
-Claude ו־Gemini יכולים להתחיל מבדיקות סינתטיות וניתוח קבצים קיימים; אין
-צורך לחכות לריצת אימון חדשה כדי להתקדם. הם מגישים PR קטן כשיש תוצר שימושי.
-
-## הממשקים שעליהם מסכימים
-
-- Claude שומר את `score_transition(before, after, dt_ms, objective=...)`
-  ואת שדות `reward` ו־`stance_slip_mm_s`. שמות המטרות המאומתים ב־core:
-  `curriculum-standing-v7`, `curriculum-gripped-step-v8`,
-  `standing-gate-smooth-grip-v6`. Codex מחבר את בחירת המטרה ל־runner.
-- `LearningBrain` ו־`standing_mask` נשארים תואמים לקוראים הקיימים. שינוי
-  הגדרת עמידה דורש תיאום עם Gemini, שכן הערכה ותגמול משתמשים בנתונים אלה.
-- Gemini משמר את `summarize`, `compare`, `standing_gate` ואת שדות התוצאה
-  הקיימים. שדות חדשים מקבלים גרסת schema מפורשת, כולל
-  `heading_forward_distance_mm`, `leg_step_cycles` לפי שמות שש הרגליים,
-  `mean_stance_slip_mm_s`, `standing_fraction`, ומדד tripod מוגדר ומתועד.
-  חוסר במידע או כישלון חישוב אינם תוצאה אפס או מעבר שער.
-- נשמרים יחידות הגוף, `control_ms=5`, חמום 50ms ומבחן של חמש שניות, בהתאם
-  לפרוטוקול הקיים. לפני השוואה מאמתים מקור, גוף, הורה/מועמד, זרעים ותנאים.
-- דוח ריצה כולל commit של ה־pilot ושל ה־core, hash מקור, hash הורה ומועמד,
-  גרסאות תלויות, seed, מטרה, תקציב, כמות זמן סימולציה בפועל וסטטוס השלמה.
-  Codex אחראי לחיבור השדות; Gemini אחראי לדחיית השוואות לא תואמות.
-
-## שילוב והרצה משותפת
-
-לאחר שלושת התוצרים: Codex משלב אותם בענף אינטגרציה, Claude סוקר את הלמידה,
-ו־Gemini סוקר את המדידה. ריצה קצרה ובדיקת הפסקה/המשך קודמות לריצה ארוכה.
-אחר כך: צעדים עם אחיזה → הליכה רציפה → חושים ומכשולים → 25 הבקרות הסופיות.
-המשימות הבאות נפתחות לפי תוצאות השלב הקודם, ולא כהבטחה שהשלב כבר עבר.
-
-במחשב משותף Codex מתאם את תקציב החישוב ורושם ב־#17 מי מפעיל איזו ריצה,
-על איזה host, תיקיית פלט, commit, parent hash, seed ותקציב. עד שמנגנון
-נעילה אוטומטי נבדק, רק ריצת full-connectome אחת פועלת באותו host בכל רגע.
-בדיקות יחידה ופיתוח יכולים לפעול במקביל. מחשבים נפרדים יכולים להריץ
-ניסויים שנרשמו מראש בתיקיות ובמשקולות עצמאיות; אין ממוצע משקולות שרירותי.
-
-רק Codex מעדכן את מצביעי המשקולות המשותפים ואת מצב תוכנית האימון. כל בוט
-רשאי לשמור מועמד נפרד בשטח העבודה שלו. מועמד נבדק מול הורה מתאים באותם
-תנאים; שלב מתקדם רק אחרי שני probes קפואים שונים שעברו. partial אינו latest,
-latest אינו validated-best, ו־training gate אינו אישור לפריסה.
-
-שומרים טופולוגיה וסימנים, חסמי ±50% ביחס למשקולות המקור, וקצב/חקירה לפי
-התוכנית הקיימת. אין בקר הליכה חיצוני או סדר רגליים מתוכנת. הזרעים
-10,11,200,201,202 שמורים לאימות הסופי ולא לבחירת שיטה או שלב.
-CUDA וריבוי עולמות ייבדקו רק לאחר בדיקת NVIDIA אמיתית ושקילות נמדדת.
-
-## עדכונים ומסירת עבודה
-
-בתחילת עבודה כל בוט מאשר את המשימה ב־issue שלו ומציין ענף, SHA בסיס וקבצים.
-מעדכנים אחרי תוצר משמעותי, לפני ריצה יקרה, בסיום ריצה ולפני עצירה/מסירה.
-כל עדכון כולל: מצב (`working/blocked/review/complete`), commit, בדיקות
-ותוצאות בפועל, קישורי artifacts וחתימות, חסם והצעד הבא. חסם חוצה תחומים
-מקושר ל־#17. לא מסתפקים בעדכון בשיחה הפרטית שאחרים אינם יכולים לקרוא.
-
-כל PR מקשר ל־issue ומפרט איך לבדוק את התוצר ומה עוד חסר. שינוי לא נבדק
-מתועד ככזה. artifacts נשלחים ל־Release עם manifest; נתונים גולמיים וסודות
-נשארים מחוץ ל־Git. גם תוצאות שליליות נשמרות.
-
-העברת ההנחיות לשיחות: [Claude](handoffs/claude.md), [Gemini](handoffs/gemini.md).
-רישום המשימות ב־GitHub אינו שולח הודעה אוטומטית לשיחות או מפעיל אותן.
+- [מפת אחריות וקבצים](team-assignments.json)
+- [הודעה ל־Opus/Claude](handoffs/claude.md), [הודעה ל־Gemini](handoffs/gemini.md)
+- [תוכנית האימון המדעית](../gpu-pilot/training-plan.md)
+- [ניסוי T1 הרשום](duration-learning-protocol-20261030.md)
+- [המשך בקרות קפואות](duration-evaluation-continuation-20261030.md)
+- [מצב מכונה](../gpu-pilot/continuation-status.json)
+- [התוכנית והעדכונים לפני סידור המצב](history/team-training-plan-before-stocktake-20261030.md) — היסטוריה בלבד; בעלות וענפים נוכחיים נקבעים במסמכים שמעל.
