@@ -1,5 +1,5 @@
 {
-  "status": "fixed_credit_lag_failed_replication_next_duration_test_proposed",
+  "status": "duration_T1_incomplete_resource_window_required",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,11 +15,10 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "Implement/review bounded25s-versus5s duration runner with exact5s prefix and four-probe matched parent/control/child retention, then allocate exact source/output/budget.",
-    "Do not tune eligibility from unreplicated single-cell180ms peak; C2 is not proof that all learning signal is absent.",
-    "Continue Claude formal L1 null/power design and source-controlled learning diagnosis; no arbitrary weight averaging.",
-    "Obtain Gemini exact calibration/force-unit evidence and physical controls before sensory changes; keep separate from duration experiment.",
-    "Preserve held-out seeds, original-reference invariants and validated-best separation; no promotion."
+    "Obtain a stable~40min host resource window; user question pending, no automatic retry.",
+    "Future allocation must pass10samples>=3GiB available and<=30percenthostCPU; budgets and scientific gates unchanged.",
+    "Restart any explicitly allocated25s attempt from complete9fd7d411 parent, not the excluded partial bank; require exact5s prefix and all frozen controls.",
+    "Continue independent Claude learning/Gemini sensory evidence review without changing current scientific conditions."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -67,11 +66,14 @@
   },
   "latest_child_is_recommended_parent": false,
   "latest_failed_experiment": {
-    "name": "E6",
-    "completed_chunks": 316,
-    "simulated_seconds": 1.58,
-    "v8_ran": false,
-    "conclusion": "No ablation comparison"
+    "name": "T1duration25s",
+    "status": "incomplete_wall_budget",
+    "requested_seconds": 25,
+    "completed_seconds": 21.18,
+    "completed_chunks": 4236,
+    "learning_updates": 4226,
+    "frozen_probes_run": 0,
+    "partial_excluded_from_training_last": true
   },
   "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
   "training_lease_active": false,
@@ -83,5 +85,6 @@
   "runtime_profile": "docs/runtime-profile-d2-result.json",
   "full_training_reproducibility": "docs/logging-parity-d3-result.json",
   "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
-  "credit_replication": "docs/credit-replication-c2-result.json"
+  "credit_replication": "docs/credit-replication-c2-result.json",
+  "duration_study": "docs/duration-t1-incomplete-result.json"
 }

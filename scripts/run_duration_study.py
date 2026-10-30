@@ -15,6 +15,7 @@ from runtime_diagnostic import CORE,PARENT,inventory
 from check_logging_parity import EXPECTED as CONTROL
 from run_e6 import audit_bank
 from training_power import keep_system_awake
+from training_resources import assess,sample_quiescence
 
 PROBES=(10006,10007,10010,10011)
 LEGS={'LF','LM','LH','RF','RM','RH'}
@@ -85,7 +86,8 @@ def main():
         parent_sha256=PARENT,control5_sha256=CONTROL,reference_trace_sha256=digest(control_birth/'training-observations.npz'),
         training_seed=1000,training_seconds=25,training_chunks=5000,learning_updates=4990,probe_seeds=list(PROBES),
         learning_rate=.2,cycle_weight=.1,exploration_mv_ms=1.5,budget_seconds=3600,training_inner_seconds=900,
-        training_process_seconds=930,probe_inner_seconds=300,probe_process_seconds=330,minimum_available_gib=2,
+        training_process_seconds=930,probe_inner_seconds=300,probe_process_seconds=330,minimum_available_gib=3,
+        maximum_host_cpu_percent=30,resource_window_samples=10,
         output=str(out),start_unix=time.time(),deadline_unix=time.time()+3600)
     lock=root/'gpu-pilot/outputs/codex-training-host.lock'
     with os.fdopen(os.open(lock,os.O_WRONLY|os.O_CREAT|os.O_EXCL),'w') as stream:json.dump(protocol,stream)
@@ -94,15 +96,22 @@ def main():
     cases={arm:{} for arm in ('parent','control5','child25')};reports={arm:{} for arm in cases}
     try:
         protocol['excluded_dashboard_pids']=inventory()
-        if psutil.virtual_memory().available<2*2**30:raise MemoryError('Require>=2GiB available')
+        samples=sample_quiescence();decision=assess(samples)
+        preflight=out.with_name(out.name+'-resource-preflight.json')
+        with preflight.open('x',encoding='utf-8') as stream:
+            json.dump(dict(protocol=protocol,samples=samples,decision=decision,simulation_started=False),stream,indent=2)
+        if not decision['passed']:raise MemoryError('Sustained resource gate refused; no simulation launched')
+        protocol['initial_resource_preflight']=decision
         out.mkdir(parents=True,exist_ok=False);created=True;write(out/'protocol.json',protocol)
         def verify():
             if digest(parent)!=PARENT or digest(control)!=CONTROL or tree_digest(core)!=hashes['core'] or tree_digest(pilot)!=hashes['pilot']:
                 raise RuntimeError('Parent/control/source changed')
         def execute(name,module,options,timeout,expected_status):
-            verify();inventory();remaining=3600-(time.monotonic()-started)
+            verify();inventory();samples=sample_quiescence();resources=assess(samples)
+            write(out/f'{name}-resource-preflight.json',dict(samples=samples,decision=resources))
+            remaining=3600-(time.monotonic()-started)
             available=psutil.virtual_memory().available/2**30
-            if remaining<timeout+5 or available<2:raise RuntimeError('Insufficient resource/time budget for full next job')
+            if remaining<timeout+5 or available<3 or not resources['passed']:raise RuntimeError('Insufficient sustained resource/time budget for full next job')
             command=[sys.executable,'-m',module,'--backend','cpu','--noesis-source',str(core),'--data',str(root/'data'),*options,'--output',str(out/name)]
             print(f'Starting {name}',flush=True);job_start=time.monotonic()
             with (out/f'{name}.log').open('w',encoding='utf-8') as stream:

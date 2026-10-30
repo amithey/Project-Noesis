@@ -1,23 +1,24 @@
 # Current round — 2026-10-30
 
 Codex owns standing/walking, overall training and integration; Claude owns learning
-and behavioral retention; Gemini owns external sensing and environmental reactions.
-The authoritative current assignment state is team-assignments.json. Historical
-assignment tables below are retained as provenance, not worker activity claims.
+and behavioral retention; Gemini owns external sensing/environmental reactions.
+Current assignments are in team-assignments.json. Historical tables below are
+provenance, not live worker activity claims.
 
-D2 profiled a physical0.5s frozen episode with exact10field prefix reproduction.
-D3 completed two full5s training births (logging disabled/enabled), both reproducing
-2074b1e2 checkpoint and all19observation/reward fields, with990aligned log rows.
-210tests passed/1skipped. Sourcef3baf9f/core42c2076; unchanged original reference,
-topology/sign/bounds, body, reward, LR and exploration. No model promotion.
+T1 duration25s-versus5s attempt411475c stopped at21.18s/4236chunks after900s inner
+budget. Only a partial bank exists; no frozen probe ran and no25s acquisition or
+retention conclusion is justified. All19first5s fields match D3, original bounds
+and source/parent/control hashes passed. Partial bank is excluded from training-last.
+The preceding complete checkpoint pointers remain unchanged.
 
-Next priority is preregistered L1 exploration/reward association and credit-lag
-measurement after Claude draft review; LR-only contrast is deferred as an
-acquisition fix. Resource lease is released; no further run allocated by this
-file. Gemini calibration hypothesis requires exact source and physical controls.
-Do not infer walking, memory or causal learning from reproduction, weight geometry
-or a synthetic audit. See training-reset-20261030.md, logging-parity-d3-result.json,
-and runtime-profile-d2-result.json for evidence and limitations.
+Initial resource preflight refused without simulation. A later explicit fresh
+allocation passed its launch snapshot but near-end pressure reached100percentCPU
+and.622GiB available. Cause is not isolated. Future allocation now requires10
+one-second samples>=3GiB/<=30percentCPU, unchanged scientific/wall-budget gates.
+A stable~40min resource window was requested; no reply or retry is inferred from
+elapsed time. No simulation or managed worker remains active. Five focused
+runner/retention/resource tests pass. See duration-t1-incomplete-result.json and
+protocol for evidence, artifact hash and limitations. Full goal stays active.
 
 # תוכנית משותפת: Codex + Claude/Anthropic + Gemini
 

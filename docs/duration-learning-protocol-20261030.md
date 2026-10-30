@@ -34,3 +34,31 @@ technical partial/mismatch/mutation/resource/budget failure, no retries or time
 extensions. Missing controls leave evidence incomplete. Unique primary output
 gpu-pilot/outputs/duration-t1-20261030. Source/parent/control hashes saved before
 run. Training checkpoint remains independent of validated-best.
+
+## Observed attempt and revised resource gate
+
+Initial preflight refused before creating an output or launching simulation.
+Read-only snapshots then observed available memory.296GiB and later2.282GiB;
+no leftover task worker was identified and no unrelated app was closed.
+Explicit fresh allocation used duration-t1-20261030-attempt2. Its launch snapshot
+was2.733GiB available; it completed4236chunks/21.18s and4226updates before the
+900s inner limit. Process910.718s, study910.891s. ZERO frozen probes ran.
+
+Only weights-partial.npz was created, SHA256ac02e33afbff87f9ee78099c993ba80864e905fb98b3f04f1cd33f8b2600df0d.
+It is excluded from training-last and validated-best. All19first5s fields exactly
+match control; raw original-reference audit passed; parent/control/source hashes
+still match. No25s acquisition/retention conclusion is justified.
+
+Near-end own child counters:731.5CPU seconds/844.9elapsed,.633GiB RSS; host100%
+CPU and.622GiB available. Pressure is observed; component/scheduling/thermal/
+paging causes were not isolated. A launch snapshot does not establish sustained
+resources. No automatic retry or wall-budget increase is justified.
+
+Future allocation now requires10one-second samples with>=3GiB available and
+<=30%hostCPU before launch AND each job. The stricter resource gate records its
+measurements and refuses without simulation; scientific gates/timesteps/budgets
+are unchanged. Five focused decision/prefix/resource tests pass. No new attempt
+was launched. A stable~40min resource window was requested from the user; do not
+infer a reply from elapsed time. Any future attempt starts from the original
+complete parent, never the partial bank or an alleged mid-episode resume.
+See duration-t1-incomplete-result.json and artifact manifest.
