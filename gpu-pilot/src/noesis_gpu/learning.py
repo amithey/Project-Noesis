@@ -10,17 +10,28 @@ from .controller import FrozenBrain
 from .reward_profiles import resolve_objective
 
 MAX_EXPLORATION_MV_MS = 1.5  # original exploration cap; options may only lower it
+DEFAULT_LEARNING_RATE = 0.2   # per second; the pilot's value since the first births (core default is 0.02)
+MAX_LEARNING_RATE = 2.0       # sanity cap for experiments; not a recommendation
 
 
 class LearningBrain(FrozenBrain):
-    """Original-reference bounds are captured BEFORE importing any learned weights."""
+    """Original-reference bounds are captured BEFORE importing any learned weights.
+
+    ``learning_rate`` only scales the size of every weight update; synthetic tests show it does not
+    change the signal-to-noise of the credit. ``record_exploration`` keeps the per-step injected
+    exploration current and the innovation credit for offline credit-timing analysis; it never
+    changes learning.
+    """
 
     def __init__(self, connectome, rest, lo, hi, *, checkpoint, seed=0,
-                 exploration_mv_ms=MAX_EXPLORATION_MV_MS, **options):
+                 exploration_mv_ms=MAX_EXPLORATION_MV_MS, learning_rate=DEFAULT_LEARNING_RATE,
+                 record_exploration=False, **options):
         if "shared_weights" in options:
             raise ValueError("Learning brains require independent mutable weights")
         if not np.isfinite(exploration_mv_ms) or not 0 < exploration_mv_ms <= MAX_EXPLORATION_MV_MS:
             raise ValueError("exploration_mv_ms must be in (0, 1.5]; the original cap is not raised")
+        if not np.isfinite(learning_rate) or not 0 < learning_rate <= MAX_LEARNING_RATE:
+            raise ValueError(f"learning_rate must be finite and in (0, {MAX_LEARNING_RATE}]")
         from noesis.circuit_learning import CircuitExploration
         from noesis.plasticity import MotorPlasticity
 
@@ -29,7 +40,7 @@ class LearningBrain(FrozenBrain):
         with np.load(checkpoint, allow_pickle=False) as cp:
             targets = cp["motor_indices"].copy()
         self.learner = MotorPlasticity(
-            self.net, targets, learning_rate=0.2, tau_eligibility_ms=100, max_change=0.5,
+            self.net, targets, learning_rate=float(learning_rate), tau_eligibility_ms=100, max_change=0.5,
             rule="perturbation", normalize_reward_error=True, bias_correct_reward_error=True,
         )
         self.learner.load(checkpoint, weights_only=True)
@@ -42,9 +53,11 @@ class LearningBrain(FrozenBrain):
         if not np.isin(self.exploration.idx, self.learner.motor_indices).all():
             raise ValueError("Checkpoint does not cover all explored leg motor neurons")
         self.exploration_mv_ms = float(exploration_mv_ms)
+        self.learning_rate = float(learning_rate)
         self.learning_active = False
         self.updates = 0
         self.max_observed_exploration = 0.0
+        self._log = {"drive": [], "credit": [], "drive_idx": None} if record_exploration else None
 
     def _current_drive(self, dt_ms):
         if not self.learning_active:
@@ -53,17 +66,33 @@ class LearningBrain(FrozenBrain):
         if drive:
             self.max_observed_exploration = max(self.max_observed_exploration,
                 float(np.abs(drive["current_mv_per_ms"]).max(initial=0)))
+            if self._log is not None:
+                self._log["drive"].append(np.asarray(drive["current_mv_per_ms"], np.float32).copy())
+                self._log["drive_idx"] = np.asarray(drive["current_idx"]).copy()
         return drive
 
     def learn(self, reward, dt_ms):
         if not self.learning_active:
             return self.learner.metrics()
-        result = self.learner.update(
-            self.last_spikes, dt_ms, reward,
-            perturbation=self.exploration.credit(self.learner.motor_indices),
-        )
+        credit = self.exploration.credit(self.learner.motor_indices)
+        if self._log is not None:
+            self._log["credit"].append(np.asarray(credit, np.float32).copy())
+        result = self.learner.update(self.last_spikes, dt_ms, reward, perturbation=credit)
         self.updates += 1
         return result
+
+    def exploration_log(self):
+        """Arrays recorded when ``record_exploration`` is on, else None.
+
+        ``drive`` (steps, drive targets) is the injected current in mV/ms for ``drive_idx`` neurons;
+        ``credit`` (steps, motor targets) is the innovation credit given to ``motor_indices``. Row i of
+        both belongs to the i-th learning-active control step.
+        """
+        if self._log is None:
+            return None
+        drive, credit = self._log["drive"], self._log["credit"]
+        return {"drive": np.array(drive, np.float32), "credit": np.array(credit, np.float32),
+                "drive_idx": self._log["drive_idx"], "motor_indices": self.learner.motor_indices.copy()}
 
 
 def score_transition(before, after, dt_ms, objective="curriculum-standing-v7", cycle_credit=0.,

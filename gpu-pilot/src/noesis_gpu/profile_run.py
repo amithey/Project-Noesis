@@ -19,6 +19,9 @@ import os
 import sys
 from contextlib import contextmanager
 from pathlib import Path
+from types import SimpleNamespace
+
+import numpy as np
 
 from . import learning, train
 from .reward_profiles import resolve_objective
@@ -28,15 +31,28 @@ SIDECAR = "profile-run.json"
 
 
 @contextmanager
-def _patched(objective, exploration_mv_ms, cycle_weight=None):
-    """Yield the CycleScoring in use (v9 only, else None); restore the learning module on exit."""
+def _patched(objective, exploration_mv_ms, cycle_weight=None, learning_rate=None, record_exploration=False):
+    """Yield (scorer, brains): the CycleScoring in use (v9 only, else None) and every LearningBrain built
+    during the run; restore the learning module on exit."""
     score, brain = learning.score_transition, learning.LearningBrain
     scorer = (learning.CycleScoring(objective, cycle_weight=cycle_weight) if objective == "curriculum-gripped-cycle-v9"
               else None)  # built first: a core without the v9 tracker fails before anything is patched
     learning.score_transition = scorer or functools.partial(score, objective=objective)
-    learning.LearningBrain = functools.partial(brain, exploration_mv_ms=exploration_mv_ms)
+    brains, options = [], {"exploration_mv_ms": exploration_mv_ms}
+    if learning_rate is not None:
+        options["learning_rate"] = learning_rate
+    if record_exploration:
+        options["record_exploration"] = True
+
+    def make_brain(*a, **k):  # same override order as functools.partial: the call's keywords win
+        built = brain(*a, **{**options, **k})
+        brains.append(built)
+        return built
+
+    make_brain.func, make_brain.keywords = brain, options  # introspectable like the functools.partial it replaces
+    learning.LearningBrain = make_brain
     try:
-        yield scorer
+        yield SimpleNamespace(scorer=scorer, brains=brains)
     finally:
         learning.score_transition, learning.LearningBrain = score, brain
 
@@ -47,7 +63,7 @@ def _write_json(path: Path, data) -> None:
     os.replace(temporary, path)
 
 
-def _annotate(output: Path, objective, exploration_mv_ms, cycle_weight=None) -> None:
+def _annotate(output: Path, objective, exploration_mv_ms, cycle_weight=None, learning_rate=None) -> None:
     for path in (output / "report.json", *output.glob("*.model.json")):
         if not path.is_file():
             continue
@@ -57,6 +73,8 @@ def _annotate(output: Path, objective, exploration_mv_ms, cycle_weight=None) -> 
         data["motor_exploration_mv_ms"] = exploration_mv_ms
         if cycle_weight is not None:
             data["cycle_weight"] = cycle_weight
+        if learning_rate is not None:
+            data["learning_rate"] = learning_rate
         _write_json(path, data)
 
 
@@ -66,6 +84,11 @@ def build_parser(train_module=train):
     ap.add_argument("--exploration-mv-ms", type=float, default=learning.MAX_EXPLORATION_MV_MS)
     ap.add_argument("--cycle-weight", type=float, default=None,
                     help="v9 only: weight of the cycle bonus in (0, 1]; default is the core's 0.1")
+    ap.add_argument("--learning-rate", type=float, default=None,
+                    help=f"weight-update rate per second in (0, {learning.MAX_LEARNING_RATE}]; default "
+                         f"{learning.DEFAULT_LEARNING_RATE}")
+    ap.add_argument("--log-exploration", action="store_true",
+                    help="save the injected exploration current and innovation credit to exploration-log.npz")
     return ap
 
 
@@ -81,28 +104,43 @@ def run_birth(args, train_module=train) -> int:
         if not 0 < args.cycle_weight <= 1:
             print("--cycle-weight must be in (0, 1]", file=sys.stderr)
             return 2
+    if args.learning_rate is not None and not 0 < args.learning_rate <= learning.MAX_LEARNING_RATE:
+        print(f"--learning-rate must be in (0, {learning.MAX_LEARNING_RATE}]", file=sys.stderr)
+        return 2
     output = Path(args.output)
     if output.exists():
         print(f"Refusing to run: output directory already exists: {output}", file=sys.stderr)
         return 2
-    report, error, scorer = None, None, None
+    report, error, scorer, brains = None, None, None, []
     try:
-        with _patched(objective, args.exploration_mv_ms, args.cycle_weight) as scorer:
+        with _patched(objective, args.exploration_mv_ms, args.cycle_weight, args.learning_rate,
+                      args.log_exploration) as context:
+            scorer, brains = context.scorer, context.brains
             report = train_module.run(args)
     except BaseException as caught:  # noqa: BLE001 - recorded, then re-raised below
         error = caught
     status = "failed" if error is not None else (report or {}).get("status")
     if output.is_dir():  # created by this run
         if error is None and status == COMPLETED:
-            _annotate(output, objective, args.exploration_mv_ms, args.cycle_weight)
+            _annotate(output, objective, args.exploration_mv_ms, args.cycle_weight, args.learning_rate)
         sidecar = {
             "profile": args.profile, "reward_objective": objective,
             "motor_exploration_mv_ms": args.exploration_mv_ms, "seed": args.seed,
             "status": status, "checkpoint": str(args.checkpoint)}
         if args.cycle_weight is not None:
             sidecar["cycle_weight"] = args.cycle_weight
+        if args.learning_rate is not None:
+            sidecar["learning_rate"] = args.learning_rate
         if scorer is not None:  # v9: how much cycle bonus was credited and how often the reward clipped
             sidecar["cycle_scoring"] = scorer.summary()
+        if args.log_exploration:
+            logs = [b.exploration_log() for b in brains if b.exploration_log() is not None]
+            if logs and len(logs[-1]["credit"]):
+                temporary = output / "exploration-log.tmp.npz"
+                np.savez_compressed(temporary, **logs[-1])
+                os.replace(temporary, output / "exploration-log.npz")
+                sidecar["exploration_log"] = {"file": "exploration-log.npz",
+                                              "steps": len(logs[-1]["credit"])}
         _write_json(output / SIDECAR, sidecar)
     if error is not None:
         raise error
