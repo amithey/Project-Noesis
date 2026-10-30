@@ -149,12 +149,12 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "user_resumed_active_resource_gate_refused_development_available",
+    "status": "watch_terminal_pass_attempt5_prejob_refused",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
     "user_preference": "opportunistic_when_measured_resources_allow",
     "next_allocation_requires_fresh_gate": true,
-    "latest_observation": "docs/resumed-r1-result.json"
+    "latest_observation": "docs/resumed-r2-result.json"
   }
 }

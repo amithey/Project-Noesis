@@ -1,5 +1,11 @@
 # Current round — 2026-10-30
 
+ResumedR2 resource-only watcher terminal pass:window2min3.388GiB/maxCPU21.5.
+Fresh explicitly allocated T1attempt5 passed initialgate3.392GiB/18.5percent,
+but prejobgate refused36.2percentCPU(min3.390GiB). Terminal20.078s; zero jobs,
+no simulation/checkpoint or livewatcher/lease. No more attempts this round.
+See resumed-r2-result.json; source/parent/control/scientific gates unchanged.
+
 User explicitly resumed goal; new blocked audit starts fresh. Resource-only
 resumedR1 refused min3.008GiB/maxCPU43.5percent. No simulation. Codex implemented
 frozen T1 evaluation continuation from a verified COMPLETE25s child only, outside
