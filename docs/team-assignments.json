@@ -45,7 +45,7 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "primary_heading_fix_dispatched",
+      "managed_session_status": "heading_fix_complete25_tests_pending_review",
       "managed_assignment": "Offline checkpoint retention/invariant audit",
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2"
@@ -68,7 +68,7 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "sensory_composition_finalization_dispatched",
+      "managed_session_status": "composition_complete19_tests_pending_review",
       "managed_assignment": "Opt-in external neural sensory adapter",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium",
@@ -77,17 +77,15 @@
     }
   ],
   "active_round": {
-    "name": "E5 continuation",
-    "status": "retry1_running",
+    "name": "E6 reward ablation",
+    "status": "running",
     "simulation_owner": "codex",
-    "protocol": "docs/e5-protocol-20261029.md",
-    "pilot_commit": "08ee76fa34def23fa6d05d17dece28d08b65979e",
+    "protocol": "docs/e6-protocol-20261030.md",
+    "pilot_commit": "8ab908935c2b13f70d885b453f63e8586746ecae",
     "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
-    "output": "gpu-pilot/outputs/e5-continuation-retry1-20261029",
-    "budget_seconds": 3300,
-    "model_promoted": false,
-    "original_attempt": "incomplete481chunks_partial_excluded",
-    "scoped_idle_sleep_prevention": true
+    "output": "gpu-pilot/outputs/e6-reward-ablation-20261030",
+    "budget_seconds": 2400,
+    "model_promoted": false
   },
   "parallel_development": {
     "date": "2026-10-29",
