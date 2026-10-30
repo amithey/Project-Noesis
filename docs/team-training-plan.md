@@ -1,5 +1,13 @@
 # Current round — 2026-10-30
 
+Fresh resource-only R2b window refused(min2.160GiB,maxCPU84.9percent); no new
+simulation or lease. Offline immutable Claude bbbfd776 annotation audit finds
+221/389 logged leg MNs excluded by exact region keys that omit .NO_CONS suffixes.
+Nerve-side priority changes0 and does not fix coverage. All168 assigned logged
+MNs agree with actual motor table; this is tool consistency, not biological proof.
+Correction/coverage regressions requested from owner alongside pending PCA fix.
+See leg-assignment-audit-20261030.json and resource-r2-result.json.
+
 Codex owns standing/walking, training and integration; Claude learning/retention;
 Gemini external sensing/environment reactions. team-assignments.json is current;
 historical tables below do not establish worker activity.

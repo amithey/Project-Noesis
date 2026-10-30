@@ -53,7 +53,8 @@
       "independent_commit": "2db4d119e56c78a7497a0be26d576b920bdb1f95",
       "independent_observation": "Owner10971afa3493 acknowledges EMA-vs-learning_signal correction locally untested; db5465b old version explicitly held from integration. Synthetic test window granted; PCA pooling counterexample sent.",
       "independent_commit_pending_review": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac: normalizer parity verified, whole tool held for PCA/null/provenance",
-      "normalizer_review": "docs/credit-timing-normalizer-review.json"
+      "normalizer_review": "docs/credit-timing-normalizer-review.json",
+      "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated"
     },
     {
       "id": "gemini",
@@ -148,11 +149,12 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "watcher_terminal_and_fresh_preflight_refused",
+    "status": "fresh_r2b_resource_gate_refused_no_simulation",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
     "user_preference": "opportunistic_when_measured_resources_allow",
-    "next_allocation_requires_fresh_gate": true
+    "next_allocation_requires_fresh_gate": true,
+    "latest_observation": "docs/resource-r2-result.json"
   }
 }

@@ -87,7 +87,8 @@
   "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
   "credit_replication": "docs/credit-replication-c2-result.json",
   "duration_study": "docs/duration-t1-incomplete-result.json",
-  "resource_observation": "docs/resource-r1-result.json",
+  "resource_observation": "docs/resource-r2-result.json",
   "motor_transport_audit": "docs/exploration-motor-m1-result.json",
-  "user_resource_preference": "Opportunistic measured availability, no fixed reservation"
+  "user_resource_preference": "Opportunistic measured availability, no fixed reservation",
+  "leg_assignment_review": "docs/leg-assignment-audit-20261030.json"
 }
