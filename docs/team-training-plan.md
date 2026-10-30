@@ -1,5 +1,13 @@
 # Current round — 2026-10-30
 
+Current goal blocked audit satisfied: repeated resource pressure across at least
+three goal turns; fresh R3 measured min2.978GiB/maxCPU95.4percent. No simulation
+or live watcher/lease. No new owner correction in checked TEAM/GitHub sources.
+Offline audits are published; next physical experiment needs sustained resources,
+and integration reviews need committed owner fixes/artifacts. No periodic retry
+loop, budget/gate relaxation or checkpoint promotion. Full objective unachieved.
+See resource-r3-blocked-result.json.
+
 Fresh resource-only R2b window refused(min2.160GiB,maxCPU84.9percent); no new
 simulation or lease. Offline immutable Claude bbbfd776 annotation audit finds
 221/389 logged leg MNs excluded by exact region keys that omit .NO_CONS suffixes.
