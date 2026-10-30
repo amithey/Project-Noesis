@@ -1,5 +1,15 @@
 # Current round — 2026-10-30
 
+User explicitly resumed goal; new blocked audit starts fresh. Resource-only
+resumedR1 refused min3.008GiB/maxCPU43.5percent. No simulation. Codex implemented
+frozen T1 evaluation continuation from a verified COMPLETE25s child only, outside
+the pinned pilot/core tree;24focused tests pass including fake process failures,
+journal/lease cleanup and artifact mutation. Actual21.18s partial rejected before
+output/lease. Physical continuation remains untested; no full25s child yet.
+See duration-evaluation-continuation-20261030.md and resumed-r1-result.json.
+
+## Previous blocked audit (historical; superseded by user resume)
+
 Current goal blocked audit satisfied: repeated resource pressure across at least
 three goal turns; fresh R3 measured min2.978GiB/maxCPU95.4percent. No simulation
 or live watcher/lease. No new owner correction in checked TEAM/GitHub sources.

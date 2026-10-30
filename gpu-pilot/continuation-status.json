@@ -1,5 +1,5 @@
 {
-  "status": "blocked_waiting_sustained_resources_or_reviewable_owner_fixes",
+  "status": "active_resumed_development_progress_resource_gate_refused",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -26,7 +26,7 @@
   "plan_revision": "flygym2-brain-only-2026-10-21",
   "legacy_runner_role": "historical controls only; not the active new-body route",
   "app_goal_objective_updated": true,
-  "app_goal_status_observed": "blocked audit satisfied; app transition pending publication",
+  "app_goal_status_observed": "active: explicitly resumed by user",
   "curriculum_orchestration_port_complete": false,
   "resume_flag_supported_by_new_commands": false,
   "standing_training_gate_passed": true,
@@ -87,8 +87,10 @@
   "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
   "credit_replication": "docs/credit-replication-c2-result.json",
   "duration_study": "docs/duration-t1-incomplete-result.json",
-  "resource_observation": "docs/resource-r3-blocked-result.json",
+  "resource_observation": "docs/resumed-r1-result.json",
   "motor_transport_audit": "docs/exploration-motor-m1-result.json",
   "user_resource_preference": "Opportunistic measured availability, no fixed reservation",
-  "leg_assignment_review": "docs/leg-assignment-audit-20261030.json"
+  "leg_assignment_review": "docs/leg-assignment-audit-20261030.json",
+  "evaluation_continuation": "docs/duration-evaluation-continuation-20261030.md",
+  "evaluation_continuation_physical_tested": false
 }
