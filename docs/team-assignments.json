@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "peer_delivery_review_completed_runtime_resources_still_refused",
+      "assignment_status": "blocked_next_physical_experiment_or_pending_owner_corrections",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -155,13 +155,13 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "post_stocktake_resumed_watch_deadline_no_quiescent_window",
+    "status": "blocked_after_three_post_stocktake_resource_refusals",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
     "user_preference": "opportunistic_when_measured_resources_allow",
     "next_allocation_requires_fresh_gate": true,
-    "latest_observation": "docs/stocktake-resume1-result.json"
+    "latest_observation": "docs/stocktake-resume3-blocked-result.json"
   },
   "status_entrypoint": "docs/project-status-20261030.md",
   "current_integration_branch": "codex/training-pilot-20261028",
