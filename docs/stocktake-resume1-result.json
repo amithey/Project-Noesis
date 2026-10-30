@@ -1,0 +1,214 @@
+{
+  "status": "resource_watch_deadline_no_quiescent_window",
+  "budget_seconds": 180.0,
+  "windows": [
+    {
+      "start_elapsed": 0.0,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 2.305408477783203,
+        "maximum_host_cpu_percent": 53.4,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793371130.8733034,
+          "available_gib": 2.3117523193359375,
+          "host_cpu_percent": 32.6
+        },
+        {
+          "unix_time": 1793371131.874722,
+          "available_gib": 2.3151283264160156,
+          "host_cpu_percent": 53.4
+        },
+        {
+          "unix_time": 1793371132.8762443,
+          "available_gib": 2.309886932373047,
+          "host_cpu_percent": 24.1
+        },
+        {
+          "unix_time": 1793371133.8787937,
+          "available_gib": 2.3364028930664062,
+          "host_cpu_percent": 43.2
+        },
+        {
+          "unix_time": 1793371134.8799596,
+          "available_gib": 2.3351058959960938,
+          "host_cpu_percent": 40.7
+        },
+        {
+          "unix_time": 1793371135.8808312,
+          "available_gib": 2.317737579345703,
+          "host_cpu_percent": 36.0
+        },
+        {
+          "unix_time": 1793371136.8827388,
+          "available_gib": 2.341167449951172,
+          "host_cpu_percent": 32.8
+        },
+        {
+          "unix_time": 1793371137.8842597,
+          "available_gib": 2.3138504028320312,
+          "host_cpu_percent": 32.8
+        },
+        {
+          "unix_time": 1793371138.88612,
+          "available_gib": 2.305408477783203,
+          "host_cpu_percent": 44.9
+        },
+        {
+          "unix_time": 1793371139.8874385,
+          "available_gib": 2.308380126953125,
+          "host_cpu_percent": 39.0
+        }
+      ]
+    },
+    {
+      "start_elapsed": 60.187000000005355,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 2.2803993225097656,
+        "maximum_host_cpu_percent": 38.2,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793371190.960131,
+          "available_gib": 2.2849807739257812,
+          "host_cpu_percent": 38.0
+        },
+        {
+          "unix_time": 1793371191.9611452,
+          "available_gib": 2.3072586059570312,
+          "host_cpu_percent": 25.0
+        },
+        {
+          "unix_time": 1793371192.9624226,
+          "available_gib": 2.2996139526367188,
+          "host_cpu_percent": 38.2
+        },
+        {
+          "unix_time": 1793371193.9635828,
+          "available_gib": 2.3004531860351562,
+          "host_cpu_percent": 25.9
+        },
+        {
+          "unix_time": 1793371194.9643526,
+          "available_gib": 2.3054656982421875,
+          "host_cpu_percent": 32.4
+        },
+        {
+          "unix_time": 1793371195.965879,
+          "available_gib": 2.3032875061035156,
+          "host_cpu_percent": 18.1
+        },
+        {
+          "unix_time": 1793371196.9674582,
+          "available_gib": 2.2803993225097656,
+          "host_cpu_percent": 23.0
+        },
+        {
+          "unix_time": 1793371197.9681962,
+          "available_gib": 2.3030242919921875,
+          "host_cpu_percent": 27.1
+        },
+        {
+          "unix_time": 1793371198.969657,
+          "available_gib": 2.317974090576172,
+          "host_cpu_percent": 21.2
+        },
+        {
+          "unix_time": 1793371199.9705267,
+          "available_gib": 2.3148765563964844,
+          "host_cpu_percent": 18.7
+        }
+      ]
+    },
+    {
+      "start_elapsed": 120.21800000000803,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 2.389942169189453,
+        "maximum_host_cpu_percent": 39.9,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793371250.9906058,
+          "available_gib": 2.400299072265625,
+          "host_cpu_percent": 23.0
+        },
+        {
+          "unix_time": 1793371251.991359,
+          "available_gib": 2.40216064453125,
+          "host_cpu_percent": 18.8
+        },
+        {
+          "unix_time": 1793371252.9925616,
+          "available_gib": 2.3976898193359375,
+          "host_cpu_percent": 25.4
+        },
+        {
+          "unix_time": 1793371253.9942465,
+          "available_gib": 2.3998260498046875,
+          "host_cpu_percent": 20.5
+        },
+        {
+          "unix_time": 1793371254.9953165,
+          "available_gib": 2.4003219604492188,
+          "host_cpu_percent": 17.2
+        },
+        {
+          "unix_time": 1793371255.9964983,
+          "available_gib": 2.3991966247558594,
+          "host_cpu_percent": 30.8
+        },
+        {
+          "unix_time": 1793371256.9974437,
+          "available_gib": 2.39862060546875,
+          "host_cpu_percent": 27.3
+        },
+        {
+          "unix_time": 1793371257.9987407,
+          "available_gib": 2.3985824584960938,
+          "host_cpu_percent": 32.9
+        },
+        {
+          "unix_time": 1793371258.9999976,
+          "available_gib": 2.3947410583496094,
+          "host_cpu_percent": 34.0
+        },
+        {
+          "unix_time": 1793371260.0013554,
+          "available_gib": 2.389942169189453,
+          "host_cpu_percent": 39.9
+        }
+      ]
+    }
+  ],
+  "simulation_started": false,
+  "elapsed_seconds": 180.0,
+  "resumption_audit": {
+    "after_stocktake_explicit_user_resume": true,
+    "resumed_turn_number": 1,
+    "previous_goal_turn_classification": "progress: consolidated current stocktake/ownership and organized GitHub metadata",
+    "current_turn_classification": "verified wait on now-terminal180s resource-only watcher",
+    "new_reviewable_owner_delivery": false,
+    "team_and_issues_checked": [
+      19,
+      20
+    ],
+    "heavy_simulation_started": false,
+    "lease_present": false,
+    "next": "Fresh future allocation only if new sustained resource gate passes, or review committed peer deliverables. No same-turn retry or owner-file edits."
+  }
+}
