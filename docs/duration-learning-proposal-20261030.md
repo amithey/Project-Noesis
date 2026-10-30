@@ -15,7 +15,7 @@ exploration1.5, v9weight.1, body/senses/control/neural timestep unchanged.
 Control is the D3 complete5s2074b1e2 child from the same parent/seed and verified
 source. Require exact first1000training observation/reward/command rows versus
 that control before interpreting the25s result. Do not call the5s prefix a
-completed25s checkpoint. Final4950learning updates, no parent overwrite, source
+completed25s checkpoint. Final4990learning updates, no parent overwrite, source
 and raw topology/sign/original-reference bound checks; no checkpoint averaging.
 
 Only after full25s completion: evaluate frozen parent,5s control and25s child on
