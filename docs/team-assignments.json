@@ -52,7 +52,8 @@
       "independent_branch": "claude/learning-retention",
       "independent_commit": "2db4d119e56c78a7497a0be26d576b920bdb1f95",
       "independent_observation": "Owner10971afa3493 acknowledges EMA-vs-learning_signal correction locally untested; db5465b old version explicitly held from integration. Synthetic test window granted; PCA pooling counterexample sent.",
-      "independent_commit_pending_review": "db5465b24144a1539d80028ef52b6676964e1ded (DO NOT INTEGRATE: superseded correction pending)"
+      "independent_commit_pending_review": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac: normalizer parity verified, whole tool held for PCA/null/provenance",
+      "normalizer_review": "docs/credit-timing-normalizer-review.json"
     },
     {
       "id": "gemini",
@@ -78,7 +79,8 @@
       "managed_model": "gemini-3.8-flash-medium",
       "managed_checkout": "outputs/team-dev-gemini-r2",
       "managed_branch": "codex/team-gemini-senses-r2",
-      "independent_evidence_message": "036166c1347f"
+      "independent_evidence_message": "49b80a797dad",
+      "independent_observation": "Static rest-offset/76Hz arithmetic acknowledged; spike reduction is not physical improvement proof; exact source/artifacts/load units still requested."
     }
   ],
   "active_round": {

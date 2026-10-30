@@ -16,9 +16,9 @@ input/command associations and rare(.089-.260percent) command slew-cap hits.
 These different signal/output pairs cannot rank credit rules or prove learning.
 Raw metadata stays local; compact results/hash manifest are archived.
 
-Claude owner reports db5465b is old and explicitly not ready for integration;
-actual learning_signal correction remains local pending tests. Closed synthetic
-test window granted. Codex also verified a mathematical PCA-sign pooling
+Claude committed bbbfd776 actual learning_signal correction; Codex verified exact
+parity with all990active values in3complete physical logs. The whole tool remains
+held for PCA/null/provenance review. Closed synthetic test window granted. Codex also verified a mathematical PCA-sign pooling
 counterexample against old immutable LagFit (R2~1 to~0 under equivalent coordinate
 sign change). This is tool validation, not fly evidence. Correct before inference.
 Scoped exact reviewed pytest identities can coexist with code work while unknown
