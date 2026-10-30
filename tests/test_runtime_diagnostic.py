@@ -11,13 +11,13 @@ from runtime_diagnostic import compare_traces, validate_report, PARENT
 def report():
     return dict(status='completed_transport_pilot', learning=False, motor_exploration=0,
                 weights_unchanged=True, completed_control_chunks=1000,
-                simulated_seconds_per_world=5, checkpoint_sha256=PARENT, seed=10006,
+                simulated_seconds_per_world=5, checkpoint_sha256=PARENT, seeds=[10006],
                 worlds=1, backend='cpu', controller='brain', setup_wall_seconds=1,
                 loop_wall_seconds=2, total_wall_seconds=3)
 
 
 @pytest.mark.parametrize('key,value', [('completed_control_chunks', 316), ('learning', True),
-    ('weights_unchanged', False), ('seed', 10), ('checkpoint_sha256', 'wrong'),
+    ('weights_unchanged', False), ('seeds', [10]), ('checkpoint_sha256', 'wrong'),
     ('total_wall_seconds', float('nan'))])
 def test_reject_invalid_repeat(key, value):
     candidate = report()

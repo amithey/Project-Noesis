@@ -1,10 +1,10 @@
 {
-  "status": "matched_exploration_pilot_complete_not_promoted",
+  "status": "runtime_diagnosed_learning_gated_pending_resource_and_integration_checks",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
-  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\train-lower\\weights-last.npz",
-  "latest_experimental_training_sha256": "224b1e797c9add1d2ff3e9f37a9d2eb9d4f515f22615fc521f721835cea98070",
+  "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\e5-continuation-retry1-20261029\\train-v9-1002\\weights-last.npz",
+  "latest_experimental_training_sha256": "d7013c88af9aa5a20e150f2aad6e2d4395aa2c58603ada775016e470393d1dc1",
   "best_validated_checkpoint": null,
   "model_promoted": false,
   "stage_advanced": false,
@@ -12,14 +12,13 @@
   "cuda_verified": false,
   "training_backend": "cpu",
   "worlds": 1,
-  "last_training_seed": 2100,
+  "last_training_seed": 1002,
   "last_frozen_seed": 10009,
   "next_steps": [
-    "Review the matched pilot: lower exploration improved control standing but failed the preregistered rule and reduced standing vs parent",
-    "Do not promote either child; register a new hypothesis before more method-training births",
-    "Complete the full interruption-safe curriculum manager; the current runner only executes a bounded method pilot",
-    "Keep v9/core pin unchanged pending cycle-definition and reward-saturation review",
-    "Perform final held-out controls only after the unchanged scientific gates pass"
+    "Finish semantic review of Claude retention and Gemini sensory repairs without changing active physics/controller.",
+    "Establish a resource envelope and matched complete training throughput before testing learning-rate hypothesis.",
+    "Preregister conservative LR comparison with same complete parent and frozen-parent retention controls; no arbitrary weight averaging.",
+    "Keep held-out seeds10,11,200,201,202 reserved; no promotion from reused development probes."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -42,16 +41,37 @@
     "slip_change_percent": -1.9898385950845698
   },
   "latest_method_pilot": {
-    "date": "2026-10-28",
-    "training_births_completed": 2,
-    "frozen_probes_completed": 6,
-    "wall_seconds": 1967.5,
-    "lower_exploration_met_preregistered_rule": false,
-    "audit": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\audit.json",
-    "source_commit": "0398b0346a8b0e0e701e85228fb419592cb0a19c",
-    "artifact_release": "exploration-pilot-2026-10-28",
-    "parent_sha256": "626bde8dce2f996ef181650ba4c3812abdc0dfdd3a969bbfc1e0e1ed57b95ff1",
-    "parent_status": "provisional experimental anchor; not validated-best",
-    "latest_child_is_recommended_parent": false
-  }
+    "name": "E5retry",
+    "complete_jobs": 9,
+    "paired_heading_passes": 0,
+    "paired_net_passes": 0,
+    "model_promoted": false
+  },
+  "prior_method_snapshot": {
+    "latest_method_pilot": {
+      "date": "2026-10-28",
+      "training_births_completed": 2,
+      "frozen_probes_completed": 6,
+      "wall_seconds": 1967.5,
+      "lower_exploration_met_preregistered_rule": false,
+      "audit": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\audit.json",
+      "source_commit": "0398b0346a8b0e0e701e85228fb419592cb0a19c",
+      "artifact_release": "exploration-pilot-2026-10-28",
+      "parent_sha256": "626bde8dce2f996ef181650ba4c3812abdc0dfdd3a969bbfc1e0e1ed57b95ff1",
+      "parent_status": "provisional experimental anchor; not validated-best",
+      "latest_child_is_recommended_parent": false
+    },
+    "latest_experimental_training_checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\train-lower\\weights-last.npz",
+    "latest_experimental_training_sha256": "224b1e797c9add1d2ff3e9f37a9d2eb9d4f515f22615fc521f721835cea98070"
+  },
+  "latest_child_is_recommended_parent": false,
+  "latest_failed_experiment": {
+    "name": "E6",
+    "completed_chunks": 316,
+    "simulated_seconds": 1.58,
+    "v8_ran": false,
+    "conclusion": "No ablation comparison"
+  },
+  "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
+  "training_lease_active": false
 }

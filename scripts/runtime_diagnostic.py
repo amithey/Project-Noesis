@@ -24,7 +24,7 @@ def validate_report(report):
     expected = {'status': 'completed_transport_pilot', 'learning': False,
                 'motor_exploration': 0, 'weights_unchanged': True,
                 'completed_control_chunks': 1000, 'simulated_seconds_per_world': 5,
-                'checkpoint_sha256': PARENT, 'seed': 10006, 'worlds': 1,
+                'checkpoint_sha256': PARENT, 'seeds': [10006], 'worlds': 1,
                 'backend': 'cpu', 'controller': 'brain'}
     for key, value in expected.items():
         if report.get(key) != value:

@@ -33,3 +33,36 @@ versus.02 treatment, not yet implemented); Gemini external senses/composition
 awaits semantic review. Do not combine independently trained weights. Future
 learning trial requires matched training throughput and frozen-parent retention
 controls before selecting a candidate; no automatic promotion.
+
+## Observed result
+
+One real frozen episode completed all1000chunks/5seconds: setup62.087s,
+loop205.087s,total267.219s. The wrapper then rejected a nonexistent scalar
+`seed` field; the frozen report actually supplies `seeds:[10006]`. This was a
+Codex validator defect, corrected with tests after the run. The original stopped
+result is preserved; the planned second fresh repeat was never launched.
+
+Post-run offline validation confirms full frozen integrity and exact equality
+of all10observation arrays against historical E4's same parent/core/seed episode.
+The run/controller/backend/bridge files are unchanged since E4. The historical
+episode took75.313s; this is useful retrospective reproduction evidence, not
+completion of the preregistered two-fresh-repeat protocol.
+
+Telemetry sampled132times: minimum host available memory0.483GiB, maximum
+childRSS0.716GiB; final systemCPU84.7%, childCPU214.484s at268.734elapsed.
+Host pressure is observed. These counters do not identify paging, thermal
+throttling, suspension or another process as the cause. No unrelated process
+was terminated or global power/thread setting changed. No further full
+simulation allocated: first measure a resource envelope and profile setup versus
+neural/physics CPU time, then demonstrate matched training completion. Merely
+raising the wall limit would not resolve the reliability question.
+
+Compact result: [runtime-diagnostic-d1-result.json](runtime-diagnostic-d1-result.json).
+Evidence: [D1 prerelease](https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30),
+archive SHA256 `e3bd201ea6493d5c6776f2afda46f071ef546ea370dd6faeee2b9b3a5e079483`.
+
+Integration review also reproduced unsafe acceptance by managed R2 code:
+retention comparison accepted sourceA/sourceB with four invented leg names;
+sensory composition cast complex rate1+7j to1.0. Recorded in issues19/20 and
+dispatched bounded file-only owner repairs. No claimed behavioral-memory or
+external-sensory capability follows from those synthetic modules.

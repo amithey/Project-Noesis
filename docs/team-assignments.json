@@ -17,8 +17,8 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "locomotion_analysis_and_parallel_integration",
-      "role": "Integration, reproducibility, curriculum orchestration and shared run/checkpoint lifecycle",
+      "assignment_status": "runtime_diagnosis_and_capability_integration",
+      "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
         "gpu-pilot/src/noesis_gpu/run.py",
@@ -45,8 +45,8 @@
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
       "handoff": "docs/handoffs/claude.md",
-      "managed_session_status": "heading_fix_complete25_tests_pending_review",
-      "managed_assignment": "Offline checkpoint retention/invariant audit",
+      "managed_session_status": "strict_context_repair_ready_for_review_37tests",
+      "managed_assignment": "Learning/memory retention; focused validation repair before LR hypothesis",
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2"
     },
@@ -68,8 +68,8 @@
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
       "handoff": "docs/handoffs/gemini.md",
-      "managed_session_status": "composition_complete19_tests_pending_review",
-      "managed_assignment": "Opt-in external neural sensory adapter",
+      "managed_session_status": "real_finite_sensory_repair_developing",
+      "managed_assignment": "External senses/environment reactions; focused drive validation repair",
       "managed_provider": "Antigravity",
       "managed_model": "gemini-3.8-flash-medium",
       "managed_checkout": "outputs/team-dev-gemini-r2",
@@ -93,22 +93,27 @@
     "codex": "Standing and walking; integration and shared simulation scheduling",
     "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
     "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
-    "status": "round2_development_finished_pending_review",
+    "status": "focused_round2_semantic_repairs_dispatched_20261030",
     "shared_host": "one full simulation at a time; code and synthetic tests parallel",
     "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits",
     "state": "outputs/team-development-r2-20261029",
     "coordinator": "scripts/team_development.py",
     "automatic_merge": false,
-    "verification": "docs/team-development-first-round.json"
+    "verification": "docs/team-development-first-round.json",
+    "review_blockers": [
+      "retention: canonical six legs/source match/frozen provenance",
+      "sensory: reject complex input and finite aggregation"
+    ]
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "organizing_new_method_no_active_training",
+    "status": "D1_one_complete_frozen_repeat_reproduces_historical_trace_training_still_gated",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
     "learning_rate_treatment": 0.02,
     "new_method_implemented": false,
-    "new_training_started": false
+    "new_training_started": false,
+    "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json"
   }
 }
