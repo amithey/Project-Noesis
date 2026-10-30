@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import pytest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from training_resources import assess
+from training_resources import assess,window_due
 
 
 def samples():
@@ -21,3 +21,11 @@ def test_missing_and_invalid_observations_fail_closed():
     with pytest.raises(ValueError):assess(samples()[:1])
     rows=samples();rows[1]['available_gib']=float('nan')
     with pytest.raises(ValueError):assess(rows)
+
+
+def test_watch_windows_fit_budget_and_do_not_busy_retry():
+    assert window_due(0,None)
+    assert not window_due(30,0)
+    assert window_due(60,0)
+    assert not window_due(891,840)
+    assert not window_due(901,840)
