@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import functools
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -40,6 +41,8 @@ def parser():
     ap.add_argument("--profile", default="standing")
     ap.add_argument("--exploration-mv-ms", type=float, default=1.5)
     ap.add_argument("--cycle-weight", type=float, default=None)
+    ap.add_argument("--learning-rate", type=float, default=.2)
+    ap.add_argument("--log-exploration", action="store_true")
     return ap
 
 
@@ -48,6 +51,14 @@ def run(args):
 
     objective = resolve_objective(getattr(args, "profile", "standing"))
     amplitude = getattr(args, "exploration_mv_ms", 1.5)
+    from .learning import DEFAULT_LEARNING_RATE, MAX_LEARNING_RATE
+    learning_rate = getattr(args, "learning_rate", DEFAULT_LEARNING_RATE)
+    if learning_rate is None:  # transitional profile_run leaves the native default intact
+        learning_rate = DEFAULT_LEARNING_RATE
+    if (isinstance(learning_rate, (bool, np.bool_)) or not np.isfinite(learning_rate)
+            or not 0 < learning_rate <= MAX_LEARNING_RATE):
+        raise ValueError(f"Learning rate must be finite and in (0, {MAX_LEARNING_RATE}]")
+    log_exploration = getattr(args, "log_exploration", False)
     if not np.isfinite(amplitude) or not 0 < amplitude <= 1.5:
         raise ValueError("Exploration must be finite and in (0, 1.5] mV/ms")
     chunks, substeps = timing_steps(args.seconds, 5., .0001)
@@ -74,7 +85,7 @@ def run(args):
               "upstream_commit": UPSTREAM_COMMIT, "noesis_source_sha256": source_digest(source),
               "import_checkpoint": str(args.checkpoint.resolve()),
               "import_checkpoint_sha256": file_digest(args.checkpoint),
-              "reward_objective": objective, "learning_rate": .2,
+              "reward_objective": objective, "learning_rate": float(learning_rate),
               "eligibility_ms": 100, "motor_exploration_mv_ms": amplitude,
               "original_weight_bound": .5, "control_ms": 5., "physics_dt": .0001,
               "birth_ms": 50, "requested_seconds": args.seconds, "completed_chunks": 0,
@@ -89,7 +100,8 @@ def run(args):
         cn, _ = load_training_brain(data, output / "brain-cache")
         brain = LearningBrain(cn, body.rest, body.lo, body.hi,
                               checkpoint=args.checkpoint, seed=args.seed,
-                              exploration_mv_ms=amplitude)
+                              exploration_mv_ms=amplitude, learning_rate=learning_rate,
+                              record_exploration=log_exploration)
         report.update(neurons=cn.n, edges=cn.W.nnz,
                       plasticity_targets=len(brain.learner.motor_indices),
                       plasticity_edges=len(brain.learner.edge_indices))
@@ -149,6 +161,21 @@ def run(args):
         raise
     finally:
         report["wall_seconds"] = time.perf_counter() - started
+        if log_exploration and brain is not None:
+            log = brain.exploration_log()
+            active = np.flatnonzero([row["learning_active"] for row in records])
+            if log is not None and len(log["credit"]):
+                # Log rows are only complete if step and reward update both finished.
+                if len(log["drive"]) == len(log["credit"]) == len(active):
+                    temporary = output / "exploration-log.tmp.npz"
+                    np.savez_compressed(temporary, **log, control_chunk_index=active,
+                                        control_ms=np.array(5.))
+                    os.replace(temporary, output / "exploration-log.npz")
+                    report["exploration_log"] = {"file": "exploration-log.npz",
+                        "steps": len(active), "first_control_chunk": int(active[0]),
+                        "alignment": "zero-based control_chunk_index into training-observations.npz"}
+                else:
+                    report["exploration_log_error"] = "Incomplete step/update alignment; log not exported"
         if records:
             np.savez_compressed(output / "training-observations.npz", **{
                 key: np.stack([row[key] for row in records]) for key in records[0]})
