@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-31",
+  "comparison": "2026-10-30 stocktake before R4/D4M",
+  "physical_episodes_added": 3,
+  "episode_seconds": 5,
+  "new_behavior_improvement_proven": false,
+  "walking_proven": false,
+  "retention_proven": false,
+  "best_validated_checkpoint": null,
+  "R4": "two complete frozen repeats, all10 observation fields exact",
+  "D4M": "one complete training replay,1000chunks990updates, known bank/all19trace/all6log exact",
+  "T1B": {
+    "code_commit": "4799b80",
+    "focused_tests_passed": 46,
+    "launched": false,
+    "allocated": false,
+    "D4M_prerequisite_reverified": true
+  },
+  "github_open_pr_inventory": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    21,
+    22,
+    23,
+    24
+  ],
+  "peer_last_reviewed_commits": {
+    "claude": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
+    "gemini": "4a78e0be2e7db699574812f5ff318e6ec6c264cb"
+  },
+  "peer_latest_issue_comments_before_stocktake": {
+    "19": 6524701466,
+    "20": 6525598346
+  },
+  "new_peer_fix_delivered": false,
+  "simulation_allocated": false,
+  "lease_present_at_check": false,
+  "deleted_branches_or_checkpoints": false,
+  "automatic_merge": false
+}

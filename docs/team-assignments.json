@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "D4M_physical_training_replay_complete_next_longer_experiment_review",
+      "assignment_status": "stocktake_complete_T1B_tested_not_allocated",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -56,7 +56,8 @@
       "normalizer_review": "docs/credit-timing-normalizer-review.json",
       "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated",
       "display_name": "Opus / Claude",
-      "next_deliverable": "One reviewed PR +3existing-log analysis; no new training births"
+      "next_deliverable": "One reviewed PR +3existing-log analysis; no new training births",
+      "current_owned_scope": "credit_timing analysis tool, its tests and docs in independent branch; learning/reward/core files require a separately reviewed proposal"
     },
     {
       "id": "gemini",
@@ -87,7 +88,8 @@
       "next_deliverable": "Correct manifest/report/protocol and supply runnable candidate+paired raw evidence per issue20review6525598346",
       "independent_commit": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
       "review": "docs/gemini-sensory-review-4a78e0b.json",
-      "historical_reported_branch": "feature/habitat-in-view"
+      "historical_reported_branch": "feature/habitat-in-view",
+      "current_owned_scope": "sensory adapter candidate, tests and delivery docs/evidence in independent branch; no uncoordinated controller/evaluation edits"
     }
   ],
   "active_round": {
@@ -122,7 +124,7 @@
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "T1incomplete_fresh_resource_gate_refused",
+    "status": "D4M_complete_T1B_tested_not_allocated",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
@@ -132,7 +134,7 @@
     "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
     "runtime_profile": "docs/runtime-profile-d2-result.json",
     "full_training_reproducibility": "docs/logging-parity-d3-result.json",
-    "current_priority": "Stable resource window and measured quiescence before any explicit fresh25s allocation",
+    "current_priority": "Review peer corrections; separately allocate T1B only after fresh host gate and lease. No simulation during stocktake.",
     "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
     "credit_replication": "docs/credit-replication-c2-result.json",
     "next_proposal": "docs/duration-learning-proposal-20261030.md",
@@ -155,7 +157,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "D4M_training_replay_complete_no_simulation_allocated",
+    "status": "stocktake_no_simulation_allocated",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
@@ -166,5 +168,11 @@
   "status_entrypoint": "docs/project-status-20261030.md",
   "current_integration_branch": "codex/training-pilot-20261028",
   "experimental_core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
-  "historical_fields_note": "hub/core baseline and managed_* fields preserve prior setup; not proof of current activity"
+  "historical_fields_note": "implementation_baseline, core_commit, active_round and managed_* fields preserve prior setup/results; current_queue and resource_schedule describe the current queue, not live agent activity. Experimental runtime core is experimental_core_commit.",
+  "updated_date": "2026-10-31",
+  "current_queue": {
+    "codex": "T1B tested4799b80, not allocated; standing/walking, run reliability and integration",
+    "claude": "One credit-timing repair PR using three existing logs; fresh acknowledgement pending",
+    "gemini": "One sensory delivery repair after4a78e0b review; fresh acknowledgement pending"
+  }
 }

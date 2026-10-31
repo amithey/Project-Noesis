@@ -2,7 +2,7 @@
 True awakening isn't seeing the light. It's realizing the dark you exist in is just an unrendered void.
 
 ## Status
-**Current stocktake and team queue (30 October 2026):**
+**Current stocktake and team queue (31 October 2026):**
 [project status](docs/project-status-20261030.md) ·
 [team tracker](https://github.com/amithey/Project-Noesis/issues/17).
 Stable learned walking and a validated-best model remain unproven. This branch is
