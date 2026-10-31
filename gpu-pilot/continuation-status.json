@@ -1,5 +1,5 @@
 {
-  "status": "blocked_after_three_latest_resume_resource_refusals",
+  "status": "active_R4_full_frozen_reproducibility_completed_no_model_change",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -26,7 +26,7 @@
   "plan_revision": "flygym2-brain-only-2026-10-21",
   "legacy_runner_role": "historical controls only; not the active new-body route",
   "app_goal_objective_updated": true,
-  "app_goal_status_observed": "blocked audit satisfied after latest explicit resume; transition requested",
+  "app_goal_status_observed": "active after explicit resume; actual bounded physical diagnostic completed",
   "curriculum_orchestration_port_complete": false,
   "resume_flag_supported_by_new_commands": false,
   "standing_training_gate_passed": true,
@@ -93,5 +93,6 @@
   "leg_assignment_review": "docs/leg-assignment-audit-20261030.json",
   "evaluation_continuation": "docs/duration-evaluation-continuation-20261030.md",
   "evaluation_continuation_physical_tested": false,
-  "sensory_review": "docs/gemini-sensory-review-4a78e0b.json"
+  "sensory_review": "docs/gemini-sensory-review-4a78e0b.json",
+  "resource_envelope_result": "docs/resource-envelope-r4-result.json"
 }

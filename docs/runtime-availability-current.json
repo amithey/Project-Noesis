@@ -1,107 +1,23 @@
 {
-  "status": "resource_watch_deadline_no_quiescent_window",
-  "budget_seconds": 11.0,
-  "windows": [
-    {
-      "start_elapsed": 0.0,
-      "decision": {
-        "passed": false,
-        "sample_count": 10,
-        "minimum_available_gib": 1.8546829223632812,
-        "maximum_host_cpu_percent": 64.4,
-        "required_available_gib": 3.0,
-        "allowed_host_cpu_percent": 30.0,
-        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
-      },
-      "samples": [
-        {
-          "unix_time": 1793440754.5468476,
-          "available_gib": 1.8546829223632812,
-          "host_cpu_percent": 60.5
-        },
-        {
-          "unix_time": 1793440755.5484982,
-          "available_gib": 1.8908119201660156,
-          "host_cpu_percent": 56.1
-        },
-        {
-          "unix_time": 1793440756.5500789,
-          "available_gib": 1.8932876586914062,
-          "host_cpu_percent": 41.9
-        },
-        {
-          "unix_time": 1793440757.5512831,
-          "available_gib": 1.8795509338378906,
-          "host_cpu_percent": 64.4
-        },
-        {
-          "unix_time": 1793440758.5523264,
-          "available_gib": 1.888916015625,
-          "host_cpu_percent": 39.8
-        },
-        {
-          "unix_time": 1793440759.5538185,
-          "available_gib": 1.8655738830566406,
-          "host_cpu_percent": 41.6
-        },
-        {
-          "unix_time": 1793440760.5554068,
-          "available_gib": 1.9024391174316406,
-          "host_cpu_percent": 35.2
-        },
-        {
-          "unix_time": 1793440761.5570393,
-          "available_gib": 1.9180984497070312,
-          "host_cpu_percent": 41.8
-        },
-        {
-          "unix_time": 1793440762.5583537,
-          "available_gib": 1.9144859313964844,
-          "host_cpu_percent": 48.4
-        },
-        {
-          "unix_time": 1793440763.560063,
-          "available_gib": 1.9173469543457031,
-          "host_cpu_percent": 58.3
-        }
-      ]
-    }
-  ],
-  "simulation_started": false,
-  "elapsed_seconds": 11.0,
-  "audit_series": "new_explicit_resume_after_user_pause",
-  "peer_heads": {
-    "claude": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
-    "gemini": "4a78e0be2e7db699574812f5ff318e6ec6c264cb"
+  "status": "R4_frozen_feasibility_completed_T1_gate_unchanged",
+  "current_turn_classification": "Progress: tested operational wrapper and completed two exact full-horizon physical frozen repeats",
+  "result": "docs/resource-envelope-r4-result.json",
+  "training_resource_policy": {
+    "minimum_gib": 3,
+    "maximum_cpu_percent": 30,
+    "samples": 10,
+    "changed": false
   },
-  "pending_user_question": "Godot usage remains unanswered; resume does not authorize closing applications",
-  "historical_host_diagnosis": "docs/host-resource-ownership-20261030.json; not current CPU attribution",
-  "next": "Registered physical experiment only after fresh sustained resource gate, or review new committed peer repairs; no same-turn retry or heavy tests at this memory pressure",
-  "audit_turn": 3,
-  "current_turn_classification": "No progress after revalidation; same blocker3consecutive turns",
-  "previous_turn_classification": "No progress after resource/peer-state revalidation",
-  "raw_evidence_sha256": "f4acaf0b6b405e24448d2fb109b92eb22ffca55559878d8391f2e50cad2d8702",
-  "checked_peer_issues": [
-    19,
-    20
-  ],
-  "new_reviewable_owner_fix": false,
-  "processes_terminated": false,
+  "R4_launch_policy": {
+    "minimum_gib": 2,
+    "maximum_cpu_percent": 60,
+    "samples": 10,
+    "in_run_stop_gib": 1,
+    "scope": "separate preregistered frozen feasibility experiment only"
+  },
   "training_allocated": false,
   "model_promoted": false,
   "walking_proven": false,
-  "goal_status": "blocked audit satisfied; full objective unachieved",
-  "blocked_audit": {
-    "same_condition_turns": 3,
-    "now_at_impasse": true,
-    "managed_sessions_live": false,
-    "host_lease_present": false,
-    "next_owned_physical_action": "RegisteredT1 from originalcomplete9fd7d411 parent; unchangedscientific/resource/budgetgates",
-    "review_inputs_needed": [
-      "Claude PCA/coverage/null correction",
-      "Gemini manifest/candidate/raw-evidence/protocol correction after4a78e0b review"
-    ],
-    "resume_condition": "Sustained usable resources or new reviewable owner delivery; not elapsed time",
-    "user_app_closure_authorized": false
-  }
+  "goal_status": "active; full objective unachieved",
+  "next": "Fresh original T1 gate before any registered training, or peer correction review"
 }
