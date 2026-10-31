@@ -60,6 +60,8 @@ their success was not counted as physical standing success.
 reports, telemetry/preflights/logs/summaries, bank/report references and old
 descendant replay inputs. Input SHA checked before/after copying, ZIPCRC and all
 file hashes verified. No raw connectome/cache/env/credentials.
+[Remote asset verification](standing-baseline-b1-artifact-verification.json)
+confirms both uploaded hashes and sizes match the local signed artifacts.
 
 - standing-baseline-b1-evidence.zip:13314291bytes,
   SHA256`677543a7553a11125a5f866e2e5944a327f51c3d51e00823c071de871f0d5445`.
