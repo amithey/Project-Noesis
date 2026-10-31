@@ -11,6 +11,7 @@ from .reward_profiles import resolve_objective
 
 MAX_EXPLORATION_MV_MS = 1.5  # original exploration cap; options may only lower it
 DEFAULT_LEARNING_RATE = 0.2   # per second; the pilot's value since the first births (core default is 0.02)
+CONTROL_SEED_OFFSET = 1_000_003  # credit-control stream seed = training seed + this
 MAX_LEARNING_RATE = 2.0       # sanity cap for experiments; not a recommendation
 
 
@@ -20,18 +21,23 @@ class LearningBrain(FrozenBrain):
     ``learning_rate`` only scales the size of every weight update; synthetic tests show it does not
     change the signal-to-noise of the credit. ``record_exploration`` keeps the per-step injected
     exploration current and the innovation credit for offline credit-timing analysis; it never
-    changes learning.
+    changes learning. ``credit_control="independent"`` is a matched noise control: the injected current
+    and the reward are untouched, but the credit given to the learner comes from a second exploration
+    stream with another seed (same distribution, no link to the injected current). Weight-update size
+    and bounds are as in a real birth; only the credit/current correspondence is removed.
     """
 
     def __init__(self, connectome, rest, lo, hi, *, checkpoint, seed=0,
                  exploration_mv_ms=MAX_EXPLORATION_MV_MS, learning_rate=DEFAULT_LEARNING_RATE,
-                 record_exploration=False, **options):
+                 record_exploration=False, credit_control=None, **options):
         if "shared_weights" in options:
             raise ValueError("Learning brains require independent mutable weights")
         if not np.isfinite(exploration_mv_ms) or not 0 < exploration_mv_ms <= MAX_EXPLORATION_MV_MS:
             raise ValueError("exploration_mv_ms must be in (0, 1.5]; the original cap is not raised")
         if not np.isfinite(learning_rate) or not 0 < learning_rate <= MAX_LEARNING_RATE:
             raise ValueError(f"learning_rate must be finite and in (0, {MAX_LEARNING_RATE}]")
+        if credit_control not in (None, "independent"):
+            raise ValueError("credit_control must be None or 'independent'")
         from noesis.circuit_learning import CircuitExploration
         from noesis.plasticity import MotorPlasticity
 
@@ -52,6 +58,12 @@ class LearningBrain(FrozenBrain):
                                               amplitude_mv_ms=exploration_mv_ms, tau_ms=100, seed=seed)
         if not np.isin(self.exploration.idx, self.learner.motor_indices).all():
             raise ValueError("Checkpoint does not cover all explored leg motor neurons")
+        self.credit_control = credit_control
+        self._control_exploration = None
+        if credit_control == "independent":  # never injected: only its innovation is used as credit
+            self._control_exploration = CircuitExploration(
+                connectome.neurons, circuit, amplitude_mv_ms=exploration_mv_ms, tau_ms=100,
+                seed=CONTROL_SEED_OFFSET + int(seed))
         self.exploration_mv_ms = float(exploration_mv_ms)
         self.learning_rate = float(learning_rate)
         self.learning_active = False
@@ -77,6 +89,11 @@ class LearningBrain(FrozenBrain):
         credit = self.exploration.credit(self.learner.motor_indices)
         if self._log is not None:
             self._log["credit"].append(np.asarray(credit, np.float32).copy())
+        if self._control_exploration is not None:
+            self._control_exploration.step(dt_ms)
+            credit = self._control_exploration.credit(self.learner.motor_indices)
+            if self._log is not None:
+                self._log.setdefault("applied_credit", []).append(np.asarray(credit, np.float32).copy())
         result = self.learner.update(self.last_spikes, dt_ms, reward, perturbation=credit)
         self.updates += 1
         return result
@@ -91,8 +108,11 @@ class LearningBrain(FrozenBrain):
         if self._log is None:
             return None
         drive, credit = self._log["drive"], self._log["credit"]
-        return {"drive": np.array(drive, np.float32), "credit": np.array(credit, np.float32),
-                "drive_idx": self._log["drive_idx"], "motor_indices": self.learner.motor_indices.copy()}
+        out = {"drive": np.array(drive, np.float32), "credit": np.array(credit, np.float32),
+               "drive_idx": self._log["drive_idx"], "motor_indices": self.learner.motor_indices.copy()}
+        if "applied_credit" in self._log:  # control births only: what the learner actually received
+            out["applied_credit"] = np.array(self._log["applied_credit"], np.float32)
+        return out
 
 
 def score_transition(before, after, dt_ms, objective="curriculum-standing-v7", cycle_credit=0.,

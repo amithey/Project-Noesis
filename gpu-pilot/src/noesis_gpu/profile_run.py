@@ -31,7 +31,8 @@ SIDECAR = "profile-run.json"
 
 
 @contextmanager
-def _patched(objective, exploration_mv_ms, cycle_weight=None, learning_rate=None, record_exploration=False):
+def _patched(objective, exploration_mv_ms, cycle_weight=None, learning_rate=None, record_exploration=False,
+             credit_control=None):
     """Yield (scorer, brains): the CycleScoring in use (v9 only, else None) and every LearningBrain built
     during the run; restore the learning module on exit."""
     score, brain = learning.score_transition, learning.LearningBrain
@@ -43,6 +44,8 @@ def _patched(objective, exploration_mv_ms, cycle_weight=None, learning_rate=None
         options["learning_rate"] = learning_rate
     if record_exploration:
         options["record_exploration"] = True
+    if credit_control is not None:
+        options["credit_control"] = credit_control
 
     def make_brain(*a, **k):  # same override order as functools.partial: the call's keywords win
         built = brain(*a, **{**options, **k})
@@ -87,6 +90,9 @@ def build_parser(train_module=train):
     ap.add_argument("--learning-rate", type=float, default=None,
                     help=f"weight-update rate per second in (0, {learning.MAX_LEARNING_RATE}]; default "
                          f"{learning.DEFAULT_LEARNING_RATE}")
+    ap.add_argument("--credit-control", choices=("independent",), default=None,
+                    help="matched noise control: the learner receives credit from an independent exploration "
+                         "stream; injected current and reward are unchanged")
     ap.add_argument("--log-exploration", action="store_true",
                     help="save the injected exploration current and innovation credit to exploration-log.npz")
     return ap
@@ -114,7 +120,7 @@ def run_birth(args, train_module=train) -> int:
     report, error, scorer, brains = None, None, None, []
     try:
         with _patched(objective, args.exploration_mv_ms, args.cycle_weight, args.learning_rate,
-                      args.log_exploration) as context:
+                      args.log_exploration, args.credit_control) as context:
             scorer, brains = context.scorer, context.brains
             report = train_module.run(args)
     except BaseException as caught:  # noqa: BLE001 - recorded, then re-raised below
@@ -131,6 +137,8 @@ def run_birth(args, train_module=train) -> int:
             sidecar["cycle_weight"] = args.cycle_weight
         if args.learning_rate is not None:
             sidecar["learning_rate"] = args.learning_rate
+        if args.credit_control is not None:
+            sidecar["credit_control"] = args.credit_control
         if scorer is not None:  # v9: how much cycle bonus was credited and how often the reward clipped
             sidecar["cycle_scoring"] = scorer.summary()
         if args.log_exploration:
