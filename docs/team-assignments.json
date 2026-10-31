@@ -16,9 +16,9 @@
     {
       "id": "codex",
       "issue": 18,
-      "branch": "codex/flygym2-training-orchestration",
-      "assignment_status": "accepted_planning",
-      "role": "Integration, reproducibility, curriculum orchestration and shared run/checkpoint lifecycle",
+      "branch": "codex/training-pilot-20261028",
+      "assignment_status": "L2_complete_retention_failed_next_curriculum_reward_diagnosis",
+      "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
         "gpu-pilot/src/noesis_gpu/run.py",
@@ -28,14 +28,15 @@
         "gpu-pilot/continuation-status.json",
         "gpu-pilot/training-plan.json",
         "gpu-pilot/training-plan.md"
-      ]
+      ],
+      "managed_session_status": ""
     },
     {
       "id": "claude",
       "provider": "Anthropic",
       "issue": 19,
-      "branch": "claude/flygym2-learning-rewards",
-      "assignment_status": "assigned_awaiting_ack",
+      "branch": "claude/learning-retention",
+      "assignment_status": "credit_timing_fix_delivery_pending_fresh_ack",
       "role": "Neural learning, existing reward objectives and checkpoint invariants",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/learning.py",
@@ -43,13 +44,26 @@
         "gpu-pilot/tests/test_learning.py"
       ],
       "optional_core_branch": "claude/flygym2-core-learning",
-      "handoff": "docs/handoffs/claude.md"
+      "handoff": "docs/handoffs/claude.md",
+      "managed_session_status": "strict_context37tests_reviewed_and_copied_to_integration",
+      "managed_assignment": "Learning and behavioral retention; independent L1 design and reviewed log plumbing",
+      "managed_checkout": "outputs/team-dev-claude-r2",
+      "managed_branch": "codex/team-claude-retention-r2",
+      "independent_branch": "claude/learning-retention",
+      "independent_commit": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
+      "independent_observation": "Actual normalized signal accepted by exact replay parity only; full tool awaits PCA invariance, leg assignment coverage, null/provenance corrections.",
+      "independent_commit_pending_review": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac: normalizer parity verified, whole tool held for PCA/null/provenance",
+      "normalizer_review": "docs/credit-timing-normalizer-review.json",
+      "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated",
+      "display_name": "Opus / Claude",
+      "next_deliverable": "One reviewed PR +3existing-log analysis; no new training births",
+      "current_owned_scope": "credit_timing analysis tool, its tests and docs in independent branch; learning/reward/core files require a separately reviewed proposal"
     },
     {
       "id": "gemini",
       "issue": 20,
       "branch": "gemini/flygym2-gait-validation",
-      "assignment_status": "assigned_awaiting_ack",
+      "assignment_status": "committed_delivery_reviewed_changes_requested",
       "role": "Independent physical metrics, frozen evaluation and later body/sensory validation",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/evaluate.py",
@@ -62,7 +76,103 @@
         "gpu-pilot/src/noesis_gpu/controller.py",
         "gpu-pilot/src/noesis_gpu/compare.py"
       ],
-      "handoff": "docs/handoffs/gemini.md"
+      "handoff": "docs/handoffs/gemini.md",
+      "managed_session_status": "provider_failed_remote_connection_edits_preserved_coordinator_fixed_integration_copy",
+      "managed_assignment": "External senses/environment reactions; focused drive validation repair",
+      "managed_provider": "Antigravity",
+      "managed_model": "gemini-3.8-flash-medium",
+      "managed_checkout": "outputs/team-dev-gemini-r2",
+      "managed_branch": "codex/team-gemini-senses-r2",
+      "independent_evidence_message": "4686bbfbb67e",
+      "independent_observation": "Committed source/report now readable;44isolated unit tests passed. Adapter/test identical to integration after newline normalization. Python manifest entries hashCRLF notGitLF; candidate/raw evidence/protocol corrections still needed.",
+      "next_deliverable": "Correct manifest/report/protocol and supply runnable candidate+paired raw evidence per issue20review6525598346",
+      "independent_commit": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
+      "review": "docs/gemini-sensory-review-4a78e0b.json",
+      "historical_reported_branch": "feature/habitat-in-view",
+      "current_owned_scope": "sensory adapter candidate, tests and delivery docs/evidence in independent branch; no uncoordinated controller/evaluation edits"
     }
-  ]
+  ],
+  "active_round": {
+    "name": "L2_LR0.02vs0.2_matched25s",
+    "status": "completed_scientific_rule_failed",
+    "simulation_owner": "codex",
+    "protocol": "docs/lr-l2-protocol.md",
+    "result": "docs/lr-l2-result.json",
+    "output": "gpu-pilot/outputs/learning-rate-l2-20261031",
+    "requested_seconds": 25,
+    "completed_seconds": 25,
+    "learning_updates": 4990,
+    "frozen_probes_run": 12,
+    "budget_seconds": 3600,
+    "actual_wall_seconds": 1530.453,
+    "model_promoted": false
+  },
+  "parallel_development": {
+    "date": "2026-10-29",
+    "user_direction": "Separate development domains, not three reviewers of gait",
+    "codex": "Standing and walking; integration and shared simulation scheduling",
+    "gemini": "External senses and reactions: explicit sensory input adapter with no-signal baseline",
+    "claude": "Learning and memory: audit retention/forgetting across checkpoint continuation; no new formula without proposal",
+    "status": "reviewed_offline_integration213passed1skipped_no_sensor_controller_hook",
+    "shared_host": "one full simulation at a time; code and synthetic tests parallel",
+    "boundaries": "Preserve current gait evaluation ownership until explicit interface handoff; sensory work starts in new modules, not shared controller edits",
+    "state": "outputs/team-development-r2-20261029",
+    "coordinator": "scripts/team_development.py",
+    "automatic_merge": false,
+    "verification": "docs/team-integration-20261030.json",
+    "review_blockers": []
+  },
+  "training_review": {
+    "date": "2026-10-30",
+    "status": "L2_full_rate_study_complete_progress_without_retained_stability",
+    "proposal": "docs/training-reset-20261030.md",
+    "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
+    "learning_rate_control": 0.2,
+    "learning_rate_treatment": 0.02,
+    "new_method_implemented": false,
+    "new_training_started": true,
+    "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
+    "runtime_profile": "docs/runtime-profile-d2-result.json",
+    "full_training_reproducibility": "docs/logging-parity-d3-result.json",
+    "current_priority": "Inspect curriculum standing entry and actual reward/retention diagnostics before more parameter sweeps; no new allocation.",
+    "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
+    "credit_replication": "docs/credit-replication-c2-result.json",
+    "next_proposal": "docs/duration-learning-proposal-20261030.md",
+    "duration_study": "docs/duration-t1-incomplete-result.json",
+    "training_active": false,
+    "motor_transport_audit": "docs/exploration-motor-m1-result.json",
+    "motor_audit": "docs/exploration-motor-m1-result.json",
+    "credit_timing_review": "docs/credit-timing-review-counterexample.json"
+  },
+  "previous_round": {
+    "name": "C2 fixed credit association replication",
+    "status": "completed_fixed_positive_signature_not_replicated",
+    "simulation_owner": "codex",
+    "protocol": "docs/credit-replication-c2-20261030.md",
+    "pilot_commit": "811499e7bdfbcdd699fc02731275566b58edd812",
+    "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "output": "gpu-pilot/outputs/credit-replication-c2-20261030",
+    "budget_seconds": 720,
+    "actual_seconds": 283.141,
+    "model_promoted": false
+  },
+  "resource_schedule": {
+    "status": "L2_complete_lease_released_no_simulation_allocated",
+    "summary": "docs/resource-r1-result.json",
+    "watcher_active": false,
+    "simulation_active": false,
+    "user_preference": "opportunistic_when_measured_resources_allow",
+    "next_allocation_requires_fresh_gate": true,
+    "latest_observation": "docs/runtime-availability-current.json"
+  },
+  "status_entrypoint": "docs/project-status-20261030.md",
+  "current_integration_branch": "codex/training-pilot-20261028",
+  "experimental_core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "historical_fields_note": "implementation_baseline, core_commit, active_round and managed_* fields preserve prior setup/results; current_queue and resource_schedule describe the current queue, not live agent activity. Experimental runtime core is experimental_core_commit.",
+  "updated_date": "2026-10-31",
+  "current_queue": {
+    "codex": "Audit standing-stage entry and reward/retention behavior after complete T1B/L2 failures; review delivered peer repairs",
+    "claude": "One credit-timing repair PR using three existing logs; fresh acknowledgement pending",
+    "gemini": "One sensory delivery repair after4a78e0b review; fresh acknowledgement pending"
+  }
 }

@@ -1,0 +1,778 @@
+"""Opt-in neural sensory-drive adapter for external signals.
+
+Translates caller-provided external scalar sensor signals into Poisson drive
+parameters (drive_idx, drive_rate_hz, drive_weight) compatible with Noesis's
+core `merge_drive` contract and LIFNetwork execution.
+
+This is an architectural transport adapter and integration contract:
+- Does NOT assume or invent connectome labels or target neuron IDs.
+- Does NOT implement motor policy, reflexes, gait generators, or synthetic sensors.
+- All channel-to-neuron mappings, gains, and signal ranges are caller-specified.
+- Opt-in: disabled or missing signals produce NO drive (zero target neurons driven,
+  no baseline bias, no spontaneous activity).
+- Guarantees input immutability and deterministic multi-channel aggregation onto
+  unique neuron indices.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+import math
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Set, Tuple, Union
+
+import numpy as np
+
+
+@dataclass(frozen=True)
+class ChannelSpec:
+    """Specification of an external scalar sensory input channel.
+
+    Attributes:
+        name: Unique string identifier for the channel.
+        neuron_indices: Non-negative integer indices of target neurons in the connectome.
+        gain: Scaling factor converting input signal units to firing rate in Hz.
+            Must be finite and >= 0.0. Units: Hz / signal unit.
+        min_signal: Lower bound of expected input scalar range. Must be finite.
+        max_signal: Upper bound of expected input scalar range. Must be finite, >= min_signal.
+        clamp: If True, input signals are clamped to [min_signal, max_signal].
+            If False, input signals outside this range raise ValueError.
+        threshold: Minimum input signal required to evoke drive (default 0.0).
+            Signals below threshold produce 0.0 Hz.
+        description: Informational description of the sensor channel.
+    """
+
+    name: str
+    neuron_indices: Tuple[int, ...]
+    gain: float = 100.0
+    min_signal: float = 0.0
+    max_signal: float = 1.0
+    clamp: bool = True
+    threshold: float = 0.0
+    description: str = ""
+
+    def __init__(
+        self,
+        name: str,
+        neuron_indices: Union[int, Sequence[int], np.ndarray],
+        gain: float = 100.0,
+        min_signal: float = 0.0,
+        max_signal: float = 1.0,
+        clamp: bool = True,
+        threshold: float = 0.0,
+        description: str = "",
+    ):
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError(f"Channel name must be a non-empty string, got: {name!r}")
+
+        # Reject booleans for neuron_indices before integer checks
+        if isinstance(neuron_indices, (bool, np.bool_)):
+            raise TypeError(
+                f"Neuron index must be an integer, got boolean: {neuron_indices!r}"
+            )
+
+        # Normalize and validate neuron indices without silent truncation
+        if isinstance(neuron_indices, (int, np.integer)):
+            raw_items = [neuron_indices]
+        elif isinstance(neuron_indices, np.ndarray):
+            if neuron_indices.ndim > 1:
+                raise ValueError(
+                    f"neuron_indices array must be 1D, got ndim={neuron_indices.ndim} with shape {neuron_indices.shape}"
+                )
+            if neuron_indices.ndim == 0:
+                raw_items = [neuron_indices.item()]
+            else:
+                raw_items = list(neuron_indices)
+        elif isinstance(neuron_indices, (list, tuple)):
+            raw_items = list(neuron_indices)
+        else:
+            raise TypeError(
+                f"Neuron index must be an integer or sequence of integers, got: {type(neuron_indices)}"
+            )
+
+        indices_list: List[int] = []
+        for raw_idx in raw_items:
+            if isinstance(raw_idx, (bool, np.bool_)):
+                raise TypeError(
+                    f"Neuron index must be an integer, got boolean: {raw_idx!r}"
+                )
+            if not isinstance(raw_idx, (int, np.integer)):
+                raise TypeError(
+                    f"Neuron index must be an integer, got {type(raw_idx).__name__}: {raw_idx!r}"
+                )
+            idx_val = int(raw_idx)
+            if idx_val < 0:
+                raise ValueError(f"Neuron index must be non-negative, got {idx_val}")
+            indices_list.append(idx_val)
+
+        # Validate gain
+        if isinstance(gain, (bool, np.bool_)):
+            raise TypeError(f"gain must be numeric, got boolean: {gain!r}")
+        if isinstance(gain, (complex, np.complexfloating)):
+            raise TypeError(f"gain must be real numeric, got complex: {gain!r}")
+        if not isinstance(gain, (int, float, np.integer, np.floating)):
+            raise TypeError(f"gain must be real numeric, got {type(gain).__name__}: {gain!r}")
+        gain_val = float(gain)
+        if not math.isfinite(gain_val) or gain_val < 0.0:
+            raise ValueError(f"gain must be a finite non-negative float, got {gain!r}")
+
+        # Validate signal bounds
+        for s_name, s_val in (("min_signal", min_signal), ("max_signal", max_signal), ("threshold", threshold)):
+            if isinstance(s_val, (bool, np.bool_)):
+                raise TypeError(f"{s_name} must be numeric, got boolean: {s_val!r}")
+            if isinstance(s_val, (complex, np.complexfloating)):
+                raise TypeError(f"{s_name} must be real numeric, got complex: {s_val!r}")
+            if not isinstance(s_val, (int, float, np.integer, np.floating)):
+                raise TypeError(f"{s_name} must be real numeric, got {type(s_val).__name__}: {s_val!r}")
+
+        min_s = float(min_signal)
+        max_s = float(max_signal)
+        if not math.isfinite(min_s):
+            raise ValueError(f"min_signal must be finite, got {min_signal!r}")
+        if not math.isfinite(max_s):
+            raise ValueError(f"max_signal must be finite, got {max_signal!r}")
+        if min_s > max_s:
+            raise ValueError(f"min_signal ({min_s}) cannot exceed max_signal ({max_s})")
+
+        thresh = float(threshold)
+        if not math.isfinite(thresh):
+            raise ValueError(f"threshold must be finite, got {threshold!r}")
+
+        object.__setattr__(self, "name", str(name))
+        object.__setattr__(self, "neuron_indices", tuple(indices_list))
+        object.__setattr__(self, "gain", gain_val)
+        object.__setattr__(self, "min_signal", min_s)
+        object.__setattr__(self, "max_signal", max_s)
+        object.__setattr__(self, "clamp", bool(clamp))
+        object.__setattr__(self, "threshold", thresh)
+        object.__setattr__(self, "description", str(description))
+
+
+class ExternalSensoryAdapter:
+    """Opt-in neural sensory-drive adapter.
+
+    Translates measured scalar environment signals into Poisson drive arrays
+    targeting specified connectome neurons.
+
+    Core contract compatibility:
+    - `as_drive_part(signals)` returns `(drive_idx, drive_rate_hz, drive_weight)`
+      ready for inclusion in `noesis.environment_senses.merge_drive(...)`.
+    - `as_drive_dict(signals)` returns `{"drive_idx": ..., "drive_rate_hz": ..., "drive_weight": ...}`
+      matching the exact dictionary schema returned by `merge_drive`.
+    - When disabled or signals are missing, produces zero-length drive arrays,
+      guaranteeing NO spontaneous bias or random activity.
+    - Multiple channels targeting the same neuron combine deterministically
+      (via `sum`, `max`, or `mean`) with unique sorted neuron indices.
+    - Inputs are never mutated.
+    """
+
+    ALLOWED_AGGREGATIONS = ("sum", "max", "mean")
+    ALLOWED_MISSING_POLICIES = ("skip", "error", "zero")
+    ALLOWED_UNMAPPED_POLICIES = ("error", "ignore")
+
+    def __init__(
+        self,
+        n_neurons: int,
+        channels: Optional[Union[Sequence[ChannelSpec], Mapping[str, ChannelSpec]]] = None,
+        default_weight: float = 400.0,
+        aggregation_mode: str = "sum",
+        missing_policy: str = "skip",
+        unmapped_policy: str = "error",
+        enabled: bool = True,
+    ):
+        """Initialize the external sensory adapter.
+
+        Args:
+            n_neurons: Total number of neurons in the target connectome. Must be > 0.
+            channels: Optional sequence or dict of ChannelSpec instances.
+            default_weight: Default synaptic conductance weight for drive (dimensionless, >= 0).
+                Matches `sensory_weight=400.0` in FrozenBrain.
+            aggregation_mode: Combination rule for duplicate target neurons ('sum', 'max', 'mean').
+            missing_policy: Policy when a configured channel is missing from input signals:
+                - 'skip': Produce no drive for that channel (safe default).
+                - 'error': Raise KeyError.
+                - 'zero': Evaluate with signal value 0.0.
+            unmapped_policy: Policy when an input signal is not a configured channel:
+                - 'error': Raise KeyError.
+                - 'ignore': Silently ignore extra signals.
+            enabled: Opt-in flag. If False, adapter produces empty drive unconditionally.
+        """
+        if (
+            isinstance(n_neurons, (bool, np.bool_))
+            or not isinstance(n_neurons, (int, np.integer))
+            or n_neurons <= 0
+        ):
+            raise ValueError(f"n_neurons must be a positive integer, got: {n_neurons!r}")
+        self._n_neurons = int(n_neurons)
+
+        if isinstance(default_weight, (bool, np.bool_)):
+            raise TypeError(f"default_weight must be numeric, got boolean: {default_weight!r}")
+        if isinstance(default_weight, (complex, np.complexfloating)):
+            raise TypeError(f"default_weight must be numeric, got complex: {default_weight!r}")
+        if not isinstance(default_weight, (int, float, np.integer, np.floating)):
+            raise TypeError(f"default_weight must be numeric, got {type(default_weight).__name__}: {default_weight!r}")
+        weight_val = float(default_weight)
+        if not math.isfinite(weight_val) or weight_val < 0.0:
+            raise ValueError(f"default_weight must be a finite non-negative float, got: {default_weight!r}")
+        self._default_weight = weight_val
+
+        if aggregation_mode not in self.ALLOWED_AGGREGATIONS:
+            raise ValueError(
+                f"aggregation_mode must be one of {self.ALLOWED_AGGREGATIONS}, got: {aggregation_mode!r}"
+            )
+        self._aggregation_mode = aggregation_mode
+
+        if missing_policy not in self.ALLOWED_MISSING_POLICIES:
+            raise ValueError(
+                f"missing_policy must be one of {self.ALLOWED_MISSING_POLICIES}, got: {missing_policy!r}"
+            )
+        self._missing_policy = missing_policy
+
+        if unmapped_policy not in self.ALLOWED_UNMAPPED_POLICIES:
+            raise ValueError(
+                f"unmapped_policy must be one of {self.ALLOWED_UNMAPPED_POLICIES}, got: {unmapped_policy!r}"
+            )
+        self._unmapped_policy = unmapped_policy
+
+        self._enabled = bool(enabled)
+        self._channels: Dict[str, ChannelSpec] = {}
+
+        if channels is not None:
+            if isinstance(channels, Mapping):
+                for ch_name, spec in channels.items():
+                    if spec.name != ch_name:
+                        raise ValueError(
+                            f"Channel mapping key '{ch_name}' does not match spec.name '{spec.name}'"
+                        )
+                    self.add_channel(spec)
+            elif isinstance(channels, Iterable):
+                for spec in channels:
+                    self.add_channel(spec)
+            else:
+                raise TypeError(f"channels must be a sequence or mapping of ChannelSpec, got {type(channels)}")
+
+    @property
+    def n_neurons(self) -> int:
+        """Total number of neurons in the target connectome."""
+        return self._n_neurons
+
+    @property
+    def enabled(self) -> bool:
+        """Whether the adapter is currently active."""
+        return self._enabled
+
+    @property
+    def default_weight(self) -> float:
+        """Default synaptic conductance weight."""
+        return self._default_weight
+
+    @property
+    def aggregation_mode(self) -> str:
+        """Duplicate neuron aggregation rule ('sum', 'max', 'mean')."""
+        return self._aggregation_mode
+
+    @property
+    def missing_policy(self) -> str:
+        """Missing signal policy ('skip', 'error', 'zero')."""
+        return self._missing_policy
+
+    @property
+    def unmapped_policy(self) -> str:
+        """Unmapped signal policy ('error', 'ignore')."""
+        return self._unmapped_policy
+
+    @property
+    def channels(self) -> Dict[str, ChannelSpec]:
+        """Mapping of configured channels (read-only copy)."""
+        return dict(self._channels)
+
+    def enable(self) -> None:
+        """Enable sensory drive generation."""
+        self._enabled = True
+
+    def disable(self) -> None:
+        """Disable sensory drive generation (produces NO drive)."""
+        self._enabled = False
+
+    def set_enabled(self, enabled: bool) -> None:
+        """Set opt-in enabled status."""
+        self._enabled = bool(enabled)
+
+    def add_channel(self, channel: ChannelSpec) -> None:
+        """Register a new sensory channel.
+
+        Args:
+            channel: ChannelSpec instance to register.
+
+        Raises:
+            TypeError: If channel is not a ChannelSpec.
+            ValueError: If channel name already exists or neuron indices exceed n_neurons.
+        """
+        if not isinstance(channel, ChannelSpec):
+            raise TypeError(f"Expected ChannelSpec, got {type(channel)}")
+        if channel.name in self._channels:
+            raise ValueError(f"Channel '{channel.name}' is already registered")
+
+        # Validate indices against n_neurons
+        for idx in channel.neuron_indices:
+            if idx >= self._n_neurons:
+                raise ValueError(
+                    f"Neuron index {idx} in channel '{channel.name}' exceeds connectome size n_neurons={self._n_neurons}"
+                )
+
+        self._channels[channel.name] = channel
+
+    def remove_channel(self, name: str) -> None:
+        """Remove a registered channel by name.
+
+        Args:
+            name: Channel identifier.
+        """
+        if name not in self._channels:
+            raise KeyError(f"Channel '{name}' is not registered")
+        del self._channels[name]
+
+    def process_signals(
+        self, signals: Optional[Mapping[str, Any]] = None
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        """Convert scalar sensory measurements into target neuron indices and firing rates.
+
+        Guarantees:
+        - Does NOT mutate `signals` or channel definitions.
+        - Returns deterministically sorted unique indices.
+        - When disabled, returns empty arrays.
+        - When no signals drive neurons, returns empty arrays (NO drive, no bias).
+
+        Args:
+            signals: Optional mapping from channel names to scalar measurements.
+
+        Returns:
+            Tuple of (drive_idx, drive_rate_hz):
+            - drive_idx: 1D np.ndarray of np.int64, unique neuron indices in ascending order.
+            - drive_rate_hz: 1D np.ndarray of np.float64, firing rates in Hz.
+        """
+        empty_idx = np.empty(0, dtype=np.int64)
+        empty_rates = np.empty(0, dtype=np.float64)
+
+        if not self._enabled:
+            return empty_idx, empty_rates
+
+        if signals is None:
+            if self._missing_policy == "error" and self._channels:
+                raise KeyError(
+                    f"Signals mapping is None, but {len(self._channels)} channels are configured with missing_policy='error'"
+                )
+            return empty_idx, empty_rates
+
+        if not isinstance(signals, Mapping):
+            raise TypeError(f"signals must be a Mapping[str, scalar], got {type(signals)}")
+
+        # Check unmapped signals
+        signal_keys = set(signals.keys())
+        configured_keys = set(self._channels.keys())
+        unmapped_keys = signal_keys - configured_keys
+        if unmapped_keys and self._unmapped_policy == "error":
+            raise KeyError(
+                f"Unmapped sensory signals encountered: {sorted(unmapped_keys)}. "
+                f"Configured channels: {sorted(configured_keys)}"
+            )
+
+        # Check missing signals
+        missing_keys = configured_keys - signal_keys
+        if missing_keys and self._missing_policy == "error":
+            raise KeyError(
+                f"Missing required sensory signals for channels: {sorted(missing_keys)}"
+            )
+
+        # Collect raw rates per neuron
+        rates_per_neuron: Dict[int, List[float]] = {}
+
+        for ch_name, ch in self._channels.items():
+            if ch_name not in signals:
+                if self._missing_policy == "skip":
+                    continue
+                elif self._missing_policy == "zero":
+                    raw_val = 0.0
+                else:
+                    # 'error' was already caught above
+                    continue
+            else:
+                raw_val = signals[ch_name]
+
+            # Validate scalar measurement
+            if isinstance(raw_val, (bool, np.bool_)) or (isinstance(raw_val, np.ndarray) and raw_val.dtype.kind == "b"):
+                raise TypeError(
+                    f"Signal for channel '{ch_name}' must be numeric scalar, got boolean: {raw_val!r}"
+                )
+            if isinstance(raw_val, (complex, np.complexfloating)) or (
+                isinstance(raw_val, np.ndarray) and (np.iscomplexobj(raw_val) or raw_val.dtype.kind == "c")
+            ):
+                raise TypeError(
+                    f"Signal for channel '{ch_name}' must be real numeric scalar, got complex: {raw_val!r}"
+                )
+            if isinstance(raw_val, (np.ndarray, list, tuple)):
+                arr = np.asarray(raw_val)
+                if arr.ndim != 0:
+                    raise TypeError(
+                        f"Signal for channel '{ch_name}' must be numeric scalar, got shape {arr.shape}"
+                    )
+                item = arr.item()
+                if isinstance(item, (bool, np.bool_)):
+                    raise TypeError(
+                        f"Signal for channel '{ch_name}' must be numeric scalar, got boolean: {item!r}"
+                    )
+                if isinstance(item, (complex, np.complexfloating)):
+                    raise TypeError(
+                        f"Signal for channel '{ch_name}' must be real numeric scalar, got complex: {item!r}"
+                    )
+                scalar_val = float(item)
+            elif isinstance(raw_val, (int, float, np.integer, np.floating)):
+                scalar_val = float(raw_val)
+            else:
+                raise TypeError(
+                    f"Signal for channel '{ch_name}' must be numeric scalar, got {type(raw_val)}"
+                )
+
+            if not math.isfinite(scalar_val):
+                raise ValueError(
+                    f"Signal for channel '{ch_name}' is non-finite: {scalar_val}"
+                )
+
+            # Check bounds and clamp
+            if not ch.clamp:
+                if scalar_val < ch.min_signal or scalar_val > ch.max_signal:
+                    raise ValueError(
+                        f"Signal {scalar_val} for channel '{ch_name}' is outside "
+                        f"configured range [{ch.min_signal}, {ch.max_signal}] with clamp=False"
+                    )
+                clamped_val = scalar_val
+            else:
+                clamped_val = min(max(scalar_val, ch.min_signal), ch.max_signal)
+
+            # Compute rate in Hz
+            if clamped_val <= ch.threshold:
+                rate_hz = 0.0
+            else:
+                rate_hz = float((clamped_val - ch.threshold) * ch.gain)
+
+            if not math.isfinite(rate_hz):
+                raise ValueError(
+                    f"Computed firing rate for channel '{ch_name}' is non-finite or overflowed: {rate_hz}"
+                )
+
+            if rate_hz <= 0.0:
+                continue
+
+            for target_idx in ch.neuron_indices:
+                if target_idx not in rates_per_neuron:
+                    rates_per_neuron[target_idx] = []
+                rates_per_neuron[target_idx].append(rate_hz)
+
+        if not rates_per_neuron:
+            return empty_idx, empty_rates
+
+        # Deterministic aggregation onto unique neuron indices
+        sorted_indices = sorted(rates_per_neuron.keys())
+        final_rates: List[float] = []
+
+        for idx in sorted_indices:
+            channel_rates = rates_per_neuron[idx]
+            if self._aggregation_mode == "sum":
+                agg = sum(channel_rates)
+            elif self._aggregation_mode == "max":
+                agg = max(channel_rates)
+            elif self._aggregation_mode == "mean":
+                agg = sum(channel_rates) / len(channel_rates)
+            else:
+                agg = sum(channel_rates)
+
+            if not math.isfinite(agg):
+                raise ValueError(
+                    f"Aggregated firing rate for neuron {idx} is non-finite or overflowed: {agg}"
+                )
+
+            final_rates.append(agg)
+
+        # Filter out quiescent rates (<= 0.0)
+        active_pairs = [
+            (idx, r) for idx, r in zip(sorted_indices, final_rates) if r > 0.0
+        ]
+        if not active_pairs:
+            return empty_idx, empty_rates
+
+        out_idx = np.array([p[0] for p in active_pairs], dtype=np.int64)
+        out_rates = np.array([p[1] for p in active_pairs], dtype=np.float64)
+        return out_idx, out_rates
+
+    def as_drive_part(
+        self,
+        signals: Optional[Mapping[str, Any]] = None,
+        weight: Optional[float] = None,
+    ) -> Tuple[np.ndarray, np.ndarray, float]:
+        """Build a drive part tuple compatible with core `merge_drive(parts)`.
+
+        Each part in `merge_drive` has the schema `(drive_idx, drive_rate_hz, weight)`.
+
+        Args:
+            signals: Optional sensory signal measurements.
+            weight: Optional synaptic weight override. If None, uses default_weight.
+
+        Returns:
+            Tuple of:
+            - drive_idx: 1D np.ndarray (int64) of unique target neuron indices.
+            - drive_rate_hz: 1D np.ndarray (float64) of Poisson event rates in Hz.
+            - weight: float synaptic weight.
+        """
+        if weight is not None:
+            if isinstance(weight, (bool, np.bool_)):
+                raise TypeError(f"weight must be numeric, got boolean: {weight!r}")
+            if isinstance(weight, (complex, np.complexfloating)):
+                raise TypeError(f"weight must be numeric and real, got complex: {weight!r}")
+            if not isinstance(weight, (int, float, np.integer, np.floating)):
+                raise TypeError(f"weight must be real numeric, got {type(weight).__name__}: {weight!r}")
+            w = float(weight)
+        else:
+            w = self._default_weight
+        if not math.isfinite(w) or w < 0.0:
+            raise ValueError(f"weight must be a finite non-negative float, got {weight!r}")
+
+        drive_idx, drive_rate_hz = self.process_signals(signals)
+        return drive_idx, drive_rate_hz, w
+
+    def as_drive_dict(
+        self,
+        signals: Optional[Mapping[str, Any]] = None,
+        weight: Optional[float] = None,
+    ) -> Dict[str, np.ndarray]:
+        """Build a drive dictionary matching the exact schema returned by `merge_drive`.
+
+        Schema:
+        {
+            'drive_idx': 1D np.ndarray[np.int64],
+            'drive_rate_hz': 1D np.ndarray[np.float64],
+            'drive_weight': 1D np.ndarray[np.float64],
+        }
+
+        Args:
+            signals: Optional sensory signal measurements.
+            weight: Optional synaptic weight override.
+
+        Returns:
+            Dictionary matching core merge_drive schema.
+        """
+        drive_idx, drive_rate_hz, w = self.as_drive_part(signals, weight)
+        drive_weight = np.full(len(drive_idx), w, dtype=np.float64)
+        return {
+            "drive_idx": drive_idx,
+            "drive_rate_hz": drive_rate_hz,
+            "drive_weight": drive_weight,
+        }
+
+    def augment_drive(
+        self,
+        base_drive: Mapping[str, Any],
+        signals: Optional[Mapping[str, Any]] = None,
+        weight: Optional[float] = None,
+    ) -> Dict[str, np.ndarray]:
+        """Augment a base drive dictionary with external sensory drive.
+
+        Validates the base drive dictionary against core `merge_drive` contract,
+        checks for neuron target overlaps, and returns a composed drive dictionary.
+
+        Args:
+            base_drive: Mapping containing existing drive arrays with keys:
+                - 'drive_idx': 1D sequence or ndarray of integer neuron indices.
+                - 'drive_rate_hz': 1D sequence or ndarray of finite, non-negative firing rates (Hz).
+                - 'drive_weight': 1D sequence or ndarray of finite, non-negative synaptic weights.
+            signals: Optional mapping from channel names to scalar measurements.
+            weight: Optional synaptic weight override for external channels.
+                If None, uses `default_weight`.
+
+        Returns:
+            Dictionary matching core `merge_drive` schema:
+            {
+                'drive_idx': 1D np.ndarray[np.int64],
+                'drive_rate_hz': 1D np.ndarray[np.float64],
+                'drive_weight': 1D np.ndarray[np.float64],
+            }
+
+        Raises:
+            TypeError: If base_drive is not a Mapping, or fields contain invalid types (e.g. booleans, floats in indices).
+            KeyError: If base_drive is missing required keys or contains unexpected keys.
+            ValueError: If array dimensions != 1, shapes mismatch, indices exceed n_neurons or are negative/duplicate,
+                rates/weights are negative or non-finite, or external drive targets overlap with base_drive.
+        """
+        if not isinstance(base_drive, Mapping):
+            raise TypeError(f"base_drive must be a Mapping, got {type(base_drive).__name__}")
+
+        required_keys = ("drive_idx", "drive_rate_hz", "drive_weight")
+        missing_keys = [k for k in required_keys if k not in base_drive]
+        if missing_keys:
+            raise KeyError(f"base_drive missing required key(s): {missing_keys}")
+        extra_keys = [k for k in base_drive if k not in required_keys]
+        if extra_keys:
+            raise KeyError(f"base_drive contains unexpected key(s): {extra_keys}")
+
+        raw_idx = base_drive["drive_idx"]
+        raw_rate = base_drive["drive_rate_hz"]
+        raw_weight = base_drive["drive_weight"]
+
+        # Validate drive_idx
+        if isinstance(raw_idx, (bool, np.bool_)):
+            raise TypeError(f"drive_idx must be an integer sequence or array, got boolean: {raw_idx!r}")
+
+        if isinstance(raw_idx, np.ndarray):
+            if raw_idx.dtype.kind == "b":
+                raise TypeError("drive_idx must have integer dtype, got boolean array")
+            if not np.issubdtype(raw_idx.dtype, np.integer):
+                raise TypeError(f"drive_idx must have integer dtype, got {raw_idx.dtype}")
+            if raw_idx.ndim != 1:
+                raise ValueError(f"drive_idx must be a 1D array, got ndim={raw_idx.ndim} with shape {raw_idx.shape}")
+            base_idx = raw_idx.astype(np.int64, copy=False)
+        elif isinstance(raw_idx, (list, tuple)):
+            for item in raw_idx:
+                if isinstance(item, (bool, np.bool_)):
+                    raise TypeError(f"drive_idx elements must be integers, got boolean: {item!r}")
+                if not isinstance(item, (int, np.integer)):
+                    raise TypeError(f"drive_idx elements must be integers, got {type(item).__name__}: {item!r}")
+            base_idx = np.asarray(raw_idx, dtype=np.int64)
+            if base_idx.ndim != 1:
+                raise ValueError(f"drive_idx must be a 1D sequence, got ndim={base_idx.ndim} with shape {base_idx.shape}")
+        else:
+            raise TypeError(f"drive_idx must be a 1D array or sequence, got {type(raw_idx).__name__}")
+
+        if len(base_idx) > 0:
+            if np.any(base_idx < 0):
+                raise ValueError("drive_idx must contain non-negative integer indices")
+            if np.any(base_idx >= self._n_neurons):
+                raise ValueError(
+                    f"drive_idx contains indices exceeding connectome size n_neurons={self._n_neurons}"
+                )
+            if len(np.unique(base_idx)) != len(base_idx):
+                raise ValueError("drive_idx contains duplicate neuron indices")
+
+        # Validate drive_rate_hz
+        if isinstance(raw_rate, (bool, np.bool_)):
+            raise TypeError(f"drive_rate_hz must be numeric, got boolean: {raw_rate!r}")
+        if isinstance(raw_rate, (complex, np.complexfloating)):
+            raise TypeError(f"drive_rate_hz must be numeric, got complex: {raw_rate!r}")
+
+        if isinstance(raw_rate, np.ndarray):
+            if raw_rate.dtype.kind == "b":
+                raise TypeError("drive_rate_hz must be numeric, got boolean array")
+            if raw_rate.dtype.kind == "c" or np.iscomplexobj(raw_rate) or np.issubdtype(raw_rate.dtype, np.complexfloating):
+                raise TypeError(f"drive_rate_hz must be numeric, got complex dtype {raw_rate.dtype}")
+            if raw_rate.dtype.kind not in "fiu":
+                raise TypeError(f"drive_rate_hz must be numeric, got dtype {raw_rate.dtype}")
+            if raw_rate.ndim != 1:
+                raise ValueError(f"drive_rate_hz must be a 1D array, got ndim={raw_rate.ndim} with shape {raw_rate.shape}")
+            if raw_rate.dtype == object:
+                for item in raw_rate:
+                    if isinstance(item, (bool, np.bool_)):
+                        raise TypeError(f"drive_rate_hz elements must be numeric, got boolean: {item!r}")
+                    if isinstance(item, (complex, np.complexfloating)):
+                        raise TypeError(f"drive_rate_hz elements must be numeric, got complex: {item!r}")
+                    if not isinstance(item, (int, float, np.integer, np.floating)):
+                        raise TypeError(f"drive_rate_hz elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_rate = raw_rate.astype(np.float64, copy=False)
+        elif isinstance(raw_rate, (list, tuple)):
+            for item in raw_rate:
+                if isinstance(item, (bool, np.bool_)):
+                    raise TypeError(f"drive_rate_hz elements must be numeric, got boolean: {item!r}")
+                if isinstance(item, (complex, np.complexfloating)):
+                    raise TypeError(f"drive_rate_hz elements must be numeric, got complex: {item!r}")
+                if not isinstance(item, (int, float, np.integer, np.floating)):
+                    raise TypeError(f"drive_rate_hz elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_rate = np.asarray(raw_rate, dtype=np.float64)
+            if base_rate.ndim != 1:
+                raise ValueError(f"drive_rate_hz must be a 1D sequence, got ndim={base_rate.ndim} with shape {base_rate.shape}")
+        else:
+            raise TypeError(f"drive_rate_hz must be a 1D array or sequence, got {type(raw_rate).__name__}")
+
+        if len(base_rate) != len(base_idx):
+            raise ValueError(
+                f"drive_rate_hz length ({len(base_rate)}) does not match drive_idx length ({len(base_idx)})"
+            )
+
+        if len(base_rate) > 0:
+            if not np.all(np.isfinite(base_rate)):
+                raise ValueError("drive_rate_hz contains non-finite values (NaN or Inf)")
+            if np.any(base_rate < 0.0):
+                raise ValueError("drive_rate_hz contains negative rates")
+
+        # Validate drive_weight
+        if isinstance(raw_weight, (bool, np.bool_)):
+            raise TypeError(f"drive_weight must be numeric, got boolean: {raw_weight!r}")
+        if isinstance(raw_weight, (complex, np.complexfloating)):
+            raise TypeError(f"drive_weight must be numeric, got complex: {raw_weight!r}")
+
+        if isinstance(raw_weight, np.ndarray):
+            if raw_weight.dtype.kind == "b":
+                raise TypeError("drive_weight must be numeric, got boolean array")
+            if raw_weight.dtype.kind == "c" or np.iscomplexobj(raw_weight) or np.issubdtype(raw_weight.dtype, np.complexfloating):
+                raise TypeError(f"drive_weight must be numeric, got complex dtype {raw_weight.dtype}")
+            if raw_weight.dtype.kind not in "fiu":
+                raise TypeError(f"drive_weight must be numeric, got dtype {raw_weight.dtype}")
+            if raw_weight.ndim != 1:
+                raise ValueError(f"drive_weight must be a 1D array, got ndim={raw_weight.ndim} with shape {raw_weight.shape}")
+            if raw_weight.dtype == object:
+                for item in raw_weight:
+                    if isinstance(item, (bool, np.bool_)):
+                        raise TypeError(f"drive_weight elements must be numeric, got boolean: {item!r}")
+                    if isinstance(item, (complex, np.complexfloating)):
+                        raise TypeError(f"drive_weight elements must be numeric, got complex: {item!r}")
+                    if not isinstance(item, (int, float, np.integer, np.floating)):
+                        raise TypeError(f"drive_weight elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_weight = raw_weight.astype(np.float64, copy=False)
+        elif isinstance(raw_weight, (list, tuple)):
+            for item in raw_weight:
+                if isinstance(item, (bool, np.bool_)):
+                    raise TypeError(f"drive_weight elements must be numeric, got boolean: {item!r}")
+                if isinstance(item, (complex, np.complexfloating)):
+                    raise TypeError(f"drive_weight elements must be numeric, got complex: {item!r}")
+                if not isinstance(item, (int, float, np.integer, np.floating)):
+                    raise TypeError(f"drive_weight elements must be numeric, got {type(item).__name__}: {item!r}")
+            base_weight = np.asarray(raw_weight, dtype=np.float64)
+            if base_weight.ndim != 1:
+                raise ValueError(f"drive_weight must be a 1D sequence, got ndim={base_weight.ndim} with shape {base_weight.shape}")
+        else:
+            raise TypeError(f"drive_weight must be a 1D array or sequence, got {type(raw_weight).__name__}")
+
+        if len(base_weight) != len(base_idx):
+            raise ValueError(
+                f"drive_weight length ({len(base_weight)}) does not match drive_idx length ({len(base_idx)})"
+            )
+
+        if len(base_weight) > 0:
+            if not np.all(np.isfinite(base_weight)):
+                raise ValueError("drive_weight contains non-finite values (NaN or Inf)")
+            if np.any(base_weight < 0.0):
+                raise ValueError("drive_weight contains negative weights")
+
+        # Evaluate external drive
+        ext_dict = self.as_drive_dict(signals, weight=weight)
+        ext_idx = ext_dict["drive_idx"]
+        ext_rate = ext_dict["drive_rate_hz"]
+        ext_weight = ext_dict["drive_weight"]
+
+        # If disabled or no signal produces drive, preserve base drive values exactly
+        if len(ext_idx) == 0:
+            return {
+                "drive_idx": np.array(base_idx, dtype=np.int64, copy=True),
+                "drive_rate_hz": np.array(base_rate, dtype=np.float64, copy=True),
+                "drive_weight": np.array(base_weight, dtype=np.float64, copy=True),
+            }
+
+        # Check for overlap between external target neurons and base drive neurons
+        overlap = np.intersect1d(base_idx, ext_idx)
+        if len(overlap) > 0:
+            raise ValueError(
+                f"sensory pathways overlap: external targets {overlap.tolist()} "
+                f"already present in base_drive"
+            )
+
+        # Deterministic disjoint composition
+        return {
+            "drive_idx": np.concatenate([base_idx, ext_idx]).astype(np.int64),
+            "drive_rate_hz": np.concatenate([base_rate, ext_rate]).astype(np.float64),
+            "drive_weight": np.concatenate([base_weight, ext_weight]).astype(np.float64),
+        }

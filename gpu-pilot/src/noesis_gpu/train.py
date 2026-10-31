@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -14,8 +16,20 @@ from .backend import UPSTREAM_COMMIT, FlyGymBatch
 from .run import file_digest, source_digest, timing_steps
 
 
+def episode_scorer(objective, cycle_weight=None):
+    from .learning import CycleScoring, score_transition
+
+    if cycle_weight is not None:
+        if objective != "curriculum-gripped-cycle-v9" or not np.isfinite(cycle_weight) or not 0 < cycle_weight <= 1:
+            raise ValueError("cycle_weight requires v9 and a finite value in (0, 1]")
+    if objective == "curriculum-gripped-cycle-v9":
+        return CycleScoring(objective, cycle_weight=cycle_weight)
+    return functools.partial(score_transition, objective=objective)
+
+
 def parser():
-    ap = argparse.ArgumentParser(description=__doc__)
+    # Transitional profile_run wrapper may override these options with its defaults.
+    ap = argparse.ArgumentParser(description=__doc__, conflict_handler="resolve")
     ap.add_argument("--noesis-source", type=Path, required=True)
     ap.add_argument("--data", type=Path, required=True)
     ap.add_argument("--checkpoint", type=Path, required=True)
@@ -24,10 +38,29 @@ def parser():
     ap.add_argument("--seconds", type=float, default=5.)
     ap.add_argument("--wall-seconds", type=float, default=600.)
     ap.add_argument("--seed", type=int, default=11000)
+    ap.add_argument("--profile", default="standing")
+    ap.add_argument("--exploration-mv-ms", type=float, default=1.5)
+    ap.add_argument("--cycle-weight", type=float, default=None)
+    ap.add_argument("--learning-rate", type=float, default=.2)
+    ap.add_argument("--log-exploration", action="store_true")
     return ap
 
 
 def run(args):
+    from .reward_profiles import resolve_objective
+
+    objective = resolve_objective(getattr(args, "profile", "standing"))
+    amplitude = getattr(args, "exploration_mv_ms", 1.5)
+    from .learning import DEFAULT_LEARNING_RATE, MAX_LEARNING_RATE
+    learning_rate = getattr(args, "learning_rate", DEFAULT_LEARNING_RATE)
+    if learning_rate is None:  # transitional profile_run leaves the native default intact
+        learning_rate = DEFAULT_LEARNING_RATE
+    if (isinstance(learning_rate, (bool, np.bool_)) or not np.isfinite(learning_rate)
+            or not 0 < learning_rate <= MAX_LEARNING_RATE):
+        raise ValueError(f"Learning rate must be finite and in (0, {MAX_LEARNING_RATE}]")
+    log_exploration = getattr(args, "log_exploration", False)
+    if not np.isfinite(amplitude) or not 0 < amplitude <= 1.5:
+        raise ValueError("Exploration must be finite and in (0, 1.5] mV/ms")
     chunks, substeps = timing_steps(args.seconds, 5., .0001)
     if (not np.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 3600
             or args.seconds <= .05 or not 0 <= args.seed < 2**32):
@@ -41,7 +74,9 @@ def run(args):
     sys.path.insert(0, str(source))
     from noesis.embodiment import load_training_brain
 
-    from .learning import LearningBrain, score_transition, standing_mask
+    from .learning import LearningBrain, standing_mask
+
+    scorer = episode_scorer(objective, getattr(args, "cycle_weight", None))  # fail before output creation if v9 core is unavailable
 
     output.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
@@ -50,8 +85,8 @@ def run(args):
               "upstream_commit": UPSTREAM_COMMIT, "noesis_source_sha256": source_digest(source),
               "import_checkpoint": str(args.checkpoint.resolve()),
               "import_checkpoint_sha256": file_digest(args.checkpoint),
-              "reward_objective": "curriculum-standing-v7", "learning_rate": .2,
-              "eligibility_ms": 100, "motor_exploration_mv_ms": 1.5,
+              "reward_objective": objective, "learning_rate": float(learning_rate),
+              "eligibility_ms": 100, "motor_exploration_mv_ms": amplitude,
               "original_weight_bound": .5, "control_ms": 5., "physics_dt": .0001,
               "birth_ms": 50, "requested_seconds": args.seconds, "completed_chunks": 0,
               "latest_training_checkpoint": None, "best_validated_checkpoint": None,
@@ -64,7 +99,9 @@ def run(args):
         body = FlyGymBatch(1, args.backend)
         cn, _ = load_training_brain(data, output / "brain-cache")
         brain = LearningBrain(cn, body.rest, body.lo, body.hi,
-                              checkpoint=args.checkpoint, seed=args.seed)
+                              checkpoint=args.checkpoint, seed=args.seed,
+                              exploration_mv_ms=amplitude, learning_rate=learning_rate,
+                              record_exploration=log_exploration)
         report.update(neurons=cn.n, edges=cn.W.nnz,
                       plasticity_targets=len(brain.learner.motor_indices),
                       plasticity_edges=len(brain.learner.edge_indices))
@@ -77,12 +114,19 @@ def run(args):
             command, adhesion = brain.step(before, 5.)
             body.advance(command[None], adhesion[None], substeps)
             after = {key: value[0] for key, value in body.observe().items()}
-            score = score_transition(before, after, 5.)
+            score = scorer(before, after, 5.)
             learning = brain.learn(score["reward"], 5.)
             records.append({**after, "command": command.copy(), "adhesion": adhesion.copy(),
                             "reward": score["reward"], "standing": bool(standing_mask(after)),
                             "stance_slip_mm_s": score["stance_slip_mm_s"],
                             "learning_active": brain.learning_active})
+            if objective == "curriculum-gripped-cycle-v9":
+                from .learning import _base_score_transition
+
+                baseline = _base_score_transition(before, after, 5., "curriculum-gripped-step-v8")
+                records[-1].update(cycle_credit=score["cycle_credit"],
+                                   reward_unclipped=score["reward_unclipped"],
+                                   actual_bonus_after_clipping=score["reward"] - baseline["reward"])
             before = after
             report["completed_chunks"] = chunk + 1
             if (chunk + 1) % 100 == 0:
@@ -98,10 +142,15 @@ def run(args):
         if len(records) > 10:
             report["standing_fraction"] = float(np.mean([r["standing"] for r in records[10:]]))
             report["mean_stance_slip_mm_s"] = float(np.mean([r["stance_slip_mm_s"] for r in records[10:]]))
+        if objective == "curriculum-gripped-cycle-v9":
+            report["cycle_scoring"] = scorer.summary()
+            report["cycle_weight"] = report["cycle_scoring"]["cycle_weight"]
+            report["actual_bonus_after_clipping_learning_steps"] = float(sum(
+                r["actual_bonus_after_clipping"] for r in records if r["learning_active"]))
         name = "weights-last.npz" if report["status"] == "completed_training_birth" else "weights-partial.npz"
         checkpoint = output / name
         brain.learner.save(checkpoint)
-        context = {**report, "context": "experimental-v2-standing-only; not a validated curriculum bank"}
+        context = {**report, "context": "experimental-v2-profile-birth; not a validated curriculum bank"}
         checkpoint.with_suffix(".model.json").write_text(json.dumps(context, indent=2), encoding="utf-8")
         report["saved_checkpoint_sha256"] = file_digest(checkpoint)
         if report["status"] == "completed_training_birth":
@@ -112,6 +161,21 @@ def run(args):
         raise
     finally:
         report["wall_seconds"] = time.perf_counter() - started
+        if log_exploration and brain is not None:
+            log = brain.exploration_log()
+            active = np.flatnonzero([row["learning_active"] for row in records])
+            if log is not None and len(log["credit"]):
+                # Log rows are only complete if step and reward update both finished.
+                if len(log["drive"]) == len(log["credit"]) == len(active):
+                    temporary = output / "exploration-log.tmp.npz"
+                    np.savez_compressed(temporary, **log, control_chunk_index=active,
+                                        control_ms=np.array(5.))
+                    os.replace(temporary, output / "exploration-log.npz")
+                    report["exploration_log"] = {"file": "exploration-log.npz",
+                        "steps": len(active), "first_control_chunk": int(active[0]),
+                        "alignment": "zero-based control_chunk_index into training-observations.npz"}
+                else:
+                    report["exploration_log_error"] = "Incomplete step/update alignment; log not exported"
         if records:
             np.savez_compressed(output / "training-observations.npz", **{
                 key: np.stack([row[key] for row in records]) for key in records[0]})

@@ -1,0 +1,83 @@
+{
+  "commit": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
+  "files": [
+    {
+      "path": "gpu-pilot/src/noesis_gpu/external_senses.py",
+      "actual_sha256": "55837b17859653b1b452bf0a97155e737b4f2c79c6c611ad29e8059b0baeb361",
+      "expected_sha256": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4",
+      "hash_match": false,
+      "bytes_match": false,
+      "same_as_integration": false,
+      "expected_matches_CRLF_representation": true,
+      "same_as_integration_after_newline_normalization": true
+    },
+    {
+      "path": "gpu-pilot/tests/test_external_senses.py",
+      "actual_sha256": "f01fcb12b53cc0dcfd1d41c4635f5b90b0dd6c5297149fba0253b72e450b1964",
+      "expected_sha256": "ed8ea4fb8937e56663c44c9211b58797d4117ae806dd1b24b9b007231b6963b3",
+      "hash_match": false,
+      "bytes_match": false,
+      "same_as_integration": false,
+      "expected_matches_CRLF_representation": true,
+      "same_as_integration_after_newline_normalization": true
+    },
+    {
+      "path": "docs/workstreams/gemini/sensory_mapping_and_validation_report.md",
+      "actual_sha256": "709ffdf0290386fcb0ec65ecd15ccf667602fab9758cc7a3c7b5347b67aadffd",
+      "expected_sha256": "709ffdf0290386fcb0ec65ecd15ccf667602fab9758cc7a3c7b5347b67aadffd",
+      "hash_match": true,
+      "bytes_match": true,
+      "same_as_integration": false
+    },
+    {
+      "path": "docs/workstreams/gemini/sensory_rectification_experiment_proposal.md",
+      "actual_sha256": "e8d3e845aefc1b05f48fd14cf3cb8f3a7a49bd556f79ec755cf9626b88ef304f",
+      "expected_sha256": "e8d3e845aefc1b05f48fd14cf3cb8f3a7a49bd556f79ec755cf9626b88ef304f",
+      "hash_match": true,
+      "bytes_match": true,
+      "same_as_integration": false
+    }
+  ],
+  "isolated_review_copy": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\outputs\\gemini-review-4a78e0b",
+  "status": "independent_unit_tests_pass_receipt_accepted_integration_held_for_changes",
+  "tests": {
+    "exitstatus": 0,
+    "tests_collected": 44,
+    "modules": [
+      {
+        "module": "noesis_gpu.external_senses",
+        "path": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\outputs\\gemini-review-4a78e0b\\gpu-pilot\\src\\noesis_gpu\\external_senses.py",
+        "sha256": "55837b17859653b1b452bf0a97155e737b4f2c79c6c611ad29e8059b0baeb361"
+      },
+      {
+        "module": "noesis_gpu.gait_metrics",
+        "path": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\outputs\\gemini-review-4a78e0b\\gpu-pilot\\src\\noesis_gpu\\gait_metrics.py",
+        "sha256": "c01b94d4c6b217e2f7ee7bca99623503e440b94b08cf8f0bc91a318f6399f28f"
+      },
+      {
+        "module": "noesis_gpu.evaluate",
+        "path": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\outputs\\gemini-review-4a78e0b\\gpu-pilot\\src\\noesis_gpu\\evaluate.py",
+        "sha256": "68c102be83dab8a7cc608277a3b5812501227cd8534ff09829d8fc73da704bc7"
+      }
+    ],
+    "passed": 44,
+    "wall_seconds": 3.91,
+    "scope": "Software unit tests only; not neural200ms or physical retention evidence"
+  },
+  "test_reproduction": "Exact Git blobs copied to isolated review folder, empty pytest.ini and provenance plugin asserting external_senses/gait_metrics/evaluate import parents and recording hashes. Selected3test files. Initial integration-config invocation is not authoritative independent evidence.",
+  "held_items": [
+    "Python manifest hashes/bytes match CRLF working-tree representations, not GitLF blobs; two Markdown entries match. Correct canonical manifest or explicitly hash a separate CRLF release archive.",
+    "Adapter/test content already integrated after newline normalization. No RectifiedSensoryMap class, reproducible200ms audit script/config or paired raw neural logs/Release manifest in this delivery. Need runnable opt-in candidate preserving default baseline and explicit contrast provenance.",
+    "Report lines78/109/143/154/157/168 retain unsupported artificial-noise/causal-instability/biological-guarantee claims, mN twice, and overgeneralization from one200ms no-spike case.76Hz is modeled input drive, not proof of actual afferent firing.",
+    "LF load3.51Hz minus baseline1.33Hz=2.18Hz, not2.31Hz. Specify the actual paired contrast and raw evidence.",
+    "Proposal lists4probes but decision emphasizes2; missing exact horizon/budgets/technical stops. Standing>=.9 alone may conceal regression vs parent. Require all4matched retention deltas and descriptive decision, no unsupported proven/significant claim.",
+    "Active-side near-zero tanh(x/.3) slope=1/.3; sigmoid(x/.3) slope=1/(4*.3). Candidate changes gain4x in addition to tonic offset. Declare transfer-curve replacement; do not attribute solely to offset removal without controls."
+  ],
+  "peer_issue_comment": 6525598346,
+  "team_receipt": "4686bbfbb67e",
+  "team_review": "54c7148244ca",
+  "integrated": false,
+  "simulation_allocated": false,
+  "model_promoted": false,
+  "walking_proven": false
+}

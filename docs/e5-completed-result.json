@@ -1,0 +1,67 @@
+{
+  "status": "completed_e5_jobs_pending_independent_review",
+  "jobs_recorded": 9,
+  "wall_seconds": 844,
+  "heading_paired_passes": 0,
+  "net_paired_passes": 0,
+  "model_promoted": false,
+  "candidates": [
+    {
+      "training_seed": 1001,
+      "probes": [
+        {
+          "seed": 10006,
+          "standing_fraction": 0.8808080808080808,
+          "heading_forward_distance_mm": 0.2619885466678324,
+          "net_forward_displacement_mm": 0.005694733947317018,
+          "mean_stance_slip_mm_s": 2.362966827988629
+        },
+        {
+          "seed": 10007,
+          "standing_fraction": 0.8737373737373737,
+          "heading_forward_distance_mm": 1.1461377538328685,
+          "net_forward_displacement_mm": 0.8011656287924118,
+          "mean_stance_slip_mm_s": 2.8434664388160837
+        }
+      ]
+    },
+    {
+      "training_seed": 1000,
+      "probes": [
+        {
+          "seed": 10006,
+          "standing_fraction": 0.9292929292929293,
+          "heading_forward_distance_mm": -1.5675385403717574,
+          "net_forward_displacement_mm": -1.2360291890336157,
+          "mean_stance_slip_mm_s": 3.021069288896785
+        },
+        {
+          "seed": 10007,
+          "standing_fraction": 0.9121212121212121,
+          "heading_forward_distance_mm": 0.9348250653626908,
+          "net_forward_displacement_mm": 1.0763003396717188,
+          "mean_stance_slip_mm_s": 2.5489581515002246
+        }
+      ]
+    },
+    {
+      "training_seed": 1002,
+      "probes": [
+        {
+          "seed": 10006,
+          "standing_fraction": 0.9050505050505051,
+          "heading_forward_distance_mm": 0.5089209143473805,
+          "net_forward_displacement_mm": 0.2769311407312029,
+          "mean_stance_slip_mm_s": 2.881131808179308
+        },
+        {
+          "seed": 10007,
+          "standing_fraction": 0.9696969696969697,
+          "heading_forward_distance_mm": -0.04921142393366115,
+          "net_forward_displacement_mm": -0.10270155470608149,
+          "mean_stance_slip_mm_s": 2.3374826793072896
+        }
+      ]
+    }
+  ]
+}

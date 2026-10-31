@@ -1,0 +1,98 @@
+{
+  "status": "new_host_diagnosis_user_application_requirement_pending",
+  "explicit_resume_audit_turn": 1,
+  "previous_turn_classification": "Verified terminal resource refusal after completed peer review, followed by blocked goal",
+  "preflight": {
+    "status": "resource_watch_deadline_no_quiescent_window",
+    "budget_seconds": 11.0,
+    "windows": [
+      {
+        "start_elapsed": 0.0,
+        "decision": {
+          "passed": false,
+          "sample_count": 10,
+          "minimum_available_gib": 2.277294158935547,
+          "maximum_host_cpu_percent": 56.8,
+          "required_available_gib": 3.0,
+          "allowed_host_cpu_percent": 30.0,
+          "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+        },
+        "samples": [
+          {
+            "unix_time": 1793385524.4359698,
+            "available_gib": 2.2879295349121094,
+            "host_cpu_percent": 55.0
+          },
+          {
+            "unix_time": 1793385525.437105,
+            "available_gib": 2.2847824096679688,
+            "host_cpu_percent": 19.1
+          },
+          {
+            "unix_time": 1793385526.437963,
+            "available_gib": 2.277294158935547,
+            "host_cpu_percent": 45.3
+          },
+          {
+            "unix_time": 1793385527.4394925,
+            "available_gib": 2.2788162231445312,
+            "host_cpu_percent": 23.3
+          },
+          {
+            "unix_time": 1793385528.4408057,
+            "available_gib": 2.286876678466797,
+            "host_cpu_percent": 24.6
+          },
+          {
+            "unix_time": 1793385529.4418805,
+            "available_gib": 2.2840614318847656,
+            "host_cpu_percent": 16.8
+          },
+          {
+            "unix_time": 1793385530.4431412,
+            "available_gib": 2.286640167236328,
+            "host_cpu_percent": 15.5
+          },
+          {
+            "unix_time": 1793385531.4445174,
+            "available_gib": 2.2797012329101562,
+            "host_cpu_percent": 56.8
+          },
+          {
+            "unix_time": 1793385532.4455206,
+            "available_gib": 2.324077606201172,
+            "host_cpu_percent": 20.4
+          },
+          {
+            "unix_time": 1793385533.44639,
+            "available_gib": 2.3252105712890625,
+            "host_cpu_percent": 37.0
+          }
+        ]
+      }
+    ],
+    "simulation_started": false,
+    "elapsed_seconds": 11.0
+  },
+  "restricted_process_view_rows": 4,
+  "host_processes_enumerated": 456,
+  "host_python_worker_count": 0,
+  "host_counter_window_seconds": 5.0316022,
+  "leading_observed_cpu_consumer": {
+    "pid": 28388,
+    "name": "Godot_v4.7.2-stable_win64",
+    "host_cpu_percent": 13.82,
+    "rss_gib": 0.501
+  },
+  "godot_command_mentions_noesis": false,
+  "godot_project_ownership": "unestablished; absence from command line does not establish unrelated ownership",
+  "raw_inventory_sha256": "0645dd64ab68b606b078b38e670a13e90bd446ebeff00c38602885d111438767",
+  "raw_inventory_location": "local ignored outputs/resource-host-inventory-review-resume1-20261030.json; no other application inventory published",
+  "limits": "Short observational windows; not proof of full load attribution, historical slowdown cause or sufficiency of closing one app. Sandbox-only inventory was insufficient for a host-wide conclusion.",
+  "user_question": "Does Godot need to remain active? No instruction to close it has been received.",
+  "processes_terminated": false,
+  "heavy_simulation_started": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "goal_status": "active after explicit resume; new diagnosis recorded"
+}

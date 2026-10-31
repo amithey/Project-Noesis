@@ -1,0 +1,470 @@
+{
+  "status": "independent_raw_recomputation_passed",
+  "protocol_commit": "0c1fb6307dde8ba91f8314067d5fc2291775b0f0",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0"
+  },
+  "child25_sha256": "6d63d3dc7d433aa3174946ec925edaea4b14bb6cfc8878a599b3df74d42cdb43",
+  "full_training_seconds": 25,
+  "learning_updates": 4990,
+  "complete_frozen_probes": 12,
+  "wall_seconds": 1530.4530000000086,
+  "decision": {
+    "per_probe": [
+      {
+        "seed": 10006,
+        "child_primary_pass": true,
+        "standing_slip_retained_vs_both": false,
+        "deltas": {
+          "parent": {
+            "standing_delta": 0.0,
+            "slip_delta_mm_s": -0.7931183184845976,
+            "heading_delta_mm": 0.3831025163185831,
+            "net_delta_mm": 0.8257578093408231
+          },
+          "control25": {
+            "standing_delta": -0.018181818181818188,
+            "slip_delta_mm_s": 0.037794597413495445,
+            "heading_delta_mm": 0.13124188864137476,
+            "net_delta_mm": 0.17803498022869657
+          }
+        }
+      },
+      {
+        "seed": 10007,
+        "child_primary_pass": false,
+        "standing_slip_retained_vs_both": false,
+        "deltas": {
+          "parent": {
+            "standing_delta": -0.11111111111111105,
+            "slip_delta_mm_s": 0.5307452650736666,
+            "heading_delta_mm": 0.0515067012759603,
+            "net_delta_mm": 0.21536952744228832
+          },
+          "control25": {
+            "standing_delta": -0.07070707070707072,
+            "slip_delta_mm_s": 0.4328313979556033,
+            "heading_delta_mm": 1.0119898797176274,
+            "net_delta_mm": 1.151771528759049
+          }
+        }
+      },
+      {
+        "seed": 10010,
+        "child_primary_pass": true,
+        "standing_slip_retained_vs_both": false,
+        "deltas": {
+          "parent": {
+            "standing_delta": 0.014141414141414121,
+            "slip_delta_mm_s": 0.22960665550948356,
+            "heading_delta_mm": -0.16216083440448625,
+            "net_delta_mm": -0.1730552786969053
+          },
+          "control25": {
+            "standing_delta": 0.003030303030302939,
+            "slip_delta_mm_s": 0.09353165648351824,
+            "heading_delta_mm": 1.4719295901352905,
+            "net_delta_mm": 1.676297779564137
+          }
+        }
+      },
+      {
+        "seed": 10011,
+        "child_primary_pass": false,
+        "standing_slip_retained_vs_both": true,
+        "deltas": {
+          "parent": {
+            "standing_delta": 0.05555555555555547,
+            "slip_delta_mm_s": -0.9512402974060732,
+            "heading_delta_mm": -0.3566906928732896,
+            "net_delta_mm": -0.257928624203018
+          },
+          "control25": {
+            "standing_delta": 0.05858585858585852,
+            "slip_delta_mm_s": -0.3992300539258007,
+            "heading_delta_mm": -1.2977113211834737,
+            "net_delta_mm": -1.0967832369331478
+          }
+        }
+      }
+    ],
+    "medians": {
+      "parent": {
+        "heading_forward_distance_mm": 0.3150759871002606,
+        "net_forward_displacement_mm": 0.20317283362643868
+      },
+      "control25": {
+        "heading_forward_distance_mm": 0.05900553771611258,
+        "net_forward_displacement_mm": 0.1445184227382091
+      },
+      "child25": {
+        "heading_forward_distance_mm": 0.5323805958975323,
+        "net_forward_displacement_mm": 0.7237365020179944
+      }
+    },
+    "median_heading_and_net_gain_pass": false,
+    "exploratory_method_rule_pass": false,
+    "model_promoted": false,
+    "stage_advanced": false,
+    "walking_proven": false,
+    "scope": "One training seed, four development probes; descriptive learning-rate/retention test only"
+  },
+  "probes": [
+    {
+      "arm": "parent",
+      "seed": 10006,
+      "standing_fraction": 0.9626262626262626,
+      "mean_stance_slip_mm_s": 3.0581713360264406,
+      "heading_forward_distance_mm": 0.298359305310338,
+      "net_forward_displacement_mm": 0.022346444869974825,
+      "leg_step_counts": {
+        "LF": 12,
+        "LM": 15,
+        "LH": 13,
+        "RF": 5,
+        "RM": 9,
+        "RH": 4
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "control25",
+      "seed": 10006,
+      "standing_fraction": 0.9808080808080808,
+      "mean_stance_slip_mm_s": 2.2272584201283476,
+      "heading_forward_distance_mm": 0.5502199329875463,
+      "net_forward_displacement_mm": 0.6700692739821014,
+      "leg_step_counts": {
+        "LF": 13,
+        "LM": 13,
+        "LH": 13,
+        "RF": 12,
+        "RM": 17,
+        "RH": 11
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "child25",
+      "seed": 10006,
+      "standing_fraction": 0.9626262626262626,
+      "mean_stance_slip_mm_s": 2.265053017541843,
+      "heading_forward_distance_mm": 0.6814618216289211,
+      "net_forward_displacement_mm": 0.8481042542107979,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 12,
+        "LH": 12,
+        "RF": 11,
+        "RM": 12,
+        "RH": 6
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "parent",
+      "seed": 10007,
+      "standing_fraction": 0.9444444444444444,
+      "mean_stance_slip_mm_s": 2.4901644202802085,
+      "heading_forward_distance_mm": 0.33179266889018316,
+      "net_forward_displacement_mm": 0.3839992223829025,
+      "leg_step_counts": {
+        "LF": 10,
+        "LM": 12,
+        "LH": 12,
+        "RF": 6,
+        "RM": 8,
+        "RH": 4
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "control25",
+      "seed": 10007,
+      "standing_fraction": 0.9040404040404041,
+      "mean_stance_slip_mm_s": 2.5880782873982717,
+      "heading_forward_distance_mm": -0.6286905095514839,
+      "net_forward_displacement_mm": -0.5524027789338584,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 12,
+        "LH": 18,
+        "RF": 8,
+        "RM": 10,
+        "RH": 5
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "child25",
+      "seed": 10007,
+      "standing_fraction": 0.8333333333333334,
+      "mean_stance_slip_mm_s": 3.020909685353875,
+      "heading_forward_distance_mm": 0.38329937016614346,
+      "net_forward_displacement_mm": 0.5993687498251908,
+      "leg_step_counts": {
+        "LF": 15,
+        "LM": 10,
+        "LH": 11,
+        "RF": 4,
+        "RM": 11,
+        "RH": 3
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "parent",
+      "seed": 10010,
+      "standing_fraction": 0.8929292929292929,
+      "mean_stance_slip_mm_s": 2.2499830438353756,
+      "heading_forward_distance_mm": 1.2018815669844556,
+      "net_forward_displacement_mm": 1.468320629755359,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 13,
+        "LH": 11,
+        "RF": 19,
+        "RM": 15,
+        "RH": 6
+      },
+      "locomotion_regime": "STEPPING_UNCOORDINATED"
+    },
+    {
+      "arm": "control25",
+      "seed": 10010,
+      "standing_fraction": 0.9040404040404041,
+      "mean_stance_slip_mm_s": 2.386058042861341,
+      "heading_forward_distance_mm": -0.4322088575553212,
+      "net_forward_displacement_mm": -0.38103242850568314,
+      "leg_step_counts": {
+        "LF": 11,
+        "LM": 12,
+        "LH": 15,
+        "RF": 5,
+        "RM": 14,
+        "RH": 5
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "child25",
+      "seed": 10010,
+      "standing_fraction": 0.907070707070707,
+      "mean_stance_slip_mm_s": 2.479589699344859,
+      "heading_forward_distance_mm": 1.0397207325799693,
+      "net_forward_displacement_mm": 1.2952653510584538,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 13,
+        "LH": 14,
+        "RF": 6,
+        "RM": 12,
+        "RH": 6
+      },
+      "locomotion_regime": "STEPPING_UNCOORDINATED"
+    },
+    {
+      "arm": "parent",
+      "seed": 10011,
+      "standing_fraction": 0.9191919191919192,
+      "mean_stance_slip_mm_s": 2.9327522746019024,
+      "heading_forward_distance_mm": -0.05008821844232747,
+      "net_forward_displacement_mm": -0.045329986741564264,
+      "leg_step_counts": {
+        "LF": 11,
+        "LM": 14,
+        "LH": 10,
+        "RF": 4,
+        "RM": 11,
+        "RH": 7
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "control25",
+      "seed": 10011,
+      "standing_fraction": 0.9161616161616162,
+      "mean_stance_slip_mm_s": 2.38074203112163,
+      "heading_forward_distance_mm": 0.8909324098678567,
+      "net_forward_displacement_mm": 0.7935246259885657,
+      "leg_step_counts": {
+        "LF": 11,
+        "LM": 15,
+        "LH": 14,
+        "RF": 5,
+        "RM": 11,
+        "RH": 7
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "arm": "child25",
+      "seed": 10011,
+      "standing_fraction": 0.9747474747474747,
+      "mean_stance_slip_mm_s": 1.9815119771958292,
+      "heading_forward_distance_mm": -0.40677891131561705,
+      "net_forward_displacement_mm": -0.30325861094458223,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 11,
+        "LH": 12,
+        "RF": 9,
+        "RM": 16,
+        "RH": 6
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    }
+  ],
+  "telemetry": [
+    {
+      "name": "train25",
+      "process_seconds": 404.3280000000086,
+      "minimum_available_gib": 3.316375732421875,
+      "peak_child_rss_gib": 0.6787338256835938,
+      "max_host_cpu_percent": 77.7,
+      "legacy_T1_gate_passed": true
+    },
+    {
+      "name": "frozen-parent-10006",
+      "process_seconds": 89.68799999999464,
+      "minimum_available_gib": 3.4085350036621094,
+      "peak_child_rss_gib": 0.6886634826660156,
+      "max_host_cpu_percent": 69.8,
+      "legacy_T1_gate_passed": false
+    },
+    {
+      "name": "frozen-control25-10006",
+      "process_seconds": 82.84400000001187,
+      "minimum_available_gib": 3.350048065185547,
+      "peak_child_rss_gib": 0.6597976684570312,
+      "max_host_cpu_percent": 69.9,
+      "legacy_T1_gate_passed": false
+    },
+    {
+      "name": "frozen-child25-10006",
+      "process_seconds": 79.625,
+      "minimum_available_gib": 3.358795166015625,
+      "peak_child_rss_gib": 0.6494140625,
+      "max_host_cpu_percent": 69.2,
+      "legacy_T1_gate_passed": true
+    },
+    {
+      "name": "frozen-parent-10007",
+      "process_seconds": 83.42199999999139,
+      "minimum_available_gib": 3.3551368713378906,
+      "peak_child_rss_gib": 0.6388435363769531,
+      "max_host_cpu_percent": 54.6,
+      "legacy_T1_gate_passed": true
+    },
+    {
+      "name": "frozen-control25-10007",
+      "process_seconds": 80.60899999999674,
+      "minimum_available_gib": 3.0083541870117188,
+      "peak_child_rss_gib": 0.652099609375,
+      "max_host_cpu_percent": 87.5,
+      "legacy_T1_gate_passed": false
+    },
+    {
+      "name": "frozen-child25-10007",
+      "process_seconds": 78.82799999997951,
+      "minimum_available_gib": 3.0531387329101562,
+      "peak_child_rss_gib": 0.7502059936523438,
+      "max_host_cpu_percent": 100.0,
+      "legacy_T1_gate_passed": true
+    },
+    {
+      "name": "frozen-parent-10010",
+      "process_seconds": 76.59399999998277,
+      "minimum_available_gib": 2.7819747924804688,
+      "peak_child_rss_gib": 0.7483177185058594,
+      "max_host_cpu_percent": 66.0,
+      "legacy_T1_gate_passed": false
+    },
+    {
+      "name": "frozen-control25-10010",
+      "process_seconds": 84.67199999999139,
+      "minimum_available_gib": 2.4515342712402344,
+      "peak_child_rss_gib": 0.6325454711914062,
+      "max_host_cpu_percent": 88.7,
+      "legacy_T1_gate_passed": false
+    },
+    {
+      "name": "frozen-child25-10010",
+      "process_seconds": 79.67199999999139,
+      "minimum_available_gib": 2.540843963623047,
+      "peak_child_rss_gib": 0.7461471557617188,
+      "max_host_cpu_percent": 52.1,
+      "legacy_T1_gate_passed": true
+    },
+    {
+      "name": "frozen-parent-10011",
+      "process_seconds": 99.96799999999348,
+      "minimum_available_gib": 2.7279930114746094,
+      "peak_child_rss_gib": 0.7239189147949219,
+      "max_host_cpu_percent": 62.1,
+      "legacy_T1_gate_passed": true
+    },
+    {
+      "name": "frozen-control25-10011",
+      "process_seconds": 73.53099999998813,
+      "minimum_available_gib": 2.763408660888672,
+      "peak_child_rss_gib": 0.6520462036132812,
+      "max_host_cpu_percent": 62.5,
+      "legacy_T1_gate_passed": true
+    },
+    {
+      "name": "frozen-child25-10011",
+      "process_seconds": 72.32800000000861,
+      "minimum_available_gib": 2.6830711364746094,
+      "peak_child_rss_gib": 0.7529525756835938,
+      "max_host_cpu_percent": 67.7,
+      "legacy_T1_gate_passed": true
+    }
+  ],
+  "model_promoted": false,
+  "walking_proven": false,
+  "retention_proven": false,
+  "scope": "N1 training seed/four development probes; descriptive learning-rate comparison; final held-outs unused",
+  "exact_prelearning_fields": [
+    "actual_bonus_after_clipping",
+    "adhesion",
+    "angles",
+    "command",
+    "cycle_credit",
+    "feet_position",
+    "foot_load",
+    "ground_contact",
+    "heading",
+    "learning_active",
+    "load",
+    "omega",
+    "position",
+    "reward",
+    "reward_unclipped",
+    "stance_slip_mm_s",
+    "standing",
+    "up_body",
+    "velocity"
+  ],
+  "control_arm": "control25",
+  "learning_rate": 0.02,
+  "control_learning_rate": 0.2,
+  "control_study": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031",
+  "all_exploration_fields_exact": true,
+  "posthoc_weight_displacement": {
+    "control25": {
+      "mean_abs_change_over_original": 0.00247659610581216,
+      "max_abs_change_over_original": 0.05603348939314288,
+      "exact_original_bound_fraction": 0.0,
+      "nonzero_reference_edges": 85390
+    },
+    "child25": {
+      "mean_abs_change_over_original": 0.00024295727669341807,
+      "max_abs_change_over_original": 0.005079616580313868,
+      "exact_original_bound_fraction": 0.0,
+      "nonzero_reference_edges": 85390
+    }
+  },
+  "posthoc_scope": "Descriptive net displacement at25s, not cumulative path length, causal mediation or an added decision criterion"
+}

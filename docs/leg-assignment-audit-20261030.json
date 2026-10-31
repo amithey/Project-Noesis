@@ -1,0 +1,92 @@
+{
+  "status": "completed_annotation_convention_audit",
+  "candidate_commit": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
+  "candidate_source_sha256": "a02602e9621e87d975334f5b694ba0727d2423e85187f063ce8ed2603fea77fb",
+  "metadata_sha256": "cb152500a8a3a42239c4d3349af53f4fa83cf547bb727ed5bd4c707eaf1f7d84",
+  "groups": {
+    "logged_drive": {
+      "count": 453,
+      "soma_unknown": 236,
+      "nerve_first_unknown": 236,
+      "assignment_changed": 0,
+      "previously_unknown_now_assigned": 0,
+      "assigned_side_changed": 0,
+      "nerve_first_counts": {
+        "LF": 30,
+        "LM": 33,
+        "LH": 45,
+        "RF": 34,
+        "RM": 39,
+        "RH": 36
+      },
+      "changed_class_counts": {},
+      "motor_table_comparable": 389,
+      "motor_table_comparable_soma_unknown": 221,
+      "motor_table_known_side_disagreements": 0,
+      "unknown_motor_region_counts": {
+        "T1_PRONM.NO_CONS": 91,
+        "T2_MESONM.NO_CONS": 69,
+        "T3_METANM.NO_CONS": 61
+      },
+      "soma_disagrees_with_actual_motor_table": 221,
+      "nerve_first_disagrees_with_actual_motor_table": 221
+    },
+    "logged_credit": {
+      "count": 562,
+      "soma_unknown": 345,
+      "nerve_first_unknown": 345,
+      "assignment_changed": 0,
+      "previously_unknown_now_assigned": 0,
+      "assigned_side_changed": 0,
+      "nerve_first_counts": {
+        "LF": 30,
+        "LM": 33,
+        "LH": 45,
+        "RF": 34,
+        "RM": 39,
+        "RH": 36
+      },
+      "changed_class_counts": {},
+      "motor_table_comparable": 389,
+      "motor_table_comparable_soma_unknown": 221,
+      "motor_table_known_side_disagreements": 0,
+      "unknown_motor_region_counts": {
+        "T1_PRONM.NO_CONS": 91,
+        "T2_MESONM.NO_CONS": 69,
+        "T3_METANM.NO_CONS": 61
+      },
+      "soma_disagrees_with_actual_motor_table": 221,
+      "nerve_first_disagrees_with_actual_motor_table": 221
+    },
+    "all_leg_motor": {
+      "count": 391,
+      "soma_unknown": 222,
+      "nerve_first_unknown": 222,
+      "assignment_changed": 0,
+      "previously_unknown_now_assigned": 0,
+      "assigned_side_changed": 0,
+      "nerve_first_counts": {
+        "LF": 22,
+        "LM": 24,
+        "LH": 37,
+        "RF": 26,
+        "RM": 32,
+        "RH": 28
+      },
+      "changed_class_counts": {},
+      "motor_table_comparable": 391,
+      "motor_table_comparable_soma_unknown": 222,
+      "motor_table_known_side_disagreements": 0,
+      "unknown_motor_region_counts": {
+        "T1_PRONM.NO_CONS": 91,
+        "T2_MESONM.NO_CONS": 70,
+        "T3_METANM.NO_CONS": 61
+      },
+      "soma_disagrees_with_actual_motor_table": 222,
+      "nerve_first_disagrees_with_actual_motor_table": 222
+    }
+  },
+  "limits": "Current metadata only; historical cache identity unverified. Agreement with existing motor table establishes implementation consistency, not biological validity or physical benefit.",
+  "simulation_started": false,
+  "weights_changed": false
+}

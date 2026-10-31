@@ -1,0 +1,92 @@
+{
+  "status": "resource_watch_deadline_no_quiescent_window",
+  "budget_seconds": 11.0,
+  "windows": [
+    {
+      "start_elapsed": 0.0,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 2.4957199096679688,
+        "maximum_host_cpu_percent": 46.5,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793371887.0664227,
+          "available_gib": 2.5164871215820312,
+          "host_cpu_percent": 36.9
+        },
+        {
+          "unix_time": 1793371888.0676715,
+          "available_gib": 2.536304473876953,
+          "host_cpu_percent": 46.5
+        },
+        {
+          "unix_time": 1793371889.0688028,
+          "available_gib": 2.5400466918945312,
+          "host_cpu_percent": 18.1
+        },
+        {
+          "unix_time": 1793371890.1009424,
+          "available_gib": 2.4957199096679688,
+          "host_cpu_percent": 44.9
+        },
+        {
+          "unix_time": 1793371891.1108398,
+          "available_gib": 2.5071754455566406,
+          "host_cpu_percent": 39.7
+        },
+        {
+          "unix_time": 1793371892.1121352,
+          "available_gib": 2.507709503173828,
+          "host_cpu_percent": 23.0
+        },
+        {
+          "unix_time": 1793371893.1134326,
+          "available_gib": 2.528766632080078,
+          "host_cpu_percent": 21.3
+        },
+        {
+          "unix_time": 1793371894.1145856,
+          "available_gib": 2.532726287841797,
+          "host_cpu_percent": 21.4
+        },
+        {
+          "unix_time": 1793371895.116032,
+          "available_gib": 2.4970130920410156,
+          "host_cpu_percent": 33.7
+        },
+        {
+          "unix_time": 1793371896.1176665,
+          "available_gib": 2.5316810607910156,
+          "host_cpu_percent": 27.4
+        }
+      ]
+    }
+  ],
+  "simulation_started": false,
+  "elapsed_seconds": 11.0,
+  "blocked_audit": {
+    "scope": "Fresh audit after explicit post-stocktake user resume",
+    "consecutive_turns_with_resource_condition": 3,
+    "previous_turn_classification": "Progress: independent new Gemini4a78e0b review,44provenance-asserted unit tests, exact required repairs published74cb069",
+    "now_at_impasse": true,
+    "checked_sources": [
+      "primary TEAM_CHAT",
+      "GitHub19/20comments",
+      "Claude/Gemini branch heads"
+    ],
+    "last_reviewed_gemini": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
+    "last_claude": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
+    "new_owner_fix_available": false,
+    "managed_processes_live": false,
+    "training_lease_present": false,
+    "next_owned_physical_step": "Registered25sT1 from original complete parent9fd7d411, full controls and unchanged budgets/gates",
+    "next_review_step": "Committed Gemini fixes/raw paired evidence or Claude PCA/coverage/null fixes",
+    "resume_requires": "Measured sustained resources for explicit allocation or new reviewable peer delivery; not elapsed time",
+    "no_model_progress_or_completion_claim": true
+  }
+}

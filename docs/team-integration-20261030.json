@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-30",
+  "claude": {
+    "provider_status": "ready_for_review",
+    "worker_tests_passed": 37,
+    "integration_tests_passed": 37,
+    "accepted": "Canonical six legs, same source, frozen-completion provenance; heading primary/net sensitivity preserved"
+  },
+  "gemini": {
+    "provider_status": "failed_remote_connection_after_file_edits",
+    "independent_worker_tests": "14passed7failed",
+    "coordinator_changes": "Fixed two invalid numpy.issubdtype tuple calls in own integration copy and consistent real-weight rejection message",
+    "module_status": "reviewed_coordinator_integration_copy_suite_passed"
+  },
+  "behavioral_evidence": {
+    "file": "docs/e5-parent-retention-comparison.json",
+    "probes_compared": 6,
+    "standing_declined": 5,
+    "primary_gate_regressions": 4,
+    "retention_or_forgetting_proven": false
+  },
+  "no_sensor_controller_hook": true,
+  "no_learning_rule_change": true,
+  "no_worker_branch_committed_by_codex": true,
+  "integration_hashes": {
+    "retention_audit.py": "93b5fb07efa585fefaea70bd08bec07f809a95ef774888882aac1ffe4a69279f",
+    "external_senses.py": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4"
+  },
+  "final_suite": {
+    "passed": 186,
+    "skipped": 1,
+    "command": "NOESIS_SOURCE=isolated42c2076; pytest gpu-pilot/tests tests/test_runtime_diagnostic.py tests/test_training_power.py -q",
+    "note": "Initial suite used hub source because NOESIS_SOURCE was omitted; corrected environment passed."
+  }
+}

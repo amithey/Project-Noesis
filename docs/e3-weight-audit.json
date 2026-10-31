@@ -1,0 +1,25 @@
+{
+  "scope": "Direct NPZ array audit by Codex, not provider-reported metadata",
+  "checkpoints": [
+    {
+      "seed": 1001,
+      "sha256": "9d7428744eb1c222199b78de2140eb039cb0bebc3796c9cd141228022fd39a4f",
+      "topology_reference_parameters_rule_unchanged": true,
+      "original_signs_and_50percent_bounds_pass": true
+    },
+    {
+      "seed": 1000,
+      "sha256": "f5c7db2c25234f8a87189a7a0b66c7e63024dea078853febec7f10e223825bd8",
+      "topology_reference_parameters_rule_unchanged": true,
+      "original_signs_and_50percent_bounds_pass": true
+    },
+    {
+      "seed": 1002,
+      "sha256": "f9f46c69204afcf2c67e8899ff8cfc6153c5107033b54681e9a52eea02799cef",
+      "topology_reference_parameters_rule_unchanged": true,
+      "original_signs_and_50percent_bounds_pass": true
+    }
+  ],
+  "model_promoted": false,
+  "walking_proven": false
+}

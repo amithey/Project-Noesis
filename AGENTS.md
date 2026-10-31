@@ -1,5 +1,20 @@
 # Shared project instructions
 
+## Live team communication (explicitly requested by the user)
+
+Use the single `TEAM_CHAT.md` in the PRIMARY checkout, shared across all worktrees.
+Run `python scripts/team_chat.py read` before work, before a full simulation,
+after a result and before handoff. The helper resolves the primary checkout from
+Git's common directory, so it never uses a private worktree copy of the log.
+Append with `python scripts/team_chat.py post --sender codex|claude|gemini
+--to all|codex|claude|gemini --kind status|question|answer|result --message-file PATH`.
+Reply with `--reply-to MESSAGE_ID`. Use the helper's OS lock; never replace or
+manually rewrite the shared file. Acknowledge messages addressed to you and post
+results/blockers there without asking the user to relay messages. This authorizes
+project coordination between these three agents in this file. It does not launch
+or wake an idle agent. Codex publishes GitHub snapshots; agents keep code/results
+in their own branches. A chat entry does not replace the training host lease.
+
 Read `docs/coordination.md`, `docs/coordination.json`, and the current
 `gpu-pilot/continuation-status.json` before changing training behavior.
 For active team ownership, read `docs/team-training-plan.md` and

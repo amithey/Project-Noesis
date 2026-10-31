@@ -1,0 +1,98 @@
+{
+  "status": "resource_watch_deadline_no_quiescent_window",
+  "budget_seconds": 11.0,
+  "windows": [
+    {
+      "start_elapsed": 0.0,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 2.9776611328125,
+        "maximum_host_cpu_percent": 95.4,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793369078.536469,
+          "available_gib": 3.0094833374023438,
+          "host_cpu_percent": 41.5
+        },
+        {
+          "unix_time": 1793369079.5375583,
+          "available_gib": 2.9776611328125,
+          "host_cpu_percent": 95.4
+        },
+        {
+          "unix_time": 1793369080.539511,
+          "available_gib": 3.010242462158203,
+          "host_cpu_percent": 68.2
+        },
+        {
+          "unix_time": 1793369081.540776,
+          "available_gib": 3.0203933715820312,
+          "host_cpu_percent": 45.5
+        },
+        {
+          "unix_time": 1793369082.5426764,
+          "available_gib": 3.027172088623047,
+          "host_cpu_percent": 76.7
+        },
+        {
+          "unix_time": 1793369083.5442936,
+          "available_gib": 3.0278778076171875,
+          "host_cpu_percent": 73.4
+        },
+        {
+          "unix_time": 1793369084.545932,
+          "available_gib": 3.0254898071289062,
+          "host_cpu_percent": 58.3
+        },
+        {
+          "unix_time": 1793369085.5471988,
+          "available_gib": 3.019763946533203,
+          "host_cpu_percent": 53.2
+        },
+        {
+          "unix_time": 1793369086.5494678,
+          "available_gib": 2.9986305236816406,
+          "host_cpu_percent": 59.8
+        },
+        {
+          "unix_time": 1793369087.5540545,
+          "available_gib": 3.0191688537597656,
+          "host_cpu_percent": 65.9
+        }
+      ]
+    }
+  ],
+  "simulation_started": false,
+  "elapsed_seconds": 11.0,
+  "blocked_audit": {
+    "classification_previous_turn": "progress: reproducible annotation coverage audit published at52c9e4f",
+    "recurring_condition": "Insufficient sustained host resources for the next registered physical experiment",
+    "consecutive_goal_turns_with_condition_at_least": 3,
+    "current_simulation_active": false,
+    "current_watcher_terminal": true,
+    "team_log_checked": true,
+    "github_issues_checked": [
+      19,
+      20
+    ],
+    "new_owner_fix_available_in_checked_sources": false,
+    "independent_work_completed": [
+      "M1 anatomical transport audit",
+      "exact learning-signal parity",
+      "PCA invariance counterexample",
+      "leg assignment coverage audit"
+    ],
+    "next_owned_physical_action": "Fresh registered T1 from original complete parent, unchanged limits and scientific gates, exclusive lease, fresh sustained resource preflight",
+    "next_review_actions": [
+      "Claude committed PCA/coverage/null/provenance correction",
+      "Gemini committed sensory source and hashed paired artifacts"
+    ],
+    "resume_condition": "Sustained usable host resources or reviewable owner artifact changes; elapsed time alone is not evidence",
+    "goal_achieved": false
+  }
+}

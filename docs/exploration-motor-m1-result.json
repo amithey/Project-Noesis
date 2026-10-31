@@ -1,0 +1,108 @@
+{
+  "status": "completed_descriptive_exploration_motor_audit",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "core_source_sha256": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+  "metadata_sha256": "cb152500a8a3a42239c4d3349af53f4fa83cf547bb727ed5bd4c707eaf1f7d84",
+  "pilot_source_sha256": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0",
+  "projection_scope": "Existing muscle pool mean difference Gpos-Gneg applied to logged input currents/credits; NOT measured firing rates.",
+  "primary_lag_ms": 25,
+  "secondary_lag_search_ms": [
+    0,
+    100
+  ],
+  "positive_in_all_three_at_fixed_lag": {
+    "input_projection_to_command": [
+      "joint_LFFemur",
+      "joint_LFFemur_roll",
+      "joint_LFTarsus1",
+      "joint_LHFemur",
+      "joint_RFCoxa_roll",
+      "joint_RFTibia",
+      "joint_RMTibia",
+      "joint_RMTarsus1",
+      "joint_RHTibia",
+      "joint_RHTarsus1"
+    ],
+    "innovation_projection_to_command_change": [
+      "joint_LFFemur_roll",
+      "joint_LFTibia",
+      "joint_RMFemur_roll",
+      "joint_RMTibia",
+      "joint_RHFemur",
+      "joint_RHTibia",
+      "joint_RHTarsus1"
+    ]
+  },
+  "limits": "Closed-loop development association only; no randomized ablation, calibrated significance or physical-walking proof. Training reports lack historical metadata hashes; mapping uses current recorded-hash cache.",
+  "model_promoted": false,
+  "walking_proven": false,
+  "cases": [
+    {
+      "seed": 1000,
+      "input_sha256": {
+        "report.json": "3d3ca83ecc266dfe84f1155ca3992dcd26064ea0b3a476d4f16fda11a611ad42",
+        "exploration-log.npz": "85e1cc8b94a2846b6348b824354062dcb09840bfd7e6df6c75553488e85269a4",
+        "training-observations.npz": "2dc3e2f981864edfebf4abd9c511d1a3a72e5d0faff3dca6f1a9bcdd2058145d"
+      },
+      "command_slew_cap_fraction": 0.001467051467051467,
+      "input_projection_to_command": {
+        "defined_channels": 42,
+        "median_fixed_r": 0.052419057258504945,
+        "minimum_fixed_r": -0.2758665169627203,
+        "maximum_fixed_r": 0.4352868413964257
+      },
+      "innovation_projection_to_command_change": {
+        "defined_channels": 42,
+        "median_fixed_r": 0.008136905002789971,
+        "minimum_fixed_r": -0.03665139984368335,
+        "maximum_fixed_r": 0.0755741852030023
+      }
+    },
+    {
+      "seed": 1001,
+      "input_sha256": {
+        "report.json": "9760d2ebc7ca9ce377ca1573893b29c56149f1b7a3097381b976bfc2df441144",
+        "exploration-log.npz": "841b4838224a308264220705705d4ffea3b23b983afe652327ae67948fc76332",
+        "training-observations.npz": "1af381783ee0da29ba486c322155f132e87120887799500c6206b08b9cdec3d3"
+      },
+      "command_slew_cap_fraction": 0.0008898508898508899,
+      "input_projection_to_command": {
+        "defined_channels": 42,
+        "median_fixed_r": 0.0622859615908842,
+        "minimum_fixed_r": -0.3100710871039705,
+        "maximum_fixed_r": 0.39709423479834793
+      },
+      "innovation_projection_to_command_change": {
+        "defined_channels": 42,
+        "median_fixed_r": 0.011183527185436366,
+        "minimum_fixed_r": -0.04271504642602187,
+        "maximum_fixed_r": 0.10571032389433888
+      }
+    },
+    {
+      "seed": 1002,
+      "input_sha256": {
+        "report.json": "03003a0856f181733ec7d0fc02f5412d01c1f06789745a57a147ee6432bd65b8",
+        "exploration-log.npz": "deaa3e0afb022f7bcbe06aa6789c8b2941baed1ae707a0f5217b48e49a0f482a",
+        "training-observations.npz": "c4c3b46a1284c1b81af5e4d664ad422d47b3a3c1674c382596d046f3b3be57da"
+      },
+      "command_slew_cap_fraction": 0.0025974025974025974,
+      "input_projection_to_command": {
+        "defined_channels": 42,
+        "median_fixed_r": 0.016607370363077228,
+        "minimum_fixed_r": -0.2521983126771342,
+        "maximum_fixed_r": 0.35825384939655613
+      },
+      "innovation_projection_to_command_change": {
+        "defined_channels": 42,
+        "median_fixed_r": 0.004227864912456135,
+        "minimum_fixed_r": -0.0571241519287556,
+        "maximum_fixed_r": 0.06340784574677517
+      }
+    }
+  ],
+  "interpretation": "Some corresponding joint associations repeat; command slew clipping is rare. Different input/output correlation families cannot rank credit rules or prove causality/learning. Preserve current rate cap and scientific gates.",
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30",
+  "artifact_archive": "exploration-motor-m1-evidence.zip",
+  "archive_sha256": "db7a6642c53c644657e3e9550fe92b25577b988e54df9db5583cfc063b4145e3"
+}
