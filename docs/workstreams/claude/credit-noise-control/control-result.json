@@ -1,0 +1,122 @@
+{
+ "per_seed": {
+  "10006": {
+   "parent": {
+    "standing_fraction": 0.9626262626262626,
+    "mean_stance_slip_mm_s": 3.0581713360264406,
+    "heading_forward_distance_mm": 0.298359305310338,
+    "net_forward_displacement_mm": 0.022346444869974825,
+    "total_leg_steps": 58,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   },
+   "real": {
+    "standing_fraction": 0.9808080808080808,
+    "mean_stance_slip_mm_s": 2.2272584201283476,
+    "heading_forward_distance_mm": 0.5502199329875463,
+    "net_forward_displacement_mm": 0.6700692739821014,
+    "total_leg_steps": 79,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   },
+   "control": {
+    "standing_fraction": 0.9616161616161616,
+    "mean_stance_slip_mm_s": 2.316386084991246,
+    "heading_forward_distance_mm": 1.6942490690491545,
+    "net_forward_displacement_mm": 1.4709251352518795,
+    "total_leg_steps": 66,
+    "locomotion_regime": "STEPPING_UNCOORDINATED"
+   }
+  },
+  "10007": {
+   "parent": {
+    "standing_fraction": 0.9444444444444444,
+    "mean_stance_slip_mm_s": 2.4901644202802085,
+    "heading_forward_distance_mm": 0.33179266889018316,
+    "net_forward_displacement_mm": 0.3839992223829025,
+    "total_leg_steps": 52,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   },
+   "real": {
+    "standing_fraction": 0.9040404040404041,
+    "mean_stance_slip_mm_s": 2.5880782873982717,
+    "heading_forward_distance_mm": -0.6286905095514839,
+    "net_forward_displacement_mm": -0.5524027789338584,
+    "total_leg_steps": 62,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   },
+   "control": {
+    "standing_fraction": 0.8616161616161616,
+    "mean_stance_slip_mm_s": 2.548366756994693,
+    "heading_forward_distance_mm": 0.23882448005298978,
+    "net_forward_displacement_mm": 0.4226076655689236,
+    "total_leg_steps": 59,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   }
+  },
+  "10010": {
+   "parent": {
+    "standing_fraction": 0.8929292929292929,
+    "mean_stance_slip_mm_s": 2.2499830438353756,
+    "heading_forward_distance_mm": 1.2018815669844556,
+    "net_forward_displacement_mm": 1.468320629755359,
+    "total_leg_steps": 73,
+    "locomotion_regime": "STEPPING_UNCOORDINATED"
+   },
+   "real": {
+    "standing_fraction": 0.9040404040404041,
+    "mean_stance_slip_mm_s": 2.386058042861341,
+    "heading_forward_distance_mm": -0.4322088575553212,
+    "net_forward_displacement_mm": -0.38103242850568314,
+    "total_leg_steps": 62,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   },
+   "control": {
+    "standing_fraction": 0.9414141414141414,
+    "mean_stance_slip_mm_s": 2.1384473884944573,
+    "heading_forward_distance_mm": 1.1792723578152415,
+    "net_forward_displacement_mm": 1.434988342452197,
+    "total_leg_steps": 59,
+    "locomotion_regime": "STEPPING_UNCOORDINATED"
+   }
+  },
+  "10011": {
+   "parent": {
+    "standing_fraction": 0.9191919191919192,
+    "mean_stance_slip_mm_s": 2.9327522746019024,
+    "heading_forward_distance_mm": -0.05008821844232747,
+    "net_forward_displacement_mm": -0.045329986741564264,
+    "total_leg_steps": 57,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   },
+   "real": {
+    "standing_fraction": 0.9161616161616162,
+    "mean_stance_slip_mm_s": 2.38074203112163,
+    "heading_forward_distance_mm": 0.8909324098678567,
+    "net_forward_displacement_mm": 0.7935246259885657,
+    "total_leg_steps": 63,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   },
+   "control": {
+    "standing_fraction": 0.906060606060606,
+    "mean_stance_slip_mm_s": 2.7229092132542965,
+    "heading_forward_distance_mm": -1.374173239791771,
+    "net_forward_displacement_mm": -1.2887246121688551,
+    "total_leg_steps": 57,
+    "locomotion_regime": "STEPPING_IN_PLACE"
+   }
+  }
+ },
+ "median_heading_real_minus_control_mm": -1.0057720628330409,
+ "median_net_real_minus_control_mm": -0.88793315288628,
+ "standing_real_not_lower_count": 3,
+ "slip_real_not_higher_count": 2,
+ "real_better_than_control": false,
+ "control_better_than_real": false,
+ "verdict": "INDISTINGUISHABLE",
+ "drive_arrays_equal_to_T1B": true,
+ "real_credit_logged_equal_to_T1B": true,
+ "applied_credit_present": true,
+ "drive_shape": [
+  4990,
+  453
+ ]
+}
