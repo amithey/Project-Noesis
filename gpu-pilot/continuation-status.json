@@ -1,5 +1,5 @@
 {
-  "status": "active_S1_full_standing_profile_study_complete_retention_failed",
+  "status": "paused_user_requested_stocktake_20261101",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,9 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "S1 complete:3/4standing gates,0/4paired standing/slip retention;no promotion even though median progress gains pass.",
-    "Prepare separately registered no-learning causal exploration transport diagnostic through actual neural activity/muscle commands/body; require zero intervention exact baseline and observer invariance.",
-    "Keep all profile/duration/rate findings descriptive; no threshold relaxation, automatic parent switch or independent weight merging.",
-    "Follow up Claude decision/sidecar/null-wording fixes and actual sensory source/hook; preserve Gemini handoff and held-outs."
+    "No new training during stocktake pause; see docs/project-status-20261030.md",
+    "Peer tool corrections and sensory handoff before any new integration",
+    "After resumption, preregister fixed-weight exploration transport diagnostic; no current allocation"
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -26,7 +25,7 @@
   "plan_revision": "flygym2-brain-only-2026-10-21",
   "legacy_runner_role": "historical controls only; not the active new-body route",
   "app_goal_objective_updated": true,
-  "app_goal_status_observed": "active; full L2 matched-rate experiment complete, scientific rule failed, goal unachieved",
+  "app_goal_status_observed": "paused; user requested stocktake and GitHub cleanup; objective unachieved",
   "curriculum_orchestration_port_complete": false,
   "resume_flag_supported_by_new_commands": false,
   "standing_training_gate_passed": true,
