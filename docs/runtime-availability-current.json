@@ -1,5 +1,5 @@
 {
-  "status": "R4_frozen_feasibility_completed_T1_gate_unchanged",
+  "status": "R4_complete_T1attempt6_prejob_refused_no_training",
   "current_turn_classification": "Progress: tested operational wrapper and completed two exact full-horizon physical frozen repeats",
   "result": "docs/resource-envelope-r4-result.json",
   "training_resource_policy": {
@@ -19,5 +19,45 @@
   "model_promoted": false,
   "walking_proven": false,
   "goal_status": "active; full objective unachieved",
-  "next": "Fresh original T1 gate before any registered training, or peer correction review"
+  "next": "No more T1 attempts this round. R4 does not establish training throughput or authorize adopting its envelope for training. Review next operational/training experiment separately; peer corrections still pending.",
+  "post_R4_original_gate": {
+    "passed": true,
+    "sample_count": 10,
+    "minimum_available_gib": 3.8887939453125,
+    "maximum_host_cpu_percent": 28.0,
+    "required_available_gib": 3.0,
+    "allowed_host_cpu_percent": 30.0,
+    "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+  },
+  "T1attempt6": {
+    "initial_gate": {
+      "passed": true,
+      "sample_count": 10,
+      "minimum_available_gib": 3.9581756591796875,
+      "maximum_host_cpu_percent": 26.7,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    },
+    "prejob_gate": {
+      "passed": false,
+      "sample_count": 10,
+      "minimum_available_gib": 3.944141387939453,
+      "maximum_host_cpu_percent": 46.6,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    },
+    "result": {
+      "status": "stopped",
+      "jobs": [],
+      "model_promoted": false,
+      "walking_proven": false,
+      "error_type": "RuntimeError",
+      "error": "Insufficient sustained resource/time budget for full next job",
+      "wall_seconds": 20.09399999998277
+    },
+    "simulation_jobs_started": 0,
+    "lease_present": false
+  }
 }

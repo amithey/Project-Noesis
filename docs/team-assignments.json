@@ -155,7 +155,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "R4_completed_short_frozen_feasibility_T1_gate_unchanged",
+    "status": "R4_completed_T1attempt6_prejob_refused_no_training",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
