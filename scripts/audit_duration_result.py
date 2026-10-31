@@ -9,7 +9,7 @@ import numpy as np
 from compare_exploration import digest, tree_digest, write
 from run_duration_study import (PROBES, PARENT, CONTROL, SOURCES, audit_bank,
     duration_decision, prefix_check, verify_guarded_receipt,verify_lr_control,
-    lr_trace_check,lr_report_check,lr_bank_audit)
+    lr_trace_check,lr_report_check,lr_bank_audit,standing_trace_check,standing_report_check,standing_decision)
 from noesis_gpu.evaluate import MATCHED_SETTINGS, summarize
 
 
@@ -18,8 +18,9 @@ def audit(root, core, study):
     protocol = json.loads((study/'protocol.json').read_text())
     result = json.loads((study/'result.json').read_text())
     lr_mode=protocol.get('experiment')=='L2 matched25s learning-rate contrast'
-    control_arm='control25' if lr_mode else 'control5'
-    if (result['status'] != ('completed_learning_rate_study' if lr_mode else 'completed_duration_study') or len(result['jobs']) != 13
+    standing_mode=protocol.get('experiment')=='S1 matched25s standing-profile contrast'
+    control_arm='control25' if lr_mode or standing_mode else 'control5'
+    if (result['status'] != ('completed_standing_profile_study' if standing_mode else 'completed_learning_rate_study' if lr_mode else 'completed_duration_study') or len(result['jobs']) != 13
             or result['wall_seconds'] > 3600 or result['model_promoted']
             or result['walking_proven'] or not protocol['guarded_mean_cpu']):
         raise ValueError('Require completed, unpromoted T1B within original budget')
@@ -44,14 +45,20 @@ def audit(root, core, study):
     if child_sha != result['child25_sha256'] or child_sha != trained['saved_checkpoint_sha256']:
         raise ValueError('Child hash mismatch')
     prior=None
-    if lr_mode:
-        prior=Path(protocol['L2_control_study'])
-        if verify_lr_control(prior,root,core)!=protocol['L2_control_files']:raise ValueError('L2 control changed')
+    if lr_mode or standing_mode:
+        prefix='S1' if standing_mode else 'L2'
+        prior=Path(protocol[prefix+'_control_study'])
+        if verify_lr_control(prior,root,core)!=protocol[prefix+'_control_files']:raise ValueError('Matched control changed')
         control=prior/'train25'
-        lr_report_check(trained,json.loads((control/'report.json').read_text()))
-        if json.loads((study/'train25/weights-last.model.json').read_text())['learning_rate']!=.02:
-            raise ValueError('L2 sidecar LR changed')
-        fields=lr_trace_check(study/'train25',control)
+        if standing_mode:
+            standing_report_check(trained,json.loads((control/'report.json').read_text()))
+            sidecar=json.loads((study/'train25/weights-last.model.json').read_text())
+            if sidecar.get('reward_objective')!='curriculum-standing-v7' or sidecar.get('learning_rate')!=.2:raise ValueError('S1 sidecar mismatch')
+            fields=standing_trace_check(study/'train25',control)
+        else:
+            lr_report_check(trained,json.loads((control/'report.json').read_text()))
+            if json.loads((study/'train25/weights-last.model.json').read_text())['learning_rate']!=.02:raise ValueError('L2 sidecar LR changed')
+            fields=lr_trace_check(study/'train25',control)
     else:fields = prefix_check(study/'train25', control)
     banks = {'parent':parent,control_arm:control/'weights-last.npz','child25':child}
     cases = {arm: {} for arm in banks}
@@ -86,7 +93,7 @@ def audit(root, core, study):
             with np.load(study/name/'observations.npz', allow_pickle=False) as data:
                 if any(v.shape[0] != 1000 or not np.isfinite(v).all() for v in data.values()):
                     raise ValueError('Incomplete/nonfinite frozen observation field')
-                if lr_mode and arm!='child25':
+                if (lr_mode or standing_mode) and arm!='child25':
                     previous=prior/f'frozen-{"parent" if arm=="parent" else "child25"}-{seed}/observations.npz'
                     with np.load(previous,allow_pickle=False) as old:
                         if set(data.files)!=set(old.files) or any(not np.array_equal(data[k],old[k]) for k in old.files):
@@ -99,7 +106,7 @@ def audit(root, core, study):
         if any(reports[a][k] != reports['parent'][k] for a in (control_arm,'child25')
                for k in (*MATCHED_SETTINGS, 'seeds')):
             raise ValueError('Unmatched frozen settings')
-    decision = duration_decision(cases,control_arm=control_arm)
+    decision = standing_decision(cases) if standing_mode else duration_decision(cases,control_arm=control_arm)
     if decision != result['decision']:
         raise ValueError('Recomputed decision differs')
     audited=dict(status='independent_raw_recomputation_passed', protocol_commit=protocol['commit'],
@@ -107,8 +114,11 @@ def audit(root, core, study):
         learning_updates=4990, complete_frozen_probes=12,
         wall_seconds=result['wall_seconds'], decision=decision, probes=rows, telemetry=telemetry,
         model_promoted=False, walking_proven=False, retention_proven=False,
-        scope='N1 training seed/four development probes; descriptive '+('learning-rate' if lr_mode else 'duration')+' comparison; final held-outs unused')
-    audited['exact_prelearning_fields' if lr_mode else 'exact_prefix_fields']=fields
+        scope='N1 training seed/four development probes; descriptive '+('standing-profile' if standing_mode else 'learning-rate' if lr_mode else 'duration')+' comparison; final held-outs unused')
+    audited['exact_physical_prelearning_fields' if standing_mode else 'exact_prelearning_fields' if lr_mode else 'exact_prefix_fields']=fields
+    if standing_mode:audited.update(control_arm=control_arm,learning_rate=.2,control_learning_rate=.2,
+        control_study=str(prior),all_exploration_fields_exact=True,artifact_prefix='standing-profile-s1',
+        profile='standing',control_profile='gripped-cycle')
     if lr_mode:
         displacement={}
         with np.load(parent,allow_pickle=False) as baseline:
@@ -150,7 +160,7 @@ def archive(root, study, target, summary):
         p=control/filename; files[p.relative_to(root).as_posix()]=p
     entries=[dict(path=n, bytes=p.stat().st_size, sha256=digest(p)) for n,p in sorted(files.items())]
     payload=dict(schema_version=1, files=entries, audit=summary)
-    prefix='learning-rate-l2' if 'control_study' in summary else 'duration-t1b'
+    prefix=summary.get('artifact_prefix','learning-rate-l2' if 'control_study' in summary else 'duration-t1b')
     destination=target/f'{prefix}-evidence.zip'
     with zipfile.ZipFile(destination,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
         for entry in entries:
