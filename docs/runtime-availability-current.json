@@ -1,6 +1,6 @@
 {
-  "status": "R4_complete_T1attempt6_prejob_refused_no_training",
-  "current_turn_classification": "Progress: tested operational wrapper and completed two exact full-horizon physical frozen repeats",
+  "status": "D4M_full_training_replay_complete_T1_default_unchanged",
+  "current_turn_classification": "Progress:22tested guards and exact full physical training/checkpoint/log replay under a prospective operational contrast",
   "result": "docs/resource-envelope-r4-result.json",
   "training_resource_policy": {
     "minimum_gib": 3,
@@ -18,8 +18,8 @@
   "training_allocated": false,
   "model_promoted": false,
   "walking_proven": false,
-  "goal_status": "active; full objective unachieved",
-  "next": "No more T1 attempts this round. R4 does not establish training throughput or authorize adopting its envelope for training. Review next operational/training experiment separately; peer corrections still pending.",
+  "goal_status": "active; full stable-learning-walking objective unachieved",
+  "next": "Explicitly review/register a longer guarded duration study; no default policy adoption or inference of retained improvement from short replay.",
   "post_R4_original_gate": {
     "passed": true,
     "sample_count": 10,
@@ -59,5 +59,6 @@
     },
     "simulation_jobs_started": 0,
     "lease_present": false
-  }
+  },
+  "training_replay": "docs/training-resource-d4-result.json"
 }

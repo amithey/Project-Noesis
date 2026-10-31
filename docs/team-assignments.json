@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "R4_physical_frozen_feasibility_complete_next_registered_decision_pending",
+      "assignment_status": "D4M_physical_training_replay_complete_next_longer_experiment_review",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -155,7 +155,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "R4_completed_T1attempt6_prejob_refused_no_training",
+    "status": "D4M_training_replay_complete_no_simulation_allocated",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,

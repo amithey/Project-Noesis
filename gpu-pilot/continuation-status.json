@@ -1,5 +1,5 @@
 {
-  "status": "active_R4_full_frozen_reproducibility_complete_T1attempt6_gate_refused",
+  "status": "active_D4M_complete_known_child_training_replay_no_model_promotion",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,10 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "Revalidate sustained resource availability before any explicit freshT1 allocation; no repeated same-turn retry loop.",
-    "Keep original complete9fd7d411 parent, exclude T1partial bank, preserve unchanged scientific gates/budgets and full frozen controls.",
-    "Review Claude committed credit-timing work when provided; exact normalized signal differs from generic2sEMA residual.",
-    "Do not infer better credit rules from M1 differing signal/output correlation families or relax the rarely reached command slew cap."
+    "Review/preregister the next longer guarded duration experiment explicitly; do not extrapolate25s throughput or adopt a default policy from N1short replay.",
+    "Keep original complete9fd7d411 parent and2074b1e2 control; diagnosticduplicate is not a curated latest model.",
+    "Require complete horizon, original-reference audit and exact5s prefix before frozen paired behavioral retention decisions.",
+    "Peer Claude PCA/coverage/null and Gemini candidate/raw-evidence/protocol repairs still await review."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -94,5 +94,6 @@
   "evaluation_continuation": "docs/duration-evaluation-continuation-20261030.md",
   "evaluation_continuation_physical_tested": false,
   "sensory_review": "docs/gemini-sensory-review-4a78e0b.json",
-  "resource_envelope_result": "docs/resource-envelope-r4-result.json"
+  "resource_envelope_result": "docs/resource-envelope-r4-result.json",
+  "training_resource_parity": "docs/training-resource-d4-result.json"
 }
