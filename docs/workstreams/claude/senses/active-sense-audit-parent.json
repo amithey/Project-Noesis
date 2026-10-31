@@ -1,0 +1,83 @@
+{
+ "constants": {
+  "vel0": 2.0,
+  "load0": 2.0,
+  "tilt_scale": 0.3,
+  "spin_scale": 3.0
+ },
+ "runs": [
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10006",
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10007",
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10010",
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10011"
+ ],
+ "organ_activation": {
+  "claw": {
+   "mean": 0.2592142634507916,
+   "p10": 0.1871600377319256,
+   "p50": 0.2346024908145256,
+   "p90": 0.37615838486799347,
+   "dead_share": 0.0,
+   "saturated_share": 0.0
+  },
+  "hook": {
+   "mean": 0.7407857365492084,
+   "p10": 0.6238416151320065,
+   "p50": 0.7653975091854743,
+   "p90": 0.8128399622680744,
+   "dead_share": 0.0,
+   "saturated_share": 0.0
+  },
+  "club": {
+   "mean": 0.40907304389087745,
+   "p10": 0.06929198603068551,
+   "p50": 0.37572431651681043,
+   "p90": 0.8056558178943216,
+   "dead_share": 0.07104377104377105,
+   "saturated_share": 0.01914983164983165
+  },
+  "hairplate": {
+   "mean": 0.6973346709083068,
+   "p10": 0.4545808110381575,
+   "p50": 0.7318489735073588,
+   "p90": 0.8749378257881999,
+   "dead_share": 0.00101010101010101,
+   "saturated_share": 0.00021043771043771043
+  },
+  "campaniform": {
+   "mean": 0.40671194699133306,
+   "p10": 0.0,
+   "p50": 0.0,
+   "p90": 0.9873466485470099,
+   "dead_share": 0.5021464646464646,
+   "saturated_share": 0.19347643097643097
+  }
+ },
+ "raw_signal_quantiles": {
+  "load": {
+   "10": 0.0,
+   "50": 0.0,
+   "90": 5.056633568813794,
+   "99": 7.935464594457962
+  },
+  "tibia_speed": {
+   "10": 0.1388064112959144,
+   "50": 0.7901435757935453,
+   "90": 2.2290484191916047,
+   "99": 4.12262730247149
+  },
+  "tilt_norm": {
+   "10": 0.33954924848418405,
+   "50": 0.49753037902239683,
+   "90": 0.6063825723395453,
+   "99": 0.6974392436370483
+  },
+  "omega_norm": {
+   "10": 1.0804685155151958,
+   "50": 2.700541966839319,
+   "90": 5.443286696130914,
+   "99": 10.506509140653053
+  }
+ },
+ "note": "campaniform stats also describe bristle (same signal). Descriptive; no claim about better standing."
+}
