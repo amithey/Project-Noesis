@@ -155,7 +155,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "fresh_after_pause_preflight_refused",
+    "status": "fresh_resume_gate_refused_cpu100_low_memory",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
