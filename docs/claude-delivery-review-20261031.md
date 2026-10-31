@@ -114,6 +114,8 @@ The prior failed startup attempt remains locally preserved and disclosed in the
 owner's protocol; it is not counted as a completed birth. No raw connectome,
 graph cache, environment or credentials are archived. All88input hashes were
 checked before/after copying, and ZIP CRC/per-file hashes verified.
+[GitHub asset verification](claude-noise-artifact-verification-20261031.json)
+confirms both uploaded digests and sizes match the local signed files.
 
 - claude-credit-noise-evidence.zip:132016429bytes,
   SHA256`2ae35e4105765852261f55806035f76d933e713c34ac6d13a4baf1c03e0a036a`.
