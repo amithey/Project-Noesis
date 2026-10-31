@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "stocktake_complete_T1B_tested_not_allocated",
+      "assignment_status": "T1B_complete_scientific_rule_failed_next_method_review",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -93,18 +93,18 @@
     }
   ],
   "active_round": {
-    "name": "T1duration25svs5s",
-    "status": "incomplete_wall_budget_no_frozen_controls",
+    "name": "T1B25s_vs5s",
+    "status": "completed_scientific_rule_failed",
     "simulation_owner": "codex",
-    "protocol": "docs/duration-learning-protocol-20261030.md",
-    "pilot_commit": "411475cb594c8766f8aed7e6470d1660efaf796f",
-    "output": "gpu-pilot/outputs/duration-t1-20261030-attempt2",
+    "protocol": "docs/guarded-duration-t1b-protocol.md",
+    "result": "docs/guarded-duration-t1b-result.json",
+    "output": "gpu-pilot/outputs/duration-t1b-guarded-20261031",
     "requested_seconds": 25,
-    "completed_seconds": 21.18,
+    "completed_seconds": 25,
+    "learning_updates": 4990,
+    "frozen_probes_run": 12,
     "budget_seconds": 3600,
-    "training_inner_wall_seconds": 900.397384,
-    "actual_wall_seconds": 910.891,
-    "frozen_probes_run": 0,
+    "actual_wall_seconds": 1572.625,
     "model_promoted": false
   },
   "parallel_development": {
@@ -124,7 +124,7 @@
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "D4M_complete_T1B_tested_not_allocated",
+    "status": "T1B_full_study_complete_duration_method_not_retained",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
@@ -134,7 +134,7 @@
     "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
     "runtime_profile": "docs/runtime-profile-d2-result.json",
     "full_training_reproducibility": "docs/logging-parity-d3-result.json",
-    "current_priority": "Review peer corrections; separately allocate T1B only after fresh host gate and lease. No simulation during stocktake.",
+    "current_priority": "Review a new one-factor method, e.g. lowerLR at matched25s duration, or delivered peer repair; do not repeat duration as assumed cure. No new allocation.",
     "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
     "credit_replication": "docs/credit-replication-c2-result.json",
     "next_proposal": "docs/duration-learning-proposal-20261030.md",
@@ -157,7 +157,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "stocktake_no_simulation_allocated",
+    "status": "T1B_complete_lease_released_no_simulation_allocated",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
@@ -171,7 +171,7 @@
   "historical_fields_note": "implementation_baseline, core_commit, active_round and managed_* fields preserve prior setup/results; current_queue and resource_schedule describe the current queue, not live agent activity. Experimental runtime core is experimental_core_commit.",
   "updated_date": "2026-10-31",
   "current_queue": {
-    "codex": "T1B tested4799b80, not allocated; standing/walking, run reliability and integration",
+    "codex": "Review next one-factor method after full T1B failure; standing/walking, run reliability, peer integration",
     "claude": "One credit-timing repair PR using three existing logs; fresh acknowledgement pending",
     "gemini": "One sensory delivery repair after4a78e0b review; fresh acknowledgement pending"
   }

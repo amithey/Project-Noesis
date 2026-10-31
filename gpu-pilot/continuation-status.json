@@ -1,5 +1,5 @@
 {
-  "status": "active_D4M_complete_known_child_training_replay_no_model_promotion",
+  "status": "active_T1B_full_study_complete_retention_rule_failed",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,10 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "Review/preregister the next longer guarded duration experiment explicitly; do not extrapolate25s throughput or adopt a default policy from N1short replay.",
-    "Keep original complete9fd7d411 parent and2074b1e2 control; diagnosticduplicate is not a curated latest model.",
-    "Require complete horizon, original-reference audit and exact5s prefix before frozen paired behavioral retention decisions.",
-    "Peer Claude PCA/coverage/null and Gemini candidate/raw-evidence/protocol repairs still await review."
+    "Do not promote completed T1B child:2/4primary,1/4retention-vs-both and median gain rule failed.",
+    "Review one-factor lower-LR proposal against matched25s control, or delivered peer repair; no same-method duration retry assumed beneficial.",
+    "Keep curated C2d701 separate from completed experimental ab4cf13 child and earlier partial T1.",
+    "Review pending Claude PCA/coverage/null and Gemini sensory delivery repairs; no weight composition or coupled first intervention."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -26,7 +26,7 @@
   "plan_revision": "flygym2-brain-only-2026-10-21",
   "legacy_runner_role": "historical controls only; not the active new-body route",
   "app_goal_objective_updated": true,
-  "app_goal_status_observed": "active after explicit resume; actual bounded physical diagnostic completed",
+  "app_goal_status_observed": "active; full T1B physical study complete, scientific rule failed, goal unachieved",
   "curriculum_orchestration_port_complete": false,
   "resume_flag_supported_by_new_commands": false,
   "standing_training_gate_passed": true,
@@ -95,5 +95,18 @@
   "evaluation_continuation_physical_tested": false,
   "sensory_review": "docs/gemini-sensory-review-4a78e0b.json",
   "resource_envelope_result": "docs/resource-envelope-r4-result.json",
-  "training_resource_parity": "docs/training-resource-d4-result.json"
+  "training_resource_parity": "docs/training-resource-d4-result.json",
+  "duration_T1B": {
+    "status": "completed_scientific_rule_failed",
+    "result": "docs/guarded-duration-t1b-result.json",
+    "child_sha256": "ab4cf13f3a7908ae36e87826267ba8f9c13a2134562cdae1fd4d191c48db0641",
+    "training_seconds": 25,
+    "learning_updates": 4990,
+    "complete_frozen_probes": 12,
+    "aggregate_seconds": 1572.625,
+    "primary_pass_probes": 2,
+    "retained_vs_both_probes": 1,
+    "model_promoted": false,
+    "release": "duration-t1b-2026-10-31"
+  }
 }
