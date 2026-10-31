@@ -1,0 +1,154 @@
+{
+  "date_utc": "2026-10-31",
+  "review_kind": "independent immutable source and existing raw evidence; no new simulation",
+  "sources": {
+    "credit-repair": {
+      "commit": "77a3fa93ccba1d4d4f488bd8d6f3a4397b945629",
+      "paths": [
+        "gpu-pilot/src",
+        "gpu-pilot/tests",
+        "gpu-pilot/pyproject.toml",
+        "docs/workstreams/claude/credit-timing"
+      ]
+    },
+    "noise-control": {
+      "commit": "0f542eb1a6d4d6876a43ea70f66924ad5e2d430f",
+      "paths": [
+        "gpu-pilot/src",
+        "gpu-pilot/tests",
+        "gpu-pilot/pyproject.toml",
+        "docs/workstreams/claude/credit-noise-control"
+      ]
+    },
+    "senses": {
+      "commit": "059750103bce98748a6719e8ac12675dfa8f5499",
+      "paths": [
+        "gpu-pilot/src",
+        "gpu-pilot/tests",
+        "gpu-pilot/pyproject.toml",
+        "docs/workstreams/claude/senses"
+      ]
+    },
+    "reward-variance": {
+      "commit": "dc12cad5b0f35ce70018af287f08f57283c29ae9",
+      "paths": [
+        "gpu-pilot/src",
+        "gpu-pilot/tests",
+        "gpu-pilot/pyproject.toml",
+        "docs/workstreams/claude/l2-reward-variance"
+      ]
+    }
+  },
+  "tests": {
+    "credit-repair": {
+      "passed": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 68.997,
+      "imports": {
+        "noesis_gpu": {
+          "path": "gpu-pilot/src/noesis_gpu/__init__.py",
+          "sha256": "5f3b5274f121030ab649e89f2c9ddf20e4053a3ab8f9b8dbc8e55525f608adb8"
+        },
+        "noesis_gpu.credit_timing": {
+          "path": "gpu-pilot/src/noesis_gpu/credit_timing.py",
+          "sha256": "65d556282341da7cc9af65c8016642bdd06f976de3c28ccebb9a4f5ac9542878"
+        }
+      },
+      "junit_sha256": "86f27712615cea9cc83a84c5a1def71ef678cccb85adbd4e32f68acc48ddbd8d"
+    },
+    "noise-control": {
+      "passed": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 10.086,
+      "imports": {
+        "noesis_gpu": {
+          "path": "gpu-pilot/src/noesis_gpu/__init__.py",
+          "sha256": "5f3b5274f121030ab649e89f2c9ddf20e4053a3ab8f9b8dbc8e55525f608adb8"
+        },
+        "noesis_gpu.bridge": {
+          "path": "gpu-pilot/src/noesis_gpu/bridge.py",
+          "sha256": "7316ee07685b9706d18d02b9fd6ca707d0ad9170015c056574ee16ddaa6361da"
+        },
+        "noesis_gpu.controller": {
+          "path": "gpu-pilot/src/noesis_gpu/controller.py",
+          "sha256": "c652b8ad9f8e4f619011c8c0736d1d0ba0db9ae7adc0df64f4ffc71b275b8ca2"
+        },
+        "noesis_gpu.reward_profiles": {
+          "path": "gpu-pilot/src/noesis_gpu/reward_profiles.py",
+          "sha256": "8149610ae498abc2bd0d5669d8228d6229a2c19e0751e8a0df2eed8ffa80663e"
+        },
+        "noesis_gpu.learning": {
+          "path": "gpu-pilot/src/noesis_gpu/learning.py",
+          "sha256": "f87207f7dd274487f3ac59d0a07e6548e0e9f738db55aebd90c1019b62538277"
+        },
+        "noesis_gpu.backend": {
+          "path": "gpu-pilot/src/noesis_gpu/backend.py",
+          "sha256": "2d4f5d9691dba9806bf329df0144789dc8408b4dc2018c28a89fa3c4fa38c63d"
+        },
+        "noesis_gpu.run": {
+          "path": "gpu-pilot/src/noesis_gpu/run.py",
+          "sha256": "1793fe7e9622ccd616cb0a3eed25a300cb83b01b3d56c53e3c265f0fdd208c73"
+        },
+        "noesis_gpu.train": {
+          "path": "gpu-pilot/src/noesis_gpu/train.py",
+          "sha256": "ff10a42ac69c435026f5e5f8f04e2226af21c5e8eae66731b448ccc631eac5ec"
+        },
+        "noesis_gpu.profile_run": {
+          "path": "gpu-pilot/src/noesis_gpu/profile_run.py",
+          "sha256": "43dccb81574b2b18efdf6d5bb0c8e0b9fa8c6f9f7cb85dc4d1eea1a22979dcb1"
+        }
+      },
+      "junit_sha256": "5bbc7057b5bdd0703f6ae3be1d88da3566cb798fe4f7b6fb032810b11d854ef4"
+    },
+    "senses": {
+      "passed": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.014,
+      "imports": {
+        "noesis_gpu": {
+          "path": "gpu-pilot/src/noesis_gpu/__init__.py",
+          "sha256": "5f3b5274f121030ab649e89f2c9ddf20e4053a3ab8f9b8dbc8e55525f608adb8"
+        },
+        "noesis_gpu.external_senses": {
+          "path": "gpu-pilot/src/noesis_gpu/external_senses.py",
+          "sha256": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4"
+        },
+        "noesis_gpu.senses_bridge": {
+          "path": "gpu-pilot/src/noesis_gpu/senses_bridge.py",
+          "sha256": "3f709d741842b742db6b30e330fecc62e6705c023f46d4c3f4cef3e72f16470c"
+        }
+      },
+      "junit_sha256": "6a6eff61304b505ddb735616ef899efbcf72a937ac052a19772790709b2d1919"
+    }
+  },
+  "own_counterexample_tests": 3,
+  "pinned_runtime_changed": false,
+  "model_promoted": false,
+  "ownership_transfer": {
+    "status": "reported user directive in TEAM and issue20 comment6548732015",
+    "senses_owner": "claude",
+    "gemini": "handoff requested; evidence preserved; no overlapping edits"
+  },
+  "acceptance": {
+    "credit_tool": "pooled basis/coverage implementation and16tests verified for descriptive offline work; power/detection-floor wording still requires correction",
+    "credit_noise_result": "six full births and24frozen probes recomputed; all3superiority rules unmet, not equivalence/no-learning proof",
+    "senses": "selection layer26tests pass; no backend signal or neural step hook; no physical integration accepted"
+  },
+  "limitations": [
+    "25Claude receipts lack process exit codes; native complete horizon/arrays verified, not retrospective resource guards",
+    "pair1000 uses different wrapper route; all19prelearning rows and body-side exploration now verified exactly",
+    "verdict joint-probe and tie bugs have reproducible counterexamples; current3pair verdicts unchanged under corrected interpretation",
+    "profile-run sidecar scorer steps0 while native report scorer steps5000; preserve native observed reward provenance",
+    "null99th percentile is descriptive reference threshold, not calibrated power/minimum detectable effect or missing-effect upper bound",
+    "3training pairs with4reused probes each;12probe differences are not12independent training replicates",
+    "reward-variance/L1/L1b reports read; full statistical analyses not independently rerun in this review"
+  ],
+  "total_owner_tests_passed": 79,
+  "initial_test_command": "First PowerShell argv construction failed before collection; corrected isolated/provenance runs above are authoritative"
+}

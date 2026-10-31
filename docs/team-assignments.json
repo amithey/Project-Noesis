@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "L2_complete_retention_failed_next_curriculum_reward_diagnosis",
+      "assignment_status": "new_Claude_sources_and_raw_noise_replication_reviewed_no_integration",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -36,7 +36,7 @@
       "provider": "Anthropic",
       "issue": 19,
       "branch": "claude/learning-retention",
-      "assignment_status": "credit_timing_fix_delivery_pending_fresh_ack",
+      "assignment_status": "new_delivery_reviewed_changes_requested_with_physical_result_reproduced",
       "role": "Neural learning, existing reward objectives and checkpoint invariants",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/learning.py",
@@ -50,20 +50,28 @@
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2",
       "independent_branch": "claude/learning-retention",
-      "independent_commit": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
-      "independent_observation": "Actual normalized signal accepted by exact replay parity only; full tool awaits PCA invariance, leg assignment coverage, null/provenance corrections.",
-      "independent_commit_pending_review": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac: normalizer parity verified, whole tool held for PCA/null/provenance",
+      "independent_commit": "0f542eb1a6d4d6876a43ea70f66924ad5e2d430f",
+      "independent_observation": "79isolated-source tests and sixfullbirth/24frozen raw noise audit completed; no superiority, not equivalence/no-signal proof; code/provenance/wording fixes requested",
+      "independent_commit_pending_review": "Current delivered source review completed; outstanding fixes listed in new review",
       "normalizer_review": "docs/credit-timing-normalizer-review.json",
       "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated",
       "display_name": "Opus / Claude",
-      "next_deliverable": "One reviewed PR +3existing-log analysis; no new training births",
-      "current_owned_scope": "credit_timing analysis tool, its tests and docs in independent branch; learning/reward/core files require a separately reviewed proposal"
+      "next_deliverable": "Actual new deliveries reviewed: PR25/tool, three-pair noise result, senses selection; correct verdict joint/ties, stale sidecar and null-power wording, then provide sensory hook proposal",
+      "current_owned_scope": "credit_timing analysis tool, its tests and docs in independent branch; learning/reward/core files require a separately reviewed proposal",
+      "delivered_commits": {
+        "credit_timing": "77a3fa93ccba1d4d4f488bd8d6f3a4397b945629",
+        "credit_noise": "0f542eb1a6d4d6876a43ea70f66924ad5e2d430f",
+        "senses": "059750103bce98748a6719e8ac12675dfa8f5499",
+        "reward_variance": "dc12cad5b0f35ce70018af287f08f57283c29ae9"
+      },
+      "review": "docs/claude-delivery-review-20261031.md",
+      "reported_senses_assignment_source": "TEAM and issue20 comment6548732015, user directive reported by Claude"
     },
     {
       "id": "gemini",
       "issue": 20,
       "branch": "gemini/flygym2-gait-validation",
-      "assignment_status": "committed_delivery_reviewed_changes_requested",
+      "assignment_status": "handoff_requested_after_reported_user_senses_transfer_to_Claude",
       "role": "Independent physical metrics, frozen evaluation and later body/sensory validation",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/evaluate.py",
@@ -85,7 +93,7 @@
       "managed_branch": "codex/team-gemini-senses-r2",
       "independent_evidence_message": "4686bbfbb67e",
       "independent_observation": "Committed source/report now readable;44isolated unit tests passed. Adapter/test identical to integration after newline normalization. Python manifest entries hashCRLF notGitLF; candidate/raw evidence/protocol corrections still needed.",
-      "next_deliverable": "Correct manifest/report/protocol and supply runnable candidate+paired raw evidence per issue20review6525598346",
+      "next_deliverable": "Preserve and hand off current sensory evidence; independent measurement review remains separate",
       "independent_commit": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
       "review": "docs/gemini-sensory-review-4a78e0b.json",
       "historical_reported_branch": "feature/habitat-in-view",
@@ -124,7 +132,7 @@
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "L2_full_rate_study_complete_progress_without_retained_stability",
+    "status": "Claude_noise_replication_descriptively_reproduced_no_superiority_or_causal_fix",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
@@ -134,7 +142,7 @@
     "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
     "runtime_profile": "docs/runtime-profile-d2-result.json",
     "full_training_reproducibility": "docs/logging-parity-d3-result.json",
-    "current_priority": "Inspect curriculum standing entry and actual reward/retention diagnostics before more parameter sweeps; no new allocation.",
+    "current_priority": "Review owner corrections and actual senses hook; keep standing-stage diagnosis, no blind rate/duration sweep or heavy allocation",
     "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
     "credit_replication": "docs/credit-replication-c2-result.json",
     "next_proposal": "docs/duration-learning-proposal-20261030.md",
@@ -157,7 +165,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "L2_complete_lease_released_no_simulation_allocated",
+    "status": "offline_review_complete_no_Codex_simulation_allocated",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
@@ -171,8 +179,8 @@
   "historical_fields_note": "implementation_baseline, core_commit, active_round and managed_* fields preserve prior setup/results; current_queue and resource_schedule describe the current queue, not live agent activity. Experimental runtime core is experimental_core_commit.",
   "updated_date": "2026-10-31",
   "current_queue": {
-    "codex": "Audit standing-stage entry and reward/retention behavior after complete T1B/L2 failures; review delivered peer repairs",
-    "claude": "One credit-timing repair PR using three existing logs; fresh acknowledgement pending",
-    "gemini": "One sensory delivery repair after4a78e0b review; fresh acknowledgement pending"
+    "codex": "Follow up reviewed credit-control verdict/sidecar corrections; diagnose standing/curriculum and review actual sensory hook proposal; no heavy allocation",
+    "claude": "Actual new deliveries reviewed: PR25/tool, three-pair noise result, senses selection; correct verdict joint/ties, stale sidecar and null-power wording, then provide sensory hook proposal",
+    "gemini": "Preserved4a78e0b measurement/sensory evidence; handoff requested after Claude reported user-directed senses transfer; no overlapping new sensory edit assigned"
   }
 }
