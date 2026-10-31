@@ -1,0 +1,10 @@
+{
+ "exit_code": null,
+ "log": true,
+ "seconds": 0.5,
+ "free_gib_before": 7,
+ "name": "s0-smoke",
+ "status": "completed_training_birth",
+ "seed": 1000,
+ "wall_seconds": 70
+}
