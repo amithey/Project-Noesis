@@ -8,7 +8,8 @@ import zipfile
 import numpy as np
 from compare_exploration import digest, tree_digest, write
 from run_duration_study import (PROBES, PARENT, CONTROL, SOURCES, audit_bank,
-    duration_decision, prefix_check, verify_guarded_receipt)
+    duration_decision, prefix_check, verify_guarded_receipt,verify_lr_control,
+    lr_trace_check,lr_report_check,lr_bank_audit)
 from noesis_gpu.evaluate import MATCHED_SETTINGS, summarize
 
 
@@ -16,7 +17,9 @@ def audit(root, core, study):
     own = Path(__file__).resolve().parents[1]
     protocol = json.loads((study/'protocol.json').read_text())
     result = json.loads((study/'result.json').read_text())
-    if (result['status'] != 'completed_duration_study' or len(result['jobs']) != 13
+    lr_mode=protocol.get('experiment')=='L2 matched25s learning-rate contrast'
+    control_arm='control25' if lr_mode else 'control5'
+    if (result['status'] != ('completed_learning_rate_study' if lr_mode else 'completed_duration_study') or len(result['jobs']) != 13
             or result['wall_seconds'] > 3600 or result['model_promoted']
             or result['walking_proven'] or not protocol['guarded_mean_cpu']):
         raise ValueError('Require completed, unpromoted T1B within original budget')
@@ -33,15 +36,24 @@ def audit(root, core, study):
     trained = json.loads((study/'train25/report.json').read_text())
     if any(trained[k] != v for k, v in dict(status='completed_training_birth',
             completed_chunks=5000, learning_updates=4990, simulated_seconds=25,
-            seed=1000, learning_rate=.2, motor_exploration_mv_ms=1.5,
+            seed=1000, learning_rate=.02 if lr_mode else .2, motor_exploration_mv_ms=1.5,
             import_checkpoint_sha256=PARENT, noesis_source_sha256=hashes['core']).items()):
         raise ValueError('Training report mismatch')
     child = study/'train25/weights-last.npz'
-    child_sha = audit_bank(child, parent)
+    child_sha = (lr_bank_audit if lr_mode else audit_bank)(child, parent)
     if child_sha != result['child25_sha256'] or child_sha != trained['saved_checkpoint_sha256']:
         raise ValueError('Child hash mismatch')
-    fields = prefix_check(study/'train25', control)
-    banks = dict(parent=parent, control5=control/'weights-last.npz', child25=child)
+    prior=None
+    if lr_mode:
+        prior=Path(protocol['L2_control_study'])
+        if verify_lr_control(prior,root,core)!=protocol['L2_control_files']:raise ValueError('L2 control changed')
+        control=prior/'train25'
+        lr_report_check(trained,json.loads((control/'report.json').read_text()))
+        if json.loads((study/'train25/weights-last.model.json').read_text())['learning_rate']!=.02:
+            raise ValueError('L2 sidecar LR changed')
+        fields=lr_trace_check(study/'train25',control)
+    else:fields = prefix_check(study/'train25', control)
+    banks = {'parent':parent,control_arm:control/'weights-last.npz','child25':child}
     cases = {arm: {} for arm in banks}
     rows, telemetry = [], []
     names = ['train25'] + [f'frozen-{a}-{s}' for s in PROBES for a in banks]
@@ -74,23 +86,32 @@ def audit(root, core, study):
             with np.load(study/name/'observations.npz', allow_pickle=False) as data:
                 if any(v.shape[0] != 1000 or not np.isfinite(v).all() for v in data.values()):
                     raise ValueError('Incomplete/nonfinite frozen observation field')
+                if lr_mode and arm!='child25':
+                    previous=prior/f'frozen-{"parent" if arm=="parent" else "child25"}-{seed}/observations.npz'
+                    with np.load(previous,allow_pickle=False) as old:
+                        if set(data.files)!=set(old.files) or any(not np.array_equal(data[k],old[k]) for k in old.files):
+                            raise ValueError('L2 control replay differs')
             reports[arm] = report
             cases[arm][seed] = summary
             rows.append(dict(arm=arm, seed=seed, **{k:summary[k] for k in
                 ('standing_fraction','mean_stance_slip_mm_s','heading_forward_distance_mm',
                  'net_forward_displacement_mm','leg_step_counts','locomotion_regime')}))
-        if any(reports[a][k] != reports['parent'][k] for a in ('control5','child25')
+        if any(reports[a][k] != reports['parent'][k] for a in (control_arm,'child25')
                for k in (*MATCHED_SETTINGS, 'seeds')):
             raise ValueError('Unmatched frozen settings')
-    decision = duration_decision(cases)
+    decision = duration_decision(cases,control_arm=control_arm)
     if decision != result['decision']:
         raise ValueError('Recomputed decision differs')
-    return dict(status='independent_raw_recomputation_passed', protocol_commit=protocol['commit'],
+    audited=dict(status='independent_raw_recomputation_passed', protocol_commit=protocol['commit'],
         source_hashes=hashes, child25_sha256=child_sha, full_training_seconds=25,
-        learning_updates=4990, exact_prefix_fields=fields, complete_frozen_probes=12,
+        learning_updates=4990, complete_frozen_probes=12,
         wall_seconds=result['wall_seconds'], decision=decision, probes=rows, telemetry=telemetry,
         model_promoted=False, walking_proven=False, retention_proven=False,
-        scope='N1 training seed/four development probes; duration method failed; final held-outs unused')
+        scope='N1 training seed/four development probes; descriptive '+('learning-rate' if lr_mode else 'duration')+' comparison; final held-outs unused')
+    audited['exact_prelearning_fields' if lr_mode else 'exact_prefix_fields']=fields
+    if lr_mode:audited.update(control_arm=control_arm,learning_rate=.02,control_learning_rate=.2,
+        control_study=str(prior),all_exploration_fields_exact=True)
+    return audited
 
 
 def archive(root, study, target, summary):
@@ -99,7 +120,8 @@ def archive(root, study, target, summary):
     files.update({p.relative_to(root).as_posix(): p for p in study.glob('*.log')})
     initial=study.with_name(study.name+'-resource-preflight.json')
     files[initial.relative_to(root).as_posix()]=initial
-    for name in ['train25']+[f'frozen-{a}-{s}' for s in PROBES for a in ('parent','control5','child25')]:
+    control_arm=summary.get('control_arm','control5')
+    for name in ['train25']+[f'frozen-{a}-{s}' for s in PROBES for a in ('parent',control_arm,'child25')]:
         allowed = ['report.json', 'training-observations.npz', 'exploration-log.npz',
                    'weights-last.npz', 'weights-last.model.json'] if name == 'train25' else ['report.json','observations.npz']
         for filename in allowed:
@@ -109,12 +131,13 @@ def archive(root, study, target, summary):
     for relative in ['gpu-pilot/outputs/e4-exploration-20261029/train-control-1000/weights-last.npz',
                      'gpu-pilot/outputs/e4-exploration-20261029/train-control-1000/weights-last.model.json']:
         files[relative] = root/relative
-    control = root/'gpu-pilot/outputs/logging-parity-d3-20261030/logged'
+    control = Path(summary['control_study'])/'train25' if 'control_study' in summary else root/'gpu-pilot/outputs/logging-parity-d3-20261030/logged'
     for filename in ['report.json','weights-last.npz','weights-last.model.json','training-observations.npz','exploration-log.npz']:
         p=control/filename; files[p.relative_to(root).as_posix()]=p
     entries=[dict(path=n, bytes=p.stat().st_size, sha256=digest(p)) for n,p in sorted(files.items())]
     payload=dict(schema_version=1, files=entries, audit=summary)
-    destination=target/'duration-t1b-evidence.zip'
+    prefix='learning-rate-l2' if 'control_study' in summary else 'duration-t1b'
+    destination=target/f'{prefix}-evidence.zip'
     with zipfile.ZipFile(destination,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
         for entry in entries:
             p=files[entry['path']];z.write(p,entry['path'])
@@ -127,7 +150,7 @@ def archive(root, study, target, summary):
             data=z.read(entry['path'])
             if len(data)!=entry['bytes'] or hashlib.sha256(data).hexdigest()!=entry['sha256']:
                 raise ValueError('ZIP SHA mismatch')
-    write(target/'duration-t1b-manifest.json',dict(**payload,archive=dict(
+    write(target/f'{prefix}-manifest.json',dict(**payload,archive=dict(
         name=destination.name,bytes=destination.stat().st_size,sha256=digest(destination))))
     return dict(files=len(entries),archive_sha256=digest(destination),archive_bytes=destination.stat().st_size)
 

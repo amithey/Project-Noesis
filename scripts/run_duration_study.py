@@ -23,6 +23,57 @@ from check_logging_parity import check_alignment
 PROBES=(10006,10007,10010,10011)
 LEGS={'LF','LM','LH','RF','RM','RH'}
 LOG_FIELDS={'drive','credit','drive_idx','motor_indices','control_chunk_index','control_ms'}
+T1B_CHILD='ab4cf13f3a7908ae36e87826267ba8f9c13a2134562cdae1fd4d191c48db0641'
+
+
+def lr_bank_audit(path,parent):
+    with np.load(path,allow_pickle=False) as bank,np.load(parent,allow_pickle=False) as original:
+        if set(bank.files)!=set(original.files):raise ValueError('L2 bank schema changed')
+        for key in ('topology','motor_indices','initial_weights','rule','version','normalize_reward_error','bias_correct_reward_error'):
+            if not np.array_equal(bank[key],original[key]):raise ValueError(f'L2 invariant changed:{key}')
+        expected=original['parameters'].copy()
+        if expected.shape!=(3,) or expected[0]!=.2:raise ValueError('L2 parent LR metadata invalid')
+        expected[0]=.02
+        if not np.array_equal(bank['parameters'],expected):raise ValueError('Only registered LR parameter may differ')
+        w,ref=bank['weights'],bank['initial_weights']
+        if (w.shape!=original['weights'].shape or not np.isfinite(w).all() or not np.array_equal(np.sign(w),np.sign(ref))
+                or np.any(np.abs(w)>1.5*np.abs(ref)+1e-12) or np.any(np.abs(w)<.5*np.abs(ref)-1e-12)):
+            raise ValueError('L2 original-reference bounds/sign violation')
+    return digest(path)
+
+
+def verify_lr_control(study,root,core):
+    from audit_duration_result import audit
+    audited=audit(root,core,study)
+    if audited['child25_sha256']!=T1B_CHILD or audited['complete_frozen_probes']!=12:
+        raise ValueError('Require complete known T1B control')
+    return {p.relative_to(study).as_posix():digest(p) for p in study.rglob('*')
+            if p.is_file() and 'brain-cache' not in p.parts and p.suffix in ('.json','.npz')}
+
+
+def lr_trace_check(candidate,control):
+    with np.load(candidate/'training-observations.npz',allow_pickle=False) as a,np.load(control/'training-observations.npz',allow_pickle=False) as b:
+        if set(a.files)!=TRACE_FIELDS or set(b.files)!=TRACE_FIELDS:raise ValueError('L2 trace schema mismatch')
+        for key in TRACE_FIELDS:
+            if (a[key].shape!=b[key].shape or a[key].shape[0]!=5000 or not np.isfinite(a[key]).all()
+                    or not np.array_equal(a[key][:10],b[key][:10])):
+                raise ValueError(f'L2 warmup/shape mismatch:{key}')
+        if not np.array_equal(a['learning_active'],np.arange(5000)>=10):raise ValueError('L2 learning window changed')
+    with np.load(candidate/'exploration-log.npz',allow_pickle=False) as a,np.load(control/'exploration-log.npz',allow_pickle=False) as b:
+        if set(a.files)!=LOG_FIELDS or set(b.files)!=LOG_FIELDS:raise ValueError('L2 log schema mismatch')
+        for key in LOG_FIELDS:
+            if not np.isfinite(a[key]).all() or not np.array_equal(a[key],b[key]):raise ValueError(f'L2 exploration changed:{key}')
+        if not np.array_equal(a['control_chunk_index'],np.arange(10,5000)):raise ValueError('L2 log alignment changed')
+    return sorted(TRACE_FIELDS)
+
+
+def lr_report_check(report,control):
+    for key in ('status','seed','worlds','backend','noesis_source_sha256','import_checkpoint_sha256',
+                'reward_objective','eligibility_ms','motor_exploration_mv_ms','original_weight_bound',
+                'control_ms','physics_dt','birth_ms','requested_seconds','completed_chunks',
+                'simulated_seconds','learning_updates','cycle_weight','external_vision_and_chemical_senses'):
+        if key not in report or key not in control or report[key]!=control[key]:raise ValueError(f'L2 training context changed:{key}')
+    if report.get('learning_rate')!=.02 or control.get('learning_rate')!=.2:raise ValueError('Require explicit L2 learning rates')
 
 
 def resource_decision(samples,guarded=False):
@@ -72,8 +123,9 @@ def verify_guarded_receipt(study,parent,control_birth,hashes):
     return {name:digest(study/name) for name in names}
 
 
-def duration_decision(cases):
-    if set(cases)!={'parent','control5','child25'} or any(set(rows)!=set(PROBES) for rows in cases.values()):
+def duration_decision(cases,*,control_arm='control5'):
+    if control_arm not in ('control5','control25'):raise ValueError('Unknown control arm')
+    if set(cases)!={'parent',control_arm,'child25'} or any(set(rows)!=set(PROBES) for rows in cases.values()):
         raise ValueError('Require every arm and all four matched probes')
     for rows in cases.values():
         for seed,s in rows.items():
@@ -94,16 +146,16 @@ def duration_decision(cases):
                      'slip_delta_mm_s':child['mean_stance_slip_mm_s']-cases[arm][seed]['mean_stance_slip_mm_s'],
                      'heading_delta_mm':child['heading_forward_distance_mm']-cases[arm][seed]['heading_forward_distance_mm'],
                      'net_delta_mm':child['net_forward_displacement_mm']-cases[arm][seed]['net_forward_displacement_mm']}
-                for arm in ('parent','control5')}
+                for arm in ('parent',control_arm)}
         retained=all(d['standing_delta']>=0 and d['slip_delta_mm_s']<=0 for d in deltas.values())
         rows.append(dict(seed=seed,child_primary_pass=primary,standing_slip_retained_vs_both=retained,deltas=deltas))
     medians={arm:{key:float(np.median([s[key] for s in cases[arm].values()]))
                  for key in ('heading_forward_distance_mm','net_forward_displacement_mm')} for arm in cases}
-    progress=all(medians['child25'][key]>=max(medians['parent'][key],medians['control5'][key])+.25 for key in medians['child25'])
+    progress=all(medians['child25'][key]>=max(medians['parent'][key],medians[control_arm][key])+.25 for key in medians['child25'])
     return dict(per_probe=rows,medians=medians,median_heading_and_net_gain_pass=progress,
                 exploratory_method_rule_pass=bool(progress and all(r['child_primary_pass'] and r['standing_slip_retained_vs_both'] for r in rows)),
                 model_promoted=False,stage_advanced=False,walking_proven=False,
-                scope='One training seed, four development probes; descriptive duration/retention test only')
+                scope='One training seed, four development probes; descriptive '+('learning-rate' if control_arm=='control25' else 'duration')+'/retention test only')
 
 
 def prefix_check(long_birth,control_birth):
@@ -128,6 +180,7 @@ def main():
     ap.add_argument('--allow-reviewed-test-workers',type=Path)
     ap.add_argument('--guarded-mean-cpu',action='store_true')
     ap.add_argument('--d4m-study',type=Path)
+    ap.add_argument('--low-rate-control-study',type=Path)
     args=ap.parse_args();root,core,out=args.shared_root.resolve(),args.core_source.resolve(),args.output.resolve()
     own=Path(__file__).resolve().parents[1];pilot=own/'gpu-pilot/src'
     allowed_workers=json.loads(args.allow_reviewed_test_workers.read_text(encoding='utf-8')) if args.allow_reviewed_test_workers else []
@@ -139,11 +192,16 @@ def main():
     if args.guarded_mean_cpu!=bool(args.d4m_study):raise ValueError('Guarded opt-in and D4M receipt must be supplied together')
     receipt=args.d4m_study.resolve() if args.d4m_study else None
     receipt_files=verify_guarded_receipt(receipt,parent,control_birth,hashes) if receipt else {}
+    lr_study=args.low_rate_control_study.resolve() if args.low_rate_control_study else None
+    if lr_study and not receipt:raise ValueError('L2 requires explicit guarded mode and D4M receipt')
+    lr_files=verify_lr_control(lr_study,root,core) if lr_study else {}
+    expected_control,control_arm,learning_rate=(T1B_CHILD,'control25',.02) if lr_study else (CONTROL,'control5',.2)
+    if lr_study:control_birth=lr_study/'train25';control=control_birth/'weights-last.npz'
     protocol=dict(owner='codex',pid=os.getpid(),token=token,host=os.environ.get('COMPUTERNAME'),
         commit=subprocess.check_output(['git','-C',str(own),'rev-parse','HEAD'],text=True).strip(),core_commit=CORE,source_hashes=hashes,
         parent_sha256=PARENT,control5_sha256=CONTROL,reference_trace_sha256=digest(control_birth/'training-observations.npz'),
         training_seed=1000,training_seconds=25,training_chunks=5000,learning_updates=4990,probe_seeds=list(PROBES),
-        learning_rate=.2,cycle_weight=.1,exploration_mv_ms=1.5,budget_seconds=3600,training_inner_seconds=900,
+        learning_rate=learning_rate,cycle_weight=.1,exploration_mv_ms=1.5,budget_seconds=3600,training_inner_seconds=900,
         training_process_seconds=930,probe_inner_seconds=300,probe_process_seconds=330,minimum_available_gib=3,
         maximum_host_cpu_percent=30,resource_window_samples=10,
         output=str(out),start_unix=time.time(),deadline_unix=time.time()+3600)
@@ -154,11 +212,15 @@ def main():
         protocol.update(minimum_available_gib=2,mean_host_cpu_percent_limit=60,in_run_memory_stop_gib=1,
             telemetry_interval_seconds=2,cpu_admission_statistic='mean')
         protocol.pop('maximum_host_cpu_percent')
+    if lr_study:
+        protocol.pop('control5_sha256')
+        protocol.update(experiment='L2 matched25s learning-rate contrast',control25_sha256=T1B_CHILD,
+            control_learning_rate=.2,control_training_seconds=25,L2_control_study=str(lr_study),L2_control_files=lr_files)
     lock=root/'gpu-pilot/outputs/codex-training-host.lock'
     with os.fdopen(os.open(lock,os.O_WRONLY|os.O_CREAT|os.O_EXCL),'w') as stream:json.dump(protocol,stream)
     started,created=time.monotonic(),False
     result=dict(status='running',jobs=[],model_promoted=False,walking_proven=False)
-    cases={arm:{} for arm in ('parent','control5','child25')};reports={arm:{} for arm in cases}
+    cases={arm:{} for arm in ('parent',control_arm,'child25')};reports={arm:{} for arm in cases}
     frozen_child={}
     try:
         protocol['allowed_reviewed_test_workers']=allowed_workers
@@ -171,9 +233,10 @@ def main():
         protocol['initial_resource_preflight']=decision
         out.mkdir(parents=True,exist_ok=False);created=True;write(out/'protocol.json',protocol)
         def verify():
-            if digest(parent)!=PARENT or digest(control)!=CONTROL or tree_digest(core)!=hashes['core'] or tree_digest(pilot)!=hashes['pilot']:
+            if digest(parent)!=PARENT or digest(control)!=expected_control or tree_digest(core)!=hashes['core'] or tree_digest(pilot)!=hashes['pilot']:
                 raise RuntimeError('Parent/control/source changed')
             if receipt and any(digest(receipt/name)!=sha for name,sha in receipt_files.items()):raise RuntimeError('D4M prerequisite changed')
+            if lr_study and any(digest(lr_study/name)!=sha for name,sha in lr_files.items()):raise RuntimeError('L2 control receipt changed')
             if frozen_child and digest(frozen_child['path'])!=frozen_child['sha256']:raise RuntimeError('Complete child changed')
         def execute(name,module,options,timeout,expected_status):
             verify();inventory(allowed_workers);samples=sample_quiescence();resources=resource_decision(samples,bool(receipt))
@@ -196,27 +259,38 @@ def main():
             if returncode or elapsed>timeout+5 or report['status']!=expected_status:raise RuntimeError(f'Incomplete/late job:{name}')
             verify();return report
         trained=execute('train25','noesis_gpu.train',['--seconds','25','--wall-seconds','900','--seed','1000','--profile','gripped-cycle',
-            '--cycle-weight','.1','--learning-rate','.2','--exploration-mv-ms','1.5','--log-exploration','--checkpoint',str(parent)],930,'completed_training_birth')
+            '--cycle-weight','.1','--learning-rate',str(learning_rate),'--exploration-mv-ms','1.5','--log-exploration','--checkpoint',str(parent)],930,'completed_training_birth')
         if trained['completed_chunks']!=5000 or trained['learning_updates']!=4990 or trained['simulated_seconds']!=25:raise ValueError('Long duration/update count mismatch')
-        child=out/'train25/weights-last.npz';child_sha=audit_bank(child,parent)
-        result.update(child25_sha256=child_sha,exact_prefix_fields=prefix_check(out/'train25',control_birth),status='training_complete_evaluation_pending')
+        child=out/'train25/weights-last.npz';child_sha=(lr_bank_audit if lr_study else audit_bank)(child,parent)
+        if lr_study:
+            lr_report_check(trained,json.loads((control_birth/'report.json').read_text()))
+            sidecar=json.loads((out/'train25/weights-last.model.json').read_text())
+            if sidecar.get('learning_rate')!=.02:raise ValueError('L2 sidecar LR mismatch')
+            checked=lr_trace_check(out/'train25',control_birth)
+            result.update(child25_sha256=child_sha,exact_prelearning_fields=checked,all_exploration_fields_exact=True,status='training_complete_evaluation_pending')
+        else:
+            result.update(child25_sha256=child_sha,exact_prefix_fields=prefix_check(out/'train25',control_birth),status='training_complete_evaluation_pending')
         frozen_child.update(path=child,sha256=child_sha)
         write(out/'result.json',result)
         from noesis_gpu.evaluate import summarize,MATCHED_SETTINGS
-        banks=dict(parent=parent,control5=control,child25=child)
+        banks={'parent':parent,control_arm:control,'child25':child}
         for seed in PROBES:
             for arm,bank in banks.items():
                 name=f'frozen-{arm}-{seed}'
                 report=execute(name,'noesis_gpu.run',['--seconds','5','--wall-seconds','300','--seed',str(seed),'--worlds','1','--checkpoint',str(bank)],330,'completed_transport_pilot')
                 _,summary=summarize(out/name)
+                if lr_study and arm!='child25':
+                    old=lr_study/f'frozen-{"child25" if arm==control_arm else "parent"}-{seed}'
+                    with np.load(out/name/'observations.npz',allow_pickle=False) as a,np.load(old/'observations.npz',allow_pickle=False) as b:
+                        if set(a.files)!=set(b.files) or any(not np.array_equal(a[k],b[k]) for k in b.files):raise ValueError('Fresh L2 control replay differs from T1B')
                 if report['checkpoint_sha256']!=digest(bank) or (arm=='child25' and digest(bank)!=child_sha):raise ValueError('Frozen bank mismatch/mutation')
                 cases[arm][seed]=summary;reports[arm][seed]=report;write(out/f'{name}-summary.json',summary)
-            for arm in ('control5','child25'):
+            for arm in (control_arm,'child25'):
                 if any(key not in reports['parent'][seed] or key not in reports[arm][seed]
                        or reports['parent'][seed][key]!=reports[arm][seed][key] for key in (*MATCHED_SETTINGS,'seeds')):
                     raise ValueError('Frozen evaluation context mismatch')
             write(out/'cases.json',cases)
-        result.update(status='completed_duration_study',decision=duration_decision(cases))
+        result.update(status='completed_learning_rate_study' if lr_study else 'completed_duration_study',decision=duration_decision(cases,control_arm=control_arm))
     except BaseException as error:
         result.update(status='stopped',error_type=type(error).__name__,error=str(error));raise
     finally:
