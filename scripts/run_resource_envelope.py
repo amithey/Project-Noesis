@@ -24,11 +24,13 @@ def preflight(samples):
     return assess(samples, minimum_gib=2., maximum_cpu_percent=60.)
 
 
-def stop_reason(elapsed, available_gib):
+def stop_reason(elapsed, available_gib, *, process_seconds=330):
+    if isinstance(process_seconds, bool) or process_seconds not in (330, 930):
+        raise ValueError('Only registered330s/930s process watchdogs are supported')
     if not math.isfinite(elapsed) or elapsed < 0 or not math.isfinite(available_gib) or available_gib < 0:
         raise ValueError('Unreadable elapsed/memory telemetry')
     if available_gib < 1.: return 'host_memory_below_1GiB'
-    if elapsed >= 330.: return 'process_deadline'
+    if elapsed >= process_seconds: return 'process_deadline'
     return None
 
 
@@ -43,9 +45,10 @@ def snapshot(child):
     return row
 
 
-def monitored_run(command, log_path, *, spawn=None, clock=None, sample=None):
+def monitored_run(command, log_path, *, spawn=None, clock=None, sample=None, process_seconds=330):
     """Own one child and always reap it, including telemetry errors and interrupts."""
     spawn, clock, sample = spawn or subprocess.Popen, clock or time.monotonic, sample or snapshot
+    stop_reason(0., 1., process_seconds=process_seconds)  # Validate before spawning.
     result = dict(status='running', samples=[])
     started = clock()
     with log_path.open('w', encoding='utf-8') as log:
@@ -54,7 +57,7 @@ def monitored_run(command, log_path, *, spawn=None, clock=None, sample=None):
             while child.poll() is None:
                 row = dict(elapsed_seconds=clock() - started, **sample(child))
                 result['samples'].append(row)
-                reason = stop_reason(row['elapsed_seconds'], row['host_available_gib'])
+                reason = stop_reason(row['elapsed_seconds'], row['host_available_gib'], process_seconds=process_seconds)
                 if reason: raise RuntimeError(reason)
                 try: child.wait(timeout=2)
                 except subprocess.TimeoutExpired: pass

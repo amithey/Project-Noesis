@@ -26,6 +26,34 @@ def test_immediate_memory_floor_and_deadline():
         with pytest.raises(ValueError): stop_reason(elapsed, memory)
 
 
+def test_long_watchdog_is_explicit_and_original_default_stays330():
+    assert stop_reason(400, 2.) == 'process_deadline'
+    assert stop_reason(400, 2., process_seconds=930) is None
+    assert stop_reason(930, 2., process_seconds=930) == 'process_deadline'
+    assert stop_reason(400, .9, process_seconds=930) == 'host_memory_below_1GiB'
+    for bad in [0, True, 331, 931, float('nan')]:
+        with pytest.raises(ValueError): stop_reason(0, 2., process_seconds=bad)
+
+
+def test_long_monitor_does_not_kill_at_short_deadline_and_reaps_at930(tmp_path):
+    now=[0.]; ticks=iter([331.,931.,931.])
+    class Child:
+        returncode=None
+        killed=False
+        def poll(self):return self.returncode
+        def wait(self,timeout=None):
+            if timeout:raise subprocess.TimeoutExpired('fake',timeout)
+            return self.returncode
+        def kill(self):self.killed=True;self.returncode=-9
+    child=Child()
+    def sample(_):now[0]=next(ticks);return dict(host_available_gib=2.)
+    path=tmp_path/'long.log'
+    with pytest.raises(RuntimeError,match='deadline'):
+        monitored_run(['fake'],path,spawn=lambda *a,**k:child,clock=lambda:now[0],sample=sample,process_seconds=930)
+    result=json.loads(path.with_suffix('.telemetry.json').read_text())
+    assert len(result['samples'])==3 and child.killed and result['final_exit_code']==-9
+
+
 @pytest.mark.parametrize('failure', ['memory', 'deadline', 'telemetry', 'interrupt', None])
 def test_owned_child_reaped_and_telemetry_saved_on_all_terminal_paths(tmp_path, failure):
     now = [0.]

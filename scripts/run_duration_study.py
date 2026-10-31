@@ -16,9 +16,60 @@ from check_logging_parity import EXPECTED as CONTROL
 from run_e6 import audit_bank
 from training_power import keep_system_awake
 from training_resources import assess,sample_quiescence
+from run_resource_envelope import SOURCES,monitored_run
+from run_training_resource_parity import admission_window,validate_training,exact_archive,TRACE_FIELDS
+from check_logging_parity import check_alignment
 
 PROBES=(10006,10007,10010,10011)
 LEGS={'LF','LM','LH','RF','RM','RH'}
+LOG_FIELDS={'drive','credit','drive_idx','motor_indices','control_chunk_index','control_ms'}
+
+
+def resource_decision(samples,guarded=False):
+    original=assess(samples)
+    if not guarded:return original
+    decision=admission_window(samples,mean_cpu=True)
+    decision['original_T1_rule_passed']=original['passed']
+    return decision
+
+
+def guarded_receipt_metadata(protocol,result,hashes):
+    expected=dict(experiment='D4M guarded training replay',core_commit=CORE,source_hashes=hashes,
+        parent_sha256=PARENT,expected_checkpoint_sha256=CONTROL,seed=1000,seconds=5,chunks=1000,
+        learning_updates=990,learning_rate=.2,cycle_weight=.1,exploration_mv_ms=1.5,
+        cpu_admission_statistic='mean',launch_mean_cpu_percent=60,launch_minimum_gib=2,
+        launch_samples=10,in_run_stop_gib=1,telemetry_interval_seconds=2,
+        aggregate_seconds=420,inner_seconds=300,process_seconds=330)
+    if hashes!=SOURCES or any(protocol.get(k)!=v for k,v in expected.items()):
+        raise ValueError('Require pinned complete D4M receipt/protocol')
+    for key,value in dict(status='completed_guarded_training_replay',checkpoint_sha256=CONTROL,
+            shared_training_last_updated=False,T1_gate_changed=False,scientific_gates_changed=False,
+            model_promoted=False,walking_proven=False).items():
+        if result.get(key)!=value:raise ValueError(f'D4M receipt invalid:{key}')
+    for key,names in [('trace_exact_fields',TRACE_FIELDS),('exploration_exact_fields',LOG_FIELDS)]:
+        fields=result.get(key,{})
+        if set(fields)!=names or any(v is not True for v in fields.values()):raise ValueError('D4M receipt parity incomplete')
+    wall,total,prior=result.get('wall_seconds'),result.get('aggregate_active_seconds'),protocol.get('prior_wall_seconds')
+    if (any(isinstance(v,bool) or not isinstance(v,(int,float)) or not np.isfinite(v) or v<0 for v in [wall,total,prior])
+            or total>420 or not np.isclose(total,wall+prior,rtol=0,atol=1e-6)):
+        raise ValueError('D4M receipt budget mismatch')
+    jobs=result.get('jobs',[])
+    if len(jobs)!=1 or jobs[0].get('exit_code')!=0 or jobs[0].get('final_exit_code')!=0:
+        raise ValueError('D4M receipt process incomplete')
+
+
+def verify_guarded_receipt(study,parent,control_birth,hashes):
+    protocol=json.loads((study/'protocol.json').read_text(encoding='utf-8'))
+    result=json.loads((study/'result.json').read_text(encoding='utf-8'))
+    guarded_receipt_metadata(protocol,result,hashes)
+    report=json.loads((study/'train/report.json').read_text(encoding='utf-8'));validate_training(report)
+    if audit_bank(study/'train/weights-last.npz',parent)!=CONTROL or report.get('saved_checkpoint_sha256')!=CONTROL:
+        raise ValueError('D4M prerequisite bank mismatch')
+    exact_archive(study/'train/training-observations.npz',control_birth/'training-observations.npz',trace=True)
+    exact_archive(study/'train/exploration-log.npz',control_birth/'exploration-log.npz');check_alignment(study/'train')
+    names=['protocol.json','result.json','resource-preflight.json','train/report.json','train/weights-last.npz',
+           'train/training-observations.npz','train/exploration-log.npz']
+    return {name:digest(study/name) for name in names}
 
 
 def duration_decision(cases):
@@ -75,6 +126,8 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--shared-root',type=Path,required=True);ap.add_argument('--core-source',type=Path,required=True);ap.add_argument('--output',type=Path,required=True)
     ap.add_argument('--allow-reviewed-test-workers',type=Path)
+    ap.add_argument('--guarded-mean-cpu',action='store_true')
+    ap.add_argument('--d4m-study',type=Path)
     args=ap.parse_args();root,core,out=args.shared_root.resolve(),args.core_source.resolve(),args.output.resolve()
     own=Path(__file__).resolve().parents[1];pilot=own/'gpu-pilot/src'
     allowed_workers=json.loads(args.allow_reviewed_test_workers.read_text(encoding='utf-8')) if args.allow_reviewed_test_workers else []
@@ -83,6 +136,9 @@ def main():
     if digest(parent)!=PARENT or digest(control)!=CONTROL or subprocess.check_output(['git','-C',str(core.parent),'rev-parse','HEAD'],text=True).strip()!=CORE:
         raise ValueError('Parent/control/core mismatch')
     hashes=dict(core=tree_digest(core),pilot=tree_digest(pilot));token=uuid.uuid4().hex
+    if args.guarded_mean_cpu!=bool(args.d4m_study):raise ValueError('Guarded opt-in and D4M receipt must be supplied together')
+    receipt=args.d4m_study.resolve() if args.d4m_study else None
+    receipt_files=verify_guarded_receipt(receipt,parent,control_birth,hashes) if receipt else {}
     protocol=dict(owner='codex',pid=os.getpid(),token=token,host=os.environ.get('COMPUTERNAME'),
         commit=subprocess.check_output(['git','-C',str(own),'rev-parse','HEAD'],text=True).strip(),core_commit=CORE,source_hashes=hashes,
         parent_sha256=PARENT,control5_sha256=CONTROL,reference_trace_sha256=digest(control_birth/'training-observations.npz'),
@@ -91,15 +147,23 @@ def main():
         training_process_seconds=930,probe_inner_seconds=300,probe_process_seconds=330,minimum_available_gib=3,
         maximum_host_cpu_percent=30,resource_window_samples=10,
         output=str(out),start_unix=time.time(),deadline_unix=time.time()+3600)
+    protocol.update(experiment='T1B guarded meanCPU duration' if receipt else 'T1 original duration',
+        guarded_mean_cpu=bool(receipt),D4M_receipt=str(receipt) if receipt else None,D4M_files=receipt_files,
+        original_T1_default_changed=False,scientific_gates_changed=False)
+    if receipt:
+        protocol.update(minimum_available_gib=2,mean_host_cpu_percent_limit=60,in_run_memory_stop_gib=1,
+            telemetry_interval_seconds=2,cpu_admission_statistic='mean')
+        protocol.pop('maximum_host_cpu_percent')
     lock=root/'gpu-pilot/outputs/codex-training-host.lock'
     with os.fdopen(os.open(lock,os.O_WRONLY|os.O_CREAT|os.O_EXCL),'w') as stream:json.dump(protocol,stream)
     started,created=time.monotonic(),False
     result=dict(status='running',jobs=[],model_promoted=False,walking_proven=False)
     cases={arm:{} for arm in ('parent','control5','child25')};reports={arm:{} for arm in cases}
+    frozen_child={}
     try:
         protocol['allowed_reviewed_test_workers']=allowed_workers
         protocol['excluded_dashboard_pids']=inventory(allowed_workers)
-        samples=sample_quiescence();decision=assess(samples)
+        samples=sample_quiescence();decision=resource_decision(samples,bool(receipt))
         preflight=out.with_name(out.name+'-resource-preflight.json')
         with preflight.open('x',encoding='utf-8') as stream:
             json.dump(dict(protocol=protocol,samples=samples,decision=decision,simulation_started=False),stream,indent=2)
@@ -109,26 +173,34 @@ def main():
         def verify():
             if digest(parent)!=PARENT or digest(control)!=CONTROL or tree_digest(core)!=hashes['core'] or tree_digest(pilot)!=hashes['pilot']:
                 raise RuntimeError('Parent/control/source changed')
+            if receipt and any(digest(receipt/name)!=sha for name,sha in receipt_files.items()):raise RuntimeError('D4M prerequisite changed')
+            if frozen_child and digest(frozen_child['path'])!=frozen_child['sha256']:raise RuntimeError('Complete child changed')
         def execute(name,module,options,timeout,expected_status):
-            verify();inventory(allowed_workers);samples=sample_quiescence();resources=assess(samples)
+            verify();inventory(allowed_workers);samples=sample_quiescence();resources=resource_decision(samples,bool(receipt))
             write(out/f'{name}-resource-preflight.json',dict(samples=samples,decision=resources))
             remaining=3600-(time.monotonic()-started)
             available=psutil.virtual_memory().available/2**30
-            if remaining<timeout+5 or available<3 or not resources['passed']:raise RuntimeError('Insufficient sustained resource/time budget for full next job')
+            if remaining<timeout+5 or available<protocol['minimum_available_gib'] or not resources['passed']:raise RuntimeError('Insufficient sustained resource/time budget for full next job')
             command=[sys.executable,'-m',module,'--backend','cpu','--noesis-source',str(core),'--data',str(root/'data'),*options,'--output',str(out/name)]
             print(f'Starting {name}',flush=True);job_start=time.monotonic()
-            with (out/f'{name}.log').open('w',encoding='utf-8') as stream:
-                child=subprocess.run(command,stdout=stream,stderr=subprocess.STDOUT,timeout=timeout,check=False)
+            if receipt:
+                monitored=monitored_run(command,out/f'{name}.log',process_seconds=timeout)
+                returncode=monitored['exit_code']
+            else:
+                with (out/f'{name}.log').open('w',encoding='utf-8') as stream:
+                    process=subprocess.run(command,stdout=stream,stderr=subprocess.STDOUT,timeout=timeout,check=False)
+                returncode=process.returncode
             elapsed=time.monotonic()-job_start;report=json.loads((out/name/'report.json').read_text(encoding='utf-8'))
-            result['jobs'].append(dict(name=name,exit_code=child.returncode,status=report['status'],process_wall_seconds=elapsed,available_gib_at_start=available))
+            result['jobs'].append(dict(name=name,exit_code=returncode,status=report['status'],process_wall_seconds=elapsed,available_gib_at_start=available))
             write(out/'result.json',result)
-            if child.returncode or elapsed>timeout+5 or report['status']!=expected_status:raise RuntimeError(f'Incomplete/late job:{name}')
+            if returncode or elapsed>timeout+5 or report['status']!=expected_status:raise RuntimeError(f'Incomplete/late job:{name}')
             verify();return report
         trained=execute('train25','noesis_gpu.train',['--seconds','25','--wall-seconds','900','--seed','1000','--profile','gripped-cycle',
             '--cycle-weight','.1','--learning-rate','.2','--exploration-mv-ms','1.5','--log-exploration','--checkpoint',str(parent)],930,'completed_training_birth')
         if trained['completed_chunks']!=5000 or trained['learning_updates']!=4990 or trained['simulated_seconds']!=25:raise ValueError('Long duration/update count mismatch')
         child=out/'train25/weights-last.npz';child_sha=audit_bank(child,parent)
         result.update(child25_sha256=child_sha,exact_prefix_fields=prefix_check(out/'train25',control_birth),status='training_complete_evaluation_pending')
+        frozen_child.update(path=child,sha256=child_sha)
         write(out/'result.json',result)
         from noesis_gpu.evaluate import summarize,MATCHED_SETTINGS
         banks=dict(parent=parent,control5=control,child25=child)
