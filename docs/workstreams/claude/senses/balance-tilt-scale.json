@@ -1,0 +1,42 @@
+{
+ "runs": [
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10006",
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10007",
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10010",
+  "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\duration-t1b-guarded-20261031\\frozen-control5-10011"
+ ],
+ "tilt_norm_p50": 0.49753037902239683,
+ "scales": {
+  "0.15": {
+   "n_jo": 661,
+   "saturated_share": 0.18734775898164702,
+   "dead_share": 0.522574458656153,
+   "mean_activation": 0.37033197537375273,
+   "tilt_decode_r2_loso": 0.945584946692998
+  },
+  "0.3": {
+   "n_jo": 661,
+   "saturated_share": 0.012299240514066535,
+   "dead_share": 0.5314262137257598,
+   "mean_activation": 0.27758716473073025,
+   "tilt_decode_r2_loso": 0.9657124277830681
+  },
+  "0.6": {
+   "n_jo": 661,
+   "saturated_share": 0.0,
+   "dead_share": 0.5486621128073473,
+   "mean_activation": 0.17164101591527248,
+   "tilt_decode_r2_loso": 0.954821917517847
+  },
+  "1.0": {
+   "n_jo": 661,
+   "saturated_share": 0.0,
+   "dead_share": 0.5717190818930608,
+   "mean_activation": 0.10984831356799676,
+   "tilt_decode_r2_loso": 0.8836052257377816
+  }
+ },
+ "delta_saturated_points": -1.2299240514066536,
+ "delta_decode_r2": -0.010890510265221143,
+ "H_bal_success": false
+}
