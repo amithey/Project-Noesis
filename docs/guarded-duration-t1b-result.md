@@ -70,6 +70,8 @@ completed study under observed conditions, not a causal resource-policy benefit,
 training bank/metadata/logs, reports, resources, decision and parent/D3 references.
 No raw connectome, graph cache, environment or credentials. Every file hash and
 ZIP CRC verified locally before publication; uploaded digest/size checked separately.
+[Remote asset verification](guarded-duration-t1b-artifact-verification.json)
+confirms both uploaded digests and sizes match the local artifacts.
 
 - duration-t1b-evidence.zip:31927502bytes;
   SHA256`0549351f09a2df4fc8fefcb5474c0790f5e3785086d16227a300c652dadadcb7`.
