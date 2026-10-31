@@ -87,6 +87,8 @@ Final archive (replaces unpublished provisional package before post-hoc audit):
 
 ZIP CRC/every file SHA verified locally; uploaded digests/sizes checked at
 publication. Existing T1B/D4M releases retain their original artifacts/hashes.
+[Uploaded asset verification](lr-l2-artifact-verification.json) confirms both
+GitHub digests and sizes match the final local artifacts.
 
 ## Next diagnosis
 
