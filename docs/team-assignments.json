@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "S1_complete_standing_retention_failed_next_causal_transport_diagnostic",
+      "assignment_status": "paused_for_user_requested_stocktake",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -29,7 +29,9 @@
         "gpu-pilot/training-plan.json",
         "gpu-pilot/training-plan.md"
       ],
-      "managed_session_status": ""
+      "managed_session_status": "",
+      "next_deliverable": "Stocktake complete; goal paused, no simulation allocation; future fixed-weight transport protocol only after resumption",
+      "activity_verified": false
     },
     {
       "id": "claude",
@@ -56,7 +58,7 @@
       "normalizer_review": "docs/credit-timing-normalizer-review.json",
       "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated",
       "display_name": "Opus / Claude",
-      "next_deliverable": "Actual new deliveries reviewed: PR25/tool, three-pair noise result, senses selection; correct verdict joint/ties, stale sidecar and null-power wording, then provide sensory hook proposal",
+      "next_deliverable": "First correct joint/tie decisions, sidecar and null wording in own tools; then propose actual sensory source/hook under reported transfer",
       "current_owned_scope": "credit_timing analysis tool, its tests and docs in independent branch; learning/reward/core files require a separately reviewed proposal",
       "delivered_commits": {
         "credit_timing": "77a3fa93ccba1d4d4f488bd8d6f3a4397b945629",
@@ -65,14 +67,15 @@
         "reward_variance": "dc12cad5b0f35ce70018af287f08f57283c29ae9"
       },
       "review": "docs/claude-delivery-review-20261031.md",
-      "reported_senses_assignment_source": "TEAM and issue20 comment6548732015, user directive reported by Claude"
+      "reported_senses_assignment_source": "TEAM and issue20 comment6548732015, user directive reported by Claude",
+      "activity_verified": false
     },
     {
       "id": "gemini",
       "issue": 20,
       "branch": "gemini/flygym2-gait-validation",
       "assignment_status": "handoff_requested_after_reported_user_senses_transfer_to_Claude",
-      "role": "Independent physical metrics, frozen evaluation and later body/sensory validation",
+      "role": "Existing senses handoff and independent physical measurement review; no overlapping sensory implementation",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/evaluate.py",
         "gpu-pilot/src/noesis_gpu/gait_metrics.py",
@@ -93,11 +96,12 @@
       "managed_branch": "codex/team-gemini-senses-r2",
       "independent_evidence_message": "4686bbfbb67e",
       "independent_observation": "Committed source/report now readable;44isolated unit tests passed. Adapter/test identical to integration after newline normalization. Python manifest entries hashCRLF notGitLF; candidate/raw evidence/protocol corrections still needed.",
-      "next_deliverable": "Preserve and hand off current sensory evidence; independent measurement review remains separate",
+      "next_deliverable": "Hand off existing senses evidence; independently audit physical metrics using existing B1/S1 archives; no overlapping sensory implementation",
       "independent_commit": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
       "review": "docs/gemini-sensory-review-4a78e0b.json",
       "historical_reported_branch": "feature/habitat-in-view",
-      "current_owned_scope": "sensory adapter candidate, tests and delivery docs/evidence in independent branch; no uncoordinated controller/evaluation edits"
+      "current_owned_scope": "Own handoff/evidence docs and new independent analysis scripts/tests; coordinate before modifying existing shared evaluation/controller files",
+      "activity_verified": false
     }
   ],
   "active_round": {
@@ -141,7 +145,7 @@
     "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
     "runtime_profile": "docs/runtime-profile-d2-result.json",
     "full_training_reproducibility": "docs/logging-parity-d3-result.json",
-    "current_priority": "Isolate existing exploration input with fixedweights and actual neural/muscle/body observations before more training sweeps; no heavy allocation",
+    "current_priority": "Stocktake complete; goal paused, no simulation allocation; future fixed-weight transport protocol only after resumption",
     "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
     "credit_replication": "docs/credit-replication-c2-result.json",
     "next_proposal": "docs/duration-learning-proposal-20261030.md",
@@ -164,7 +168,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "S1_complete_lease_released_no_simulation_allocated",
+    "status": "paused_user_stocktake_no_simulation_allocated",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
@@ -178,8 +182,23 @@
   "historical_fields_note": "implementation_baseline, core_commit, active_round and managed_* fields preserve prior setup/results; current_queue and resource_schedule describe the current queue, not live agent activity. Experimental runtime core is experimental_core_commit.",
   "updated_date": "2026-11-01",
   "current_queue": {
-    "codex": "Prepare fixed-weight exploration on/off transport diagnostic with observer/zero-control invariance; no allocation yet; peer corrections/hook remain separate",
-    "claude": "Actual new deliveries reviewed: PR25/tool, three-pair noise result, senses selection; correct verdict joint/ties, stale sidecar and null-power wording, then provide sensory hook proposal",
-    "gemini": "Preserved4a78e0b measurement/sensory evidence; handoff requested after Claude reported user-directed senses transfer; no overlapping new sensory edit assigned"
+    "codex": "Stocktake complete; goal paused, no simulation allocation; future fixed-weight transport protocol only after resumption",
+    "claude": "First correct joint/tie decisions, sidecar and null wording in own tools; then propose actual sensory source/hook under reported transfer",
+    "gemini": "Hand off existing senses evidence; independently audit physical metrics using existing B1/S1 archives; no overlapping sensory implementation"
+  },
+  "stocktake": {
+    "date": "2026-11-01",
+    "goal_status": "paused",
+    "starting_commit": "54ddbd60d86ee02a2a9fe579831e635a3174c2cc",
+    "historical_prs": "1-15 closed without merge or branch deletion",
+    "open_prs": [
+      16,
+      21,
+      22,
+      23,
+      24,
+      25
+    ],
+    "peer_activity": "not inferred; acknowledgment requested"
   }
 }

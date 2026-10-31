@@ -1,3 +1,8 @@
+> Current coordination, 1 November 2026: read [project status](project-status-20261030.md),
+> [team assignments](team-assignments.json) and issue17 first. The goal is paused for the user-requested stocktake; no new simulation is allocated.
+> The inventory, core41b5fe6 and checkpoint references below describe the 27 October preservation backup,
+> not the current experimental runtime/core42c2076 or current worker activity. Do not substitute them silently.
+
 # Project continuation and parallel work
 
 Updated 2026-10-27. Repository: https://github.com/amithey/Project-Noesis
