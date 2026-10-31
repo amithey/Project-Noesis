@@ -1,5 +1,5 @@
 {
-  "status": "active_B1_frozen_standing_qualification_complete_both3of4_no_promotion",
+  "status": "active_S1_full_standing_profile_study_complete_retention_failed",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,10 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "B1 eightfull frozen probes complete; both fb80ancestor and9fddescendant pass3/4, fail10010. No automatic parent switch.",
-    "Offline native reward/normalizer reconstruction exact, no positive reward or signal on nonstanding T1B/L2 samples; no scorer bug established.",
-    "Design existing standing-v7 versusgripped-v9 at matched parent/rate/duration as a new profile hypothesis, not more blind duration/LR tuning; no allocation yet.",
-    "Follow up Claude credit-control verdict/sidecar/wording fixes and actual sensory source/hook proposal; preserve Gemini handoff and held-outs."
+    "S1 complete:3/4standing gates,0/4paired standing/slip retention;no promotion even though median progress gains pass.",
+    "Prepare separately registered no-learning causal exploration transport diagnostic through actual neural activity/muscle commands/body; require zero intervention exact baseline and observer invariance.",
+    "Keep all profile/duration/rate findings descriptive; no threshold relaxation, automatic parent switch or independent weight merging.",
+    "Follow up Claude decision/sidecar/null-wording fixes and actual sensory source/hook; preserve Gemini handoff and held-outs."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -144,5 +144,18 @@
     "parent_pass_count": 3,
     "model_promoted": false,
     "release": "standing-baseline-b1-2026-11-01"
+  },
+  "standing_profile_S1": {
+    "status": "complete_standing_and_walking_method_rules_failed",
+    "result": "docs/standing-profile-s1-result.json",
+    "child_sha256": "5e91a54875de34c1e7c8f52734e16249ad66ee515d1416b3848e982303825f13",
+    "training_seconds": 25,
+    "learning_updates": 4990,
+    "complete_frozen_probes": 12,
+    "wall_seconds": 1660.61,
+    "standing_pass_count": 3,
+    "retained_vs_both_count": 0,
+    "model_promoted": false,
+    "release": "standing-profile-s1-2026-11-01"
   }
 }
