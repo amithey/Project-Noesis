@@ -133,11 +133,11 @@ def audit(root,official):
         scope='Descriptive failure to meet superiority rule; not equivalence or absence-of-credit proof; no retrospective Codex resource/exit-code validation')
 
 
-def archive(root,result,target):
+def archive(root,result,target,*,prefix='claude-credit-noise',extra_allowed=()):
     target.mkdir(parents=True,exist_ok=False)
     allowed={'report.json','receipts.json','result.json','weights-last.npz','weights-last.model.json',
-             'profile-run.json','observations.npz','training-observations.npz','exploration-log.npz'}
-    destination=target/'claude-credit-noise-evidence.zip'
+             'profile-run.json','observations.npz','training-observations.npz','exploration-log.npz'}|set(extra_allowed)
+    destination=target/f'{prefix}-evidence.zip'
     with zipfile.ZipFile(destination,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
         for entry in result['raw_files']:
             p=(root/entry['path']).resolve()
@@ -156,7 +156,7 @@ def archive(root,result,target):
             data=z.read(entry['path'])
             if len(data)!=entry['bytes'] or hashlib.sha256(data).hexdigest()!=entry['sha256']:
                 raise ValueError('ZIP per-file SHA mismatch')
-    write(target/'claude-credit-noise-manifest.json',dict(audit=result,archive=dict(
+    write(target/f'{prefix}-manifest.json',dict(audit=result,archive=dict(
         name=destination.name,bytes=destination.stat().st_size,sha256=digest(destination))))
     return dict(files=len(result['raw_files']),archive_bytes=destination.stat().st_size,archive_sha256=digest(destination))
 

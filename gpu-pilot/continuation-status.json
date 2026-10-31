@@ -1,5 +1,5 @@
 {
-  "status": "active_Claude_delivery_and_three_pair_noise_review_complete_no_promotion",
+  "status": "active_B1_frozen_standing_qualification_complete_both3of4_no_promotion",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,10 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "No superiority of real credit in three inspected pairs; this is not equivalence or proof of no information.",
-    "Follow up joint-probe/tie verdict corrections, profile sidecar provenance and null-threshold wording in Claude owner branches.",
-    "Review actual backend/sensory hook proposal after reported user transfer of senses to Claude; preserve Gemini handoff and runtime pins.",
-    "Diagnose standing curriculum entry/reward retention; no new heavy allocation, no automatic source/weight promotion."
+    "B1 eightfull frozen probes complete; both fb80ancestor and9fddescendant pass3/4, fail10010. No automatic parent switch.",
+    "Offline native reward/normalizer reconstruction exact, no positive reward or signal on nonstanding T1B/L2 samples; no scorer bug established.",
+    "Design existing standing-v7 versusgripped-v9 at matched parent/rate/duration as a new profile hypothesis, not more blind duration/LR tuning; no allocation yet.",
+    "Follow up Claude credit-control verdict/sidecar/wording fixes and actual sensory source/hook proposal; preserve Gemini handoff and held-outs."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -132,5 +132,17 @@
     "full_frozen_probes_recomputed": 24,
     "model_promoted": false,
     "pilot_core_changed": false
+  },
+  "standing_baseline_B1": {
+    "status": "complete_both_fail_four_probe_qualification",
+    "result": "docs/standing-baseline-b1-result.json",
+    "anchor_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+    "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "full_frozen_probes": 8,
+    "wall_seconds": 747.984,
+    "anchor_pass_count": 3,
+    "parent_pass_count": 3,
+    "model_promoted": false,
+    "release": "standing-baseline-b1-2026-11-01"
   }
 }
