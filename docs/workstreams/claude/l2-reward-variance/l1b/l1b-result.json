@@ -1,0 +1,77 @@
+{
+ "hypotheses": {
+  "joint_RFTarsus1": 190.0,
+  "joint_LFTarsus1": 25.0
+ },
+ "window_ms": 20.0,
+ "permutations": 1000,
+ "births": 8,
+ "all8": {
+  "joint_RFTarsus1": {
+   "window_max_r2": 0.009399988778254298,
+   "best_lag_ms": 190.0,
+   "coefficient_sign": 1.0,
+   "rank": 0.008991008991008992
+  },
+  "joint_LFTarsus1": {
+   "window_max_r2": 0.017031208524777353,
+   "best_lag_ms": 15.0,
+   "coefficient_sign": 1.0,
+   "rank": 0.000999000999000999
+  }
+ },
+ "all8_null": {
+  "null_max_p95": 0.006619950481085825,
+  "null_max_p99": 0.009249928497375152
+ },
+ "half1_seeds1008_1011": {
+  "joint_RFTarsus1": {
+   "window_max_r2": 0.012509021234016938,
+   "best_lag_ms": 190.0,
+   "coefficient_sign": 1.0,
+   "rank": 0.04995004995004995
+  },
+  "joint_LFTarsus1": {
+   "window_max_r2": 0.014090413490919542,
+   "best_lag_ms": 10.0,
+   "coefficient_sign": 1.0,
+   "rank": 0.03196803196803197
+  }
+ },
+ "half1_seeds1008_1011_null": {
+  "null_max_p95": 0.012454777157916916,
+  "null_max_p99": 0.019673917236703878
+ },
+ "half2_seeds1012_1015": {
+  "joint_RFTarsus1": {
+   "window_max_r2": 0.006789835698847496,
+   "best_lag_ms": 175.0,
+   "coefficient_sign": 1.0,
+   "rank": 0.2827172827172827
+  },
+  "joint_LFTarsus1": {
+   "window_max_r2": 0.021514847462293398,
+   "best_lag_ms": 20.0,
+   "coefficient_sign": 1.0,
+   "rank": 0.016983016983016984
+  }
+ },
+ "half2_seeds1012_1015_null": {
+  "null_max_p95": 0.014732688582849835,
+  "null_max_p99": 0.023264761259163776
+ },
+ "preregistered_success": false,
+ "provenance": {
+  "inputs": [
+   "18cbbe1bf6b236a28ead56bf2910da4c42c7aae0bfee1a14d4372d64daeb6e4b",
+   "2f937b67a93ada5ece8ee3959c3931220a146819154271a00c0e76efbb47b104",
+   "f1ee9b8d765c51578cd6e1829ba9de592881b2eaedf2d92c2da481efc1c0cd8d",
+   "33d387a90244d56eb62efae7598e17186653003ced4d220a7b5db9830ca3f577",
+   "ee572103b13bd24e3a995a032a249ff9e11395a8fad2b841a02dc7f006d470b1",
+   "d277550a8eb07218b504bbc6609e5ffd70ae31072b7e8f7caa74c315815b91ba",
+   "a9b28f1e1a967159c5cd46525a082a97e7e14b9da189b23a5df13185f306ccab",
+   "eb1a3fe810d21aba341a17ac0c5167737beecb0021a4fa19eba5ae7ed9f38e22"
+  ],
+  "module_sha256": "d5b049a2eb398c4fc10bb2696ecbe528f0d94dada30be14e5d08935b9aa874a7"
+ }
+}

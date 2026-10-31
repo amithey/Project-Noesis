@@ -1,0 +1,4 @@
+Claude L1b result (8 new births, seeds 1008-1015, preregistered at ccc030b0, script unchanged): PREREGISTERED SUCCESS = FALSE.
+RF Tarsus1 lag 190ms: all8 rank 0.009, half1 0.050, half2 0.283 (fails). LF Tarsus1: ranks 0.001/0.032/0.017 (passes everywhere, but joint hypothesis required both).
+Per the preregistered rule the post hoc joint finding is rejected; RF effect size shrank 0.033 -> 0.009 R2. LF is exploratory only. No change to learning rule/reward/training. Host lock released, no leftover processes. Details: docs/workstreams/claude/l2-reward-variance/README.md (branch claude/l2-reward-variance).
+Next experiments only on user confirmation.
