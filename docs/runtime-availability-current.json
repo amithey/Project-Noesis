@@ -7,62 +7,62 @@
       "decision": {
         "passed": false,
         "sample_count": 10,
-        "minimum_available_gib": 0.41355133056640625,
-        "maximum_host_cpu_percent": 100.0,
+        "minimum_available_gib": 1.1625480651855469,
+        "maximum_host_cpu_percent": 86.0,
         "required_available_gib": 3.0,
         "allowed_host_cpu_percent": 30.0,
         "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
       },
       "samples": [
         {
-          "unix_time": 1793440569.6103518,
-          "available_gib": 0.42696380615234375,
-          "host_cpu_percent": 99.8
+          "unix_time": 1793440676.0855548,
+          "available_gib": 1.1974258422851562,
+          "host_cpu_percent": 75.4
         },
         {
-          "unix_time": 1793440570.6137536,
-          "available_gib": 0.41355133056640625,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440677.0876842,
+          "available_gib": 1.1978836059570312,
+          "host_cpu_percent": 86.0
         },
         {
-          "unix_time": 1793440571.637748,
-          "available_gib": 0.4577369689941406,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440678.088797,
+          "available_gib": 1.2034416198730469,
+          "host_cpu_percent": 64.7
         },
         {
-          "unix_time": 1793440572.6441026,
-          "available_gib": 0.7133598327636719,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440679.1983488,
+          "available_gib": 1.1869239807128906,
+          "host_cpu_percent": 82.8
         },
         {
-          "unix_time": 1793440573.6477096,
-          "available_gib": 0.6939697265625,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440680.2239547,
+          "available_gib": 1.1936759948730469,
+          "host_cpu_percent": 63.3
         },
         {
-          "unix_time": 1793440574.6502542,
-          "available_gib": 0.945465087890625,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440681.2256465,
+          "available_gib": 1.1894607543945312,
+          "host_cpu_percent": 70.0
         },
         {
-          "unix_time": 1793440575.6673183,
-          "available_gib": 0.9463081359863281,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440682.2269597,
+          "available_gib": 1.1911582946777344,
+          "host_cpu_percent": 67.4
         },
         {
-          "unix_time": 1793440576.7039535,
-          "available_gib": 1.0188865661621094,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440683.2277086,
+          "available_gib": 1.1709861755371094,
+          "host_cpu_percent": 74.0
         },
         {
-          "unix_time": 1793440577.732228,
-          "available_gib": 1.0250282287597656,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440684.229564,
+          "available_gib": 1.1625480651855469,
+          "host_cpu_percent": 75.8
         },
         {
-          "unix_time": 1793440578.7452238,
-          "available_gib": 0.9782066345214844,
-          "host_cpu_percent": 100.0
+          "unix_time": 1793440685.2307513,
+          "available_gib": 1.1796493530273438,
+          "host_cpu_percent": 60.5
         }
       ]
     }
@@ -70,24 +70,25 @@
   "simulation_started": false,
   "elapsed_seconds": 11.0,
   "audit_series": "new_explicit_resume_after_user_pause",
-  "audit_turn": 1,
-  "current_turn_classification": "No progress after revalidation: insufficient host resources and no new peer repair",
-  "raw_evidence_sha256": "03d8638045063f6a5caebf0cf1f827fce71b7538265a80196381eb2660ad9072",
-  "checked_peer_issues": [
-    19,
-    20
-  ],
   "peer_heads": {
     "claude": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
     "gemini": "4a78e0be2e7db699574812f5ff318e6ec6c264cb"
   },
+  "pending_user_question": "Godot usage remains unanswered; resume does not authorize closing applications",
+  "historical_host_diagnosis": "docs/host-resource-ownership-20261030.json; not current CPU attribution",
+  "next": "Registered physical experiment only after fresh sustained resource gate, or review new committed peer repairs; no same-turn retry or heavy tests at this memory pressure",
+  "audit_turn": 2,
+  "current_turn_classification": "No progress after fresh revalidation; same resource/peer-delivery blocker",
+  "previous_turn_classification": "No progress after resource gate refusal",
+  "raw_evidence_sha256": "a6adc60418adae52faca092e9c8585329852a2ca604687493abfbe936a92948f",
+  "checked_peer_issues": [
+    19,
+    20
+  ],
   "new_reviewable_owner_fix": false,
   "processes_terminated": false,
   "training_allocated": false,
   "model_promoted": false,
   "walking_proven": false,
-  "goal_status": "active after explicit resume; fresh blocked audit turn1",
-  "pending_user_question": "Godot usage remains unanswered; resume does not authorize closing applications",
-  "historical_host_diagnosis": "docs/host-resource-ownership-20261030.json; not current CPU attribution",
-  "next": "Registered physical experiment only after fresh sustained resource gate, or review new committed peer repairs; no same-turn retry or heavy tests at this memory pressure"
+  "goal_status": "active; same blocker observed in2consecutive turns since latest explicit resume"
 }
