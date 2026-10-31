@@ -75,6 +75,8 @@ or original-default change follows. No app closure/retry/extension occurred.
 91namedfiles plus internal perfileSHAmanifest, including candidate observations/
 bank/metadata/logs, all frozen outputs, resource receipts and parent/v9control
 references. ZIPCRC and every fileSHA verified; no connectome/cache/env/credentials.
+[Uploaded asset verification](standing-profile-s1-artifact-verification.json)
+confirms both GitHub digests and sizes match the local signed files.
 
 - standing-profile-s1-evidence.zip:43598494bytes,
   SHA256`6548cf9b53258a41a5ab6428002b7a848682f4644a0ac38ee9aa225d7847d168`.
