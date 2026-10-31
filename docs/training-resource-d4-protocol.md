@@ -45,3 +45,38 @@ tests pass: complete context; partial/mismatched report rejection; missing,
 truncated, nonfinite, changed or dtype-altered trace fields; exploration indices
 and scalar timing; plus R4fake-child normal/error/interrupt cleanup. These tests
 are synthetic. A separate allocation and TEAMread are required before execution.
+
+## D4M prospective admission-statistic contrast
+
+Original D4 was refused BEFORE any training:10.078s, zero jobs, no train folder,
+minRAM3.369GiB. CPU samples39.2,54.0,26.0,58.1,30.2,29.3,24.5,28.2,27.8,62.4;
+mean37.97percent, only one sample above60. This is not a learning outcome.
+
+A separately preregistered D4M contrast uses a NEW full10s window and requires
+its CPU MEAN<=60percent, with the same per-sample minimumRAM>=2GiB. Record the
+old maximum-rule decision alongside it; do not retrospectively pass old D4.
+The rationale is sustained-load admission under transient peaks, informed also
+by completed R4frozen runs with observed in-run CPU bursts. It is not evidence
+that mean admission causes faster or better learning. If both rules pass the
+new window, the run does not distinguish their admission behavior.
+
+Everything affecting learning/physics, known child and exact parity remains
+unchanged. Live memory-floor1GiB,2s telemetry,330s process/300s inner limits and
+all scientific/T1/default gates remain unchanged. This does not change T1's
+maximum30percent gate or automatically adopt a new25s policy.
+
+Keep the ORIGINAL420s active diagnostic budget INCLUDING refused D4's10.078s;
+only the remaining budget is available. Require330+5s after the new preflight.
+ONEfollowup maximum, unique output
+PRIMARY/gpu-pilot/outputs/training-resource-d4-mean-20261031. The prior protocol,
+reference/source/parent/profile and its recorded max-rule refusal must verify,
+with zero jobs and no train directory. An atomic one-time allocation marker in
+the prior output, under the sharedlease, prevents reuse or budget resets. Any
+new refusal consumes that allocation too. No followup is accepted after an
+actual/partial training attempt, and there is no fallback/retry/time extension.
+
+CLI opts in explicitly with --mean-cpu-after-refusal ORIGINAL_D4_OUTPUT; default
+D4maximum behavior is unchanged.22focused tests pass after the contrast was
+implemented, including old-rule preservation, mean/memory decisions, wrong
+prior identity/partial-job/invalid-wall/used-allocation rejection, trace parity
+and owned-child cleanup. Tests are synthetic; physical outcome still pending.
