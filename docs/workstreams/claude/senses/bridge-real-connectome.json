@@ -1,0 +1,14 @@
+{
+ "active_taken": 4974,
+ "modalities": {
+  "thermo_warm": 6,
+  "thermo_cool": 6,
+  "hygro_humid": 20,
+  "hygro_dry": 35,
+  "sound_low": 92,
+  "sound_high": 418,
+  "olfaction": 3006,
+  "vision": 1843
+ },
+ "pairwise_disjoint": true
+}
