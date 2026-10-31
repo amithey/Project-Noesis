@@ -109,8 +109,22 @@ def audit(root, core, study):
         model_promoted=False, walking_proven=False, retention_proven=False,
         scope='N1 training seed/four development probes; descriptive '+('learning-rate' if lr_mode else 'duration')+' comparison; final held-outs unused')
     audited['exact_prelearning_fields' if lr_mode else 'exact_prefix_fields']=fields
-    if lr_mode:audited.update(control_arm=control_arm,learning_rate=.02,control_learning_rate=.2,
-        control_study=str(prior),all_exploration_fields_exact=True)
+    if lr_mode:
+        displacement={}
+        with np.load(parent,allow_pickle=False) as baseline:
+            reference=baseline['initial_weights'];mask=np.abs(reference)>0
+            for arm in (control_arm,'child25'):
+                with np.load(banks[arm],allow_pickle=False) as bank:
+                    relative=np.abs(bank['weights'][mask]-baseline['weights'][mask])/np.abs(reference[mask])
+                    ratio=np.abs(bank['weights'][mask])/np.abs(reference[mask])
+                    displacement[arm]=dict(mean_abs_change_over_original=float(relative.mean()),
+                        max_abs_change_over_original=float(relative.max()),
+                        exact_original_bound_fraction=float(np.mean((ratio<=.5+1e-12)|(ratio>=1.5-1e-12))),
+                        nonzero_reference_edges=int(mask.sum()))
+        audited.update(control_arm=control_arm,learning_rate=.02,control_learning_rate=.2,
+            control_study=str(prior),all_exploration_fields_exact=True,
+            posthoc_weight_displacement=displacement,
+            posthoc_scope='Descriptive net displacement at25s, not cumulative path length, causal mediation or an added decision criterion')
     return audited
 
 

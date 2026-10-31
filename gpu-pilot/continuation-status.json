@@ -1,5 +1,5 @@
 {
-  "status": "active_T1B_full_study_complete_retention_rule_failed",
+  "status": "active_L2_full_matched_rate_study_complete_retention_failed",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,10 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "Do not promote completed T1B child:2/4primary,1/4retention-vs-both and median gain rule failed.",
-    "Review one-factor lower-LR proposal against matched25s control, or delivered peer repair; no same-method duration retry assumed beneficial.",
-    "Keep curated C2d701 separate from completed experimental ab4cf13 child and earlier partial T1.",
-    "Review pending Claude PCA/coverage/null and Gemini sensory delivery repairs; no weight composition or coupled first intervention."
+    "L2 complete: smallerLR reduced terminal displacement but2/4primary,1/4retention and median heading gain criterion failed; no promotion.",
+    "Diagnose curriculum entry: parent standing.89293 in10010 means stable standing across fourdevelopmentprobes not established; inspect existing standing-stage criteria before more gait parameter sweeps.",
+    "Audit physical reward/retention behavior; no assumed causal fix or lag tuning from uncorrected credit tool.",
+    "Review pending Claude credit/PCA/coverage/null and Gemini sensory delivery repairs; keep candidates independent."
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -26,7 +26,7 @@
   "plan_revision": "flygym2-brain-only-2026-10-21",
   "legacy_runner_role": "historical controls only; not the active new-body route",
   "app_goal_objective_updated": true,
-  "app_goal_status_observed": "active; full T1B physical study complete, scientific rule failed, goal unachieved",
+  "app_goal_status_observed": "active; full L2 matched-rate experiment complete, scientific rule failed, goal unachieved",
   "curriculum_orchestration_port_complete": false,
   "resume_flag_supported_by_new_commands": false,
   "standing_training_gate_passed": true,
@@ -108,5 +108,20 @@
     "retained_vs_both_probes": 1,
     "model_promoted": false,
     "release": "duration-t1b-2026-10-31"
+  },
+  "learning_rate_L2": {
+    "status": "completed_scientific_rule_failed",
+    "result": "docs/lr-l2-result.json",
+    "child_sha256": "6d63d3dc7d433aa3174946ec925edaea4b14bb6cfc8878a599b3df74d42cdb43",
+    "training_seconds": 25,
+    "learning_rate": 0.02,
+    "control_learning_rate": 0.2,
+    "learning_updates": 4990,
+    "complete_frozen_probes": 12,
+    "aggregate_seconds": 1530.453,
+    "primary_pass_probes": 2,
+    "retained_vs_both_probes": 1,
+    "model_promoted": false,
+    "release": "learning-rate-l2-2026-10-31"
   }
 }
