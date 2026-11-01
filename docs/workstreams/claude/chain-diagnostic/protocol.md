@@ -66,3 +66,20 @@ development probe seeds below. `chain_run.py` now refuses any held-out seed fail
 Covered (synthetic 18-neuron network, fake body): arm validation; off == plain frozen brain; zero == off; injected current is bounded and
 logged; learning and weight updates are impossible; the coupling statistic recovers a planted lag, rejects an unrelated response, skips
 unusable joints and rejects bad shapes. Not covered: anything about FlyGym physics, the real connectome, or real muscle pools.
+
+## Result (run 2026-11-01 under the user's allocation; dev seeds 10006, 10007, 10010, 10011; analysis `analyse_chain.py`, `chain-result.json`)
+**Run:** 4 processes x 3 arms x 5.0 s, all `completed_chain_diagnostic`, wall 235/218/220/196 s (about 870 s total), free RAM 6.0-6.2 GiB before each seed, no Codex lease present, own lock released. Core 42c2076, parent 9fd7d411.
+**Gate 0 passed in all 4 seeds:** `off` and `zero` bit-identical in every recorded array; same weight hash across arms; weights unchanged; injected current max 1.499-1.5 mV/ms on 453 driven neurons (34 joints with both pools).
+
+**Registered reading rule (active coupled in >=3/4 seeds, same sign, negative controls <=1/4): no stage "reaches".**
+| stage | active coupled (rank <= 0.05) | off / zero coupled |
+| --- | --- | --- |
+| firing | 1/4 (seed 10007) | 1/4, 1/4 |
+| muscle | 1/4 (seed 10007) | 1/4, 1/4 |
+| command | 1/4 (seed 10007) | 1/4, 1/4 |
+| body | 0/4 | 1/4, 1/4 |
+Best pooled R^2 of the active arm is 0.0001-0.0045 at every stage (reference p99 about 0.002-0.006). The matched negative controls, which never received the current, reach the same size (best R^2 0.0047, rank 0.006, seed 10011 muscle), so this statistic does not separate the injected current from chance at ANY stage, including the first (the firing of the driven neurons themselves).
+
+**Observation outside the registered rule (descriptive, not a finding):** the injection does change the network strongly and immediately: the first divergence between active and off is at control step 1-3 in every stage, and total spike counts over 5 s differ from the zero-intervention run by -34% (10006), -26% (10007), +29% (10010), -16% (10011); the sign is not consistent across seeds. So the current perturbs activity network-wide, but this does not show up as a lagged linear imprint on the per-joint agonist-minus-antagonist pools used here.
+
+**What this does and does not say.** Fixed weights, 4 development seeds, 5 s, one predictor family and a lag-linear pooled statistic with a descriptive circular-shift reference. It does not show that the chain is broken, that learning cannot work, or why earlier births did not separate from controls; a different predictor (for example network-wide or per-neuron) could see structure this one cannot, and that would be a new hypothesis with its own registration. Held-out seeds untouched. Raw arrays are outside Git (artifact release below).
