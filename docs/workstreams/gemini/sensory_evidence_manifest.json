@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "owner": "gemini",
   "issue": 20,
   "branch": "gemini/flygym2-gait-validation",
@@ -7,20 +7,40 @@
   "checkout": "C:/dev/noesis-gemini-gait",
   "files": {
     "gpu-pilot/src/noesis_gpu/external_senses.py": {
-      "sha256": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4",
+      "working_tree_sha256": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4",
+      "git_lf_sha256": "55837b17859653b1b452bf0a97155e737b4f2c79c6c611ad29e8059b0baeb361",
+      "crlf_sha256": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4",
       "bytes": 37001
     },
     "gpu-pilot/tests/test_external_senses.py": {
-      "sha256": "ed8ea4fb8937e56663c44c9211b58797d4117ae806dd1b24b9b007231b6963b3",
+      "working_tree_sha256": "ed8ea4fb8937e56663c44c9211b58797d4117ae806dd1b24b9b007231b6963b3",
+      "git_lf_sha256": "f01fcb12b53cc0dcfd1d41c4635f5b90b0dd6c5297149fba0253b72e450b1964",
+      "crlf_sha256": "ed8ea4fb8937e56663c44c9211b58797d4117ae806dd1b24b9b007231b6963b3",
       "bytes": 35436
     },
     "docs/workstreams/gemini/sensory_mapping_and_validation_report.md": {
-      "sha256": "709ffdf0290386fcb0ec65ecd15ccf667602fab9758cc7a3c7b5347b67aadffd",
+      "working_tree_sha256": "709ffdf0290386fcb0ec65ecd15ccf667602fab9758cc7a3c7b5347b67aadffd",
+      "git_lf_sha256": "709ffdf0290386fcb0ec65ecd15ccf667602fab9758cc7a3c7b5347b67aadffd",
+      "crlf_sha256": "a4c1604a23002c83954dc30bf25c72b0dae7ba4165ea82a02d497b8ae7d2f987",
       "bytes": 13677
     },
     "docs/workstreams/gemini/sensory_rectification_experiment_proposal.md": {
-      "sha256": "e8d3e845aefc1b05f48fd14cf3cb8f3a7a49bd556f79ec755cf9626b88ef304f",
+      "working_tree_sha256": "e8d3e845aefc1b05f48fd14cf3cb8f3a7a49bd556f79ec755cf9626b88ef304f",
+      "git_lf_sha256": "e8d3e845aefc1b05f48fd14cf3cb8f3a7a49bd556f79ec755cf9626b88ef304f",
+      "crlf_sha256": "796e69d3163c1624ee194c4d698ed06dcca1dd922010d86e9e7313de7ecd00a7",
       "bytes": 3757
+    },
+    "docs/workstreams/gemini/s1_physical_gait_audit.md": {
+      "working_tree_sha256": "793626d86b6d31b6fe3916cb6a0de09d16af1ec64c61195cbeddf11c662118e4",
+      "git_lf_sha256": "793626d86b6d31b6fe3916cb6a0de09d16af1ec64c61195cbeddf11c662118e4",
+      "crlf_sha256": "2bc4dae352303ad063c56989eaf7c2aee30a9c649cdb31649aaffc0842f7196f",
+      "bytes": 4523
+    },
+    "docs/workstreams/gemini/sensory_handoff_to_claude.md": {
+      "working_tree_sha256": "9a4a91e0e6b05b0d0452df02c22c90282448dd4bce1364ffc71fa25f74617aa0",
+      "git_lf_sha256": "9a4a91e0e6b05b0d0452df02c22c90282448dd4bce1364ffc71fa25f74617aa0",
+      "crlf_sha256": "84c5aa83793ab5a0962c0ad9f8702654cbe0f30920dbc1d1e617675e994b69d2",
+      "bytes": 4578
     }
   }
 }
