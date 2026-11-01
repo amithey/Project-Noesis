@@ -12,7 +12,8 @@ rotation, which can erase a perfect relation when births are pooled (Codex's cou
 
 Significance: the response is circularly shifted inside each birth (keeps its autocorrelation); for every set of
 shifts the maximum R^2 over lags and legs is kept (family-wise null). Descriptive and read-only: it never touches
-weights, learning or checkpoints.
+weights, learning or checkpoints. The null percentiles (p95/p99) are descriptive reference thresholds of this circular-shift reference only;
+they are NOT a calibrated detection power, a minimum detectable effect or a bound on effects that are absent from the data.
 """
 
 from __future__ import annotations
@@ -341,7 +342,7 @@ def main(argv=None):
                 continue
             print(f"{kind:16s} {LEGS[int(leg)]}: best lag {entry['best_lag_ms']:5.0f} ms  R2 {entry['r2']:.4f}  rank {entry['family_rank']:.4f}")
         if result[kind]["null"]:
-            print(f"{kind:16s} null max R2: p95 {result[kind]['null']['null_max_p95']:.4f}  p99 {result[kind]['null']['null_max_p99']:.4f}")
+            print(f"{kind:16s} circular-shift reference (descriptive) max R2: p95 {result[kind]['null']['null_max_p95']:.4f}  p99 {result[kind]['null']['null_max_p99']:.4f}")
     print(INTERPRETATION)
 
 

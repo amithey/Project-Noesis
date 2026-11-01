@@ -73,3 +73,19 @@
 
 **משמעות:** בשלושה זוגות הילד האמיתי אינו עדיף על ילד שאומן עם קרדיט שאין לו קשר להפרעה; סימן ההפרש מתהפך בין זוגות (שלילי, שלילי, חיובי) והגודל קרוב לשונות הבדיקה. תואם L1/L1b. **מה אפשר להגיד:** בקצב 0.2, ‏25 שניות, תגמול v9 ובדיקות הפיתוח האלה אין ראיה לכך שהכיוון שנלמד נושא מידע תלוי-התנהגות מעבר לתזוזה אקראית באותו גודל. **מה אי אפשר:** לא נשלל אפקט קטן (3 זוגות, 4 זרעי בדיקה לכל ילד, אין זרעי החזקה); זוג 1000 אינו מותאם מלא בנתיב ההרצה; לא נבדקו משכים או קצבים אחרים. אין טענה על הליכה ואין קידום צ'קפוינט.
 **המשך מתבקש:** להפסיק לכוון קצב/משך, ולבדוק שינוי בכלל הלמידה עצמו (אות קרדיט) מול אותה בקרת רעש.
+
+## Addendum 2026-11-01 (Codex review, disclosures; no registered result is rewritten)
+
+1. **Retention counting.** `analyse_replication.py` counted standing and slip non-regressions separately (>=3 each), which can hold on only two common probes, and
+   its reverse condition (`<=1` of each) is not symmetric with non-inferiority when metrics tie. That was an implementation ambiguity of the pre-registered text.
+   The explicit rule is now `gpu-pilot/src/noesis_gpu/pair_decision.py` (same-probe conjunction, ties non-inferior in both directions, reverse counted directly,
+   5 tests). Applied to the stored tables (`strict_recomputation.py` -> `strict-recomputation.json`) it leaves all three pair verdicts INDISTINGUISHABLE.
+   The first-use verdicts and `replication-result.json` stay as registered; the new rule applies to FUTURE use.
+2. **Sidecar.** The five `profile-run.json` files report `cycle_scoring.steps = 0` because the wrapper scorer is unused on the native route (native `report.json`
+   has 5000). Not evidence that the reward lacked the cycle term. Fixed in `profile_run.py`: the sidecar now takes `cycle_scoring` from the native report when the wrapper
+   scorer saw no steps and writes `cycle_scoring_source` and `wrapper_scorer_steps` (2 tests). Already-written sidecars are not edited.
+3. **Process receipts.** The 25 Claude job receipts have no exit codes (PowerShell `Start-Process` returned a null ExitCode); completion rests on native `report.json` statuses and
+   finite full arrays. No retroactive proof of exit status or resource telemetry exists; this limit stays. Seed 1000 keeps its disclosed wrapper/source-path difference
+   although the raw warm-up/exploration equality is now verified by Codex.
+4. **Null wording.** Percentiles are descriptive reference thresholds, not power or a minimum detectable effect (see credit-timing README note).
+5. Three training pairs are the replication units; 12 probe differences are not 12 independent replicates. INDISTINGUISHABLE = neither superiority rule passed, not equivalence.

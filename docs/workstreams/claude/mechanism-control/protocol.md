@@ -27,3 +27,19 @@ settings are not retuned afterwards.
 One network, one effect size and lag (0 ms), white reward noise; kappa = 0.2 was the cell where the earlier toy (docs/workstreams/claude/l2-reward-variance,
 `toy_baseline_real_noise.py`) used the real L1 reward series; here the noise is synthetic. 16 independent births per arm. The statistic compares
 good vs other target edges and cannot see credit that moves the wrong edges. Final held-out seeds are not used.
+
+## Result (run once, 2026-11-01, after this protocol was committed in a34f137; `mechanism-control-result.json`)
+
+**Registered pass rule: PASS (all four conditions).** 16 seeds per arm, runtime 20 s.
+| arm | mean D | sd | z | seeds with D > 0 |
+| --- | --- | --- | --- | --- |
+| positive (kappa 0.2) | 0.001256 | 0.000434 | 11.6 | 16/16 |
+| negative (kappa 0) | 0.000028 | 0.000434 | 0.25 | 8/16 |
+| learning-off | exactly 0 | - | - | weights bit-identical, 0 updates |
+Bounds [0.5, 1.5] and signs held in all learning births.
+
+Reading, with limits: with the pilot's rule and settings, a planted, instantaneous (lag 0) relation of this strength is picked up in the right direction in every seed, and the matched
+no-relation arm does not move toward it. So the mechanism is not broken in this synthetic setting. **The effect is small in absolute terms**: the mean good-vs-other relative edge change is about
+0.13% in 5 s (D = 0.0013), far below the +-50% bounds, and the identical arm without a relation has the same seed-to-seed spread (sd 0.00043). This is a synthetic mechanism test with
+white reward noise and no physical delay, not physical evidence. It does not show the cause of the real births' lack of separation from their noise controls, does not exclude reward/credit
+timing or body-chain causes, and one pass of one cell is not a power calculation.

@@ -140,7 +140,14 @@ def run_birth(args, train_module=train) -> int:
         if args.credit_control is not None:
             sidecar["credit_control"] = args.credit_control
         if scorer is not None:  # v9: how much cycle bonus was credited and how often the reward clipped
-            sidecar["cycle_scoring"] = scorer.summary()
+            # The native train route scores with its own scorer and reports it in report.json; the wrapper scorer stays at
+            # zero steps there. Say which one the numbers come from instead of writing a stale zero as if it were the reward.
+            native = (report or {}).get("cycle_scoring")
+            if scorer.steps == 0 and isinstance(native, dict) and native.get("steps"):
+                sidecar["cycle_scoring"], sidecar["cycle_scoring_source"] = native, "native_report"
+            else:
+                sidecar["cycle_scoring"], sidecar["cycle_scoring_source"] = scorer.summary(), "wrapper_scorer"
+            sidecar["wrapper_scorer_steps"] = scorer.steps
         if args.log_exploration:
             logs = [b.exploration_log() for b in brains if b.exploration_log() is not None]
             if logs and len(logs[-1]["credit"]):
