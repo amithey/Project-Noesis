@@ -3,8 +3,8 @@
 Per probe, "non-inferior" is a conjunction on the SAME probe: standing_fraction >= the other arm's AND mean stance slip <= the other arm's.
 Ties count as non-inferior in both directions, and the reverse direction is counted from the reverse inequalities directly
 (never as ``not`` of the forward count). REAL_BETTER needs median gains >= 0.25 mm in heading and net AND non-inferiority on >= 3
-of the 4 probes; CONTROL_BETTER is the mirror image. Anything else is INDISTINGUISHABLE, which means neither superiority rule
-passed; it is not evidence of equivalence. The first three pair verdicts (docs/workstreams/claude/credit-noise-control) were produced by the
+of the 4 probes; CONTROL_BETTER is the mirror image. Anything else is INDISTINGUISHABLE, which means no superiority was
+demonstrated by either rule; it is not equivalence and not evidence that learning is absent. The first three pair verdicts (docs/workstreams/claude/credit-noise-control) were produced by the
 earlier separate-count rule and are NOT rewritten; ``strict-recomputation.json`` there shows what this rule gives on the same data.
 """
 

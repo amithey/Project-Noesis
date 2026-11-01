@@ -88,4 +88,4 @@
    finite full arrays. No retroactive proof of exit status or resource telemetry exists; this limit stays. Seed 1000 keeps its disclosed wrapper/source-path difference
    although the raw warm-up/exploration equality is now verified by Codex.
 4. **Null wording.** Percentiles are descriptive reference thresholds, not power or a minimum detectable effect (see credit-timing README note).
-5. Three training pairs are the replication units; 12 probe differences are not 12 independent replicates. INDISTINGUISHABLE = neither superiority rule passed, not equivalence.
+5. Three training pairs are the replication units; 12 probe differences are not 12 independent replicates. INDISTINGUISHABLE = no superiority demonstrated by either rule; it is not equivalence and not evidence that learning is absent.

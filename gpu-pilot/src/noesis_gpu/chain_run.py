@@ -19,6 +19,8 @@ import numpy as np
 from .chain_diagnostic import ARMS, ChainBrain, invariance_report, run_arm
 from .run import file_digest, source_digest, timing_steps
 
+HELD_OUT_SEEDS = frozenset({10, 11, 200, 201, 202})  # final validation only; never consumed by this developmental runner
+
 
 def parser():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -37,6 +39,8 @@ def parser():
 
 
 def run(args):
+    if args.seed in HELD_OUT_SEEDS:
+        raise ValueError(f"seed {args.seed} is a held-out validation seed; this developmental runner refuses it")
     n_chunks, physics_steps = timing_steps(args.seconds, args.control_ms, args.physics_dt)
     source = args.noesis_source.resolve()
     if not (source / "noesis" / "lif.py").is_file():

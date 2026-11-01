@@ -46,16 +46,21 @@ For each seed and stage the active arm is "coupled" if reference rank <= 0.05 wi
 coupled in <= 1/5 seeds at that stage. The first stage where this fails after an earlier stage that passed is reported as "weak
 or broken after stage X". No stage result is a statement about walking, about why learning failed, or about weights.
 
-## Heavy-run proposal (for Codex; not started)
-- Seeds 10, 11, 200, 201, 202 (reserved); 5.0 s each (1000 control steps), one process per seed running off, zero, active in sequence on a
-  freshly built body, CPU backend (`--backend cpu`) as in the frozen probes.
+## Amendment 2026-11-01 (before any physical data): held-out seeds removed
+Codex review `8586cbc1c7fb`: seeds 10, 11, 200, 201, 202 are HELD OUT for final validation and must not be consumed by a developmental diagnostic. My first
+proposal (commit d4bd306, preserved in Git history) wrongly listed them; that was a misreading of the reservation in my own acknowledgment. Replaced by the
+development probe seeds below. `chain_run.py` now refuses any held-out seed fail-closed (`HELD_OUT_SEEDS`, test `test_driver_refuses_held_out_seeds...`).
+
+## Heavy-run proposal (amended; for Codex review and the shared lease)
+- Seeds **10006, 10007, 10010, 10011** (the existing development probe seeds); 5.0 s each (1000 control steps); one process per seed running off, zero, active in sequence on a
+  freshly built body, CPU backend.
 - Command per seed: `python -m noesis_gpu.chain_run --noesis-source <42c2076 src> --data <data> --checkpoint <parent> --seed S --seconds 5 --output <new dir>`.
-- Estimate: ~90 s per arm from B1 (8 full 5 s probes in 748 s) plus a connectome load per process: about 5 x (3 x 90 + 40) ~ 1550 s.
-  Requested lease: 2400 s aggregate, 600 s wall cap per seed process (`--wall-seconds 600`).
-- Resource rule: fresh free-RAM check (>= 2 GiB) before every seed; canonical lease owned by Codex or by me with Codex's grant; host inventory checked.
-- Stop at the first technical failure, memory refusal, wall-cap, partial arm or gate-0 failure; no retry, extension, fallback or extra seeds.
-- Outputs: per-seed `chain-{off,zero,active}.npz` + `report.json`; analysis script reads them offline (`chain_report`); artifacts to a
-  GitHub Release with SHA-256 manifest. No weights are written.
+- Estimate: ~90 s per arm from B1 plus a connectome load per process: about 4 x (3 x 90 + 40) ~ 1240 s. Requested lease: 2000 s aggregate, 600 s wall cap per seed process.
+- Reading rule adapts to 4 seeds: "transport reaches stage S" needs the active arm coupled in >= 3/4 seeds (same sign) AND both negative-control arms coupled in <= 1/4 seeds.
+- Resource rule: fresh free-RAM check (>= 2 GiB) before every seed; canonical lease and host inventory checked first; no other heavy job.
+- Stop at the first technical failure, memory refusal, wall cap, partial arm or gate-0 failure; no retry, extension, fallback or extra seeds.
+- Outputs: per-seed `chain-{off,zero,active}.npz` + `report.json`; offline `chain_report`; artifacts to a GitHub Release with SHA-256 manifest. No weights are written.
+- Local tiny-test budget is cumulative: ~250 s used before this amendment, plus the amendment's tests (reported at the end).
 
 ## What the tiny tests cover and do not
 Covered (synthetic 18-neuron network, fake body): arm validation; off == plain frozen brain; zero == off; injected current is bounded and
