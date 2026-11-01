@@ -1,8 +1,6 @@
 import importlib.util
 
-import numpy as np
 import pytest
-
 from noesis_gpu import mechanism_control as mc
 
 pytestmark = pytest.mark.skipif(importlib.util.find_spec("noesis.plasticity") is None, reason="Requires pinned Noesis core")

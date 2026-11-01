@@ -3,7 +3,7 @@ import json
 import sys
 
 sys.path[:0] = [sys.argv[1], "gpu-pilot/src"]
-from noesis_gpu import mechanism_control as mc  # noqa: E402
+from noesis_gpu import mechanism_control as mc
 
 result = mc.run_control(range(16), kappa=0.2, lr=0.2)
 json.dump(result, open(sys.argv[2], "w"), indent=1)

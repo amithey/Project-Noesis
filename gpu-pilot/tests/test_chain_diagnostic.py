@@ -2,12 +2,11 @@ import importlib.util
 
 import numpy as np
 import pytest
+from noesis_gpu import chain_diagnostic as cd
+from noesis_gpu.controller import FrozenBrain
 from test_learning import state
 from test_learning_rate_and_log import HI, LO, REST
 from test_weight_integrity import build
-
-from noesis_gpu import chain_diagnostic as cd
-from noesis_gpu.controller import FrozenBrain
 
 pytestmark = pytest.mark.skipif(importlib.util.find_spec("noesis.circuit_learning") is None,
                                 reason="Requires pinned Noesis core")

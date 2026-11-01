@@ -4,7 +4,7 @@ import json
 import sys
 
 sys.path.insert(0, "gpu-pilot/src")
-from noesis_gpu.pair_decision import classify_pair  # noqa: E402
+from noesis_gpu.pair_decision import classify_pair
 
 D = "docs/workstreams/claude/credit-noise-control/"
 rep = json.load(open(D + "replication-result.json", encoding="utf-8"))

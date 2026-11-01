@@ -6,8 +6,8 @@ PROBES = ("10006", "10007", "10010", "10011")
 
 
 def rows(heading, standing=.95, slip=2.):
-    return {p: dict(standing_fraction=standing, mean_stance_slip_mm_s=slip, heading_forward_distance_mm=heading,
-                    net_forward_displacement_mm=heading) for p in PROBES}
+    return {p: {"standing_fraction": standing, "mean_stance_slip_mm_s": slip, "heading_forward_distance_mm": heading,
+                    "net_forward_displacement_mm": heading} for p in PROBES}
 
 
 def test_separate_counts_cannot_hide_a_two_probe_conjunction():

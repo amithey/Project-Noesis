@@ -1,5 +1,4 @@
 import pytest
-
 from noesis_gpu import chain_run
 
 

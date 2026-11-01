@@ -1,10 +1,9 @@
 import json
 from types import SimpleNamespace
 
-from test_cycle_scoring import COMPLETED, argv, needs_v9
-
 from noesis_gpu import train
 from noesis_gpu.profile_run import SIDECAR, main
+from test_cycle_scoring import COMPLETED, argv, needs_v9
 
 
 def native_train(native):
