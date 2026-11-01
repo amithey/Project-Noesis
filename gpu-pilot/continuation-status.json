@@ -1,5 +1,5 @@
 {
-  "status": "active_L2_full_matched_rate_study_complete_retention_failed",
+  "status": "paused_user_requested_stocktake_20261101",
   "original_training_source_unchanged": true,
   "active_workers": false,
   "source_pin_verified_unchanged": true,
@@ -15,10 +15,9 @@
   "last_training_seed": 1002,
   "last_frozen_seed": 10006,
   "next_steps": [
-    "L2 complete: smallerLR reduced terminal displacement but2/4primary,1/4retention and median heading gain criterion failed; no promotion.",
-    "Diagnose curriculum entry: parent standing.89293 in10010 means stable standing across fourdevelopmentprobes not established; inspect existing standing-stage criteria before more gait parameter sweeps.",
-    "Audit physical reward/retention behavior; no assumed causal fix or lag tuning from uncorrected credit tool.",
-    "Review pending Claude credit/PCA/coverage/null and Gemini sensory delivery repairs; keep candidates independent."
+    "No new training during stocktake pause; see docs/project-status-20261030.md",
+    "Peer tool corrections and sensory handoff before any new integration",
+    "After resumption, preregister fixed-weight exploration transport diagnostic; no current allocation"
   ],
   "comparison": "C:\\Users\\heyma\\OneDrive\\Desktop\\מדעי המחשב\\פרוייקטים\\Project Noesis\\gpu-pilot\\outputs\\exploration-comparison-20261028-2100\\comparison.json",
   "active_plan": "training-plan.md",
@@ -26,7 +25,7 @@
   "plan_revision": "flygym2-brain-only-2026-10-21",
   "legacy_runner_role": "historical controls only; not the active new-body route",
   "app_goal_objective_updated": true,
-  "app_goal_status_observed": "active; full L2 matched-rate experiment complete, scientific rule failed, goal unachieved",
+  "app_goal_status_observed": "paused; user requested stocktake and GitHub cleanup; objective unachieved",
   "curriculum_orchestration_port_complete": false,
   "resume_flag_supported_by_new_commands": false,
   "standing_training_gate_passed": true,
@@ -123,5 +122,39 @@
     "retained_vs_both_probes": 1,
     "model_promoted": false,
     "release": "learning-rate-l2-2026-10-31"
+  },
+  "Claude_delivery_review": {
+    "review": "docs/claude-delivery-review-20261031.md",
+    "raw_result": "docs/claude-noise-review-20261031.json",
+    "source_tests_passed": 79,
+    "full_training_births_recomputed": 6,
+    "full_frozen_probes_recomputed": 24,
+    "model_promoted": false,
+    "pilot_core_changed": false
+  },
+  "standing_baseline_B1": {
+    "status": "complete_both_fail_four_probe_qualification",
+    "result": "docs/standing-baseline-b1-result.json",
+    "anchor_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+    "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "full_frozen_probes": 8,
+    "wall_seconds": 747.984,
+    "anchor_pass_count": 3,
+    "parent_pass_count": 3,
+    "model_promoted": false,
+    "release": "standing-baseline-b1-2026-11-01"
+  },
+  "standing_profile_S1": {
+    "status": "complete_standing_and_walking_method_rules_failed",
+    "result": "docs/standing-profile-s1-result.json",
+    "child_sha256": "5e91a54875de34c1e7c8f52734e16249ad66ee515d1416b3848e982303825f13",
+    "training_seconds": 25,
+    "learning_updates": 4990,
+    "complete_frozen_probes": 12,
+    "wall_seconds": 1660.61,
+    "standing_pass_count": 3,
+    "retained_vs_both_count": 0,
+    "model_promoted": false,
+    "release": "standing-profile-s1-2026-11-01"
   }
 }

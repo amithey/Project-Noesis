@@ -1,0 +1,786 @@
+{
+  "status": "all6full_births_and24frozen_probes_recomputed",
+  "pairs": {
+    "1000": {
+      "implemented": {
+        "verdict": "INDISTINGUISHABLE",
+        "median_dheading": -1.0057720628330409,
+        "median_dnet": -0.88793315288628,
+        "standing_ok": 3,
+        "slip_ok": 2,
+        "same_probes_retained": 2,
+        "reverse_standing_ok": 1,
+        "reverse_slip_ok": 2
+      },
+      "strict_same_probe_symmetric": {
+        "verdict": "INDISTINGUISHABLE",
+        "median_dheading": -1.0057720628330409,
+        "median_dnet": -0.88793315288628,
+        "standing_ok": 3,
+        "slip_ok": 2,
+        "same_probes_retained": 2,
+        "reverse_standing_ok": 1,
+        "reverse_slip_ok": 2
+      },
+      "exploration_exact": {
+        "motor_indices": true,
+        "credit": true,
+        "drive_idx": true,
+        "control_ms": true,
+        "control_chunk_index": true,
+        "drive": true
+      },
+      "prelearning_all19_exact": true,
+      "applied_vs_real_credit_correlation": 0.00023241767319150523,
+      "profile_cycle_scoring_zero_steps": [
+        "control"
+      ],
+      "table": {
+        "real": {
+          "10006": {
+            "standing_fraction": 0.9808080808080808,
+            "mean_stance_slip_mm_s": 2.2272584201283476,
+            "heading_forward_distance_mm": 0.5502199329875463,
+            "net_forward_displacement_mm": 0.6700692739821014,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10007": {
+            "standing_fraction": 0.9040404040404041,
+            "mean_stance_slip_mm_s": 2.5880782873982717,
+            "heading_forward_distance_mm": -0.6286905095514839,
+            "net_forward_displacement_mm": -0.5524027789338584,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10010": {
+            "standing_fraction": 0.9040404040404041,
+            "mean_stance_slip_mm_s": 2.386058042861341,
+            "heading_forward_distance_mm": -0.4322088575553212,
+            "net_forward_displacement_mm": -0.38103242850568314,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10011": {
+            "standing_fraction": 0.9161616161616162,
+            "mean_stance_slip_mm_s": 2.38074203112163,
+            "heading_forward_distance_mm": 0.8909324098678567,
+            "net_forward_displacement_mm": 0.7935246259885657,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          }
+        },
+        "control": {
+          "10006": {
+            "standing_fraction": 0.9616161616161616,
+            "mean_stance_slip_mm_s": 2.316386084991246,
+            "heading_forward_distance_mm": 1.6942490690491545,
+            "net_forward_displacement_mm": 1.4709251352518795,
+            "locomotion_regime": "STEPPING_UNCOORDINATED"
+          },
+          "10007": {
+            "standing_fraction": 0.8616161616161616,
+            "mean_stance_slip_mm_s": 2.548366756994693,
+            "heading_forward_distance_mm": 0.23882448005298978,
+            "net_forward_displacement_mm": 0.4226076655689236,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10010": {
+            "standing_fraction": 0.9414141414141414,
+            "mean_stance_slip_mm_s": 2.1384473884944573,
+            "heading_forward_distance_mm": 1.1792723578152415,
+            "net_forward_displacement_mm": 1.434988342452197,
+            "locomotion_regime": "STEPPING_UNCOORDINATED"
+          },
+          "10011": {
+            "standing_fraction": 0.906060606060606,
+            "mean_stance_slip_mm_s": 2.7229092132542965,
+            "heading_forward_distance_mm": -1.374173239791771,
+            "net_forward_displacement_mm": -1.2887246121688551,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          }
+        }
+      }
+    },
+    "1001": {
+      "implemented": {
+        "verdict": "INDISTINGUISHABLE",
+        "median_dheading": -0.6627729901415452,
+        "median_dnet": -0.5571856518411025,
+        "standing_ok": 2,
+        "slip_ok": 2,
+        "same_probes_retained": 2,
+        "reverse_standing_ok": 2,
+        "reverse_slip_ok": 2
+      },
+      "strict_same_probe_symmetric": {
+        "verdict": "INDISTINGUISHABLE",
+        "median_dheading": -0.6627729901415452,
+        "median_dnet": -0.5571856518411025,
+        "standing_ok": 2,
+        "slip_ok": 2,
+        "same_probes_retained": 2,
+        "reverse_standing_ok": 2,
+        "reverse_slip_ok": 2
+      },
+      "exploration_exact": {
+        "motor_indices": true,
+        "credit": true,
+        "drive_idx": true,
+        "control_ms": true,
+        "control_chunk_index": true,
+        "drive": true
+      },
+      "prelearning_all19_exact": true,
+      "applied_vs_real_credit_correlation": 0.002735943095070915,
+      "profile_cycle_scoring_zero_steps": [
+        "real",
+        "control"
+      ],
+      "table": {
+        "real": {
+          "10006": {
+            "standing_fraction": 0.9747474747474747,
+            "mean_stance_slip_mm_s": 2.2548172622334044,
+            "heading_forward_distance_mm": 0.8224101669226875,
+            "net_forward_displacement_mm": 0.7362526236578917,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10007": {
+            "standing_fraction": 0.9535353535353536,
+            "mean_stance_slip_mm_s": 2.1000496263531634,
+            "heading_forward_distance_mm": 0.8685597979595694,
+            "net_forward_displacement_mm": 0.8818855623644681,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10010": {
+            "standing_fraction": 0.7757575757575758,
+            "mean_stance_slip_mm_s": 2.7563300682076104,
+            "heading_forward_distance_mm": -0.28953803550044577,
+            "net_forward_displacement_mm": -0.058367650472896715,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10011": {
+            "standing_fraction": 0.8111111111111111,
+            "mean_stance_slip_mm_s": 2.7932996212919887,
+            "heading_forward_distance_mm": -0.17458393979211306,
+            "net_forward_displacement_mm": -0.12269722626187071,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          }
+        },
+        "control": {
+          "10006": {
+            "standing_fraction": 0.8333333333333334,
+            "mean_stance_slip_mm_s": 2.6869808346881596,
+            "heading_forward_distance_mm": -0.15467573807145651,
+            "net_forward_displacement_mm": -0.14632262753488723,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10007": {
+            "standing_fraction": 0.8444444444444444,
+            "mean_stance_slip_mm_s": 2.4323907835507743,
+            "heading_forward_distance_mm": 1.8061325036908755,
+            "net_forward_displacement_mm": 1.8794552448275856,
+            "locomotion_regime": "STEPPING_UNCOORDINATED"
+          },
+          "10010": {
+            "standing_fraction": 0.9646464646464646,
+            "mean_stance_slip_mm_s": 2.019244439612139,
+            "heading_forward_distance_mm": 1.312596849073282,
+            "net_forward_displacement_mm": 1.3059801589896567,
+            "locomotion_regime": "STEPPING_UNCOORDINATED"
+          },
+          "10011": {
+            "standing_fraction": 0.9737373737373738,
+            "mean_stance_slip_mm_s": 2.4546326583081917,
+            "heading_forward_distance_mm": 0.21338933475967126,
+            "net_forward_displacement_mm": -0.005895605042783252,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          }
+        }
+      }
+    },
+    "1002": {
+      "implemented": {
+        "verdict": "INDISTINGUISHABLE",
+        "median_dheading": 0.6445113264178771,
+        "median_dnet": 0.525533709455783,
+        "standing_ok": 3,
+        "slip_ok": 2,
+        "same_probes_retained": 2,
+        "reverse_standing_ok": 1,
+        "reverse_slip_ok": 2
+      },
+      "strict_same_probe_symmetric": {
+        "verdict": "INDISTINGUISHABLE",
+        "median_dheading": 0.6445113264178771,
+        "median_dnet": 0.525533709455783,
+        "standing_ok": 3,
+        "slip_ok": 2,
+        "same_probes_retained": 2,
+        "reverse_standing_ok": 1,
+        "reverse_slip_ok": 2
+      },
+      "exploration_exact": {
+        "motor_indices": true,
+        "credit": true,
+        "drive_idx": true,
+        "control_ms": true,
+        "control_chunk_index": true,
+        "drive": true
+      },
+      "prelearning_all19_exact": true,
+      "applied_vs_real_credit_correlation": -0.0006889145774644299,
+      "profile_cycle_scoring_zero_steps": [
+        "real",
+        "control"
+      ],
+      "table": {
+        "real": {
+          "10006": {
+            "standing_fraction": 0.8727272727272727,
+            "mean_stance_slip_mm_s": 2.6851787380438026,
+            "heading_forward_distance_mm": 0.3513221661451883,
+            "net_forward_displacement_mm": 0.42197041697551685,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10007": {
+            "standing_fraction": 0.9818181818181818,
+            "mean_stance_slip_mm_s": 1.9245469189625017,
+            "heading_forward_distance_mm": 1.207912310428047,
+            "net_forward_displacement_mm": 1.5080552636712605,
+            "locomotion_regime": "STEPPING_UNCOORDINATED"
+          },
+          "10010": {
+            "standing_fraction": 0.8171717171717172,
+            "mean_stance_slip_mm_s": 2.6735592301264353,
+            "heading_forward_distance_mm": 1.133531499780661,
+            "net_forward_displacement_mm": 1.5180515582814973,
+            "locomotion_regime": "STEPPING_UNCOORDINATED"
+          },
+          "10011": {
+            "standing_fraction": 0.9444444444444444,
+            "mean_stance_slip_mm_s": 2.567974337293635,
+            "heading_forward_distance_mm": 0.4055000379266279,
+            "net_forward_displacement_mm": 0.22753096404807951,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          }
+        },
+        "control": {
+          "10006": {
+            "standing_fraction": 0.8333333333333334,
+            "mean_stance_slip_mm_s": 2.2177644443220093,
+            "heading_forward_distance_mm": 0.4555492706637417,
+            "net_forward_displacement_mm": 0.8873329027039065,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10007": {
+            "standing_fraction": 0.907070707070707,
+            "mean_stance_slip_mm_s": 2.068289071198625,
+            "heading_forward_distance_mm": -0.02127526839935112,
+            "net_forward_displacement_mm": 0.07924436664252318,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10010": {
+            "standing_fraction": 0.9313131313131313,
+            "mean_stance_slip_mm_s": 1.9990433670184453,
+            "heading_forward_distance_mm": 0.10916684845895436,
+            "net_forward_displacement_mm": 0.38701496632309634,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          },
+          "10011": {
+            "standing_fraction": 0.8242424242424242,
+            "mean_stance_slip_mm_s": 2.9048419936852024,
+            "heading_forward_distance_mm": 0.14084203641258028,
+            "net_forward_displacement_mm": 0.3075001370949144,
+            "locomotion_regime": "STEPPING_IN_PLACE"
+          }
+        }
+      }
+    }
+  },
+  "weights": {
+    "1000": {
+      "norm_real": 253.58414368945878,
+      "norm_control": 177.60320806718252,
+      "cosine": 0.08759840825913062
+    },
+    "1001": {
+      "norm_real": 222.12293605429406,
+      "norm_control": 240.94348553761503,
+      "cosine": 0.10940904096651072
+    },
+    "1002": {
+      "norm_real": 219.13841921858676,
+      "norm_control": 198.09793583007325,
+      "cosine": -0.014180600157216231
+    }
+  },
+  "overall_verdict": "INDISTINGUISHABLE",
+  "pooled_median_heading": -0.24610018953516885,
+  "pooled_median_net": -0.29108205347373856,
+  "independent_training_pairs": 3,
+  "pooled_probe_differences": 12,
+  "probe_differences_are_not_12_independent_training_replicates": true,
+  "receipt_limits": [
+    {
+      "directory": "credit-noise-control-20261031",
+      "jobs": 5,
+      "jobs_without_exit_code": 5
+    },
+    {
+      "directory": "credit-noise-replication-20261031",
+      "jobs": 20,
+      "jobs_without_exit_code": 20
+    }
+  ],
+  "bank_sha256": {
+    "1000-real": "ab4cf13f3a7908ae36e87826267ba8f9c13a2134562cdae1fd4d191c48db0641",
+    "1000-control": "e5f8155bc1dc648fb88ca6c29916838e88d76c29e815d823bbe011ee7135c77b",
+    "1001-real": "bec6241c3b82fbda479bff41a236ae282194512056e633e2d74dc0fe7a5c62e2",
+    "1001-control": "45af1e2b083161963e8af39327b4f09a08d972cbd80f27d72b0083b55e1d5e29",
+    "1002-real": "2491a15cf46d92a5b5ad85476bae3a3e4f35540cc41b7dad0c15b86a1a2a2a38",
+    "1002-control": "2d4cb2062c82e724de8cf7e98087c209483b63f7f3ce50670cef168a094c51a3"
+  },
+  "raw_files": [
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10006/observations.npz",
+      "bytes": 927299,
+      "sha256": "b50b0da55fc09816162aa90b1ec9acefdd67e6989fabc972d923414546703199"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10006/report.json",
+      "bytes": 7864,
+      "sha256": "a9bac036e020e0413d929a36ed38de8043abd8d3a3285a1b3a861f694a4833e8"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10007/observations.npz",
+      "bytes": 927927,
+      "sha256": "8ef5deec68d1eec1c11390f0e70526f867e77e356790b2ed0ad22ad3cab39ef5"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10007/report.json",
+      "bytes": 7866,
+      "sha256": "8163a6861d8cbd61184852886705acfb683e1e35af269350932db2bf926e54ab"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10010/observations.npz",
+      "bytes": 927894,
+      "sha256": "834cfa3b31d5a9166e1f564318d080bdfdcd64ecfcafbe9a10d2a90b627a98b7"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10010/report.json",
+      "bytes": 7866,
+      "sha256": "ba34ce4df0cb5588abefc2080c4d3821650ba2847875b3d79bf03dd79b41442b"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10011/observations.npz",
+      "bytes": 925697,
+      "sha256": "c9266539610d16da357493e60ab11703060e16348631975e155505754bc6e046"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/frozen-control-child25-10011/report.json",
+      "bytes": 7863,
+      "sha256": "2a8a486d68348a22fc8eafdc3f043ee011e0f69dd001b7efc7b844341187692b"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/receipts.json",
+      "bytes": 1004,
+      "sha256": "60f0eddc5c92c1f7e38db0b68950569e4c3375171b1845702ed049c7dafb4c2c"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/result.json",
+      "bytes": 33,
+      "sha256": "8c09fddc457e6c40b7d3333f01488081d5ccf0e86fa0ef3861450061c8d6e71a"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/train25-control/exploration-log.npz",
+      "bytes": 15116441,
+      "sha256": "9f24405a89673106ab256bd70fc13fe71c2312a734f35a6f95aa30754174b2ce"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/train25-control/profile-run.json",
+      "bytes": 866,
+      "sha256": "0190fce6557d75363fe91522355f70a3f0766f0b50bfa81c76f826a7bb1f642a"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/train25-control/report.json",
+      "bytes": 2909,
+      "sha256": "9a1d2557c56ef3216f6a44c565a5d15ff3a8ad10c78e97b68fea4afc3dad5992"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/train25-control/training-observations.npz",
+      "bytes": 6302079,
+      "sha256": "db4fa831584c34498401a6cc756f5adce95584184bcb750866eea65cc7e8cb11"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/train25-control/weights-last.model.json",
+      "bytes": 2405,
+      "sha256": "542fc7cf2ced4ba0997705b3f8e8048dbbc3be7700556188397c65b0550518df"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-control-20261031/train25-control/weights-last.npz",
+      "bytes": 1070659,
+      "sha256": "e5f8155bc1dc648fb88ca6c29916838e88d76c29e815d823bbe011ee7135c77b"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10006/observations.npz",
+      "bytes": 927807,
+      "sha256": "d974334af891be2dc2ca8b4e31eeb3c440a8c003f9b6130a1ac964d4f5d55fc1"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10006/report.json",
+      "bytes": 7880,
+      "sha256": "e1334027ffe7653e78c4dd6b2cfe62f27aef7347aef0637e95ebc038fdb239d8"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10007/observations.npz",
+      "bytes": 926060,
+      "sha256": "2b6330c58df1d78c09a714847937bc855827e2925b984e8ae791e5fe9e020dc8"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10007/report.json",
+      "bytes": 7873,
+      "sha256": "8bbd3cb50a1f0e25ed4b5d80089c8aab43449467ee68baa22bf0895b11b5bc31"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10010/observations.npz",
+      "bytes": 928089,
+      "sha256": "5cf4069c25cca86f4aa393db6dd0c5578451d7d2746bc0d1b590d5007105c469"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10010/report.json",
+      "bytes": 7873,
+      "sha256": "ea14454e7fe177655c0e007d8056ea03f95bfdcc1758b8217c4bd70cb75f1cc1"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10011/observations.npz",
+      "bytes": 927950,
+      "sha256": "34dcd7793820dcc10d11e3e1c42434b7e114559e2a8470039658a5488732ebb8"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1001-10011/report.json",
+      "bytes": 7871,
+      "sha256": "1616749132015d9140c55f506c454ee8add1db8ae26b812dbb257d66ea5cdcb9"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10006/observations.npz",
+      "bytes": 926349,
+      "sha256": "f11bedb1753d2de99df59e91edae2f4c52ce240663733902afd9cd5882ba46b8"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10006/report.json",
+      "bytes": 7873,
+      "sha256": "1d75a8e520d34ac9803006f541f2c235cfcd0975f74a2b7a6a71050231fe33f2"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10007/observations.npz",
+      "bytes": 929138,
+      "sha256": "83b627061d63fdf7cc0cec354146919a2d0aa00794488b02c0de2541de67bcec"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10007/report.json",
+      "bytes": 7871,
+      "sha256": "14e52abf46c47894d2db61fbe777dcffa67839329226bf23a1dad36bba217130"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10010/observations.npz",
+      "bytes": 927587,
+      "sha256": "e48e3b1ea18c43fee1eb4cf6e0a0775cd3c3c11e5605ff179d63bb513b6f7531"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10010/report.json",
+      "bytes": 7873,
+      "sha256": "44f9da7e4308e4ed41a6580b0d49f03ba697253b1463e216b9b9822f7b2677ad"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10011/observations.npz",
+      "bytes": 923384,
+      "sha256": "186446b67160096f3abc7ee1d6f0a3d18664d3787b04104d730da4613cc64923"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-control-1002-10011/report.json",
+      "bytes": 7874,
+      "sha256": "8f379b3ff3b4a675e4bd5a3babdebc7b82d6c2f2b37488ade59d720e6f1375e7"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10006/observations.npz",
+      "bytes": 926480,
+      "sha256": "eb12132b3383486a38ee5a881092e77f96f773991cdd97da180e44d6b08feb9d"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10006/report.json",
+      "bytes": 7869,
+      "sha256": "0102b576c01fb70dfe01eb35a313dc2561023b52ab7af048e2e2fb9eff47a0d5"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10007/observations.npz",
+      "bytes": 925724,
+      "sha256": "3caad440e5e8856214cc2a9d7452a0e2c477d36c95d8d35b2a7a335531c0d4ba"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10007/report.json",
+      "bytes": 7871,
+      "sha256": "1d4c9e9ac9167c7868ce2475d71162fea1ef0aea21f7a92eedad859904d7be30"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10010/observations.npz",
+      "bytes": 928658,
+      "sha256": "68f46f28adb0a66058eb8bd5f3a558c87b2690c9353b214ae599745f385344ce"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10010/report.json",
+      "bytes": 7870,
+      "sha256": "edf3e8b506a35e2ec04624508b7cec2918e64ef1daec0a0a4e9bea6436d5f8db"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10011/observations.npz",
+      "bytes": 925118,
+      "sha256": "67db637c61a41a81d4cd06fa9b8d59f9c7ec202681b0dab1914b173a0ae464bd"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1001-10011/report.json",
+      "bytes": 7871,
+      "sha256": "5b3655b1ca07a9a33985646dd5ceae9e62c79448f01a23291d4a38e13cb582b2"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10006/observations.npz",
+      "bytes": 927292,
+      "sha256": "d1e405fe33bcc8b1b7b37ef7ef392cd293944e0fbc03bc921844e30390034098"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10006/report.json",
+      "bytes": 7870,
+      "sha256": "c64c5594201979c3023a561fc8da75100fc64ccdc9fdb61b2aa58274dee6de57"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10007/observations.npz",
+      "bytes": 928115,
+      "sha256": "4a52abf508920a9d935cab792dbdb638f2ee0b2b0f85ec90a210c2eebaacb8fe"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10007/report.json",
+      "bytes": 7869,
+      "sha256": "1315cae7381cd2270adf33c9b9e2be3393aeb152acc078fbea7e70c64d558a90"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10010/observations.npz",
+      "bytes": 926667,
+      "sha256": "e2941c6023ef01b0a1639d5d239e00fbee5f0238dc801c6e6b20838b7cc8cbcc"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10010/report.json",
+      "bytes": 7866,
+      "sha256": "a5a4883c8911d444ff32581132192afbfc73e3c1669de8ce6f070a4083bc841f"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10011/observations.npz",
+      "bytes": 927208,
+      "sha256": "372a04acf9045757cafe3a195c530c3482f9a9b3b25082e4faa88ed44ce1e29c"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/frozen-real-1002-10011/report.json",
+      "bytes": 7870,
+      "sha256": "a4c4b044c70d3c00cb5f153c2599313997270e0b97e639d9f8043822cff797a6"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/receipts.json",
+      "bytes": 3930,
+      "sha256": "dcb162aa0e19eac36b747fdd51838d3b0452834564ee975761684a3af21d682f"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/result.json",
+      "bytes": 33,
+      "sha256": "8c09fddc457e6c40b7d3333f01488081d5ccf0e86fa0ef3861450061c8d6e71a"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1001/exploration-log.npz",
+      "bytes": 15116296,
+      "sha256": "73314d1a4c216d133222ed4e10799897f06af158fb86025f828edcdbc8c412d6"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1001/profile-run.json",
+      "bytes": 866,
+      "sha256": "1afd58a4e018346ea47dc9bb0179afdb06891f094a67201734f68dd62bd25b55"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1001/report.json",
+      "bytes": 2911,
+      "sha256": "6c1083cfa78dc72e8002a4b10d31382f4acbc8c7d2fd21e7d7d32a8fcd0c721b"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1001/training-observations.npz",
+      "bytes": 6282285,
+      "sha256": "03214e152538ef9988b1393a958ac0ea110cfb2e298c2ef715aedb94540b1a82"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1001/weights-last.model.json",
+      "bytes": 2398,
+      "sha256": "096789c4458d18b5c3ae1a200f725605349582852bd7eb177db673266b4be149"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1001/weights-last.npz",
+      "bytes": 1057165,
+      "sha256": "45af1e2b083161963e8af39327b4f09a08d972cbd80f27d72b0083b55e1d5e29"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1002/exploration-log.npz",
+      "bytes": 15117721,
+      "sha256": "c5f78516d20b5c4b0d34bc945bb85616f8da6c4ddbdc9d58cac53d7fb033c66f"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1002/profile-run.json",
+      "bytes": 866,
+      "sha256": "d1ba6c7980091c96217f41612d927a9b96a91653b6ea02d42d391713cfbe64b7"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1002/report.json",
+      "bytes": 2914,
+      "sha256": "62c97c366faa7afe8f816b4a6db30685340dd97dfa217efba8a1197a37bbdddc"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1002/training-observations.npz",
+      "bytes": 6274950,
+      "sha256": "7b869fa8a1464d8d82c4be19c4dc3d251f3be91a97848631aaf95cda5a4b563a"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1002/weights-last.model.json",
+      "bytes": 2401,
+      "sha256": "fa101a24abd52414de94528921cd3c1d4aa9b34398d148b181ac0da33f91da7c"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-control-1002/weights-last.npz",
+      "bytes": 1062211,
+      "sha256": "2d4cb2062c82e724de8cf7e98087c209483b63f7f3ce50670cef168a094c51a3"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1001/exploration-log.npz",
+      "bytes": 9244276,
+      "sha256": "a43205a740a88e64506265d6cedc24f7e46756280eeb78ff4af38b6898d141f8"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1001/profile-run.json",
+      "bytes": 830,
+      "sha256": "f8d8cfee743eee7fd044adaf898260af0eff4159462727798a20b170a0a332cb"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1001/report.json",
+      "bytes": 2915,
+      "sha256": "cf48b56d62799a99c52357f6d921dbd27819f24d5a99896405da212d60290340"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1001/training-observations.npz",
+      "bytes": 6275353,
+      "sha256": "e3bfee53c5747d34127b6f33f6f8f9f30d29becace169dfa0ad22ffff9353db0"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1001/weights-last.model.json",
+      "bytes": 2405,
+      "sha256": "7728c73f91848fc5571e724bfb823a63eb4f9544decbe45002adfddaa391e370"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1001/weights-last.npz",
+      "bytes": 1063686,
+      "sha256": "bec6241c3b82fbda479bff41a236ae282194512056e633e2d74dc0fe7a5c62e2"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1002/exploration-log.npz",
+      "bytes": 9245370,
+      "sha256": "2e0993e0e398c0f32c8b42206c70a234198dd2139b3a6838084767a771fd8f7f"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1002/profile-run.json",
+      "bytes": 830,
+      "sha256": "7d450f9e87e44fa59aaac82410f3a703a0b35a2d04709bafc62b55173e0356e9"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1002/report.json",
+      "bytes": 2915,
+      "sha256": "68154e79d300bb166d150c5ac1e6dcb5386259b7dfaaa5b1a0c14651d74c959a"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1002/training-observations.npz",
+      "bytes": 6290470,
+      "sha256": "4b023d0229963e8367191fccfe6e07136831bde30b548283e020f7641d321636"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1002/weights-last.model.json",
+      "bytes": 2404,
+      "sha256": "bf3ee568be6645a9458d87ea2cb1c431850ba4db6b93cc211465657b49548e7f"
+    },
+    {
+      "path": "gpu-pilot/outputs/credit-noise-replication-20261031/train25-real-1002/weights-last.npz",
+      "bytes": 1068934,
+      "sha256": "2491a15cf46d92a5b5ad85476bae3a3e4f35540cc41b7dad0c15b86a1a2a2a38"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10006/observations.npz",
+      "bytes": 927189,
+      "sha256": "94c44b28dcbdf3b360f24345f051148e44e439dbaa35d42756d9f6c52a41d19d"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10006/report.json",
+      "bytes": 7853,
+      "sha256": "3a12864e2344af866e9bea320202b5827ed77a01d522fdf1c422b609f6a499c5"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10007/observations.npz",
+      "bytes": 931127,
+      "sha256": "3e1206fabbac896777803aab058e8960952b9893be723cf4ea0ce28d45a69d94"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10007/report.json",
+      "bytes": 7859,
+      "sha256": "967d7f6bf1cd8bf97326d8e6c0b26f4afad5154750d011e03b3bcfb87b2ec9de"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10010/observations.npz",
+      "bytes": 926665,
+      "sha256": "82189d963565497989d9b8d82a15c56c8312cbe5564903deae96be3142405642"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10010/report.json",
+      "bytes": 7858,
+      "sha256": "8848b5986b44e2c5601d3255c78804cfe0d5cefe6f769b7d268be8ccd179684f"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10011/observations.npz",
+      "bytes": 924574,
+      "sha256": "0bdc958159d2d949f00b8905df9e31d0b2cabd7891ea7ae57cbb30d44cc2d855"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/frozen-child25-10011/report.json",
+      "bytes": 7855,
+      "sha256": "ebfd5c3862d4b4f70be4293422b8d59c23ee543f3d3df050715506c50c3d62f8"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/train25/exploration-log.npz",
+      "bytes": 9245093,
+      "sha256": "bf563194c42d0bc9fe10a7c68b4387a8572dbb4ccc74366b387f2894175f4e8d"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/train25/report.json",
+      "bytes": 2829,
+      "sha256": "e59d36a149880eb0c9ccf51a55e36c781d4cfc47ea1280e9dbd66df937b19e4b"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/train25/training-observations.npz",
+      "bytes": 6293432,
+      "sha256": "98c0fc5c8c5d3767ff714a1b66003a0e3d20cf3f59b0f4e99079a6eedfe9e7bc"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/train25/weights-last.model.json",
+      "bytes": 2333,
+      "sha256": "9fef1b557bfba5c1c8e9714d6a324fe80c5e050445e62d1c3df609267f748037"
+    },
+    {
+      "path": "gpu-pilot/outputs/duration-t1b-guarded-20261031/train25/weights-last.npz",
+      "bytes": 1069851,
+      "sha256": "ab4cf13f3a7908ae36e87826267ba8f9c13a2134562cdae1fd4d191c48db0641"
+    },
+    {
+      "path": "gpu-pilot/outputs/e4-exploration-20261029/train-control-1000/weights-last.npz",
+      "bytes": 1031284,
+      "sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c"
+    }
+  ],
+  "model_promoted": false,
+  "walking_proven": false,
+  "scope": "Descriptive failure to meet superiority rule; not equivalence or absence-of-credit proof; no retrospective Codex resource/exit-code validation"
+}

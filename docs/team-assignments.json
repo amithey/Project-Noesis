@@ -17,7 +17,7 @@
       "id": "codex",
       "issue": 18,
       "branch": "codex/training-pilot-20261028",
-      "assignment_status": "L2_complete_retention_failed_next_curriculum_reward_diagnosis",
+      "assignment_status": "paused_for_user_requested_stocktake",
       "role": "Standing and walking, overall training plan, integration and exclusive simulation scheduling",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/train.py",
@@ -29,14 +29,16 @@
         "gpu-pilot/training-plan.json",
         "gpu-pilot/training-plan.md"
       ],
-      "managed_session_status": ""
+      "managed_session_status": "",
+      "next_deliverable": "Stocktake complete; goal paused, no simulation allocation; future fixed-weight transport protocol only after resumption",
+      "activity_verified": false
     },
     {
       "id": "claude",
       "provider": "Anthropic",
       "issue": 19,
       "branch": "claude/learning-retention",
-      "assignment_status": "credit_timing_fix_delivery_pending_fresh_ack",
+      "assignment_status": "new_delivery_reviewed_changes_requested_with_physical_result_reproduced",
       "role": "Neural learning, existing reward objectives and checkpoint invariants",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/learning.py",
@@ -50,21 +52,30 @@
       "managed_checkout": "outputs/team-dev-claude-r2",
       "managed_branch": "codex/team-claude-retention-r2",
       "independent_branch": "claude/learning-retention",
-      "independent_commit": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
-      "independent_observation": "Actual normalized signal accepted by exact replay parity only; full tool awaits PCA invariance, leg assignment coverage, null/provenance corrections.",
-      "independent_commit_pending_review": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac: normalizer parity verified, whole tool held for PCA/null/provenance",
+      "independent_commit": "0f542eb1a6d4d6876a43ea70f66924ad5e2d430f",
+      "independent_observation": "79isolated-source tests and sixfullbirth/24frozen raw noise audit completed; no superiority, not equivalence/no-signal proof; code/provenance/wording fixes requested",
+      "independent_commit_pending_review": "Current delivered source review completed; outstanding fixes listed in new review",
       "normalizer_review": "docs/credit-timing-normalizer-review.json",
       "leg_assignment_review": "docs/leg-assignment-audit-20261030.json:221/389 logged leg MNs unassigned due exact region keys excluding .NO_CONS; nerve-first changes0; correction requested, not integrated",
       "display_name": "Opus / Claude",
-      "next_deliverable": "One reviewed PR +3existing-log analysis; no new training births",
-      "current_owned_scope": "credit_timing analysis tool, its tests and docs in independent branch; learning/reward/core files require a separately reviewed proposal"
+      "next_deliverable": "First correct joint/tie decisions, sidecar and null wording in own tools; then propose actual sensory source/hook under reported transfer",
+      "current_owned_scope": "credit_timing analysis tool, its tests and docs in independent branch; learning/reward/core files require a separately reviewed proposal",
+      "delivered_commits": {
+        "credit_timing": "77a3fa93ccba1d4d4f488bd8d6f3a4397b945629",
+        "credit_noise": "0f542eb1a6d4d6876a43ea70f66924ad5e2d430f",
+        "senses": "059750103bce98748a6719e8ac12675dfa8f5499",
+        "reward_variance": "dc12cad5b0f35ce70018af287f08f57283c29ae9"
+      },
+      "review": "docs/claude-delivery-review-20261031.md",
+      "reported_senses_assignment_source": "TEAM and issue20 comment6548732015, user directive reported by Claude",
+      "activity_verified": false
     },
     {
       "id": "gemini",
       "issue": 20,
       "branch": "gemini/flygym2-gait-validation",
-      "assignment_status": "committed_delivery_reviewed_changes_requested",
-      "role": "Independent physical metrics, frozen evaluation and later body/sensory validation",
+      "assignment_status": "handoff_requested_after_reported_user_senses_transfer_to_Claude",
+      "role": "Existing senses handoff and independent physical measurement review; no overlapping sensory implementation",
       "primary_files": [
         "gpu-pilot/src/noesis_gpu/evaluate.py",
         "gpu-pilot/src/noesis_gpu/gait_metrics.py",
@@ -85,26 +96,26 @@
       "managed_branch": "codex/team-gemini-senses-r2",
       "independent_evidence_message": "4686bbfbb67e",
       "independent_observation": "Committed source/report now readable;44isolated unit tests passed. Adapter/test identical to integration after newline normalization. Python manifest entries hashCRLF notGitLF; candidate/raw evidence/protocol corrections still needed.",
-      "next_deliverable": "Correct manifest/report/protocol and supply runnable candidate+paired raw evidence per issue20review6525598346",
+      "next_deliverable": "Hand off existing senses evidence; independently audit physical metrics using existing B1/S1 archives; no overlapping sensory implementation",
       "independent_commit": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
       "review": "docs/gemini-sensory-review-4a78e0b.json",
       "historical_reported_branch": "feature/habitat-in-view",
-      "current_owned_scope": "sensory adapter candidate, tests and delivery docs/evidence in independent branch; no uncoordinated controller/evaluation edits"
+      "current_owned_scope": "Own handoff/evidence docs and new independent analysis scripts/tests; coordinate before modifying existing shared evaluation/controller files",
+      "activity_verified": false
     }
   ],
   "active_round": {
-    "name": "L2_LR0.02vs0.2_matched25s",
-    "status": "completed_scientific_rule_failed",
+    "name": "S1_standing_v7_vs_gripped_v9_matched25s",
+    "status": "complete_standing_and_walking_rules_failed",
     "simulation_owner": "codex",
-    "protocol": "docs/lr-l2-protocol.md",
-    "result": "docs/lr-l2-result.json",
-    "output": "gpu-pilot/outputs/learning-rate-l2-20261031",
-    "requested_seconds": 25,
-    "completed_seconds": 25,
+    "protocol": "docs/standing-profile-s1-protocol.md",
+    "result": "docs/standing-profile-s1-result.json",
+    "output": "gpu-pilot/outputs/standing-profile-s1-20261101",
+    "training_seconds": 25,
     "learning_updates": 4990,
     "frozen_probes_run": 12,
     "budget_seconds": 3600,
-    "actual_wall_seconds": 1530.453,
+    "actual_wall_seconds": 1660.61,
     "model_promoted": false
   },
   "parallel_development": {
@@ -124,7 +135,7 @@
   },
   "training_review": {
     "date": "2026-10-30",
-    "status": "L2_full_rate_study_complete_progress_without_retained_stability",
+    "status": "S1_profile_replacement_not_retained_despite_median_progress_gain",
     "proposal": "docs/training-reset-20261030.md",
     "hypothesis": "Conservative learning-rate fine-tuning with retention gate",
     "learning_rate_control": 0.2,
@@ -134,7 +145,7 @@
     "runtime_diagnostic": "docs/runtime-diagnostic-d1-result.json",
     "runtime_profile": "docs/runtime-profile-d2-result.json",
     "full_training_reproducibility": "docs/logging-parity-d3-result.json",
-    "current_priority": "Inspect curriculum standing entry and actual reward/retention diagnostics before more parameter sweeps; no new allocation.",
+    "current_priority": "Stocktake complete; goal paused, no simulation allocation; future fixed-weight transport protocol only after resumption",
     "credit_diagnostic": "docs/credit-diagnostic-c1-result.json",
     "credit_replication": "docs/credit-replication-c2-result.json",
     "next_proposal": "docs/duration-learning-proposal-20261030.md",
@@ -157,7 +168,7 @@
     "model_promoted": false
   },
   "resource_schedule": {
-    "status": "L2_complete_lease_released_no_simulation_allocated",
+    "status": "paused_user_stocktake_no_simulation_allocated",
     "summary": "docs/resource-r1-result.json",
     "watcher_active": false,
     "simulation_active": false,
@@ -169,10 +180,25 @@
   "current_integration_branch": "codex/training-pilot-20261028",
   "experimental_core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
   "historical_fields_note": "implementation_baseline, core_commit, active_round and managed_* fields preserve prior setup/results; current_queue and resource_schedule describe the current queue, not live agent activity. Experimental runtime core is experimental_core_commit.",
-  "updated_date": "2026-10-31",
+  "updated_date": "2026-11-01",
   "current_queue": {
-    "codex": "Audit standing-stage entry and reward/retention behavior after complete T1B/L2 failures; review delivered peer repairs",
-    "claude": "One credit-timing repair PR using three existing logs; fresh acknowledgement pending",
-    "gemini": "One sensory delivery repair after4a78e0b review; fresh acknowledgement pending"
+    "codex": "Stocktake complete; goal paused, no simulation allocation; future fixed-weight transport protocol only after resumption",
+    "claude": "First correct joint/tie decisions, sidecar and null wording in own tools; then propose actual sensory source/hook under reported transfer",
+    "gemini": "Hand off existing senses evidence; independently audit physical metrics using existing B1/S1 archives; no overlapping sensory implementation"
+  },
+  "stocktake": {
+    "date": "2026-11-01",
+    "goal_status": "paused",
+    "starting_commit": "54ddbd60d86ee02a2a9fe579831e635a3174c2cc",
+    "historical_prs": "1-15 closed without merge or branch deletion",
+    "open_prs": [
+      16,
+      21,
+      22,
+      23,
+      24,
+      25
+    ],
+    "peer_activity": "not inferred; acknowledgment requested"
   }
 }

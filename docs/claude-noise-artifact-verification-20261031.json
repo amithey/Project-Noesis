@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "digest": "sha256:2ae35e4105765852261f55806035f76d933e713c34ac6d13a4baf1c03e0a036a",
+      "name": "claude-credit-noise-evidence.zip",
+      "size": 132016429,
+      "verified": true
+    },
+    {
+      "digest": "sha256:de8346f7c44bcc95e7677a800f4d2c295b734c05e38050f4927569782b890cc4",
+      "name": "claude-credit-noise-manifest.json",
+      "size": 35167,
+      "verified": true
+    }
+  ],
+  "url": "https://github.com/amithey/Project-Noesis/releases/tag/claude-credit-noise-review-2026-10-31",
+  "local_zip_crc_and_all88_file_hashes_verified": true,
+  "model_promoted": false
+}
