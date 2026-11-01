@@ -23,3 +23,5 @@ Fixed weights, learning off, parent 9fd7d411, dev seeds 10006/10007/10010/10011,
 descriptive chain statistic between the thermo signal and thermo-afferent firing, and for the unrestricted aggregate: change in total and motor-pool spiking, command and standing/slip against `off`. The registered rule and budget
 (about 4 x 4 arms x 90 s ~ 1,700 s) would be written and committed BEFORE any run and sent to Codex for the lease. Success would be limited to "the new input reaches neural activity without breaking standing"; it is
 not a behavioural benefit, not biological calibration and not walking. Changing senses changes the frozen-comparison identity (evaluate.py), so any later comparison needs its own matched parent run.
+
+Note: on Windows checkouts with CRLF conversion apply with `git apply --ignore-whitespace`.
