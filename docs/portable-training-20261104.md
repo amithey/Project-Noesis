@@ -49,7 +49,16 @@ $core = (Resolve-Path 'noesis-core\src').Path
 $data = 'D:\NoesisData'
 ```
 
-Populate the licensed connectome dataset separately using the pinned core's data instructions. The expected raw FlyWire inputs include `data/raw/neurons.csv` and `data/raw/connections_princeton.csv`. Use the matching data version and layout. The release excludes licensed raw datasets, derived caches and local virtual environments.
+Copy the four licensed inputs from your existing machine by private transfer. The corrected brain loader requires BANC, FAFB and MANC. The checkpoint contains weights and requires the same graph to be rebuilt. Pass the directory containing raw, fafb and manc as --data.
+
+| File on original computer, relative to Project Noesis | Path under the new data directory | SHA-256 |
+| --- | --- | --- |
+| `data/raw/neurons.csv` | `raw/neurons.csv` | `e69521d87c9579af5d883c0c5d6d829a6fbb57e5635c98f8b7568841894e0967` |
+| `data/raw/connections_princeton.csv` | `raw/connections_princeton.csv` | `cbf82584360efcab16ec1d43ea2333dbe661a1d98856bc33dfcdaa10f0589e5f` |
+| `data/fafb/connections_princeton.csv.gz` | `fafb/connections_princeton.csv.gz` | `445f996bf6c4b1803b9ba186189138a3061ff8623aa94c0abcf38af30a5bd48b` |
+| `MANC/connections_princeton.csv` | `manc/connections_princeton.csv` | `9683cae8c9b3db87a979b78fdddd12d4b8119a444caf9a9bee9fac82f98ca6e3` |
+
+Use the four exact files above. The code builds its caches in the run directory. Keep the licensed inputs outside Git and GitHub Releases.
 
 ## Check the machine before training
 
