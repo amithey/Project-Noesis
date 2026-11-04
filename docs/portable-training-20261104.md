@@ -7,6 +7,15 @@ The [portable training release](https://github.com/amithey/Project-Noesis/releas
 - Starting bank: completed experimental parent `9fd7d411…`. The bootstrap also includes experimental C2 `d7013c88…` and historical standing ancestor `fb80cfcc…`.
 - A partial bank is evidence of an interrupted episode. The project has no validated-best bank and starts a fresh episode from a completed checkpoint.
 
+## Download while the release is a draft
+
+Sign in to GitHub with an account that can edit this repository and open the
+[draft release](https://github.com/amithey/Project-Noesis/releases/tag/untagged-c48beb90cc6d01c18b87).
+Download `noesis-bootstrap.zip` and `manifest.json` into a local `downloads/` folder.
+Download `noesis-pilot-evidence.zip` as well if you want the complete pilot evidence.
+The tag-based download command below applies after publication. Skip that line
+when you already downloaded the files from the draft.
+
 ## Install on Windows
 
 Use an empty working directory, Git, GitHub CLI and Python 3.12. Replace the data path below with your actual path.
