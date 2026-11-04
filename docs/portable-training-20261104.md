@@ -16,6 +16,10 @@ Download `noesis-pilot-evidence.zip` as well if you want the complete pilot evid
 The tag-based download command below applies after publication. Skip that line
 when you already downloaded the files from the draft.
 
+## Start the agent
+
+Download the goal package from the same draft. Open the restored project in Codex and paste the complete contents of [noesis-agent-goal.md](noesis-agent-goal.md) into the new project chat as a goal. Read the current coordination files before work.
+
 ## Install on Windows
 
 Use an empty working directory, Git, GitHub CLI and Python 3.12. Replace the data path below with your actual path.
