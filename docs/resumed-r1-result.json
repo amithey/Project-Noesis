@@ -1,0 +1,83 @@
+{
+  "status": "resource_watch_deadline_no_quiescent_window",
+  "budget_seconds": 11.0,
+  "windows": [
+    {
+      "start_elapsed": 0.0,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 3.0075950622558594,
+        "maximum_host_cpu_percent": 43.5,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793369351.4522228,
+          "available_gib": 3.097431182861328,
+          "host_cpu_percent": 34.4
+        },
+        {
+          "unix_time": 1793369352.4743128,
+          "available_gib": 3.0355072021484375,
+          "host_cpu_percent": 28.8
+        },
+        {
+          "unix_time": 1793369353.4763126,
+          "available_gib": 3.0325393676757812,
+          "host_cpu_percent": 43.5
+        },
+        {
+          "unix_time": 1793369354.4769428,
+          "available_gib": 3.0075950622558594,
+          "host_cpu_percent": 14.2
+        },
+        {
+          "unix_time": 1793369355.4782445,
+          "available_gib": 3.038982391357422,
+          "host_cpu_percent": 19.1
+        },
+        {
+          "unix_time": 1793369356.4796169,
+          "available_gib": 3.035717010498047,
+          "host_cpu_percent": 14.5
+        },
+        {
+          "unix_time": 1793369357.481277,
+          "available_gib": 3.0386581420898438,
+          "host_cpu_percent": 7.2
+        },
+        {
+          "unix_time": 1793369358.4830458,
+          "available_gib": 3.0559310913085938,
+          "host_cpu_percent": 11.0
+        },
+        {
+          "unix_time": 1793369359.483826,
+          "available_gib": 3.0452499389648438,
+          "host_cpu_percent": 24.1
+        },
+        {
+          "unix_time": 1793369360.4855316,
+          "available_gib": 3.069915771484375,
+          "host_cpu_percent": 17.4
+        }
+      ]
+    }
+  ],
+  "simulation_started": false,
+  "elapsed_seconds": 11.0,
+  "goal_resume_audit": {
+    "resumed_blocked_count": 1,
+    "prior_turn_classification": "verified blocker; no new physical evidence",
+    "new_independent_progress": "Implemented bounded frozen-evaluation continuation outside pinned pilot/core source trees",
+    "focused_tests_passed": 24,
+    "physical_continuation_tested": false,
+    "actual_partial_T1_cli_rejected": true,
+    "simulation_started": false,
+    "partial_rejection_output_created": false,
+    "host_lease_present": false
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-01",
+  "goal_status": "paused",
+  "baseline": "Prior status before T1B, after R4/D4M",
+  "codex_completed_matched_studies": [
+    "T1B",
+    "L2",
+    "S1"
+  ],
+  "codex_study_jobs": 39,
+  "completed_training_seconds_each": 25,
+  "updates_each": 4990,
+  "frozen_probes_each": 12,
+  "model_promoted": false,
+  "stable_walking_proven": false,
+  "retention_proven": false,
+  "validated_best": null,
+  "closed_historical_prs": [
+    {
+      "number": 1,
+      "head": "feature/m1-connectome-sim",
+      "head_sha": "4461001f788044d45ef12a20d7647f12f6227fbd",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 2,
+      "head": "feature/lif-adaptation",
+      "head_sha": "ac3effc1f5e7477ae9c93c40e474fa4c37c62c27",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 3,
+      "head": "feature/balance-senses",
+      "head_sha": "6442bc37890f675cb1ed8e8f4d28e49079d77824",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 4,
+      "head": "analysis/leg-sense-audit",
+      "head_sha": "f02ccad4734831fcaca86b2edf13589dbaa056a3",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 5,
+      "head": "feature/body-physics",
+      "head_sha": "607deb68fc86419a07cbc82852b032f1e9b5f617",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 6,
+      "head": "fix/apl-sign-and-reward-path",
+      "head_sha": "4e9ffb64cb570cd75c02549f6acc5d0e8573ba5a",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 7,
+      "head": "feature/graded-apl",
+      "head_sha": "9c48cce9342b6a76a7ddb13186cde23ee10ea7c2",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 8,
+      "head": "analysis/mb-coverage",
+      "head_sha": "b4214aa9f9260e7157282c10719642735e88f2e2",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 9,
+      "head": "fix/live-brain-map",
+      "head_sha": "f2453bec55b1f60e4ad94c84bb200113b09da0e8",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 10,
+      "head": "feature/mbon-compartments",
+      "head_sha": "ebdcc3969b38aaa8b128c4b6116d0a7ad13690fa",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 11,
+      "head": "feature/brain-rescale",
+      "head_sha": "493c62ecfd847fde6235c86e9ff65737f4bb08b1",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 12,
+      "head": "codex/olfactory-specificity",
+      "head_sha": "c7a4f571d367d56cd2ada212831afd8ae810d6cf",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 13,
+      "head": "feature/vnc-rescale",
+      "head_sha": "19190a95cd805d44ef47959b2daadf09325c41b6",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 14,
+      "head": "docs/project-brief",
+      "head_sha": "dedf4a5eebdd4e00e68344cd9f0c7cf8395577c4",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 15,
+      "head": "codex/synaptic-depression",
+      "head_sha": "24b25d010b9ee06d8d5e50dea07547474e37e13f",
+      "action": "closed_without_merge_or_branch_deletion"
+    }
+  ],
+  "remaining_open_prs": [
+    16,
+    21,
+    22,
+    23,
+    24,
+    25
+  ],
+  "remaining_pr_state": "draft",
+  "branches_deleted": [],
+  "merged_prs": [],
+  "default_branch_modified": false,
+  "peer_activity_verified": false,
+  "coordination": "Primary TEAM_CHAT helper; peer acknowledgments requested, not automatic launch"
+}

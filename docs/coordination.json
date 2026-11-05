@@ -158,5 +158,8 @@
       "activity": "not confirmed",
       "owner": "unassigned in shared tracker"
     }
-  ]
+  ],
+  "current_status_entrypoint": "docs/project-status-20261030.md",
+  "current_assignments": "docs/team-assignments.json",
+  "inventory_role": "Historical 2026-10-27 backup; not current ownership/activity/runtime pin"
 }

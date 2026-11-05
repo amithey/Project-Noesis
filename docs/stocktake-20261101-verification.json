@@ -1,0 +1,131 @@
+{
+  "historical": [
+    {
+      "number": 1,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 2,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 3,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 4,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 5,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 6,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 7,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 8,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 9,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 10,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 11,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 12,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 13,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 14,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    },
+    {
+      "number": 15,
+      "closed": true,
+      "merged": false,
+      "sha_unchanged": true
+    }
+  ],
+  "branches_missing": [],
+  "open_prs": [
+    {
+      "number": 25,
+      "draft": true
+    },
+    {
+      "number": 24,
+      "draft": true
+    },
+    {
+      "number": 23,
+      "draft": true
+    },
+    {
+      "number": 22,
+      "draft": true
+    },
+    {
+      "number": 21,
+      "draft": true
+    },
+    {
+      "number": 16,
+      "draft": true
+    }
+  ],
+  "published_commit": "6e1d284",
+  "validation": [
+    "Current local links resolved",
+    "Current JSON parsed",
+    "Checkpoint/standing gate fields match pre-cleanup HEAD",
+    "No runtime, script or test source edits",
+    "All15historical PRs remotely closed/unmerged with unchanged head SHA",
+    "All observed branch names preserved",
+    "Exactly6open PRs, all draft"
+  ]
+}

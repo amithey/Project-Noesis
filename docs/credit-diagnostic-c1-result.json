@@ -1,0 +1,45 @@
+{
+  "status": "completed_development_credit_diagnostic",
+  "seed": 1000,
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "core_source_sha256": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+  "source_plasticity_sha256": "b6eb0be56f80fd32370782b41269120e9313dd267f4839060a90db9a0d5241cd",
+  "input_sha256": {
+    "report.json": "3d3ca83ecc266dfe84f1155ca3992dcd26064ea0b3a476d4f16fda11a611ad42",
+    "weights-last.npz": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
+    "training-observations.npz": "2dc3e2f981864edfebf4abd9c511d1a3a72e5d0faff3dca6f1a9bcdd2058145d",
+    "exploration-log.npz": "85e1cc8b94a2846b6348b824354062dcb09840bfd7e6df6c75553488e85269a4"
+  },
+  "exact_final_reward_state_match": true,
+  "final_state": {
+    "reward_baseline": 0.3431295071796494,
+    "reward_variance": 0.18232238840335277,
+    "reward_normalization_mass": 0.9158370097426899
+  },
+  "association": {
+    "observed_max_abs_r": 0.16169826553025288,
+    "best_signed_r": 0.16169826553025288,
+    "best_lag_steps": 36,
+    "best_column": 420,
+    "varying_columns": 453,
+    "constant_columns": 109,
+    "common_window_samples": 790,
+    "lag_search_steps": [
+      0,
+      100
+    ],
+    "reference_draws": 499,
+    "reference_seed": 271828,
+    "reference_99th_percentile": 0.15490489243745686,
+    "circular_shift_reference_rank": 0.002,
+    "negative_lag_max_abs_r": 0.14661588851164087,
+    "rank_is_calibrated_p_value": false,
+    "interpretation": "Development association only. Stationarity/exchangeability not established; no causal or absent-learning conclusion.",
+    "best_motor_index": 117575
+  },
+  "model_promoted": false,
+  "walking_proven": false,
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30",
+  "artifact_archive": "credit-c1-c2-evidence.zip",
+  "archive_sha256": "703368374cce907f6ef42a302655e89e0ec6ca71c1a1d28ef3b008e6366d598d"
+}

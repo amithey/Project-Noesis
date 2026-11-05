@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "digest": "sha256:0549351f09a2df4fc8fefcb5474c0790f5e3785086d16227a300c652dadadcb7",
+      "name": "duration-t1b-evidence.zip",
+      "size": 31927502,
+      "verified": true
+    },
+    {
+      "digest": "sha256:126c55f6acf6444d2f43749c6643b26e4c804f8cdc3c036a3e7b02ab9b06b10c",
+      "name": "duration-t1b-manifest.json",
+      "size": 35016,
+      "verified": true
+    }
+  ],
+  "url": "https://github.com/amithey/Project-Noesis/releases/tag/duration-t1b-2026-10-31",
+  "local_zip_crc_and_all91_file_hashes_verified": true,
+  "model_promoted": false
+}

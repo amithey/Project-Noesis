@@ -1,0 +1,12 @@
+{
+  "status": "reproduction_passed",
+  "model_promoted": false,
+  "walking_proven": false,
+  "checkpoint_sha256": "626bde8dce2f996ef181650ba4c3812abdc0dfdd3a969bbfc1e0e1ed57b95ff1",
+  "expected_checkpoint_sha256": "626bde8dce2f996ef181650ba4c3812abdc0dfdd3a969bbfc1e0e1ed57b95ff1",
+  "parent_and_sources_unchanged": true,
+  "learning_updates": 990,
+  "simulated_seconds": 5.0,
+  "next_step": "P2 integration and tests required before v9; no automatic continuation",
+  "wall_seconds": 253.43699999991804
+}

@@ -1,0 +1,233 @@
+{
+  "status": "resource_watch_terminal_pass_fresh_prejob_gate_refused_no_simulation",
+  "watch": {
+    "status": "quiescent_window_observed_no_simulation_started",
+    "budget_seconds": 180.0,
+    "windows": [
+      {
+        "start_elapsed": 0.0,
+        "decision": {
+          "passed": false,
+          "sample_count": 10,
+          "minimum_available_gib": 3.332672119140625,
+          "maximum_host_cpu_percent": 36.4,
+          "required_available_gib": 3.0,
+          "allowed_host_cpu_percent": 30.0,
+          "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+        },
+        "samples": [
+          {
+            "unix_time": 1793369832.7298708,
+            "available_gib": 3.3338279724121094,
+            "host_cpu_percent": 16.0
+          },
+          {
+            "unix_time": 1793369833.7315648,
+            "available_gib": 3.3356246948242188,
+            "host_cpu_percent": 36.4
+          },
+          {
+            "unix_time": 1793369834.7329805,
+            "available_gib": 3.3358802795410156,
+            "host_cpu_percent": 10.4
+          },
+          {
+            "unix_time": 1793369835.7353818,
+            "available_gib": 3.3340415954589844,
+            "host_cpu_percent": 31.6
+          },
+          {
+            "unix_time": 1793369836.7371526,
+            "available_gib": 3.332672119140625,
+            "host_cpu_percent": 13.5
+          },
+          {
+            "unix_time": 1793369837.7394493,
+            "available_gib": 3.332714080810547,
+            "host_cpu_percent": 11.0
+          },
+          {
+            "unix_time": 1793369838.741192,
+            "available_gib": 3.3695640563964844,
+            "host_cpu_percent": 21.5
+          },
+          {
+            "unix_time": 1793369839.7422483,
+            "available_gib": 3.372509002685547,
+            "host_cpu_percent": 17.5
+          },
+          {
+            "unix_time": 1793369840.7432897,
+            "available_gib": 3.3739967346191406,
+            "host_cpu_percent": 20.6
+          },
+          {
+            "unix_time": 1793369841.7443898,
+            "available_gib": 3.3749122619628906,
+            "host_cpu_percent": 8.3
+          }
+        ]
+      },
+      {
+        "start_elapsed": 60.203000000008615,
+        "decision": {
+          "passed": true,
+          "sample_count": 10,
+          "minimum_available_gib": 3.388408660888672,
+          "maximum_host_cpu_percent": 21.5,
+          "required_available_gib": 3.0,
+          "allowed_host_cpu_percent": 30.0,
+          "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+        },
+        "samples": [
+          {
+            "unix_time": 1793369892.8244705,
+            "available_gib": 3.3907508850097656,
+            "host_cpu_percent": 21.5
+          },
+          {
+            "unix_time": 1793369893.8258207,
+            "available_gib": 3.3929595947265625,
+            "host_cpu_percent": 17.2
+          },
+          {
+            "unix_time": 1793369894.82769,
+            "available_gib": 3.3914108276367188,
+            "host_cpu_percent": 8.6
+          },
+          {
+            "unix_time": 1793369895.8297067,
+            "available_gib": 3.3901596069335938,
+            "host_cpu_percent": 6.8
+          },
+          {
+            "unix_time": 1793369896.831559,
+            "available_gib": 3.392139434814453,
+            "host_cpu_percent": 8.0
+          },
+          {
+            "unix_time": 1793369897.8333895,
+            "available_gib": 3.3922157287597656,
+            "host_cpu_percent": 12.2
+          },
+          {
+            "unix_time": 1793369898.8345168,
+            "available_gib": 3.3903236389160156,
+            "host_cpu_percent": 11.8
+          },
+          {
+            "unix_time": 1793369899.8366811,
+            "available_gib": 3.4027481079101562,
+            "host_cpu_percent": 14.0
+          },
+          {
+            "unix_time": 1793369900.8385525,
+            "available_gib": 3.388408660888672,
+            "host_cpu_percent": 18.3
+          },
+          {
+            "unix_time": 1793369901.8405747,
+            "available_gib": 3.4131736755371094,
+            "host_cpu_percent": 11.1
+          }
+        ]
+      }
+    ],
+    "simulation_started": false,
+    "elapsed_seconds": 70.23400000001129
+  },
+  "initial_allocation_preflight": {
+    "passed": true,
+    "sample_count": 10,
+    "minimum_available_gib": 3.3920249938964844,
+    "maximum_host_cpu_percent": 18.5,
+    "required_available_gib": 3.0,
+    "allowed_host_cpu_percent": 30.0,
+    "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+  },
+  "training_prejob_preflight": {
+    "samples": [
+      {
+        "unix_time": 1793369950.3642569,
+        "available_gib": 3.422313690185547,
+        "host_cpu_percent": 10.9
+      },
+      {
+        "unix_time": 1793369951.3664532,
+        "available_gib": 3.3913917541503906,
+        "host_cpu_percent": 36.2
+      },
+      {
+        "unix_time": 1793369952.367187,
+        "available_gib": 3.404010772705078,
+        "host_cpu_percent": 25.8
+      },
+      {
+        "unix_time": 1793369953.3682766,
+        "available_gib": 3.3983421325683594,
+        "host_cpu_percent": 33.2
+      },
+      {
+        "unix_time": 1793369954.3694468,
+        "available_gib": 3.389965057373047,
+        "host_cpu_percent": 14.1
+      },
+      {
+        "unix_time": 1793369955.37064,
+        "available_gib": 3.393268585205078,
+        "host_cpu_percent": 8.4
+      },
+      {
+        "unix_time": 1793369956.3717856,
+        "available_gib": 3.3966827392578125,
+        "host_cpu_percent": 10.5
+      },
+      {
+        "unix_time": 1793369957.3729718,
+        "available_gib": 3.3986968994140625,
+        "host_cpu_percent": 7.4
+      },
+      {
+        "unix_time": 1793369958.37426,
+        "available_gib": 3.399860382080078,
+        "host_cpu_percent": 22.7
+      },
+      {
+        "unix_time": 1793369959.37547,
+        "available_gib": 3.397327423095703,
+        "host_cpu_percent": 12.7
+      }
+    ],
+    "decision": {
+      "passed": false,
+      "sample_count": 10,
+      "minimum_available_gib": 3.389965057373047,
+      "maximum_host_cpu_percent": 36.2,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    }
+  },
+  "study_result": {
+    "status": "stopped",
+    "jobs": [],
+    "model_promoted": false,
+    "walking_proven": false,
+    "error_type": "RuntimeError",
+    "error": "Insufficient sustained resource/time budget for full next job",
+    "wall_seconds": 20.077999999994063
+  },
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0"
+  },
+  "pilot_commit": "ea22886f14c9ec5360289de95df3a54ebc667554",
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "control5_sha256": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
+  "simulation_jobs_started": 0,
+  "lease_present": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "goal_resumed_audit_turn": 2,
+  "next": "No same-turn retry. Fresh future allocation requires sustained resource gate; preserve original parent/scientific criteria. Owner corrections/artifacts still pending."
+}

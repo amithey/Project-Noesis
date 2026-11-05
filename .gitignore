@@ -14,3 +14,4 @@ MANC/
 !.env.example
 *.pem
 *.key
+.team-chat.lock

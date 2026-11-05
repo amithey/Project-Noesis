@@ -1,0 +1,64 @@
+{
+  "status": "D4M_full_training_replay_complete_T1_default_unchanged",
+  "current_turn_classification": "Progress:22tested guards and exact full physical training/checkpoint/log replay under a prospective operational contrast",
+  "result": "docs/resource-envelope-r4-result.json",
+  "training_resource_policy": {
+    "minimum_gib": 3,
+    "maximum_cpu_percent": 30,
+    "samples": 10,
+    "changed": false
+  },
+  "R4_launch_policy": {
+    "minimum_gib": 2,
+    "maximum_cpu_percent": 60,
+    "samples": 10,
+    "in_run_stop_gib": 1,
+    "scope": "separate preregistered frozen feasibility experiment only"
+  },
+  "training_allocated": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "goal_status": "active; full stable-learning-walking objective unachieved",
+  "next": "Explicitly review/register a longer guarded duration study; no default policy adoption or inference of retained improvement from short replay.",
+  "post_R4_original_gate": {
+    "passed": true,
+    "sample_count": 10,
+    "minimum_available_gib": 3.8887939453125,
+    "maximum_host_cpu_percent": 28.0,
+    "required_available_gib": 3.0,
+    "allowed_host_cpu_percent": 30.0,
+    "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+  },
+  "T1attempt6": {
+    "initial_gate": {
+      "passed": true,
+      "sample_count": 10,
+      "minimum_available_gib": 3.9581756591796875,
+      "maximum_host_cpu_percent": 26.7,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    },
+    "prejob_gate": {
+      "passed": false,
+      "sample_count": 10,
+      "minimum_available_gib": 3.944141387939453,
+      "maximum_host_cpu_percent": 46.6,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    },
+    "result": {
+      "status": "stopped",
+      "jobs": [],
+      "model_promoted": false,
+      "walking_proven": false,
+      "error_type": "RuntimeError",
+      "error": "Insufficient sustained resource/time budget for full next job",
+      "wall_seconds": 20.09399999998277
+    },
+    "simulation_jobs_started": 0,
+    "lease_present": false
+  },
+  "training_replay": "docs/training-resource-d4-result.json"
+}

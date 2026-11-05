@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "digest": "sha256:b06885c66f67772ad6dc41cc48886756ff1158ab02ceb6755731c4d61d4febf4",
+      "name": "learning-rate-l2-evidence.zip",
+      "size": 43649980,
+      "verified": true
+    },
+    {
+      "digest": "sha256:c95eaea3aeeb3c18ba6490c062b6f1209265c0c1bc8e14fd0466936b0a5f9ad3",
+      "name": "learning-rate-l2-manifest.json",
+      "size": 35798,
+      "verified": true
+    }
+  ],
+  "url": "https://github.com/amithey/Project-Noesis/releases/tag/learning-rate-l2-2026-10-31",
+  "local_zip_crc_and_all91_file_hashes_verified": true,
+  "model_promoted": false
+}

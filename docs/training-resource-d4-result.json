@@ -1,0 +1,116 @@
+{
+  "status": "completed_guarded_training_replay",
+  "pilot_commit": "ee96aa86a1aecea7419a5fbd9c6d494233850683",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0"
+  },
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "checkpoint_sha256": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
+  "seed": 1000,
+  "simulated_seconds": 5.0,
+  "completed_chunks": 1000,
+  "learning_updates": 990,
+  "inner_wall_seconds": 82.48540490001324,
+  "process_wall_seconds": 90.26600000000326,
+  "study_wall_seconds": 100.57800000000861,
+  "original_refusal_wall_seconds": 10.077999999979511,
+  "aggregate_active_seconds": 110.65599999998813,
+  "registered_total_budget_seconds": 420,
+  "exact_trace_fields": {
+    "angles": true,
+    "velocity": true,
+    "position": true,
+    "feet_position": true,
+    "heading": true,
+    "up_body": true,
+    "omega": true,
+    "ground_contact": true,
+    "load": true,
+    "foot_load": true,
+    "command": true,
+    "adhesion": true,
+    "reward": true,
+    "standing": true,
+    "stance_slip_mm_s": true,
+    "learning_active": true,
+    "cycle_credit": true,
+    "reward_unclipped": true,
+    "actual_bonus_after_clipping": true
+  },
+  "exact_exploration_fields": {
+    "drive": true,
+    "credit": true,
+    "drive_idx": true,
+    "motor_indices": true,
+    "control_chunk_index": true,
+    "control_ms": true
+  },
+  "log_alignment": {
+    "steps": 990,
+    "first_control_chunk": 10,
+    "last_control_chunk": 999
+  },
+  "launch_decision": {
+    "passed": true,
+    "sample_count": 10,
+    "minimum_available_gib": 3.9399337768554688,
+    "maximum_host_cpu_percent": 60.4,
+    "required_available_gib": 2.0,
+    "note": "D4M prospective mean-CPU contrast only; maximum is retained, no T1/default/scientific-policy adoption",
+    "original_max_rule_passed": false,
+    "cpu_decision_statistic": "mean",
+    "mean_host_cpu_percent": 31.93,
+    "allowed_host_cpu_mean_percent": 60.0
+  },
+  "min_run_available_gib": 3.2931137084960938,
+  "max_child_rss_gib": 0.713287353515625,
+  "max_run_host_cpu_percent": 55.5,
+  "original_refusal": {
+    "status": "stopped",
+    "jobs": [],
+    "model_promoted": false,
+    "walking_proven": false,
+    "error_type": "RuntimeError",
+    "error": "D4 resource preflight refused; no training launched",
+    "wall_seconds": 10.077999999979511
+  },
+  "learning": true,
+  "diagnostic_duplicate_checkpoint_created": true,
+  "shared_training_last_updated": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "T1_gate_changed": false,
+  "scientific_gates_changed": false,
+  "interpretation": "N1known5s birth exactly reproduced. New window would fail old maximum60 rule but passes mean31.93. This does not establish causal policy benefit,2GiBboundary,25s throughput, improved learning or retained walking. No default policy adoption.",
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/training-parity-d4-2026-10-31",
+  "archive": {
+    "name": "training-d4m-replay-evidence.zip",
+    "bytes": 3929789,
+    "sha256": "2af29536cb26340587ef198992880bfe09783613d50d09c8e69e6a3ddd2fac2b"
+  },
+  "archive_local_verified": true,
+  "artifact_upload_verification": [
+    {
+      "name": "training-d4m-manifest.json",
+      "sha256": "f8516e0a9afa3e269769d96dd90c60e3da16b5357cded3dc132c8a8b88ae32bc",
+      "remote_digest": "sha256:f8516e0a9afa3e269769d96dd90c60e3da16b5357cded3dc132c8a8b88ae32bc",
+      "size": 2521,
+      "digest_match": true,
+      "size_match": true
+    },
+    {
+      "name": "training-d4m-replay-evidence.zip",
+      "sha256": "2af29536cb26340587ef198992880bfe09783613d50d09c8e69e6a3ddd2fac2b",
+      "remote_digest": "sha256:2af29536cb26340587ef198992880bfe09783613d50d09c8e69e6a3ddd2fac2b",
+      "size": 3929789,
+      "digest_match": true,
+      "size_match": true
+    }
+  ],
+  "artifact_upload_verified": true,
+  "five_second_training_feasibility_observed": true,
+  "longer_horizon_tested": false,
+  "training_resource_default_changed": false
+}

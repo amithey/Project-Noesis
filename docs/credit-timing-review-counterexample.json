@@ -1,0 +1,16 @@
+{
+  "status": "verified_representational_counterexample_not_physical_test",
+  "source_commit": "db5465b24144a1539d80028ef52b6676964e1ded",
+  "class": "LagFit",
+  "unchanged_raw_response": true,
+  "equivalent_PC_coordinate_sign_change_only": true,
+  "shared_basis_R2": 0.9999999999999994,
+  "second_birth_equivalent_basis_sign_flipped_R2": 1.8932104721802906e-31,
+  "decision": "Pooled shared coefficients are not invariant to per-birth arbitrary PCA signs. Require common basis or per-birth invariant statistic before interpreting data. This does not assert the magnitude of bias on actual fly data. No worker branch changed.",
+  "random_seed": 125,
+  "samples_per_birth": 600,
+  "feature_columns": 2,
+  "max_lag": 0,
+  "skip": 0,
+  "reproduction": "x=default_rng(125).normal(size=(600,2)); y=x[:,0]; compare LagFit([x,x],0,0).r2([y,y]) with LagFit([x,-x],0,0).r2([y,y])"
+}

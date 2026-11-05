@@ -1,0 +1,193 @@
+{
+  "status": "completed_e3_jobs_pending_independent_review",
+  "jobs_recorded": 9,
+  "wall_seconds": 1388.4530000000013,
+  "passing_candidates": {
+    "heading": 0,
+    "net": 0
+  },
+  "candidates": [
+    {
+      "seed": 1001,
+      "checkpoint_sha256_recomputed": "9d7428744eb1c222199b78de2140eb039cb0bebc3796c9cd141228022fd39a4f",
+      "probes": [
+        {
+          "probe_seed": 10006,
+          "standing_fraction": 0.9515151515151515,
+          "heading_forward_distance_mm": -0.08451977232336766,
+          "net_forward_displacement_mm": 0.03136317540020794,
+          "mean_stance_slip_mm_s": 2.3038593099197033,
+          "leg_step_counts": {
+            "LF": 6,
+            "LM": 11,
+            "LH": 18,
+            "RF": 10,
+            "RM": 17,
+            "RH": 6
+          },
+          "tripod_coordination": {
+            "alternation_index": 0.3424242424242424,
+            "correlation": -0.13593571020872736,
+            "intra_tripod_1_sync": 0.64239919685448,
+            "intra_tripod_2_sync": 0.621447884819323,
+            "tripod_coordination_score": 0.029414576397892137,
+            "tripod_gait_detected": false
+          },
+          "heading_passes": false,
+          "net_passes": false
+        },
+        {
+          "probe_seed": 10007,
+          "standing_fraction": 0.8535353535353535,
+          "heading_forward_distance_mm": 0.33309810314387484,
+          "net_forward_displacement_mm": 0.19096036906027883,
+          "mean_stance_slip_mm_s": 2.588497241064515,
+          "leg_step_counts": {
+            "LF": 14,
+            "LM": 10,
+            "LH": 14,
+            "RF": 7,
+            "RM": 9,
+            "RH": 6
+          },
+          "tripod_coordination": {
+            "alternation_index": 0.5552188552188553,
+            "correlation": -0.45305047867926856,
+            "intra_tripod_1_sync": 0.6966821416728413,
+            "intra_tripod_2_sync": 0.7585837454130777,
+            "tripod_coordination_score": 0.18303036822063334,
+            "tripod_gait_detected": false
+          },
+          "heading_passes": false,
+          "net_passes": false
+        }
+      ],
+      "heading_paired_pass": false,
+      "net_paired_pass": false
+    },
+    {
+      "seed": 1000,
+      "checkpoint_sha256_recomputed": "f5c7db2c25234f8a87189a7a0b66c7e63024dea078853febec7f10e223825bd8",
+      "probes": [
+        {
+          "probe_seed": 10006,
+          "standing_fraction": 0.9505050505050505,
+          "heading_forward_distance_mm": -0.41806205693648657,
+          "net_forward_displacement_mm": -0.4977113358228016,
+          "mean_stance_slip_mm_s": 2.3815211267138343,
+          "leg_step_counts": {
+            "LF": 10,
+            "LM": 11,
+            "LH": 16,
+            "RF": 9,
+            "RM": 15,
+            "RH": 5
+          },
+          "tripod_coordination": {
+            "alternation_index": 0.4043771043771044,
+            "correlation": -0.27391550563745537,
+            "intra_tripod_1_sync": 0.6709691678115123,
+            "intra_tripod_2_sync": 0.6614458441591682,
+            "tripod_coordination_score": 0.07379258033656313,
+            "tripod_gait_detected": false
+          },
+          "heading_passes": false,
+          "net_passes": false
+        },
+        {
+          "probe_seed": 10007,
+          "standing_fraction": 0.9090909090909091,
+          "heading_forward_distance_mm": 1.4555309568685553,
+          "net_forward_displacement_mm": 1.5790833675303613,
+          "mean_stance_slip_mm_s": 2.2738761352864536,
+          "leg_step_counts": {
+            "LF": 11,
+            "LM": 11,
+            "LH": 10,
+            "RF": 2,
+            "RM": 11,
+            "RH": 7
+          },
+          "tripod_coordination": {
+            "alternation_index": 0.3865319865319865,
+            "correlation": -0.3731874183834623,
+            "intra_tripod_1_sync": 0.6500178557763553,
+            "intra_tripod_2_sync": 0.6514463543242069,
+            "tripod_coordination_score": 0.0938673735440091,
+            "tripod_gait_detected": false
+          },
+          "heading_passes": true,
+          "net_passes": true
+        }
+      ],
+      "heading_paired_pass": false,
+      "net_paired_pass": false
+    },
+    {
+      "seed": 1002,
+      "checkpoint_sha256_recomputed": "f9f46c69204afcf2c67e8899ff8cfc6153c5107033b54681e9a52eea02799cef",
+      "probes": [
+        {
+          "probe_seed": 10006,
+          "standing_fraction": 0.8666666666666667,
+          "heading_forward_distance_mm": -1.1832668334290133,
+          "net_forward_displacement_mm": -1.063845665528518,
+          "mean_stance_slip_mm_s": 2.646000929451429,
+          "leg_step_counts": {
+            "LF": 10,
+            "LM": 8,
+            "LH": 16,
+            "RF": 10,
+            "RM": 11,
+            "RH": 7
+          },
+          "tripod_coordination": {
+            "alternation_index": 0.5037037037037038,
+            "correlation": -0.37967732940525506,
+            "intra_tripod_1_sync": 0.6628743427070198,
+            "intra_tripod_2_sync": 0.7838205530917896,
+            "tripod_coordination_score": 0.1383364937262044,
+            "tripod_gait_detected": false
+          },
+          "heading_passes": false,
+          "net_passes": false
+        },
+        {
+          "probe_seed": 10007,
+          "standing_fraction": 0.9515151515151515,
+          "heading_forward_distance_mm": 0.6476720972647785,
+          "net_forward_displacement_mm": 0.7351615098836514,
+          "mean_stance_slip_mm_s": 2.1044390165817966,
+          "leg_step_counts": {
+            "LF": 11,
+            "LM": 13,
+            "LH": 13,
+            "RF": 6,
+            "RM": 15,
+            "RH": 6
+          },
+          "tripod_coordination": {
+            "alternation_index": 0.3356902356902357,
+            "correlation": -0.23990750505878117,
+            "intra_tripod_1_sync": 0.6200193862714715,
+            "intra_tripod_2_sync": 0.6281142113759639,
+            "tripod_coordination_score": 0.050258974333242744,
+            "tripod_gait_detected": false
+          },
+          "heading_passes": true,
+          "net_passes": true
+        }
+      ],
+      "heading_paired_pass": false,
+      "net_paired_pass": false
+    }
+  ],
+  "model_promoted": false,
+  "walking_proven": false,
+  "comparison_limit": "Source hashes differ from E2/historical v8; descriptive comparison only",
+  "reviewer_corrections": [
+    "Intended bonus includes grip factor, not eligibility decay",
+    "990 learning updates are explicit 50ms warmup",
+    "Leg step counts use the implemented lift-touchdown cycle definition; no new retrospective definition"
+  ]
+}
