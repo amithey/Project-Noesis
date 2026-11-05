@@ -59,6 +59,7 @@ def parser():
     ap.add_argument("--checkpoint", type=Path, help="frozen weight import using existing loader")
     ap.add_argument("--bg-hz", type=float, default=3.0)
     ap.add_argument("--bg-weight", type=float, default=40.0)
+    ap.add_argument("--leg-load-scale", type=float, help="override the leg load sensory transfer scale")
     ap.add_argument("--host-memory-budget-gib", type=float, default=8)
     ap.add_argument("--output", type=Path, required=True, help="new directory; never overwrites")
     return ap
@@ -66,6 +67,11 @@ def parser():
 
 def run(args):
     n_chunks, physics_steps = timing_steps(args.seconds, args.control_ms, args.physics_dt)
+    leg_load_scale = getattr(args, "leg_load_scale", None)
+    if leg_load_scale is not None and (
+        args.controller != "brain" or not np.isfinite(leg_load_scale) or leg_load_scale <= 0
+    ):
+        raise ValueError("Leg load scale requires a brain and a finite positive value")
     if args.worlds < 1 or args.seed < 0 or args.seed + args.worlds >= 2**32:
         raise ValueError("Invalid world count or seed range")
     if not np.isfinite(args.wall_seconds) or args.wall_seconds <= 0:
@@ -103,6 +109,12 @@ def run(args):
         "seeds": list(range(args.seed, args.seed + args.worlds)),
         "completed_control_chunks": 0,
     }
+    if leg_load_scale is not None:
+        report["leg_load_scale"] = leg_load_scale
+        report["senses"] = [
+            f"ground_load_scale_{leg_load_scale!r}" if name == "ground_load" else name
+            for name in report["senses"]
+        ]
     for package in ("flygym", "mujoco", "mujoco-warp", "warp-lang", "numba", "numpy"):
         try:
             report["packages"][package] = version(package)
@@ -133,7 +145,7 @@ def run(args):
             population = FrozenPopulation(cn, body, seed=args.seed,
                                           memory_budget_gib=args.host_memory_budget_gib,
                                           checkpoint=args.checkpoint, bg_hz=args.bg_hz,
-                                          bg_weight=args.bg_weight)
+                                          bg_weight=args.bg_weight, leg_load_scale=leg_load_scale)
             report["estimated_neural_host_bytes"] = population.estimated_host_bytes
         observation = body.observe()
         initial_position = observation["position"].copy()

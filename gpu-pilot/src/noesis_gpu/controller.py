@@ -43,7 +43,8 @@ def import_checkpoint(net, path):
 
 class FrozenBrain:
     def __init__(self, connectome, rest, lo, hi, seed=0, checkpoint=None,
-                 bg_hz=3.0, bg_weight=40.0, sensory_weight=400.0, shared_weights=None):
+                 bg_hz=3.0, bg_weight=40.0, sensory_weight=400.0, shared_weights=None,
+                 leg_load_scale=None):
         from noesis.balance import BalanceMap
         from noesis.body import BodyParams
         from noesis.lif import LIFNetwork, LIFParams
@@ -61,7 +62,12 @@ class FrozenBrain:
             array.flags.writeable = False
         self.initial_weights_sha256 = hashlib.sha256(memoryview(self.net.data)).hexdigest()
         self.tracker = RateTracker(connectome.n)
-        self.senses = SensoryMap(connectome.neurons)
+        sensory_options = {}
+        if leg_load_scale is not None:
+            if not np.isfinite(leg_load_scale) or leg_load_scale <= 0:
+                raise ValueError("Leg load scale must be finite and positive")
+            sensory_options["load0"] = leg_load_scale
+        self.senses = SensoryMap(connectome.neurons, **sensory_options)
         self.balance = BalanceMap(connectome.neurons, seed=0)
         pos, neg = build_muscle_matrices(connectome.neurons, list(LEGACY_JOINTS))
         self.muscles = Muscles(pos, neg, rest, lo, hi, BodyParams())
