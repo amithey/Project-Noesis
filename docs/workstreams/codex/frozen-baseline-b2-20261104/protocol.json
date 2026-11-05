@@ -1,0 +1,31 @@
+{
+  "experiment": "B2 second-host frozen baseline qualification",
+  "owner": "codex",
+  "start_unix": 1793807547.235952,
+  "deadline_unix": 1793808747.235952,
+  "seeds": [
+    10006,
+    10007
+  ],
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "bf298ec57c237688a76b61e5ea4b4663092c5fa1e8b50cd5c54dcf4099a684f1"
+  },
+  "process_budget_seconds": 600,
+  "aggregate_budget_seconds": 1200,
+  "simulation_seconds": 5,
+  "control_ms": 5,
+  "backend": "cpu",
+  "worlds": 1,
+  "learning": false,
+  "motor_exploration": 0,
+  "stop_on": "technical failure, incomplete horizon, source/parent mutation, nonfinite arrays",
+  "no_model_or_stage_promotion": true,
+  "publication_redactions": [
+    "token",
+    "host",
+    "pid"
+  ],
+  "note": "Full local lease receipt retained privately; this public protocol omits lease identity and process/host identifiers."
+}

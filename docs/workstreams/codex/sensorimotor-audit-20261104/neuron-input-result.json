@@ -1,0 +1,339 @@
+{
+  "analysis": "NIR exploratory same-neuron current-to-firing reanalysis",
+  "registration": "PR26 comment6635476098",
+  "input_archive_sha256": "c4d762c4a198b4a53679dc93b9de77c44a586a5ca1b96a323e72afc50fc45084",
+  "independent_confirmatory_test": false,
+  "physical_runs": 0,
+  "learning": false,
+  "primary": "mean same-neuron Pearson r at lag0; common valid-neuron mask across arms",
+  "reference": "1000 common shifts across all neuron columns, uniformly200..800samples,seed0; descriptive only",
+  "cases": [
+    {
+      "seed": 10006,
+      "source_arrays_sha256": {
+        "off": "ec6187c57596cac6bbd05012fc9ed0cb23b8c788164e5b02b5a19ee21b8d3e4e",
+        "zero": "ec6187c57596cac6bbd05012fc9ed0cb23b8c788164e5b02b5a19ee21b8d3e4e",
+        "active": "3fb4bf52dc635a8bc394aafca51d2b07560ca56d7a789579981335d67fef8176"
+      },
+      "invariance_passed": true,
+      "targets_total": 453,
+      "common_valid_targets": 313,
+      "constant_response_targets_by_arm": {
+        "off": 133,
+        "zero": 133,
+        "active": 84
+      },
+      "arms": {
+        "off": {
+          "mean_same_neuron_r_lag0": -0.0044794044463382825,
+          "positive_direction_reference_rank": 0.7692307692307693,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.01050333002761481,
+            -0.008779154773914532,
+            -0.0009356703256717363,
+            0.006363616252436733,
+            0.013019474942591643
+          ],
+          "individual_r_quantiles": [
+            -0.24805865028083499,
+            -0.11598790593557429,
+            -0.04853058970872882,
+            -0.004668797311604343,
+            0.040722233430453184,
+            0.10379311065078908,
+            0.20739779155395746
+          ],
+          "secondary_mean_r_squared": 0.004768595063456441
+        },
+        "zero": {
+          "mean_same_neuron_r_lag0": -0.0044794044463382825,
+          "positive_direction_reference_rank": 0.7692307692307693,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.01050333002761481,
+            -0.008779154773914532,
+            -0.0009356703256717363,
+            0.006363616252436733,
+            0.013019474942591643
+          ],
+          "individual_r_quantiles": [
+            -0.24805865028083499,
+            -0.11598790593557429,
+            -0.04853058970872882,
+            -0.004668797311604343,
+            0.040722233430453184,
+            0.10379311065078908,
+            0.20739779155395746
+          ],
+          "secondary_mean_r_squared": 0.004768595063456441
+        },
+        "active": {
+          "mean_same_neuron_r_lag0": 0.030349572767857925,
+          "positive_direction_reference_rank": 0.000999000999000999,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.012941109911785613,
+            -0.011134480070791895,
+            -0.0026901767137090557,
+            0.007909366123149525,
+            0.010765792987560776
+          ],
+          "individual_r_quantiles": [
+            -0.162115143246432,
+            -0.07350746270435736,
+            -0.022520477323211274,
+            0.025943667140425387,
+            0.07290413716740672,
+            0.15475509204792723,
+            0.25612316252544515
+          ],
+          "secondary_mean_r_squared": 0.0058617080008609495
+        }
+      }
+    },
+    {
+      "seed": 10007,
+      "source_arrays_sha256": {
+        "off": "1b867ae20d5c5a0fb64eb28864b23b062dc5a7398823234e7848ac2844a10aa1",
+        "zero": "1b867ae20d5c5a0fb64eb28864b23b062dc5a7398823234e7848ac2844a10aa1",
+        "active": "877dfc3c17e4b5e99ec5b948491663c5aa9481e9bc31db66da898e132b364084"
+      },
+      "invariance_passed": true,
+      "targets_total": 453,
+      "common_valid_targets": 331,
+      "constant_response_targets_by_arm": {
+        "off": 104,
+        "zero": 104,
+        "active": 95
+      },
+      "arms": {
+        "off": {
+          "mean_same_neuron_r_lag0": 0.00991099506460432,
+          "positive_direction_reference_rank": 0.000999000999000999,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.01598256559423469,
+            -0.0104983190279557,
+            -0.0027121497507665224,
+            0.0057041261717684305,
+            0.008673735945038667
+          ],
+          "individual_r_quantiles": [
+            -0.18485971036021015,
+            -0.107427623516102,
+            -0.03131683782349143,
+            0.0032781500848973666,
+            0.045354449065641816,
+            0.13839548154935355,
+            0.2837944232212263
+          ],
+          "secondary_mean_r_squared": 0.005476380490047541
+        },
+        "zero": {
+          "mean_same_neuron_r_lag0": 0.00991099506460432,
+          "positive_direction_reference_rank": 0.000999000999000999,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.01598256559423469,
+            -0.0104983190279557,
+            -0.0027121497507665224,
+            0.0057041261717684305,
+            0.008673735945038667
+          ],
+          "individual_r_quantiles": [
+            -0.18485971036021015,
+            -0.107427623516102,
+            -0.03131683782349143,
+            0.0032781500848973666,
+            0.045354449065641816,
+            0.13839548154935355,
+            0.2837944232212263
+          ],
+          "secondary_mean_r_squared": 0.005476380490047541
+        },
+        "active": {
+          "mean_same_neuron_r_lag0": 0.03246618048877715,
+          "positive_direction_reference_rank": 0.000999000999000999,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.013677855641767753,
+            -0.011931428528749708,
+            -0.0019859912626580024,
+            0.004594514605648672,
+            0.009210100891411877
+          ],
+          "individual_r_quantiles": [
+            -0.23923757652214686,
+            -0.07942043959817718,
+            -0.009243750822935373,
+            0.03356294949904047,
+            0.07823488866547955,
+            0.14409696398616062,
+            0.23667590013265305
+          ],
+          "secondary_mean_r_squared": 0.006131418152724186
+        }
+      }
+    },
+    {
+      "seed": 10010,
+      "source_arrays_sha256": {
+        "off": "5d6760f032ca81c11b60d69afcd6c73da121e72a0801a7a5532d55613b1b88bb",
+        "zero": "5d6760f032ca81c11b60d69afcd6c73da121e72a0801a7a5532d55613b1b88bb",
+        "active": "7779cefb5c41ec3cdee70ebe241d58884c1021f1c8f48e8b41f29427ab786210"
+      },
+      "invariance_passed": true,
+      "targets_total": 453,
+      "common_valid_targets": 334,
+      "constant_response_targets_by_arm": {
+        "off": 107,
+        "zero": 107,
+        "active": 96
+      },
+      "arms": {
+        "off": {
+          "mean_same_neuron_r_lag0": -0.014181437712177218,
+          "positive_direction_reference_rank": 1.0,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.010014085643277458,
+            -0.008555474237346613,
+            0.001464341181228687,
+            0.008451854071893234,
+            0.012967283839107608
+          ],
+          "individual_r_quantiles": [
+            -0.25400799984365974,
+            -0.11072030877707098,
+            -0.05141550267605864,
+            -0.014394571362822947,
+            0.02564426987919123,
+            0.0959792465341676,
+            0.18360559411714714
+          ],
+          "secondary_mean_r_squared": 0.004285595752860576
+        },
+        "zero": {
+          "mean_same_neuron_r_lag0": -0.014181437712177218,
+          "positive_direction_reference_rank": 1.0,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.010014085643277458,
+            -0.008555474237346613,
+            0.001464341181228687,
+            0.008451854071893234,
+            0.012967283839107608
+          ],
+          "individual_r_quantiles": [
+            -0.25400799984365974,
+            -0.11072030877707098,
+            -0.05141550267605864,
+            -0.014394571362822947,
+            0.02564426987919123,
+            0.0959792465341676,
+            0.18360559411714714
+          ],
+          "secondary_mean_r_squared": 0.004285595752860576
+        },
+        "active": {
+          "mean_same_neuron_r_lag0": 0.027605542036689495,
+          "positive_direction_reference_rank": 0.000999000999000999,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.014571837363676352,
+            -0.012734278266461996,
+            -0.0009263509400563352,
+            0.007382590777046638,
+            0.011789179769037251
+          ],
+          "individual_r_quantiles": [
+            -0.23796580888111912,
+            -0.10579532247678208,
+            -0.023185488827908468,
+            0.017986093817079506,
+            0.07703032956876779,
+            0.1621917487892864,
+            0.2478113168948828
+          ],
+          "secondary_mean_r_squared": 0.006896436597031268
+        }
+      }
+    },
+    {
+      "seed": 10011,
+      "source_arrays_sha256": {
+        "off": "2002c14c9ab8f289949eb45b35ad75dcf6535d0ddc8ffcb5f34d46193c350825",
+        "zero": "2002c14c9ab8f289949eb45b35ad75dcf6535d0ddc8ffcb5f34d46193c350825",
+        "active": "fb3d1bdc1f16b78eef811f4a4843b9ce8d0903fb67af6ac3f77f6f52e66af5d7"
+      },
+      "invariance_passed": true,
+      "targets_total": 453,
+      "common_valid_targets": 323,
+      "constant_response_targets_by_arm": {
+        "off": 123,
+        "zero": 123,
+        "active": 98
+      },
+      "arms": {
+        "off": {
+          "mean_same_neuron_r_lag0": 0.002593855677003979,
+          "positive_direction_reference_rank": 0.4125874125874126,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.013886779939896478,
+            -0.010181502378624868,
+            0.0007893239818134291,
+            0.010364158708167745,
+            0.012674041966581534
+          ],
+          "individual_r_quantiles": [
+            -0.2130208987202462,
+            -0.109331821107811,
+            -0.04846468120045401,
+            0.0008684985170680812,
+            0.04486814893245741,
+            0.1273150782791518,
+            0.3350325612118275
+          ],
+          "secondary_mean_r_squared": 0.00594381510422068
+        },
+        "zero": {
+          "mean_same_neuron_r_lag0": 0.002593855677003979,
+          "positive_direction_reference_rank": 0.4125874125874126,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.013886779939896478,
+            -0.010181502378624868,
+            0.0007893239818134291,
+            0.010364158708167745,
+            0.012674041966581534
+          ],
+          "individual_r_quantiles": [
+            -0.2130208987202462,
+            -0.109331821107811,
+            -0.04846468120045401,
+            0.0008684985170680812,
+            0.04486814893245741,
+            0.1273150782791518,
+            0.3350325612118275
+          ],
+          "secondary_mean_r_squared": 0.00594381510422068
+        },
+        "active": {
+          "mean_same_neuron_r_lag0": 0.03342151976083387,
+          "positive_direction_reference_rank": 0.000999000999000999,
+          "common_shift_reference_mean_r_quantiles": [
+            -0.015755827911290324,
+            -0.013257591654941161,
+            -0.001589609528479074,
+            0.007619400712545191,
+            0.010747256099595943
+          ],
+          "individual_r_quantiles": [
+            -0.22640459082848888,
+            -0.10794356068100985,
+            -0.01619872191162124,
+            0.03569084975723904,
+            0.08635905257186549,
+            0.16531708453681832,
+            0.3357203526125753
+          ],
+          "secondary_mean_r_squared": 0.008097391886809982
+        }
+      }
+    }
+  ],
+  "model_promoted": false,
+  "walking_proven": false,
+  "seconds": 0.8279999997466803
+}

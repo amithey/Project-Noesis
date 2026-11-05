@@ -1,0 +1,1021 @@
+{
+  "status": "completed_offline_load_range_audit",
+  "cases": [
+    {
+      "case": "frozen-child25-10006",
+      "observation_sha256": "29101afc9ffd5951d84470d020ce4e59ce0df7a04ce3c32193eac746bbaf826d",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2567,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 5.370656701413207,
+        "max": 14.635262220626496
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.0551641707470222,
+        "p05": 0.6713266899494642,
+        "median": 2.7184086691968683,
+        "p95": 6.215804726207088,
+        "max": 14.635262220626496
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.0551641707470222,
+        "p05": 0.6644579783229976,
+        "median": 2.693179275451436,
+        "p95": 6.108102329148205,
+        "max": 9.319253616499909
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.032018974206937445,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.052693602693602695,
+          "foot_contact_saturated_fraction": 0.11803661862095832,
+          "upright_foot_contact_saturated_fraction": 0.11815208503679477,
+          "rate_hz_quantiles_on_contact": {
+            "min": 6.0811137561780075,
+            "p05": 49.89256287434101,
+            "median": 131.6788425976884,
+            "p95": 149.4098867888995,
+            "max": 149.99986959990852
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 1.7621626222652509e-06,
+            "p05": 0.007958604678446456,
+            "median": 0.23225884690120335,
+            "p95": 0.8952787552497258,
+            "max": 0.9992396142489561
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.04552352048558422,
+            "LM": 0.03900709219858156,
+            "LH": 0.18612521150592218,
+            "RF": 0.05755395683453238,
+            "RM": 0.08005427408412483,
+            "RH": 0.5345911949685535
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.181428737353474,
+            "p05": 4.20775508039831,
+            "median": 10.929684471021263,
+            "p95": 22.314060290546927,
+            "max": 48.50551788865575
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.901261724155767,
+            "p05": 0.9811604708864966,
+            "median": 0.9963596025953252,
+            "p95": 0.9997774621048742,
+            "max": 0.9999984972431183
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-child25-10007",
+      "observation_sha256": "8b483b3921a49e76cc61685e791c65dab1b553ed3460be2c5af6e5903c61866d",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2575,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 6.279295692174653,
+        "max": 14.29457199439777
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.06390889367314437,
+        "p05": 0.7126728468207036,
+        "median": 3.2175013774632855,
+        "p95": 7.192052638104235,
+        "max": 14.29457199439777
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.027689504320253463,
+        "p05": 0.6758455279184505,
+        "median": 3.161993817071577,
+        "p95": 6.88278432015685,
+        "max": 9.04011958186282
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.07845468053491828,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.09090909090909091,
+          "foot_contact_saturated_fraction": 0.20427184466019419,
+          "upright_foot_contact_saturated_fraction": 0.20465890183028287,
+          "rate_hz_quantiles_on_contact": {
+            "min": 6.7276491281657504,
+            "p05": 52.613476707943875,
+            "median": 138.60032934125573,
+            "p95": 149.77741482314116,
+            "max": 149.9998166682417
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 2.4774546590888846e-06,
+            "p05": 0.0030056459180166526,
+            "median": 0.1481167834121836,
+            "p95": 0.8830475753250613,
+            "max": 0.998979608004061
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.18569636135508155,
+            "LM": 0.11650485436893204,
+            "LH": 0.11168831168831168,
+            "RF": 0.011764705882352941,
+            "RM": 0.11585365853658537,
+            "RH": 0.48
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.21018910898837,
+            "p05": 4.343705863705056,
+            "median": 12.564008696147368,
+            "p95": 25.45449780805933,
+            "max": 47.49327229961442
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.9055132476019511,
+            "p05": 0.9748852507468632,
+            "median": 0.9949051187120034,
+            "p95": 0.9997492256232271,
+            "max": 0.9999979830413834
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-child25-10010",
+      "observation_sha256": "af713f85c6f3c64a8edb3546f4c2048da379616b90867edf82b415b95216c696",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2576,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 6.183879478661755,
+        "max": 74.35545229019685
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.0924786620515504,
+        "p05": 0.7160262684028962,
+        "median": 2.8503766188038866,
+        "p95": 7.437149214700999,
+        "max": 74.35545229019685
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.014716901490724356,
+        "p05": 0.6757428018864732,
+        "median": 2.7616841302117088,
+        "p95": 7.130361750893925,
+        "max": 74.35545229019685
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.11533888228299644,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.07592592592592592,
+          "foot_contact_saturated_fraction": 0.1622670807453416,
+          "upright_foot_contact_saturated_fraction": 0.14219015280135824,
+          "rate_hz_quantiles_on_contact": {
+            "min": 8.838547908594638,
+            "p05": 52.83248673013273,
+            "median": 133.82009065555044,
+            "p95": 149.82576951980212,
+            "max": 150.0
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.0,
+            "p05": 0.0023530800647996453,
+            "median": 0.20669574807513535,
+            "p95": 0.882033336789381,
+            "max": 0.9978649681565859
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.15773809523809523,
+            "LM": 0.05245901639344262,
+            "LH": 0.021176470588235293,
+            "RF": 0.02666666666666667,
+            "RM": 0.03508771929824561,
+            "RH": 0.4567062818336163
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.304151615900239,
+            "p05": 4.354732116345945,
+            "median": 11.36205461554934,
+            "p95": 26.239662794464454,
+            "max": 139.51841650116322
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.13662733395784332,
+            "p05": 0.9731756163505617,
+            "median": 0.995998535967342,
+            "p95": 0.9997468606851538,
+            "max": 0.9999957766524171
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-child25-10011",
+      "observation_sha256": "d04e2983a438b201980ee021ed1d9903a9eaed7541ea2317c762d1aae6d85ac4",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2734,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 6.102666446722264,
+        "max": 19.923729316270126
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.048363455580429024,
+        "p05": 0.7433425220102411,
+        "median": 2.8948785451470407,
+        "p95": 7.262757858199765,
+        "max": 19.923729316270126
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.0009726622174380859,
+        "p05": 0.7318910475910299,
+        "median": 2.805036774957707,
+        "p95": 6.5507214193099985,
+        "max": 16.333830510250344
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.0651902682470368,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.08333333333333333,
+          "foot_contact_saturated_fraction": 0.175932699341624,
+          "upright_foot_contact_saturated_fraction": 0.17580266249021143,
+          "rate_hz_quantiles_on_contact": {
+            "min": 5.578198282550426,
+            "p05": 54.60674110777287,
+            "median": 134.48742198408502,
+            "p95": 149.79259307732272,
+            "max": 149.99999934154513
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 8.898038750260184e-09,
+            "p05": 0.002800832230969175,
+            "median": 0.19864328932441616,
+            "p95": 0.8736503633073631,
+            "max": 0.9994154719252535
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.1341991341991342,
+            "LM": 0.06046511627906977,
+            "LH": 0.10191082802547771,
+            "RF": 0.011428571428571429,
+            "RM": 0.10247349823321555,
+            "RH": 0.5492341356673961
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.1590619704439935,
+            "p05": 4.444548591939456,
+            "median": 11.507821670398748,
+            "p95": 25.681141963783503,
+            "max": 63.55629861446667
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.8270097745108934,
+            "p05": 0.9743975056786599,
+            "median": 0.9958729595916217,
+            "p95": 0.9997271704385389,
+            "max": 0.9999988449273903
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-control25-10006",
+      "observation_sha256": "94c44b28dcbdf3b360f24345f051148e44e439dbaa35d42756d9f6c52a41d19d",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2551,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.4142439023566702,
+        "p95": 6.6384525242196535,
+        "max": 14.946718557686305
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.024243170076256804,
+        "p05": 0.6860726718670607,
+        "median": 3.074379104111776,
+        "p95": 7.525773635089967,
+        "max": 14.946718557686305
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.011089647623458833,
+        "p05": 0.6100908957334893,
+        "median": 2.8953494402937308,
+        "p95": 7.129498015221214,
+        "max": 13.199610962041017
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.14517556801416348,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.09191919191919191,
+          "foot_contact_saturated_fraction": 0.18776950215601726,
+          "upright_foot_contact_saturated_fraction": 0.185126582278481,
+          "rate_hz_quantiles_on_contact": {
+            "min": 3.7939067252433585,
+            "p05": 50.86740308306194,
+            "median": 136.92374106447468,
+            "p95": 149.84053790938214,
+            "max": 149.9999044976235
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 1.2905722389655594e-06,
+            "p05": 0.0021537322161130357,
+            "median": 0.16889993139000148,
+            "p95": 0.8909770807814001,
+            "max": 0.9998530815678016
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.15611814345991562,
+            "LM": 0.06493506493506493,
+            "LH": 0.05093833780160858,
+            "RF": 0.11029411764705882,
+            "RM": 0.033950617283950615,
+            "RH": 0.4578125
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.079733084981396,
+            "p05": 4.256241970976924,
+            "median": 12.095588909082624,
+            "p95": 26.52322813298383,
+            "max": 49.426702947545124
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.8973113516949103,
+            "p05": 0.972544338944978,
+            "median": 0.9953469267977907,
+            "p95": 0.9997675919929855,
+            "max": 0.9999997097623794
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-control25-10007",
+      "observation_sha256": "3e1206fabbac896777803aab058e8960952b9893be723cf4ea0ce28d45a69d94",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2967,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.7648773515051697,
+        "p95": 6.480153511624058,
+        "max": 20.65536932733357
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.09090481770424612,
+        "p05": 0.6768716334179884,
+        "median": 3.133626814770854,
+        "p95": 7.222371262983717,
+        "max": 20.65536932733357
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.04016658943329494,
+        "p05": 0.65541877021529,
+        "median": 3.035493824690272,
+        "p95": 7.032729930396922,
+        "max": 13.612101372072896
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.06996300033636058,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.09781144781144781,
+          "foot_contact_saturated_fraction": 0.18975396022918772,
+          "upright_foot_contact_saturated_fraction": 0.18659217877094972,
+          "rate_hz_quantiles_on_contact": {
+            "min": 8.722327880402421,
+            "p05": 50.2598294215887,
+            "median": 137.64457612171512,
+            "p95": 149.78405717249152,
+            "max": 149.99999968320466
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 4.281018206597764e-09,
+            "p05": 0.0029160174231239954,
+            "median": 0.15999584408145695,
+            "p95": 0.8936710214167133,
+            "max": 0.9979369205564447
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.17906683480453972,
+            "LM": 0.05263157894736842,
+            "LH": 0.06538461538461539,
+            "RF": 0.07327586206896551,
+            "RM": 0.04035874439461883,
+            "RH": 0.487698986975398
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.2989754382045104,
+            "p05": 4.225987715958291,
+            "median": 12.289523823003607,
+            "p95": 25.55169769646739,
+            "max": 65.53277818889752
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.8157225207998697,
+            "p05": 0.9746766588408614,
+            "median": 0.9951664398966327,
+            "p95": 0.9997737825126141,
+            "max": 0.9999959191785679
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-control25-10010",
+      "observation_sha256": "82189d963565497989d9b8d82a15c56c8312cbe5564903deae96be3142405642",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2696,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 6.797904057681846,
+        "max": 14.007227578505166
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.15086939341492359,
+        "p05": 0.7932341525904166,
+        "median": 3.398477739594588,
+        "p95": 7.66275758228796,
+        "max": 14.007227578505166
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.002665949998723393,
+        "p05": 0.7581369162429301,
+        "median": 3.328509683212938,
+        "p95": 7.534428856199459,
+        "max": 13.868136237866167
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.051787916152897656,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.11228956228956229,
+          "foot_contact_saturated_fraction": 0.23998516320474778,
+          "upright_foot_contact_saturated_fraction": 0.22915811088295687,
+          "rate_hz_quantiles_on_contact": {
+            "min": 13.14320671642593,
+            "p05": 57.80261779180695,
+            "median": 140.4264490763465,
+            "p95": 149.8609400443828,
+            "max": 149.9997556402296
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 3.3021563334845183e-06,
+            "p05": 0.0018783057204671827,
+            "median": 0.1251880099492334,
+            "p95": 0.8578236094295283,
+            "max": 0.9943311241816564
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.2913165266106443,
+            "LM": 0.12,
+            "LH": 0.06583629893238434,
+            "RF": 0.006756756756756757,
+            "RM": 0.016216216216216217,
+            "RH": 0.5435745937961596
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.496190812568692,
+            "p05": 4.6085887158047765,
+            "median": 13.15601417666415,
+            "p95": 26.961161073050576,
+            "max": 46.63585127651776
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.9090413066481277,
+            "p05": 0.9715549703494509,
+            "median": 0.9943180854833373,
+            "p95": 0.9996893016997059,
+            "max": 0.9999887598008365
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-control25-10011",
+      "observation_sha256": "0bdc958159d2d949f00b8905df9e31d0b2cabd7891ea7ae57cbb30d44cc2d855",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2525,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 6.6495675356872255,
+        "max": 18.66154712844811
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.09994438809460537,
+        "p05": 0.7668481664167687,
+        "median": 3.061159108808794,
+        "p95": 8.345547126673013,
+        "max": 18.66154712844811
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.017891459718876436,
+        "p05": 0.7373318210093219,
+        "median": 2.8913979184147873,
+        "p95": 7.3092432959802975,
+        "max": 10.471291627644506
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.08989751098096632,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.0872053872053872,
+          "foot_contact_saturated_fraction": 0.19247524752475248,
+          "upright_foot_contact_saturated_fraction": 0.18502581755593803,
+          "rate_hz_quantiles_on_contact": {
+            "min": 9.389734478145403,
+            "p05": 56.120250847155525,
+            "median": 136.7575104160759,
+            "p95": 149.92973102331112,
+            "max": 149.999997673598
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 3.143786497794565e-08,
+            "p05": 0.0009493553400595101,
+            "median": 0.17094655708825768,
+            "p95": 0.8662800156198553,
+            "max": 0.997506931352379
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.17205692108667528,
+            "LM": 0.02912621359223301,
+            "LH": 0.06783369803063458,
+            "RF": 0.023809523809523808,
+            "RM": 0.06266318537859007,
+            "RH": 0.4982758620689655
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.3287054470340403,
+            "p05": 4.521834306473616,
+            "median": 12.052311258813234,
+            "p95": 29.137168303024833,
+            "max": 60.08363334494587
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.8459775172320074,
+            "p05": 0.966379386964137,
+            "median": 0.9953867347678934,
+            "p95": 0.9997096580138735,
+            "max": 0.9999950672356231
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-parent-10006",
+      "observation_sha256": "6961701c5297e739713b0596adc45d57b4da13a72366f8d3c23d1e80876cca85",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2850,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 5.499182690154028,
+        "max": 10.137580398935109
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.11209137221914264,
+        "p05": 0.6892496551225208,
+        "median": 2.7048029097421162,
+        "p95": 6.291607615328177,
+        "max": 10.137580398935109
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.006282906323687276,
+        "p05": 0.6704543608347288,
+        "median": 2.6776635715729524,
+        "p95": 6.278736680246946,
+        "max": 9.859546330769119
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.021359223300970873,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.06397306397306397,
+          "foot_contact_saturated_fraction": 0.12947368421052632,
+          "upright_foot_contact_saturated_fraction": 0.12577469923441487,
+          "rate_hz_quantiles_on_contact": {
+            "min": 10.2860874983645,
+            "p05": 51.07679252688424,
+            "median": 131.44359954834016,
+            "p95": 149.45288605683976,
+            "max": 149.9882893958289
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.00015824514684059654,
+            "p05": 0.007379765955384027,
+            "median": 0.23504175170888375,
+            "p95": 0.8900414022940871,
+            "max": 0.9968654471315489
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.08,
+            "LM": 0.03225806451612903,
+            "LH": 0.19196428571428573,
+            "RF": 0.03508771929824561,
+            "RM": 0.08221024258760108,
+            "RH": 0.3680555555555556
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.3686553061695044,
+            "p05": 4.266688279716831,
+            "median": 10.885098727721935,
+            "p95": 22.558613963258452,
+            "max": 34.788560429846
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.9509181110727875,
+            "p05": 0.9807041358265943,
+            "median": 0.9963958646989848,
+            "p95": 0.9997654364662069,
+            "max": 0.9999937953462944
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-parent-10007",
+      "observation_sha256": "c95ad24947a6f8eebcfcd4881588bb89eea3b6bc66eba841f9804a0401cfb40b",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2506,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.0,
+        "p95": 5.993707266108919,
+        "max": 14.391677660914295
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.06594845393103312,
+        "p05": 0.749302369615552,
+        "median": 2.9782064659725878,
+        "p95": 7.114059126049117,
+        "max": 14.391677660914295
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.04989412566901532,
+        "p05": 0.7278657728636508,
+        "median": 2.906105398210757,
+        "p95": 6.820549950694527,
+        "max": 9.28784073507971
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.04309842748980781,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.07794612794612794,
+          "foot_contact_saturated_fraction": 0.1779728651237031,
+          "upright_foot_contact_saturated_fraction": 0.17852735499794323,
+          "rate_hz_quantiles_on_contact": {
+            "min": 6.878417618466951,
+            "p05": 54.99175870484646,
+            "median": 135.66760766411102,
+            "p95": 149.75937282604,
+            "max": 149.99983363373235
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 2.248191542375544e-06,
+            "p05": 0.003249075114727523,
+            "median": 0.1843028791901853,
+            "p95": 0.8717962364494178,
+            "max": 0.998913488017706
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.10632183908045977,
+            "LM": 0.06854838709677419,
+            "LH": 0.2,
+            "RF": 0.02127659574468085,
+            "RM": 0.12832550860719874,
+            "RH": 0.5958188153310104
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.216896982092861,
+            "p05": 4.464144490496521,
+            "median": 11.780714125922334,
+            "p95": 25.204359449748118,
+            "max": 47.782273690472465
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.9043089579862433,
+            "p05": 0.9754180775616034,
+            "median": 0.995632651953244,
+            "p95": 0.9997227842006134,
+            "max": 0.999997852250692
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-parent-10010",
+      "observation_sha256": "e483530ede3cf3385158e6f48073c2b7c90bec85c6abda82bdebcd558a32353e",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2781,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.7002264230162483,
+        "p95": 6.901772909034313,
+        "max": 40.86997708869526
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.10829477819645894,
+        "p05": 0.850642118737286,
+        "median": 3.3345743501532934,
+        "p95": 7.635013216043897,
+        "max": 15.882595559935245
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.10829477819645894,
+        "p05": 0.8295302660078552,
+        "median": 3.1703445737876494,
+        "p95": 7.38465443718788,
+        "max": 10.834554321071385
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.096232985121874,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.10925925925925926,
+          "foot_contact_saturated_fraction": 0.2197051420352391,
+          "upright_foot_contact_saturated_fraction": 0.2108816521048451,
+          "rate_hz_quantiles_on_contact": {
+            "min": 10.005990754647705,
+            "p05": 61.40773995820843,
+            "median": 139.81643231891613,
+            "p95": 149.85703234701742,
+            "max": 149.99996253997645
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 5.062164704083827e-07,
+            "p05": 0.0019310621591054344,
+            "median": 0.13288125378403992,
+            "p95": 0.8388751110782453,
+            "max": 0.9970737815940693
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.2082695252679939,
+            "LM": 0.1,
+            "LH": 0.06451612903225806,
+            "RF": 0.08143322475570032,
+            "RM": 0.04156479217603912,
+            "RH": 0.5106951871657754
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.3561688051530796,
+            "p05": 4.797334230761761,
+            "median": 12.94701497386793,
+            "p95": 26.87249971259957,
+            "max": 52.169945394710915
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.885088412120696,
+            "p05": 0.971756700056918,
+            "median": 0.9945289838916139,
+            "p95": 0.9996427557159153,
+            "max": 0.9999942085364425
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    },
+    {
+      "case": "frozen-parent-10011",
+      "observation_sha256": "f39ac3537af3e37065b556748557d350e53dc80573f2435c5132a5b3870f2f4f",
+      "measured_control_frames": 990,
+      "foot_contact_leg_frames": 2897,
+      "whole_leg_load_quantiles_all": {
+        "min": 0.0,
+        "p05": 0.0,
+        "median": 0.3621039558086907,
+        "p95": 5.334288492842413,
+        "max": 11.508836030607233
+      },
+      "whole_leg_load_quantiles_on_foot_contact": {
+        "min": 0.07732678083759167,
+        "p05": 0.6252307318378793,
+        "median": 2.9058987941314065,
+        "p95": 6.3576416687715875,
+        "max": 11.508836030607233
+      },
+      "foot_load_quantiles_on_contact": {
+        "min": 0.008484792126833542,
+        "p05": 0.5972234757927287,
+        "median": 2.866065918900288,
+        "p95": 6.026342576109517,
+        "max": 8.74228199247286
+      },
+      "nonfoot_load_positive_when_foot_airborne_fraction": 0.043378245152809726,
+      "transfer_functions": {
+        "2.0": {
+          "all_leg_frames_saturated_fraction": 0.05235690235690236,
+          "foot_contact_saturated_fraction": 0.1032102174663445,
+          "upright_foot_contact_saturated_fraction": 0.1060214259327669,
+          "rate_hz_quantiles_on_contact": {
+            "min": 7.719332203244493,
+            "p05": 46.81648920644939,
+            "median": 134.64863080264777,
+            "p95": 149.48778571143262,
+            "max": 149.99702790033257
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 4.016310574261883e-05,
+            "p05": 0.006909836783837587,
+            "median": 0.19669196248095533,
+            "p95": 0.908302396125637,
+            "max": 0.9985066307135194
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.046357615894039736,
+            "LM": 0.0058997050147492625,
+            "LH": 0.09865470852017937,
+            "RF": 0.0,
+            "RM": 0.07974481658692185,
+            "RH": 0.32516703786191536
+          }
+        },
+        "45.0": {
+          "all_leg_frames_saturated_fraction": 0.0,
+          "foot_contact_saturated_fraction": 0.0,
+          "upright_foot_contact_saturated_fraction": 0.0,
+          "rate_hz_quantiles_on_contact": {
+            "min": 2.2543189399922334,
+            "p05": 4.056182091682946,
+            "median": 11.543915903096638,
+            "p95": 22.77155837982341,
+            "max": 39.04704612213617
+          },
+          "relative_slope_quantiles_on_contact": {
+            "min": 0.9373409593510005,
+            "p05": 0.9803023338927871,
+            "median": 0.9958415663456273,
+            "p95": 0.9998069782499819,
+            "max": 0.9999970472003634
+          },
+          "per_leg_contact_saturation_fraction": {
+            "LF": 0.0,
+            "LM": 0.0,
+            "LH": 0.0,
+            "RF": 0.0,
+            "RM": 0.0,
+            "RH": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "actual_formula": "rate=2+148*tanh(whole_leg_ground_contact_force_norm/2)",
+  "saturation_definition": "tanh(load/load0)>=0.99; stated before analysis",
+  "force_units": "native model force units; no biological-unit calibration is established here",
+  "counterfactual_scale_45": "transfer function only; no neural or physical rerun, no improvement claim",
+  "runtime_changes": false,
+  "learning": false,
+  "walking_proven": false,
+  "seconds": 0.1569999996572733
+}

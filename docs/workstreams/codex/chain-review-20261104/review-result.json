@@ -1,0 +1,59 @@
+{
+  "scope": "Synthetic review counterexamples only; no physical/network simulation, no training or gait evidence.",
+  "diagnostic_commit": "aa7ecdbc03c3e064ff616c905b1b8016c337a238",
+  "canonical_git_source_sha256": {
+    "gpu-pilot/src/noesis_gpu/chain_diagnostic.py": "94862eec99b5201629731ca4718e8bf0f71fb6509c04138e620f755ec96ac184",
+    "gpu-pilot/src/noesis_gpu/chain_run.py": "1fa00952fa8a95c843b9365418934d091f52e06aca4d10f47b2ca2a2be8a238e",
+    "docs/workstreams/claude/chain-diagnostic/analyse_chain.py": "67354642b7a56a21f051137f3c07e9e4fd5848f45e64ad76c795c82adaca293e"
+  },
+  "same_sign_control": {
+    "joints_used": 8,
+    "observed_r2": 1.0,
+    "best_lag_steps": 7,
+    "reference_rank": 0.004975124378109453,
+    "reference_p95": 0.0012663427619533708,
+    "reference_p99": 0.0015205123109623768,
+    "status": "ok",
+    "sign": 1.0
+  },
+  "opposed_sign_counterexample": {
+    "joints_used": 8,
+    "observed_r2": 0.0,
+    "best_lag_steps": 0,
+    "reference_rank": 1.0,
+    "reference_p95": 0.0013939523581209556,
+    "reference_p99": 0.0016628091826855046,
+    "status": "ok",
+    "sign": 0.0
+  },
+  "individual_signed_correlations_at_planted_lag": [
+    1.0,
+    -1.0,
+    1.0,
+    -1.0,
+    1.0,
+    -1.0,
+    1.0,
+    -1.0
+  ],
+  "invariance_gate_counterexample": {
+    "invariance_identical": false,
+    "coupling_still_returned": true,
+    "active_command": {
+      "joints_used": 4,
+      "observed_r2": 1.0000000000000004,
+      "best_lag_steps": 0,
+      "reference_rank": 0.004975124378109453,
+      "reference_p95": 0.0025897921391665473,
+      "reference_p99": 0.003038845888841344,
+      "status": "ok",
+      "sign": 1.0
+    }
+  },
+  "interpretation": [
+    "The shared signed coefficient can cancel perfect jointwise coupling. This does not show that real fly data have this structure.",
+    "chain_report computes coupling after an invariance failure; analyse_chain.py does not gate reading on invariance or driver completion.",
+    "Historical real runs report successful invariance; these counterexamples do not invalidate those runs or prove a broken physical chain."
+  ],
+  "elapsed_seconds": 0.6149233002215624
+}
