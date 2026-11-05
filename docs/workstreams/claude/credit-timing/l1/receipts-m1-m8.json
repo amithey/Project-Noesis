@@ -1,0 +1,82 @@
+[
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 5.96,
+  "name": "m1-seed1000",
+  "status": "completed_training_birth",
+  "seed": 1000,
+  "wall_seconds": 210.2
+ },
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 4.82,
+  "name": "m2-seed1001",
+  "status": "completed_training_birth",
+  "seed": 1001,
+  "wall_seconds": 149.7
+ },
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 5.2,
+  "name": "m3-seed1002",
+  "status": "completed_training_birth",
+  "seed": 1002,
+  "wall_seconds": 112.5
+ },
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 5.23,
+  "name": "m4-seed1003",
+  "status": "completed_training_birth",
+  "seed": 1003,
+  "wall_seconds": 110
+ },
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 5.21,
+  "name": "m5-seed1004",
+  "status": "completed_training_birth",
+  "seed": 1004,
+  "wall_seconds": 108.3
+ },
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 5.37,
+  "name": "m6-seed1005",
+  "status": "completed_training_birth",
+  "seed": 1005,
+  "wall_seconds": 112.8
+ },
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 5.18,
+  "name": "m7-seed1006",
+  "status": "completed_training_birth",
+  "seed": 1006,
+  "wall_seconds": 133.8
+ },
+ {
+  "exit_code": 0,
+  "log": true,
+  "seconds": 5,
+  "free_gib_before": 6.39,
+  "name": "m8-seed1007",
+  "status": "completed_training_birth",
+  "seed": 1007,
+  "wall_seconds": 144.5
+ }
+]
