@@ -1,0 +1,83 @@
+{
+  "status": "completed",
+  "jobs": [
+    {
+      "seed": 10006,
+      "exit_code": 0,
+      "process_wall_seconds": 198.51500000001397,
+      "exact_prefix_fields": [
+        "angles",
+        "feet_position",
+        "foot_load",
+        "ground_contact",
+        "heading",
+        "load",
+        "omega",
+        "position",
+        "up_body",
+        "velocity"
+      ],
+      "windows": [
+        {
+          "start_chunk": 10,
+          "stop_chunk": 1000,
+          "standing_fraction": 0.9626262626262626,
+          "mean_stance_slip_mm_s": 3.0581713360264406
+        },
+        {
+          "start_chunk": 1000,
+          "stop_chunk": 2000,
+          "standing_fraction": 0.802,
+          "mean_stance_slip_mm_s": 2.747427333298864
+        }
+      ],
+      "observed_10s_sha256": "38f5147135b2eca5d86941c84ff43b6170d422117729e14762f74233c0f95532"
+    },
+    {
+      "seed": 10010,
+      "exit_code": 0,
+      "process_wall_seconds": 135.43700000003446,
+      "exact_prefix_fields": [
+        "angles",
+        "feet_position",
+        "foot_load",
+        "ground_contact",
+        "heading",
+        "load",
+        "omega",
+        "position",
+        "up_body",
+        "velocity"
+      ],
+      "windows": [
+        {
+          "start_chunk": 10,
+          "stop_chunk": 1000,
+          "standing_fraction": 0.8929292929292929,
+          "mean_stance_slip_mm_s": 2.2499830438353756
+        },
+        {
+          "start_chunk": 1000,
+          "stop_chunk": 2000,
+          "standing_fraction": 0.867,
+          "mean_stance_slip_mm_s": 2.905019683211563
+        }
+      ],
+      "observed_10s_sha256": "94bcb1417e1967ad45891d90dec7525f2a00d790958023de2a22f741b9a124e4"
+    }
+  ],
+  "walking_proven": false,
+  "model_promoted": false,
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "core_source_sha256": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+  "interface_commit": "c084e639f6eb1be19e33848c91e220d5e0283c8c",
+  "pilot_source_sha256": "89469ea87267eddedd15349d4ae2b7ee38a6939f9b4fab155ae3232354267240",
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "budget_seconds": 750,
+  "s1_manifest_sha256": "bb3b95ef79fef2b534bc15c6502f1f2808988a4d830113000c39e95115e33738",
+  "seeds": [
+    10006,
+    10010
+  ],
+  "wall_seconds": 354.39000000001397
+}
