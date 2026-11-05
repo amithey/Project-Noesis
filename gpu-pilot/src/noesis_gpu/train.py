@@ -16,8 +16,25 @@ from .backend import UPSTREAM_COMMIT, FlyGymBatch
 from .run import file_digest, source_digest, timing_steps
 
 
-def episode_scorer(objective, cycle_weight=None):
+def upper_height_feedback(score):
+    """Subtract a bounded cost before the upper standing boundary."""
+    penalty = float(.1 * np.clip((score["height_mm"] - 1.2) / .3, 0, 1))
+    base = score["reward"]
+    return {**score, "native_reward": base, "upper_height_penalty": penalty,
+            "reward": float(np.clip(base - penalty, -1, 1))}
+
+
+def episode_scorer(objective, cycle_weight=None, upper_height_cost=False):
     from .learning import CycleScoring, score_transition
+
+    if upper_height_cost:
+        if objective != "curriculum-standing-v7" or cycle_weight is not None:
+            raise ValueError("Upper height cost requires the native standing profile")
+
+        def shaped(before, after, dt_ms):
+            return upper_height_feedback(score_transition(before, after, dt_ms, objective=objective))
+
+        return shaped
 
     if cycle_weight is not None:
         if objective != "curriculum-gripped-cycle-v9" or not np.isfinite(cycle_weight) or not 0 < cycle_weight <= 1:
@@ -43,6 +60,8 @@ def parser():
     ap.add_argument("--cycle-weight", type=float, default=None)
     ap.add_argument("--learning-rate", type=float, default=.2)
     ap.add_argument("--log-exploration", action="store_true")
+    ap.add_argument("--upper-height-cost", action="store_true",
+                    help="experimental bounded upper-height cost with the standing profile")
     return ap
 
 
@@ -76,7 +95,8 @@ def run(args):
 
     from .learning import LearningBrain, standing_mask
 
-    scorer = episode_scorer(objective, getattr(args, "cycle_weight", None))  # fail before output creation if v9 core is unavailable
+    upper_height_cost = getattr(args, "upper_height_cost", False)
+    scorer = episode_scorer(objective, getattr(args, "cycle_weight", None), upper_height_cost)
 
     output.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
@@ -94,6 +114,9 @@ def run(args):
               "support_measurement": "tarsus5-to-floor-only",
               "external_vision_and_chemical_senses": False,
               "legacy_body_equivalence_verified": False}
+    if upper_height_cost:
+        report["upper_height_feedback"] = {"ramp_start_mm": 1.2, "ramp_end_mm": 1.5,
+                                           "maximum_reward_cost": .1}
     records, brain = [], None
     try:
         body = FlyGymBatch(1, args.backend)
@@ -120,6 +143,9 @@ def run(args):
                             "reward": score["reward"], "standing": bool(standing_mask(after)),
                             "stance_slip_mm_s": score["stance_slip_mm_s"],
                             "learning_active": brain.learning_active})
+            if upper_height_cost:
+                records[-1].update(native_reward=score["native_reward"],
+                                   upper_height_penalty=score["upper_height_penalty"])
             if objective == "curriculum-gripped-cycle-v9":
                 from .learning import _base_score_transition
 
