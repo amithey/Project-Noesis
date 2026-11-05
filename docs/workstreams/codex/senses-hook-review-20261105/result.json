@@ -1,0 +1,117 @@
+{
+  "claude_commit": "d2160a9714dfe279d928c28aa323e78dbe700635",
+  "sensed_source_sha256": "8667eb2cc5496e0b110bd0385d514ab32168080a4249ab9821f8bee866c67fca",
+  "control_probe": {
+    "off_present": {
+      "calls": [
+        "field",
+        "adapter"
+      ],
+      "last_u": 0.0,
+      "error": null
+    },
+    "off_missing": {
+      "calls": [
+        "field"
+      ],
+      "last_u": null,
+      "error": "'position'"
+    },
+    "zero_present": {
+      "calls": [
+        "field",
+        "adapter"
+      ],
+      "last_u": 0.0,
+      "error": null
+    },
+    "zero_missing": {
+      "calls": [
+        "field"
+      ],
+      "last_u": null,
+      "error": "'position'"
+    },
+    "constant_present": {
+      "calls": [
+        "field",
+        "adapter"
+      ],
+      "last_u": 0.5,
+      "error": null
+    },
+    "constant_missing": {
+      "calls": [
+        "field"
+      ],
+      "last_u": null,
+      "error": "'position'"
+    },
+    "active_present": {
+      "calls": [
+        "field",
+        "adapter"
+      ],
+      "last_u": 0.25,
+      "error": null
+    },
+    "active_missing": {
+      "calls": [
+        "field"
+      ],
+      "last_u": null,
+      "error": "'position'"
+    }
+  },
+  "gemini_commit": "2c3dca97af1b0e64f112728ff551548557927995",
+  "gemini_manifest_verification": {
+    "gpu-pilot/src/noesis_gpu/external_senses.py": {
+      "git_bytes": 36223,
+      "git_sha256": "55837b17859653b1b452bf0a97155e737b4f2c79c6c611ad29e8059b0baeb361",
+      "git_match": true,
+      "crlf_match": true,
+      "working_tree_hash_matches_variant": true,
+      "working_tree_size_matches_declared": true
+    },
+    "gpu-pilot/tests/test_external_senses.py": {
+      "git_bytes": 34644,
+      "git_sha256": "f01fcb12b53cc0dcfd1d41c4635f5b90b0dd6c5297149fba0253b72e450b1964",
+      "git_match": true,
+      "crlf_match": true,
+      "working_tree_hash_matches_variant": true,
+      "working_tree_size_matches_declared": true
+    },
+    "docs/workstreams/gemini/sensory_mapping_and_validation_report.md": {
+      "git_bytes": 13677,
+      "git_sha256": "709ffdf0290386fcb0ec65ecd15ccf667602fab9758cc7a3c7b5347b67aadffd",
+      "git_match": true,
+      "crlf_match": true,
+      "working_tree_hash_matches_variant": true,
+      "working_tree_size_matches_declared": true
+    },
+    "docs/workstreams/gemini/sensory_rectification_experiment_proposal.md": {
+      "git_bytes": 3757,
+      "git_sha256": "e8d3e845aefc1b05f48fd14cf3cb8f3a7a49bd556f79ec755cf9626b88ef304f",
+      "git_match": true,
+      "crlf_match": true,
+      "working_tree_hash_matches_variant": true,
+      "working_tree_size_matches_declared": true
+    },
+    "docs/workstreams/gemini/s1_physical_gait_audit.md": {
+      "git_bytes": 4523,
+      "git_sha256": "793626d86b6d31b6fe3916cb6a0de09d16af1ec64c61195cbeddf11c662118e4",
+      "git_match": true,
+      "crlf_match": true,
+      "working_tree_hash_matches_variant": true,
+      "working_tree_size_matches_declared": true
+    },
+    "docs/workstreams/gemini/sensory_handoff_to_claude.md": {
+      "git_bytes": 4578,
+      "git_sha256": "9a4a91e0e6b05b0d0452df02c22c90282448dd4bce1364ffc71fa25f74617aa0",
+      "git_match": true,
+      "crlf_match": true,
+      "working_tree_hash_matches_variant": true,
+      "working_tree_size_matches_declared": true
+    }
+  }
+}
