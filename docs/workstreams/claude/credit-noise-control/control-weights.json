@@ -1,0 +1,10 @@
+{
+ "norm_real_delta": 253.58414368945878,
+ "norm_control_delta": 177.60320806718252,
+ "cosine_real_control": 0.08759840825913062,
+ "rel_dev_from_original_real": 0.0112631574981345,
+ "rel_dev_from_original_control": 0.01122007721540033,
+ "max_ratio_control": 1.2283906133662206,
+ "min_ratio_control": 0.779423896862937,
+ "signs_kept_control": true
+}

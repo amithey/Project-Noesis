@@ -1,0 +1,30 @@
+{
+ "note": "explicit same-probe/symmetric-tie rule applied to the stored tables; the registered first-use verdicts are unchanged",
+ "pairs": {
+  "1000": {
+   "registered_verdict": "INDISTINGUISHABLE",
+   "strict_verdict": "INDISTINGUISHABLE",
+   "median_dheading": -1.0057720628330409,
+   "median_dnet": -0.88793315288628,
+   "real_noninferior_probes": 2,
+   "control_noninferior_probes": 1
+  },
+  "1001": {
+   "registered_verdict": "INDISTINGUISHABLE",
+   "strict_verdict": "INDISTINGUISHABLE",
+   "median_dheading": -0.6627729901415452,
+   "median_dnet": -0.5571856518411025,
+   "real_noninferior_probes": 2,
+   "control_noninferior_probes": 2
+  },
+  "1002": {
+   "registered_verdict": "INDISTINGUISHABLE",
+   "strict_verdict": "INDISTINGUISHABLE",
+   "median_dheading": 0.6445113264178771,
+   "median_dnet": 0.525533709455783,
+   "real_noninferior_probes": 2,
+   "control_noninferior_probes": 1
+  }
+ },
+ "all_verdicts_unchanged": true
+}

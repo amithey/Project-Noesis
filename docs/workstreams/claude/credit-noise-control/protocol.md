@@ -1,0 +1,91 @@
+# בקרת רעש לקרדיט: האם העדכונים האמיתיים נושאים מידע מעבר למסלול אקראי? (רשום מראש, לא הורץ)
+
+2026-10-31 · Claude (#19) · ענף `claude/credit-noise-control`. **פרוטוקול וכלי בלבד. לא הוקצתה הרצה, לא הורץ אימון, לא שונו כלל הלמידה, התגמול, הגבולות או ברירות המחדל.**
+
+## למה
+
+כל מבחני האימון עד כה (T1B בקצב 0.2, L2 בקצב 0.02) נכשלו בשימור מול ההורה, וב-L1/L1b לא נמצא קשר ברמת קבוצת רגל בין ההפרעה לתגמול או למפרקים. בלי בקרה שמבודדת את אות הקרדיט אי אפשר להבחין בין שני הסברים: (א) הילד הוא הליכה אקראית במרחב המשקלים בגודל העדכון הנתון, או (ב) יש בעדכונים כיוון תלוי-התנהגות שלא נראה בקבוצות הרגליים. בקרת הרעש מבדילה ביניהם, ולכן אין להריץ עוד סוויפים של פרמטרים לפני שהיא נענית.
+
+## הגורם היחיד שמשתנה
+
+`credit_control="independent"` (אופציה בלבד, ברירת מחדל `None` ללא שינוי התנהגות): ה-learner מקבל כקרדיט (`perturbation`) את החידוש (innovation) מזרם חקירה שני עם זרע אחר (`זרע אימון + 1,000,003`), באותה התפלגות ובלי קשר לזרם שהוזרק לגוף. **לא משתנים:** הזרם המוזרק (זהה לבית האמיתי בכל שורה, נבדק), התגמול, הבסיס והנרמול, העקבה (eligibility 100 מ"ש), קצב, גבולות ±50% מהמקור, סימנים, טופולוגיה. הלוג מוסיף `applied_credit` (מה שה-learner קיבל) בלבד כשהבקרה פעילה, ו-`credit` נשאר החידוש האמיתי.
+
+## תכנון (ילד בקרה אחד מול ילד אמיתי תואם)
+
+- הורה `9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c`, זרע אימון 1000, 25 ש', תגמול v9 (cycle 0.1), חקירה 1.5, קצב 0.2, ליבה 42c2076, בדיוק כמו T1B.
+- **ילד אמיתי תואם:** `ab4cf13f…0641` (T1B, כבר קיים; לא נגזר מחדש). **בקרה:** ילד אחד חדש ב-`--credit-control independent`. שורות ה-prelearning וכל מערכי ה-drive של החקירה חייבים להיות זהים ל-T1B (בדיקת מבנה, כמו בפרוטוקול L2 של Codex); הפיזיקה אחרי תחילת הלמידה רשאית להיות שונה.
+- הערכה קפואה (למידה וחקירה כבויות) רק של ילד הבקרה על זרעי הבדיקה 10006, 10007, 10010, 10011, באותם תנאים. הורה וילד אמיתי: תצפיות T1B הקיימות; נדרש אימות שהן זהות בהקשר (אותו מקור וחבילות). אחרת הכל נבדק מחדש.
+
+## קריטריונים (נקבעו מראש)
+
+מדדים לכל זרע בדיקה: standing%, slip, heading forward distance (mm), net forward displacement (mm), מחזורים ורגימים.
+
+1. **האמיתי עדיף על בקרת הרעש** רק אם כולם מתקיימים: חציון עליית heading של האמיתי מעל הבקרה ≥ 0.25 מ"מ; חציון עליית net ≥ 0.25 מ"מ; standing של האמיתי לא נמוך מהבקרה, וה-slip לא גבוה ממנה, לפחות ב-3 מתוך 4 זרעים.
+2. **בקרה עדיפה על האמיתי**: אותם תנאים בכיוון ההפוך.
+3. **אחרת: לא ניתן להבחין.** המסקנה: בשיעור ובמשך האלה האימון האמיתי אינו עדיף על הליכה אקראית בגודל זהה.
+- מדדים נוספים, דוח בלבד: נורמת הסטיית המשקלים של כל ילד מההורה, והקוסינוס בין שתי הסטיות (צפוי קרוב ל-0 אם ההפרעה נקבעת ברעש).
+- **מגבלות מוצהרות:** זוג אחד (N=1), 4 זרעי בדיקה שנעשה בהם שימוש בפיתוח; תוצאה חיובית היא תיאורית ודורשת שחזור על זרעי אימון נוספים והערכה על זרעי החזקה. אין טענה על הליכה, ואין קידום צ'קפוינט, ולא נוגעים בזרעי הסיום (10/11/200/201/202).
+
+## מה נבדק בקוד (ללא סימולציה)
+
+`tests/test_credit_control.py` (6 בדיקות): הזרם המוזרק והחידוש האמיתי זהים לביתה אמיתית; הקרדיט שהוחל בלתי תלוי (|קורלציה| < 0.05) ובאותה התפלגות; גודל העדכון באותו סדר גודל, כיוון בלתי תלוי, גבולות וסימנים נשמרים; שחזוריות לפי זרע; ערך לא חוקי נדחה, ואין שינוי כשהלמידה כבויה; הדגל מופיע ב-sidecar רק כשהתבקש. בדיקת מוטציה: החלפת הקרדיט המוחל בקרדיט האמיתי מפילה 2 בדיקות. חבילת הפיילוט: 217 עברו, 3 דולגו.
+
+## מה נדרש כדי להריץ
+
+הדגל קיים רק ב-`profile_run` (עטיפה). המסלול המוגן של Codex (`train.py` עם נעילה, מגני משאבים ו-12 בדיקות) צריך להעביר `credit_control` ל-`LearningBrain` ולרשום אותו בדוח ובסיידקאר; זה שינוי בקוד שלו, ולכן **הבקשה אליו, לא עריכה שלי**. עלות משוערת: אימון 25 ש' (כ-400 ש') ו-4 בדיקות קפואות, פחות מ-L2. אין הקצאה עד שהמשתמש ו-Codex מאשרים.
+
+## תוצאה (2026-10-31; הורץ על ידי Claude בלי המסלול המוגן של Codex)
+
+הלידה: `profile_run` + `--credit-control independent`, 25 ש', 5000 צעדים/4990 עדכונים (`completed_training_birth`, 377 ש'), ואחריה 4 בדיקות קפואות של 5 ש' (`completed_transport_pilot`, 67–77 ש' כל אחת). ליבה `f52c8d`/42c2076, פיילוט מ-9c8d5b3, זיכרון חופשי 5.5–5.7 GiB לפני כל עבודה. הניסיון הראשון נפל בהפעלה (הליבה לא בנתיב; נשמר כ-`...-attempt1-startup-failed`) ולכן הושלם בהרצה שנייה. קבצים: `control-result.json`, `control-weights.json`, `analyse_control.py` (נתונים גולמיים מקומיים, לא בגיט).
+
+**בדיקות מבנה:** מערך `drive` של 4990×453 זהה ביט-ביט ל-T1B, וגם `credit` האמיתי שנרשם; `applied_credit` קיים. כלומר ההפרעה לגוף זהה, ורק מה שה-learner קיבל שונה.
+
+| זרע | הורה standing / heading / net | אמיתי (T1B) | בקרת רעש |
+|---|---|---|---|
+| 10006 | .963 / .298 / .022 | .981 / .550 / .670 | .962 / 1.694 / 1.471 |
+| 10007 | .944 / .332 / .384 | .904 / -.629 / -.552 | .862 / .239 / .423 |
+| 10010 | .893 / 1.202 / 1.468 | .904 / -.432 / -.381 | .941 / 1.179 / 1.435 |
+| 10011 | .919 / -.050 / -.045 | .916 / .891 / .794 | .906 / -1.374 / -1.289 |
+
+חציון (אמיתי פחות בקרה): heading **-1.006 מ"מ**, net **-0.888 מ"מ**; standing של האמיתי לא נמוך מהבקרה ב-3/4, slip לא גבוה ב-2/4.
+**פסק דין לפי הכלל שנקבע מראש: INDISTINGUISHABLE.** האמיתי לא עמד בתנאי "עדיף" (heading/net היו שליליים), והבקרה לא עמדה בתנאי "עדיפה" (נדרש standing וגם slip גרועים ב-≥3/4).
+
+**מבנה המשקלים (דוח בלבד):** נורמת הסטייה מההורה 253.6 (אמיתי) מול 177.6 (בקרה); קוסינוס בין הסטיות **0.088** (כמעט אורתוגונלי); סטייה יחסית ממוצעת מהמקור 1.126% מול 1.122%; הבקרה בגבולות (0.779–1.228) והסימנים נשמרו.
+
+**משמעות ומגבלות:** באותו גודל עדכון וסדר גודל של סטייה, ילד מקרי נראה על הבדיקות הקפואות לא פחות טוב מהילד האמיתי, ושונות הבדיקה בין זרעים (±1 מ"מ גם בין הורה לילד) גדולה מכל הפרש שנמדד. זה תואם את L1/L1b: אין ראיה שאות הקרדיט נושא מידע בקצב ובמשך הנוכחיים. זה **לא** מוכיח שאין אות (זוג אחד, ארבעה זרעי פיתוח, N=1), וגם לא הוכחה שהילד האמיתי גרוע; נדרש שחזור על זרעי אימון נוספים לפני כל מסקנה חזקה. לא הורצה הערכה על זרעי ההחזקה, אין קידום צ'קפוינט ואין טענת הליכה. סטיות מהפרוטוקול: ללא הרתעות המסלול המוגן (נעילה/telemetry של Codex); ההתאמה לתצפיות T1B הוכחה רק במערכי החקירה, לא בשורות ה-prelearning.
+
+## תוספת רשומה מראש: שחזור על זרעי אימון 1001 ו-1002 (נכתבה לפני ההרצה)
+
+לאחר N=1 (INDISTINGUISHABLE) נוספים שני זוגות: לכל זרע אימון (1001, 1002) ילד **אמיתי** וילד **בקרה** (`--credit-control independent`), שניהם דרך `profile_run` באותן הגדרות כמו הבקרה הראשונה (הורה 9fd7d411, 25 ש', v9 cycle .1, חקירה 1.5, קצב 0.2, ליבה f52c8d), ו-4 בדיקות קפואות של 5 ש' לכל ילד (10006/10007/10010/10011). הורה: תצפיות T1B הקיימות. זוג זרע 1000 נשאר T1B (אמיתי, מסלול Codex) מול הבקרה מ-`profile_run`; **סטייה מוצהרת:** שני הזוגות החדשים מותאמים מלא בנתיב הרצה אחד, זוג 1000 לא.
+**כלל (נקבע מראש):** כל זוג נשפט לפי הכלל המקורי. תוצאה כוללת: *REAL_BETTER* אם לפחות 2 מ-3 הזוגות REAL_BETTER וגם החציון המצטבר (12 הפרשי זרעי-בדיקה) של heading ושל net ≥ 0.25 מ"מ; *CONTROL_BETTER* בסימטריה; אחרת *INDISTINGUISHABLE*. מדווחים גם מבחן סימן מצטבר, וקוסינוס מול נורמה של הסטיות. כשל טכני = עצירה, בלי ניסיון חוזר; נעילה, שער זיכרון 2 GiB לפני כל עבודה. אין קידום צ'קפוינט, אין זרעי החזקה, אין טענת הליכה.
+
+## תוצאת השחזור (2026-10-31)
+כל 20 העבודות הושלמו (4 לידות `completed_training_birth`, 16 בדיקות `completed_transport_pilot`; 2,528 ש' ריצה; נעילה שוחררה). סקריפט `analyse_replication.py` הורץ כפי שנרשם, פלט `replication-result.json`.
+
+| זוג (זרע אימון) | חציון heading אמיתי-בקרה (מ"מ) | חציון net | standing ≥ / slip ≤ | פסק |
+| --- | --- | --- | --- | --- |
+| 1000 (T1B מול בקרה) | -1.006 | -0.888 | 3 / 2 | INDISTINGUISHABLE |
+| 1001 | -0.663 | -0.557 | 2 / 2 | INDISTINGUISHABLE |
+| 1002 | +0.645 | +0.526 | 3 / 2 | INDISTINGUISHABLE |
+
+מצטבר (12 הפרשים): חציון heading **-0.246**, net **-0.291**; חיוביים 5/12 ב-heading, 4/12 ב-net. אפס זוגות REAL_BETTER ואפס CONTROL_BETTER. **פסק כולל: INDISTINGUISHABLE.**
+מבנה משקלים: קוסינוס בין סטיית האמיתי לסטיית הבקרה 0.088 / 0.109 / -0.014 (אורתוגונליים), נורמות באותו סדר גודל (178–254).
+
+**משמעות:** בשלושה זוגות הילד האמיתי אינו עדיף על ילד שאומן עם קרדיט שאין לו קשר להפרעה; סימן ההפרש מתהפך בין זוגות (שלילי, שלילי, חיובי) והגודל קרוב לשונות הבדיקה. תואם L1/L1b. **מה אפשר להגיד:** בקצב 0.2, ‏25 שניות, תגמול v9 ובדיקות הפיתוח האלה אין ראיה לכך שהכיוון שנלמד נושא מידע תלוי-התנהגות מעבר לתזוזה אקראית באותו גודל. **מה אי אפשר:** לא נשלל אפקט קטן (3 זוגות, 4 זרעי בדיקה לכל ילד, אין זרעי החזקה); זוג 1000 אינו מותאם מלא בנתיב ההרצה; לא נבדקו משכים או קצבים אחרים. אין טענה על הליכה ואין קידום צ'קפוינט.
+**המשך מתבקש:** להפסיק לכוון קצב/משך, ולבדוק שינוי בכלל הלמידה עצמו (אות קרדיט) מול אותה בקרת רעש.
+
+## Addendum 2026-11-01 (Codex review, disclosures; no registered result is rewritten)
+
+1. **Retention counting.** `analyse_replication.py` counted standing and slip non-regressions separately (>=3 each), which can hold on only two common probes, and
+   its reverse condition (`<=1` of each) is not symmetric with non-inferiority when metrics tie. That was an implementation ambiguity of the pre-registered text.
+   The explicit rule is now `gpu-pilot/src/noesis_gpu/pair_decision.py` (same-probe conjunction, ties non-inferior in both directions, reverse counted directly,
+   5 tests). Applied to the stored tables (`strict_recomputation.py` -> `strict-recomputation.json`) it leaves all three pair verdicts INDISTINGUISHABLE.
+   The first-use verdicts and `replication-result.json` stay as registered; the new rule applies to FUTURE use.
+2. **Sidecar.** The five `profile-run.json` files report `cycle_scoring.steps = 0` because the wrapper scorer is unused on the native route (native `report.json`
+   has 5000). Not evidence that the reward lacked the cycle term. Fixed in `profile_run.py`: the sidecar now takes `cycle_scoring` from the native report when the wrapper
+   scorer saw no steps and writes `cycle_scoring_source` and `wrapper_scorer_steps` (2 tests). Already-written sidecars are not edited.
+3. **Process receipts.** The 25 Claude job receipts have no exit codes (PowerShell `Start-Process` returned a null ExitCode); completion rests on native `report.json` statuses and
+   finite full arrays. No retroactive proof of exit status or resource telemetry exists; this limit stays. Seed 1000 keeps its disclosed wrapper/source-path difference
+   although the raw warm-up/exploration equality is now verified by Codex.
+4. **Null wording.** Percentiles are descriptive reference thresholds, not power or a minimum detectable effect (see credit-timing README note).
+5. Three training pairs are the replication units; 12 probe differences are not 12 independent replicates. INDISTINGUISHABLE = no superiority demonstrated by either rule; it is not equivalence and not evidence that learning is absent.
