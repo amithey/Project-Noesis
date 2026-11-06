@@ -147,4 +147,3 @@ class FrozenPopulation:
             commands.append(command)
             pads.append(adhesion)
         return np.stack(commands), np.stack(pads)
-
