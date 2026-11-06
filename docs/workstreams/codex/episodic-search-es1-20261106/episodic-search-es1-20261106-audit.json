@@ -1,0 +1,414 @@
+{
+  "status": "completed_audited_ES1",
+  "runtime_commit": "e0cbd109bb6e018bd253c9f1b5e1698e0421b276",
+  "proposal_source_commit": "0b4ca82321f0d97cb27b56f1746733d487943fe8",
+  "native_result_status": "completed_no_candidate",
+  "seconds": 710.6090000001714,
+  "cases": [
+    {
+      "standing_fraction": 0.9626262626262626,
+      "mean_stance_slip_mm_s": 3.0581713360264406,
+      "heading_forward_distance_mm": 0.298359305310338,
+      "net_forward_displacement_mm": 0.022346444869974825,
+      "total_leg_steps": 58,
+      "leg_step_counts": {
+        "LF": 12,
+        "LM": 15,
+        "LH": 13,
+        "RF": 5,
+        "RM": 9,
+        "RH": 4
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5956228956228957,
+        "correlation": -0.4280747312389304,
+        "intra_tripod_1_sync": 0.7590599115956949,
+        "intra_tripod_2_sync": 0.7457272584824133,
+        "tripod_coordination_score": 0.19183862825923673,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "parent",
+      "seed": 10006
+    },
+    {
+      "standing_fraction": 0.907070707070707,
+      "mean_stance_slip_mm_s": 2.747526908008636,
+      "heading_forward_distance_mm": -0.8772638143522281,
+      "net_forward_displacement_mm": -1.3402562749314033,
+      "total_leg_steps": 52,
+      "leg_step_counts": {
+        "LF": 12,
+        "LM": 12,
+        "LH": 12,
+        "RF": 3,
+        "RM": 8,
+        "RH": 5
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5791245791245792,
+        "correlation": -0.34900806943432283,
+        "intra_tripod_1_sync": 0.7028723020468649,
+        "intra_tripod_2_sync": 0.796677040022454,
+        "tripod_coordination_score": 0.15154382019243262,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "plus",
+      "seed": 10006,
+      "standing_change_pp": -5.555555555555558,
+      "slip_change_percent": -10.15784905045356,
+      "heading_change_mm": -1.1756231196625662,
+      "net_forward_change_mm": -1.3626027198013781
+    },
+    {
+      "standing_fraction": 0.9050505050505051,
+      "mean_stance_slip_mm_s": 2.671967649583886,
+      "heading_forward_distance_mm": 1.246588397639215,
+      "net_forward_displacement_mm": 1.1029513640818545,
+      "total_leg_steps": 55,
+      "leg_step_counts": {
+        "LF": 13,
+        "LM": 17,
+        "LH": 11,
+        "RF": 2,
+        "RM": 7,
+        "RH": 5
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5663299663299662,
+        "correlation": -0.2929645667605547,
+        "intra_tripod_1_sync": 0.7047769667773337,
+        "intra_tripod_2_sync": 0.7576314130478433,
+        "tripod_coordination_score": 0.12131746036104785,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_UNCOORDINATED",
+      "bank": "minus",
+      "seed": 10006,
+      "standing_change_pp": -5.757575757575751,
+      "slip_change_percent": -12.628582378394748,
+      "heading_change_mm": 0.948229092328877,
+      "net_forward_change_mm": 1.0806049192118796
+    },
+    {
+      "standing_fraction": 0.9444444444444444,
+      "mean_stance_slip_mm_s": 2.4901644202802085,
+      "heading_forward_distance_mm": 0.33179266889018316,
+      "net_forward_displacement_mm": 0.3839992223829025,
+      "total_leg_steps": 52,
+      "leg_step_counts": {
+        "LF": 10,
+        "LM": 12,
+        "LH": 12,
+        "RF": 6,
+        "RM": 8,
+        "RH": 4
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5552188552188553,
+        "correlation": -0.5413615563084424,
+        "intra_tripod_1_sync": 0.7047769667773337,
+        "intra_tripod_2_sync": 0.763821573421867,
+        "tripod_coordination_score": 0.2207113742218327,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "parent",
+      "seed": 10007
+    },
+    {
+      "standing_fraction": 0.898989898989899,
+      "mean_stance_slip_mm_s": 2.573710626752656,
+      "heading_forward_distance_mm": -0.13875329234670364,
+      "net_forward_displacement_mm": -0.1218041295738517,
+      "total_leg_steps": 53,
+      "leg_step_counts": {
+        "LF": 10,
+        "LM": 11,
+        "LH": 11,
+        "RF": 5,
+        "RM": 10,
+        "RH": 6
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5323232323232323,
+        "correlation": -0.43981057349850605,
+        "intra_tripod_1_sync": 0.6714453339941294,
+        "intra_tripod_2_sync": 0.7538220835869057,
+        "tripod_coordination_score": 0.16684279167981375,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "plus",
+      "seed": 10007,
+      "standing_change_pp": -4.545454545454541,
+      "slip_change_percent": 3.3550477949181534,
+      "heading_change_mm": -0.4705459612368868,
+      "net_forward_change_mm": -0.5058033519567542
+    },
+    {
+      "standing_fraction": 0.9353535353535354,
+      "mean_stance_slip_mm_s": 2.174019741977347,
+      "heading_forward_distance_mm": 0.06309790295527379,
+      "net_forward_displacement_mm": 0.4374635641643771,
+      "total_leg_steps": 67,
+      "leg_step_counts": {
+        "LF": 14,
+        "LM": 13,
+        "LH": 13,
+        "RF": 8,
+        "RM": 13,
+        "RH": 6
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.36902356902356903,
+        "correlation": -0.47518140606659065,
+        "intra_tripod_1_sync": 0.6219240510019404,
+        "intra_tripod_2_sync": 0.6276380451933468,
+        "tripod_coordination_score": 0.10955731759697002,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "minus",
+      "seed": 10007,
+      "standing_change_pp": -0.9090909090909038,
+      "slip_change_percent": -12.695735097977456,
+      "heading_change_mm": -0.2686947659349094,
+      "net_forward_change_mm": 0.05346434178147458
+    },
+    {
+      "standing_fraction": 0.8929292929292929,
+      "mean_stance_slip_mm_s": 2.2499830438353756,
+      "heading_forward_distance_mm": 1.2018815669844556,
+      "net_forward_displacement_mm": 1.468320629755359,
+      "total_leg_steps": 73,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 13,
+        "LH": 11,
+        "RF": 19,
+        "RM": 15,
+        "RH": 6
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.32255892255892255,
+        "correlation": -0.23152657399302826,
+        "intra_tripod_1_sync": 0.6433515292197145,
+        "intra_tripod_2_sync": 0.5833545902099468,
+        "tripod_coordination_score": 0.045805796699067855,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_UNCOORDINATED",
+      "bank": "parent",
+      "seed": 10010
+    },
+    {
+      "standing_fraction": 0.9484848484848485,
+      "mean_stance_slip_mm_s": 2.451946399403328,
+      "heading_forward_distance_mm": 0.6968828475217606,
+      "net_forward_displacement_mm": 0.5065888457992548,
+      "total_leg_steps": 57,
+      "leg_step_counts": {
+        "LF": 7,
+        "LM": 10,
+        "LH": 11,
+        "RF": 9,
+        "RM": 14,
+        "RH": 6
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5141414141414141,
+        "correlation": -0.5390666373236772,
+        "intra_tripod_1_sync": 0.6504940219589725,
+        "intra_tripod_2_sync": 0.7666785705175702,
+        "tripod_coordination_score": 0.19638928593040728,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "plus",
+      "seed": 10010,
+      "standing_change_pp": 5.555555555555558,
+      "slip_change_percent": 8.976216781779867,
+      "heading_change_mm": -0.504998719462695,
+      "net_forward_change_mm": -0.9617317839561043
+    },
+    {
+      "standing_fraction": 0.908080808080808,
+      "mean_stance_slip_mm_s": 2.4529402227729253,
+      "heading_forward_distance_mm": 2.4367317510090056,
+      "net_forward_displacement_mm": 2.117562994555895,
+      "total_leg_steps": 58,
+      "leg_step_counts": {
+        "LF": 6,
+        "LM": 10,
+        "LH": 14,
+        "RF": 10,
+        "RM": 13,
+        "RH": 5
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.35824915824915826,
+        "correlation": -0.2605567661734957,
+        "intra_tripod_1_sync": 0.6466846924980348,
+        "intra_tripod_2_sync": 0.6443038615849488,
+        "tripod_coordination_score": 0.060253174107620586,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_UNCOORDINATED",
+      "bank": "minus",
+      "seed": 10010,
+      "standing_change_pp": 1.5151515151515138,
+      "slip_change_percent": 9.020387042187838,
+      "heading_change_mm": 1.23485018402455,
+      "net_forward_change_mm": 0.6492423648005359
+    },
+    {
+      "standing_fraction": 0.9191919191919192,
+      "mean_stance_slip_mm_s": 2.9327522746019024,
+      "heading_forward_distance_mm": -0.05008821844232747,
+      "net_forward_displacement_mm": -0.045329986741564264,
+      "total_leg_steps": 57,
+      "leg_step_counts": {
+        "LF": 11,
+        "LM": 14,
+        "LH": 10,
+        "RF": 4,
+        "RM": 11,
+        "RH": 7
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.48148148148148157,
+        "correlation": -0.10793572702484067,
+        "intra_tripod_1_sync": 0.7233474478994046,
+        "intra_tripod_2_sync": 0.6928728122119037,
+        "tripod_coordination_score": 0.036799813411694436,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "parent",
+      "seed": 10011
+    },
+    {
+      "standing_fraction": 0.8343434343434344,
+      "mean_stance_slip_mm_s": 2.6369593374807225,
+      "heading_forward_distance_mm": -0.30149266367800553,
+      "net_forward_displacement_mm": -0.21814614239490354,
+      "total_leg_steps": 60,
+      "leg_step_counts": {
+        "LF": 8,
+        "LM": 15,
+        "LH": 13,
+        "RF": 9,
+        "RM": 9,
+        "RH": 6
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.37474747474747483,
+        "correlation": -0.11730981060617385,
+        "intra_tripod_1_sync": 0.6343043717499876,
+        "intra_tripod_2_sync": 0.6676360045331918,
+        "tripod_coordination_score": 0.028617661916675356,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "plus",
+      "seed": 10011,
+      "standing_change_pp": -8.484848484848484,
+      "slip_change_percent": -10.085848016649523,
+      "heading_change_mm": -0.25140444523567806,
+      "net_forward_change_mm": -0.17281615565333927
+    },
+    {
+      "standing_fraction": 0.9747474747474747,
+      "mean_stance_slip_mm_s": 2.1594434245830985,
+      "heading_forward_distance_mm": 0.39238540758169416,
+      "net_forward_displacement_mm": 0.47508940644631,
+      "total_leg_steps": 61,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 10,
+        "LH": 13,
+        "RF": 14,
+        "RM": 11,
+        "RH": 4
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.32053872053872057,
+        "correlation": -0.19224781135857177,
+        "intra_tripod_1_sync": 0.6066867331581898,
+        "intra_tripod_2_sync": 0.637637535028308,
+        "tripod_coordination_score": 0.03833941473983309,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "bank": "minus",
+      "seed": 10011,
+      "standing_change_pp": 5.5555555555555465,
+      "slip_change_percent": -26.368024899879227,
+      "heading_change_mm": 0.4424736260240216,
+      "net_forward_change_mm": 0.5204193931878742
+    }
+  ],
+  "development_screen": {
+    "plus": {
+      "passed": false,
+      "standing_retained": false,
+      "slip_retained": false,
+      "cycles_retained": false,
+      "tripod_retained": true,
+      "positive_forward_progress": false,
+      "median_heading_gain_mm": -0.4877723403497909,
+      "median_net_forward_gain_mm": -0.7337675679564293,
+      "ranking": -0.7337675679564293,
+      "seeds": [
+        10006,
+        10007,
+        10010,
+        10011
+      ],
+      "walking_proven": false,
+      "model_promoted": false
+    },
+    "minus": {
+      "passed": false,
+      "standing_retained": false,
+      "slip_retained": false,
+      "cycles_retained": true,
+      "tripod_retained": false,
+      "positive_forward_progress": true,
+      "median_heading_gain_mm": 0.6953513591764493,
+      "median_net_forward_gain_mm": 0.584830878994205,
+      "ranking": 0.584830878994205,
+      "seeds": [
+        10006,
+        10007,
+        10010,
+        10011
+      ],
+      "walking_proven": false,
+      "model_promoted": false
+    }
+  },
+  "fresh_screen": null,
+  "selected_bank": null,
+  "exact_historical_parent_replay": {
+    "10006": true,
+    "10007": true,
+    "10010": true,
+    "10011": true
+  },
+  "signs_original_bounds_topology_preserved": true,
+  "parent_unchanged": true,
+  "source_unchanged": true,
+  "all_worker_trees_empty": true,
+  "lease_released": true,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "ONE parameter direction/antithetic pair; not an optimizer-efficacy estimate.",
+    "Reused development probes select; conditional fresh development probes are not reserved final validation.",
+    "No within-episode learning or new gait/sensory policy; proposals are not completed native training births.",
+    "Strict screening does not establish stable walking/balance/environmental response or retained learning across generations."
+  ]
+}
