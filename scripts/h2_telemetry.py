@@ -9,8 +9,13 @@ def ancestors(model,body):
 
 
 def mass_layout(model,native_ids):
-    ids=np.asarray(native_ids,int)
-    if len(set(ids.tolist()))!=len(ids) or np.any(ids<=0):raise ValueError('Invalid fly body ids')
+    raw=np.asarray(native_ids,int)
+    # Static fusion removes anatomical names (mj_name2id -> -1), while their
+    # mass is transferred to compiled ancestors. Count COM over real compiled
+    # bodies, guarded by complete mass coverage, never over anatomical aliases.
+    if raw.ndim!=1 or np.any(raw<-1) or np.any(raw==0) or np.any(raw>=model.nbody):raise ValueError('Invalid fly body ids')
+    ids=np.unique(raw[raw>0])
+    if not len(ids):raise ValueError('No valid compiled fly bodies')
     common=set(ancestors(model,ids[0]))
     for i in ids[1:]:common&=set(ancestors(model,i))
     root=next(i for i in ancestors(model,ids[0]) if i in common)
@@ -21,7 +26,8 @@ def mass_layout(model,native_ids):
     import mujoco
     free=np.flatnonzero(model.jnt_type==mujoco.mjtJoint.mjJNT_FREE)
     if len(free)!=1:raise ValueError('Require exactly one free fly root')
-    return dict(root=int(root),body_ids=bodies,total_mass=mass,free_joint=int(free[0]),free_dof=int(model.jnt_dofadr[free[0]]))
+    return dict(root=int(root),body_ids=bodies,total_mass=mass,free_joint=int(free[0]),free_dof=int(model.jnt_dofadr[free[0]]),
+                unmapped_anatomical_count=int(np.count_nonzero(raw==-1)),unique_positive_native_count=len(ids))
 
 
 def com_state(model,data,layout):
