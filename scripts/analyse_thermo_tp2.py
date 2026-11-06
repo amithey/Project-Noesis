@@ -25,12 +25,21 @@ def exact(a, b):
 
 
 rows, replay = [], {}
+transport = {}
 for seed in (10006, 10007):
     dirs = {mode: out / f'{mode}-{seed}' for mode in ('plain', 'sham', 'stimulus')}
     with np.load(dirs['sham'] / 'tp2-observations.npz', allow_pickle=False) as a, np.load(dirs['stimulus'] / 'tp2-observations.npz', allow_pickle=False) as b:
         for key in ('extra_idx', 'extra_rate_hz', 'drive_length', 'drive_indices_sha256', 'rng_state'):
             np.testing.assert_array_equal(a[key], b[key])
         assert a['rng_state'].shape == (1000, 625) and a['rng_state'].dtype == np.uint32
+        delta = b['commands'] - a['commands']
+        changed = np.flatnonzero(np.any(delta != 0, axis=1))
+        transport[str(seed)] = dict(
+            role='Exploratory descriptive divergence, not a new primary gate or lag/coupling test',
+            first_changed_command_chunk=int(changed[0]+1) if len(changed) else None,
+            changed_command_chunks=int(len(changed)), command_rms_difference_rad=float(np.sqrt(np.mean(delta**2))),
+            command_max_abs_difference_rad=float(np.abs(delta).max()),
+            changed_adhesion_chunks=int(np.any(a['adhesion'] != b['adhesion'], axis=1).sum()))
     replay[str(seed)] = exact(dirs['stimulus'] / 'observations.npz', root / f'outputs/thermo-pilot-tp1-20261106/constant-{seed}/observations.npz')
     assert replay[str(seed)], 'Prospective TP1 constant replay consistency failed'
     pair = {c['mode']: c for c in result['cases'] if c['seed'] == seed}
@@ -60,6 +69,7 @@ for seed in (10006, 10007):
 audit = dict(status='completed_audited_TP2', source_commit='e0cbd109bb6e018bd253c9f1b5e1698e0421b276',
              cases=rows, seconds=result['seconds'], full_MT_state_gate=result['rng_gate_by_seed'],
              plain_B2_replay=result['plain_gate_by_seed'], stimulus_TP1_constant_replay=replay,
+             exploratory_command_divergence=transport,
              all_neural_criteria_pass=result['all_neural_criteria_pass'],
              all_retention_criteria_pass=result['all_retention_criteria_pass'],
              weights_unchanged=True, source_unchanged=True, lease_released=True,
