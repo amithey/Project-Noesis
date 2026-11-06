@@ -1,0 +1,10 @@
+{
+  "path": "thermo-pilot-tp1-20261106-evidence.zip",
+  "bytes": 12672678,
+  "sha256": "667bc2f5bc7d352a890982761d9aca96e27cbdd182598f12076895634798e52c",
+  "files": 34,
+  "manifest_verified": true,
+  "raw_data_excluded": true,
+  "release_uploaded": false,
+  "release_blocker": "Local gh authentication was invalid at last check; no authenticated release uploader available."
+}
