@@ -1,0 +1,46 @@
+{
+  "experiment": "S2 paired standing reacquisition after pad-sign change",
+  "date": "2026-11-06",
+  "runtime_commit": "e0cbd109bb6e018bd253c9f1b5e1698e0421b276",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "pilot": "0e6c07f4acd09b4f2acb6bcd8ba8003ff12b418a479b3ea8063231f7e565aa37",
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "scripts": {
+      "adhesion_mapping.py": "0278af2f8bbf09ed41fb019c1e1da80b342ee27eb109730cdfaa3fa7258314a3",
+      "s2_contract.py": "dcbb92e842b6a15d21c6feebbaf18c5245ec76a26eba2115b4a875aa61033190",
+      "s2_worker.py": "43bb3c3c32aee4a75960630206ef1fceaf83220bd04459ebbe75739c358f56cf",
+      "run_standing_s2.py": "bac053f90f5d7fe5dd027b4369c0c426b311f0418b0032b56161dd64697cb5d8"
+    }
+  },
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "modes": [
+    "legacy",
+    "corrected"
+  ],
+  "training_seed": 1004,
+  "training_seconds": 25,
+  "training_chunks": 5000,
+  "learning_updates": 4990,
+  "frozen_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "frozen_seconds": 5,
+  "learning_rate": 0.2,
+  "eligibility_ms": 100,
+  "exploration_mv_ms": 1.5,
+  "reward": "curriculum-standing-v7",
+  "bridge_gate": "both frozen parent modes10006 exactly replay A1 body AND pad arrays before training",
+  "stream_gate": "both complete25s births have exactly equal drive/credit/index/time exploration logs",
+  "stage_gate": "EACH child seed standing>=.90 AND>=own mapping parent,slip<=parent; median paired heading/net/cycle/tripod gains>=0",
+  "aggregate_budget_seconds": 2400,
+  "training_worker_budget_seconds": 600,
+  "frozen_worker_budget_seconds": 300,
+  "stop": "technical/horizon/log/context/hash/resource/timeout failure; no retry/retune/partial-bank probes or insufficient remaining worker budget",
+  "model_promoted": false,
+  "walking_proven": false,
+  "one_training_pair_only": true
+}
