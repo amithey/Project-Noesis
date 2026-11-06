@@ -1,0 +1,104 @@
+{
+  "status": "completed_audited_P0",
+  "code_commit": "5fdcdb37ac4a80cecdcb1ef7b66932d99925a118",
+  "seconds": 799.936999999918,
+  "active_bridge_exact": true,
+  "controls": [
+    {
+      "mode": "legacy",
+      "metrics": {
+        "all_after_birth": {
+          "standing": {
+            "active": 0.8585170340681363,
+            "control": 0.8535070140280561,
+            "active_minus_control": 0.005010020040080221
+          },
+          "reward": {
+            "active": 0.5412254250230508,
+            "control": 0.5335880655638915,
+            "active_minus_control": 0.007637359459159332
+          },
+          "stance_slip_mm_s": {
+            "active": 2.9298662671627302,
+            "control": 2.8416901762950624,
+            "active_minus_control": 0.08817609086766787
+          }
+        },
+        "last5s": {
+          "standing": {
+            "active": 0.884,
+            "control": 0.86,
+            "active_minus_control": 0.02400000000000002
+          },
+          "reward": {
+            "active": 0.581162489746755,
+            "control": 0.5431094410035425,
+            "active_minus_control": 0.03805304874321247
+          },
+          "stance_slip_mm_s": {
+            "active": 3.0905323740927626,
+            "control": 2.863438711327407,
+            "active_minus_control": 0.22709366276535548
+          }
+        }
+      },
+      "checkpoint_sha256": "accd4073259631c08d1333ad0059d64a90e09ca5a8f32d1eaca1f8a7290263e4"
+    },
+    {
+      "mode": "corrected",
+      "metrics": {
+        "all_after_birth": {
+          "standing": {
+            "active": 0.8861723446893788,
+            "control": 0.8685370741482966,
+            "active_minus_control": 0.01763527054108216
+          },
+          "reward": {
+            "active": 0.5860342871881273,
+            "control": 0.5570423697834475,
+            "active_minus_control": 0.02899191740467988
+          },
+          "stance_slip_mm_s": {
+            "active": 2.7725835106076837,
+            "control": 2.663213408656095,
+            "active_minus_control": 0.1093701019515887
+          }
+        },
+        "last5s": {
+          "standing": {
+            "active": 0.825,
+            "control": 0.843,
+            "active_minus_control": -0.018000000000000016
+          },
+          "reward": {
+            "active": 0.48735726563886866,
+            "control": 0.5177806328227589,
+            "active_minus_control": -0.030423367183890215
+          },
+          "stance_slip_mm_s": {
+            "active": 2.8571433356039653,
+            "control": 2.872666914460571,
+            "active_minus_control": -0.015523578856605713
+          }
+        }
+      },
+      "checkpoint_sha256": "accd4073259631c08d1333ad0059d64a90e09ca5a8f32d1eaca1f8a7290263e4"
+    }
+  ],
+  "control_full_weights_unchanged": true,
+  "all_streams_exact": true,
+  "all_prefixes_exact": true,
+  "source_parent_prior_data_unchanged": true,
+  "all_jobs_exit0_empty": true,
+  "lease_released": true,
+  "walking_proven": false,
+  "model_promoted": false,
+  "limits": [
+    "One seed1004 exposure per policy; not independent training-seed replication.",
+    "Standing/reward/slip here describe25s with exploration, not frozen retained ability.",
+    "S2 frozen retention failures remain authoritative; no new candidate or promotion.",
+    "Control raw learning_active row field is inherited exploration/call timing; actual plasticity updates are zero.",
+    "No change in reward/learner/controller defaults or claim of stable walking/balance/environment response.",
+    "Read-only weights and no learner.update also freeze learning traces; those traces only affect neural output through weight changes in this source."
+  ]
+}
