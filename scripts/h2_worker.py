@@ -18,14 +18,16 @@ def main():
     from noesis_gpu import run
     import mujoco
     original=run.FlyGymBatch;instances=[]
-    context=dict(experiment='H2',seed=args.seed,checkpoint_sha256=hashlib.sha256(args.checkpoint.read_bytes()).hexdigest(),
+    context=dict(experiment='H2B',seed=args.seed,checkpoint_sha256=hashlib.sha256(args.checkpoint.read_bytes()).hexdigest(),
         worker_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),read_only_instrumentation=True)
     args.output.with_name(args.output.name+'-h2-context.json').write_text(json.dumps(context,indent=2),encoding='utf-8')
 
     class Instrumented(original):
         def __init__(self,*a,**kw):
-            super().__init__(*a,**kw);self.h2_records=[];self.h2_contacts=[];instances.append(self)
+            super().__init__(*a,**kw);self.h2_records=[];self.h2_contacts=[]
             m=self.sim.mj_model;native=self.sim._internal_bodyids_by_fly[self.fly.name]
+            critical=native[np.r_[self.thorax,self.feet]]
+            assert np.all(critical>0) and len(set(critical.tolist()))==7
             self.h2_layout=mass_layout(m,native)
             self.h2_ground=self.sim._internal_ground_geom_ids.copy()
             self.h2_claws=native[self.feet].copy()
@@ -35,6 +37,9 @@ def main():
                 body_names=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,int(i)) for i in ids],
                 body_mass=m.body_mass[ids].tolist(),total_mass=self.h2_layout['total_mass'],
                 model_total_mass=float(m.body_mass.sum()),gravity=m.opt.gravity.tolist(),free_dof=self.h2_layout['free_dof'],
+                unmapped_anatomical_count=self.h2_layout['unmapped_anatomical_count'],
+                unique_positive_native_count=self.h2_layout['unique_positive_native_count'],
+                critical_thorax_claw_ids_valid=True,production_static_fusion_unchanged=bool(self.sim.world.mjcf_root.compiler.fusestatic),
                 nq=m.nq,nv=m.nv,nbody=m.nbody,claw_body_ids=self.h2_claws.tolist(),ground_geom_ids=self.h2_ground.tolist(),
                 joint_names=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_JOINT,i) for i in range(m.njnt)],
                 joint_types=m.jnt_type.tolist(),joint_qpos_addresses=m.jnt_qposadr.tolist(),joint_dof_addresses=m.jnt_dofadr.tolist(),
@@ -44,6 +49,7 @@ def main():
                 root_actuator_force='free-joint translation qfrc_actuator includes external adhesion; joint servos are internal',
                 whole_com_velocity='subtree COM Jacobian times qvel, world frame',
                 legacy_native_observations_not_modified=True)
+            instances.append(self)  # Only after metadata initialization, preserve original constructor errors.
 
         def observe(self):
             obs=super().observe()
