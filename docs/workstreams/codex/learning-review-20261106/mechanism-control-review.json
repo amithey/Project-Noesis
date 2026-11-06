@@ -1,0 +1,605 @@
+{
+  "status": "completed_independent_synthetic_mechanism_review",
+  "seconds": 11.843000000342727,
+  "peer_commit": "aa7ecdbc03c3e064ff616c905b1b8016c337a238",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_sha256": {
+    "work\\Noesis-Diagnostic\\gpu-pilot\\src\\noesis_gpu\\mechanism_control.py": "6b0be7d8104d5d860d6512186a1294819fdf102d29f730ff96775ca7ebf2e3c0",
+    "work\\Noesis-Core\\src\\noesis\\plasticity.py": "b6eb0be56f80fd32370782b41269120e9313dd267f4839060a90db9a0d5241cd",
+    "work\\Noesis-Core\\src\\noesis\\lif.py": "d2998745933d1ad008a37876f4bb6ef0f95fd5b055a2d635ec7b3b40a8839712",
+    "work\\Noesis-Diagnostic\\docs\\workstreams\\claude\\mechanism-control\\mechanism-control-result.json": "9fe81d389bb10f9c9f5284ae4c6ced31de4a541b5209338977fdb30dc7117d09"
+  },
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "numba": "0.68.1"
+  },
+  "import_core_verified": true,
+  "source_unchanged": true,
+  "physical_simulation": false,
+  "trained_checkpoint_written": false,
+  "original_rows_max_absolute_error": 0.0,
+  "original_verdict_reproduced": true,
+  "original": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "kappa": 0.2,
+    "lr": 0.2,
+    "steps": 990,
+    "summary": {
+      "positive": {
+        "mean_D": 0.0012559216493537584,
+        "z": 11.567766919824981
+      },
+      "negative": {
+        "mean_D": 2.752391586048569e-05,
+        "z": 0.253681766520095
+      },
+      "learning_off_positive": {
+        "mean_D": 0.0,
+        "z": 0.0
+      }
+    },
+    "verdict": {
+      "positive_z_ge_3": true,
+      "negative_abs_z_lt_3": true,
+      "negative_mean_lt_third_of_positive": true,
+      "learning_off_exact": true,
+      "bounds_and_signs": true,
+      "registered_pass": true
+    },
+    "rows": {
+      "positive": [
+        {
+          "D": 0.0018322925967106342,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9959912564973078,
+          "ratio_max": 1.0048720775204147,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0015821466309521646,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9959594727019855,
+          "ratio_max": 1.0039097165660147,
+          "signs_kept": true
+        },
+        {
+          "D": 0.001728716916912255,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.996815132074644,
+          "ratio_max": 1.0030412393572103,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0006027283220204876,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9965978587518907,
+          "ratio_max": 1.003045885317258,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0003641295192541022,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9968708112173987,
+          "ratio_max": 1.0036172926146436,
+          "signs_kept": true
+        },
+        {
+          "D": 0.001147521206308253,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9963293569545558,
+          "ratio_max": 1.0031954423821172,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0010949174319347986,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9956323341061749,
+          "ratio_max": 1.0041980984421055,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0016955923134108297,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.994588159276841,
+          "ratio_max": 1.005755276618841,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0014025840411079208,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.996586356754814,
+          "ratio_max": 1.0035325006153548,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0013550928807949337,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9968304502410583,
+          "ratio_max": 1.0030004026327386,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0016614188044828853,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9965693594395638,
+          "ratio_max": 1.0031665845811664,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0015093004539116124,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9962871403425224,
+          "ratio_max": 1.004594795571051,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0011485857235380976,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9963772698024329,
+          "ratio_max": 1.0036513900448354,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0010020127252882633,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9972153384835141,
+          "ratio_max": 1.0029661843665607,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0013229124000285525,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9964637154962596,
+          "ratio_max": 1.0034531178111583,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0006447944230043418,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9969164464457677,
+          "ratio_max": 1.003119661468471,
+          "signs_kept": true
+        }
+      ],
+      "negative": [
+        {
+          "D": 0.0004857871966204363,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9966597348173124,
+          "ratio_max": 1.0029952277543002,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0004124830473666137,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9971103585185246,
+          "ratio_max": 1.0026452360748574,
+          "signs_kept": true
+        },
+        {
+          "D": -0.00014106098500428943,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9976526959977703,
+          "ratio_max": 1.002726859728773,
+          "signs_kept": true
+        },
+        {
+          "D": -0.0008548991099591804,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9974158863114576,
+          "ratio_max": 1.003013286874168,
+          "signs_kept": true
+        },
+        {
+          "D": -0.000637460364587516,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9964108799505349,
+          "ratio_max": 1.0031765500801895,
+          "signs_kept": true
+        },
+        {
+          "D": -0.0002517593741847729,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9969541633222564,
+          "ratio_max": 1.0032242106025502,
+          "signs_kept": true
+        },
+        {
+          "D": 1.030348738522891e-06,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9971149615973972,
+          "ratio_max": 1.0025781054732479,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0005815461485783873,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9959311043191645,
+          "ratio_max": 1.0043089115231036,
+          "signs_kept": true
+        },
+        {
+          "D": 0.00039968938160599783,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9968325471590808,
+          "ratio_max": 1.0029563323599036,
+          "signs_kept": true
+        },
+        {
+          "D": -6.86968403365836e-05,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9974903477867396,
+          "ratio_max": 1.0024011172385325,
+          "signs_kept": true
+        },
+        {
+          "D": 0.00040069180401083464,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9969446789849804,
+          "ratio_max": 1.0025924217028592,
+          "signs_kept": true
+        },
+        {
+          "D": -0.00010749694181808709,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9973842972551306,
+          "ratio_max": 1.002432223592188,
+          "signs_kept": true
+        },
+        {
+          "D": -8.216366174013196e-05,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9965525410728869,
+          "ratio_max": 1.0034402884969205,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0002310471130080144,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9980535636862057,
+          "ratio_max": 1.002024149337736,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0005222629652622314,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9975126058717871,
+          "ratio_max": 1.002866920304708,
+          "signs_kept": true
+        },
+        {
+          "D": -0.00045061807379270606,
+          "updates": 990,
+          "weights_equal_start": false,
+          "ratio_min": 0.9969177336207731,
+          "ratio_max": 1.0028520466082622,
+          "signs_kept": true
+        }
+      ],
+      "learning_off_positive": [
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        },
+        {
+          "D": 0.0,
+          "updates": 0,
+          "weights_equal_start": true,
+          "ratio_min": 1.0,
+          "ratio_max": 1.0,
+          "signs_kept": true
+        }
+      ]
+    }
+  },
+  "reversed_planted_effect": {
+    "mean_D": -0.0012059133477710913,
+    "z": -8.358989837528144,
+    "all_bounds_and_signs": true,
+    "registered_pass": true
+  },
+  "reversed_rows": [
+    {
+      "D": -0.0009084164621116337,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9961927435794771,
+      "ratio_max": 1.0038482464945786,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0008046413305986118,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9968244183182793,
+      "ratio_max": 1.0035764557651898,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0019952828887821656,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9955046623970729,
+      "ratio_max": 1.0043980468936937,
+      "signs_kept": true
+    },
+    {
+      "D": -0.002274197112067156,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9954070461300374,
+      "ratio_max": 1.0048569101237612,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0016542999495922938,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9949896227116151,
+      "ratio_max": 1.0041504507453884,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0016519320499667547,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9954309665417858,
+      "ratio_max": 1.0037987545582256,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0011735901373038425,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9966471063213275,
+      "ratio_max": 1.003067649808661,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0005283318024347861,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9962179361058707,
+      "ratio_max": 1.0033366635137333,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0006411543358387347,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9966014299683845,
+      "ratio_max": 1.0035232663288323,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0014763275921983714,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9964791572225941,
+      "ratio_max": 1.0033887160593944,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0008328811971773238,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9965335701601123,
+      "ratio_max": 1.0030334950903754,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0016854552127761842,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9965978549120772,
+      "ratio_max": 1.0033082218842442,
+      "signs_kept": true
+    },
+    {
+      "D": -0.00127203346213314,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9955722313871058,
+      "ratio_max": 1.0042072318130082,
+      "signs_kept": true
+    },
+    {
+      "D": -0.000562610376739475,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9975311279223565,
+      "ratio_max": 1.0023315222660012,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0002944973943808247,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9972360918448098,
+      "ratio_max": 1.0024039149513952,
+      "signs_kept": true
+    },
+    {
+      "D": -0.0015389622602361632,
+      "updates": 990,
+      "weights_equal_start": false,
+      "ratio_min": 0.9969594891569694,
+      "ratio_max": 1.0028639891966296,
+      "signs_kept": true
+    }
+  ],
+  "static_scope": {
+    "net_run_calls": [],
+    "reward_definition": "clip(.3 + externally drawn noise + kappa * planted OU history mean, -1,1)",
+    "spike_definition": "independent Bernoulli samples, not LIF output",
+    "learned_weights_feed_back_into_reward_or_spikes": false
+  },
+  "interpretation": "Update-direction association control reproduced; not a closed-loop controller improvement test or proof of physical learning.",
+  "seed_scope": "Original synthetic draw IDs0..15 only; no fly data, development or final physical probes.",
+  "remaining": "Physical causal exploration-to-reward/credit timing and retained behavioral improvement; do not repeat this association control as if missing."
+}

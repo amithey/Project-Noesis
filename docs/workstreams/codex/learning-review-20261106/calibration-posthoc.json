@@ -1,0 +1,39 @@
+{
+  "role": "Post-hoc technical floor/sensitivity diagnostic only; no primary threshold or training parameter changed",
+  "source_sha256": "c57ce585fbc70c8550a8f3d3426d6cf12190ae1f25f1692d3cbe70853b655f42",
+  "frozen_returns_at_original_reference_bounds": {
+    "original": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "best_signed_bound": [
+      0.01576993043384946,
+      0.010511711741455812,
+      0.010513682699696344,
+      0.02057739663936002
+    ],
+    "opposite_signed_bound": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "training_summary": {
+    "online": {
+      "max_abs_relative_weight_change": 0.04249534008188771,
+      "mean_actual_training_reward": 0.0320745034273747
+    },
+    "yoked": {
+      "max_abs_relative_weight_change": 0.024779594369681357,
+      "mean_actual_training_reward": 0.03168975926621759
+    },
+    "off": {
+      "max_abs_relative_weight_change": 0.0,
+      "mean_actual_training_reward": 0.031689996640160326
+    }
+  },
+  "physical_simulation": false
+}
