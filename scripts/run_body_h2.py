@@ -10,7 +10,7 @@ import zipfile
 import numpy as np
 import psutil
 
-root=Path(__file__).resolve().parents[1];out=root/'outputs/body-telemetry-h2-20261106'
+root=Path(__file__).resolve().parents[1];out=root/'outputs/body-telemetry-h2b-20261106'
 pilot=root/'work/Noesis-Sensory/gpu-pilot/src';core=root/'work/Noesis-Core/src'
 sys.path[:0]=[str(pilot),str(core)]
 from noesis_gpu.process_watchdog import run_windows_job,WatchdogError
@@ -61,11 +61,21 @@ for label,folder in [('pilot',pilot),('core',core)]:
     assert len(list(folder.rglob('*.py')))==len(provenance[label])
     for f in provenance[label]:assert sha(folder/f['path'])==f['sha256']
 for n,h in read(root/'outputs/standing-reacquisition-s2-20261106/protocol.json')['source_hashes']['scripts'].items():assert sha(root/'work'/n)==h
+static_path=root/'outputs/body-telemetry-h2-20261106/static-body-map.json';static=read(static_path)
+assert static['all_missing_names_restored_without_fusion'] and static['all_critical_observation_ids_valid'] and static['physical_integration_steps']==0
+prior[static_path.relative_to(root).as_posix()]=sha(static_path)
+static_check=root/'outputs/body-telemetry-h2b-static-20261106/native-static-measurement.json'
+static_receipt=root/'outputs/body-telemetry-h2b-static-20261106/receipt.json'
+proof=read(static_check);test_receipt=read(static_receipt)
+assert proof['status']=='passed_native_static_measurement' and proof['physics_steps']==proof['neural_steps']==0 and proof['production_fusestatic']
+assert test_receipt['exit_code']==0 and test_receipt['tree_empty'] and not test_receipt['timed_out']
+for p in (static_check,static_receipt):prior[p.relative_to(root).as_posix()]=sha(p)
 source=sources();data=read(root/'outputs/noesis-required-data-sha256.json')['files'];resources();out.mkdir(exist_ok=False)
 lock=root/'work/Project-Noesis/gpu-pilot/outputs/codex-training-host.lock';token=uuid.uuid4().hex
 with os.fdopen(os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY),'w') as f:json.dump(dict(owner='codex',pid=os.getpid(),token=token,deadline_unix=time.time()+1200),f)
 started=time.monotonic();empty=True
-protocol=dict(experiment='H2 read-only whole-body telemetry replay',date='2026-11-06',source_hashes=source,prior_hashes=prior,
+protocol=dict(experiment='H2B corrected compiled-mass telemetry replay',revision='new allocation after zero-step A0 technical failure, not automatic retry',
+    previous_failed_code='4bde8da979265e7fcfff04350d86c4c82a26cd08',date='2026-11-06',source_hashes=source,prior_hashes=prior,
     cases=cases,seconds=5,chunks=1000,samples_with_initial=1001,aggregate_seconds=1200,worker_seconds=300,
     learning_updates=0,policy='legacy-positive-Femur',
     stop='technical/hash/horizon/parity/context/mass/force/resource/timeout failure or insufficient full worker budget; no retry/retune/partial interpretation',
@@ -100,6 +110,8 @@ try:
         for k,v in baseline_summaries[name].items():
             if k not in ('report_sha256','observations_sha256'):assert summary[k]==v
         model=read(directory/'telemetry-model.json')
+        assert model['nbody']==static['compiled_nbody'] and model['unmapped_anatomical_count']==len(static['missing_fused_names'])
+        assert model['critical_thorax_claw_ids_valid'] and model['production_static_fusion_unchanged']
         assert np.isclose(model['total_mass'],model['model_total_mass'],rtol=1e-12,atol=1e-15)
         weight=model['total_mass']*abs(model['gravity'][2])
         with np.load(directory/'body-telemetry.npz',allow_pickle=False) as z:
@@ -117,7 +129,7 @@ try:
             contacts_sha256=sha(directory/'ground-contacts.npz'),report_sha256=sha(directory/'report.json'),
             mass_coverage_verified=True,root_and_upstream_force_closure_verified=True))
         write(out/'result.json',result);print('COMPLETE',name,'standing',summary['standing_fraction'],flush=True)
-    result['status']='completed_H2'
+    result['status']='completed_H2B'
 except BaseException as error:
     result.update(status='failed',error_type=type(error).__name__,error=str(error));raise
 finally:
