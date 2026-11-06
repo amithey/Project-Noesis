@@ -1,0 +1,37 @@
+{
+  "experiment": "A1 frozen adhesion-sign one-factor comparison",
+  "date": "2026-11-06",
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "runtime_commit": "e0cbd109bb6e018bd253c9f1b5e1698e0421b276",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "pilot": "0e6c07f4acd09b4f2acb6bcd8ba8003ff12b418a479b3ea8063231f7e565aa37",
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "scripts": {
+      "adhesion_mapping.py": "0278af2f8bbf09ed41fb019c1e1da80b342ee27eb109730cdfaa3fa7258314a3",
+      "adhesion_ab_worker.py": "ec0023e164e1136ab4cbf22c2f8134602d58547d56624524f00fa987510fb9d0",
+      "run_adhesion_a1.py": "037262988ad1e297aca17d5158f2ad7d2ef5e6f37141673a3fa4bc27836a0331"
+    }
+  },
+  "seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "modes": [
+    "legacy",
+    "corrected"
+  ],
+  "seconds_per_job": 5,
+  "chunks_per_job": 1000,
+  "factor": "pad release at desiredFemur-rest>.08 versus < -.08; threshold magnitude unchanged, no time/leg sequence input",
+  "process_budget_seconds": 300,
+  "aggregate_budget_seconds": 1200,
+  "technical_gate": "legacy raw arrays exactly ES1parent per seed; full horizon/finite/pad formulas, unchanged weights/source/data/parent, all settings equal except explicit body.adhesion_mapping",
+  "physical_screen": "EACH seed standing>=.90 AND>=legacy/slip<=legacy; median heading AND net gains>=.25mm with positive candidate medians; cycles/tripod medians not lower",
+  "stop": "technical/resource/context/hash/replay/timeout failure; no retry/threshold/tuning/new seeds; no launch with<300sremaining",
+  "within_episode_learning": false,
+  "model_promoted": false,
+  "walking_proven": false
+}
