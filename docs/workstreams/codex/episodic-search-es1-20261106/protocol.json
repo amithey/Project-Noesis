@@ -1,0 +1,38 @@
+{
+  "experiment": "ES1 single-generation episodic synaptic search",
+  "date": "2026-11-06",
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "runtime_commit": "e0cbd109bb6e018bd253c9f1b5e1698e0421b276",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "pilot": "0e6c07f4acd09b4f2acb6bcd8ba8003ff12b418a479b3ea8063231f7e565aa37",
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "runner": "1bc9d4ed0226e7237539e9c2ff494f81e63a84f89b972e0cf31531f1fe4c09bc",
+    "proposer": "8d433afd83ba065724205bdeac1447064b5780cc614074c094fb38d604c9fe5e"
+  },
+  "direction_seed": 60061,
+  "epsilon_fraction_original_magnitude": 0.02,
+  "proposal": "w_parent +/- .02*abs(w_original)*Rademacher[post_target]; reject clipping/sign/bound violations",
+  "dev_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "conditional_fresh_dev_seeds": [
+    10020,
+    10021
+  ],
+  "seconds_per_job": 5,
+  "process_budget_seconds": 300,
+  "aggregate_budget_seconds": 1800,
+  "gate": "standing>=.90 AND>=parent, slip<=parent EACH seed; median heading AND net-forward gains>=.25mm AND positive candidate medians; median cycles/tripod not lower",
+  "selection": "Among passing dev banks maximize min(median heading gain,median net gain); tieplus. Only selected gets same-gate fresh followup; no fallback.",
+  "parent_replay": "each reused-seed parent native array must exactly match historical S1 parent before candidates",
+  "stop": "timeout/error/incomplete/nonfinite/context/hash/replay/resource failure; no retries, scale changes or added directions",
+  "within_episode_learning": false,
+  "motor_exploration": 0,
+  "external_senses": false,
+  "model_promoted": false,
+  "walking_proven": false
+}
