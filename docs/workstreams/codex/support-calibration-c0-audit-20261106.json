@@ -1,0 +1,370 @@
+{
+  "status": "completed_C0",
+  "seconds": 0.7819999996572733,
+  "contact_mode_codebook": [
+    "unsupported",
+    "central_body_contact",
+    "proximal_leg_contact",
+    "tarsal_only",
+    "indeterminate_low_force"
+  ],
+  "region_columns": [
+    "central_body",
+    "claw_tarsus5",
+    "other_tarsal",
+    "proximal_leg"
+  ],
+  "force_tolerance": 1e-05,
+  "unchanged_legacy_mask_and_verdicts": true,
+  "input_source_unchanged": true,
+  "physics_integration_steps": 0,
+  "neural_steps": 0,
+  "fixture_positives_are_not_fly_or_learning_validation": true,
+  "new_standing_gate": false,
+  "new_reward": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "Contact mode describes force-bearing anatomy, not equilibrium, gait, continuous support or retained learning.",
+    "Flat horizontal ground/world vertical force convention only; loaded unknown anatomy or negative vertical force rejected.",
+    "Other tarsal segments are separately identified; multiple loaded body segments are not counts of independent legs.",
+    "Central compiled thorax includes fused head; no anatomically separate head-force claim.",
+    "Three H2Bdiagnostic cases are not representative validation or policy selection."
+  ],
+  "code_commit": "5014f50d78771cfc3b180235ab8cd485b2f5910e",
+  "independent_stored_partition_audit_passed": true,
+  "fixtures": [
+    {
+      "kind": "airborne",
+      "mode": "unsupported",
+      "time": 0.0,
+      "root_force_closure_error": 0.0
+    },
+    {
+      "kind": "foot_only",
+      "mode": "tarsal_only",
+      "time": 0.0,
+      "root_force_closure_error": 7.105427357601002e-15
+    },
+    {
+      "kind": "body_only",
+      "mode": "central_body_contact",
+      "time": 0.0,
+      "root_force_closure_error": 0.0
+    },
+    {
+      "kind": "mixed_body_feet",
+      "mode": "central_body_contact",
+      "time": 0.0,
+      "root_force_closure_error": 7.105427357601002e-15
+    },
+    {
+      "kind": "proximal_leg",
+      "mode": "proximal_leg_contact",
+      "time": 0.0,
+      "root_force_closure_error": 0.0
+    },
+    {
+      "kind": "other_tarsal",
+      "mode": "tarsal_only",
+      "time": 0.0,
+      "root_force_closure_error": 7.105427357601002e-15
+    }
+  ],
+  "cases": [
+    {
+      "name": "parent-10007",
+      "groups": {
+        "all_measured": {
+          "samples": 990,
+          "contact_mode_counts": {
+            "unsupported": 3,
+            "central_body_contact": 541,
+            "proximal_leg_contact": 51,
+            "tarsal_only": 395,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.004380337748131402,
+            "p25": 0.38232926802162265,
+            "median": 0.8729501278435583,
+            "p75": 1.7232099953471463,
+            "max": 13.112996989800498
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 3021.608594471119,
+            "claw_tarsus5": 7064.13413659948,
+            "other_tarsal": 239.75248776469374,
+            "proximal_leg": 338.39165126919306
+          }
+        },
+        "standing": {
+          "samples": 935,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 505,
+            "proximal_leg_contact": 47,
+            "tarsal_only": 383,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.004380337748131402,
+            "p25": 0.3930181740282743,
+            "median": 0.8979162041184527,
+            "p75": 1.7323167577869873,
+            "max": 13.112996989800498
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 2813.659348565736,
+            "claw_tarsus5": 6849.930219926491,
+            "other_tarsal": 222.83911668349208,
+            "proximal_leg": 271.08630358350564
+          }
+        },
+        "high_only": {
+          "samples": 39,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 28,
+            "proximal_leg_contact": 0,
+            "tarsal_only": 11,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.042734037904031866,
+            "p25": 0.33978997722973897,
+            "median": 0.5793103489125176,
+            "p75": 0.9645726070272527,
+            "max": 6.086653270299427
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 182.5056854852291,
+            "claw_tarsus5": 214.2039166729902,
+            "other_tarsal": 0.0,
+            "proximal_leg": 0.0
+          }
+        },
+        "upright_failure": {
+          "samples": 0,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 0,
+            "proximal_leg_contact": 0,
+            "tarsal_only": 0,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": null,
+          "region_vertical_reaction_sum": {
+            "central_body": 0.0,
+            "claw_tarsus5": 0.0,
+            "other_tarsal": 0.0,
+            "proximal_leg": 0.0
+          }
+        }
+      },
+      "legacy_standing_fraction": 0.9444444444444444,
+      "legacy_regime": "STEPPING_IN_PLACE",
+      "reaction_partition_max_error": 0.0,
+      "output_sha256": "82d3b712b481a179bdc4beb1314adc36bf0a27b0c0f77b7821bfe952cf5d8a53",
+      "no_new_acceptance_verdict": true
+    },
+    {
+      "name": "child1005-10007",
+      "groups": {
+        "all_measured": {
+          "samples": 990,
+          "contact_mode_counts": {
+            "unsupported": 1,
+            "central_body_contact": 367,
+            "proximal_leg_contact": 65,
+            "tarsal_only": 557,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.0008138929820043495,
+            "p25": 0.48599517995830055,
+            "median": 1.2539353558889337,
+            "p75": 2.5673740966759735,
+            "max": 25.664437820004164
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 1711.8952997267306,
+            "claw_tarsus5": 8073.480332618046,
+            "other_tarsal": 749.1002233404743,
+            "proximal_leg": 409.5017791567572
+          }
+        },
+        "standing": {
+          "samples": 868,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 358,
+            "proximal_leg_contact": 63,
+            "tarsal_only": 447,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.0008138929820043495,
+            "p25": 0.4689990210829459,
+            "median": 1.1786381207432868,
+            "p75": 2.4822265171307514,
+            "max": 25.664437820004164
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 1670.5566553073568,
+            "claw_tarsus5": 6912.667253484706,
+            "other_tarsal": 723.0729012287172,
+            "proximal_leg": 394.6336410447996
+          }
+        },
+        "high_only": {
+          "samples": 110,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 0,
+            "proximal_leg_contact": 0,
+            "tarsal_only": 110,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.013549106067843056,
+            "p25": 0.6699451051784284,
+            "median": 2.0822449133282213,
+            "p75": 3.133313751124164,
+            "max": 10.230044490338125
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 0.0,
+            "claw_tarsus5": 1160.8130791333417,
+            "other_tarsal": 0.0,
+            "proximal_leg": 0.0
+          }
+        },
+        "upright_failure": {
+          "samples": 0,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 0,
+            "proximal_leg_contact": 0,
+            "tarsal_only": 0,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": null,
+          "region_vertical_reaction_sum": {
+            "central_body": 0.0,
+            "claw_tarsus5": 0.0,
+            "other_tarsal": 0.0,
+            "proximal_leg": 0.0
+          }
+        }
+      },
+      "legacy_standing_fraction": 0.8767676767676768,
+      "legacy_regime": "STEPPING_IN_PLACE",
+      "reaction_partition_max_error": 0.0,
+      "output_sha256": "40aa392bf0179c7b29f229cc46b2a8c70a39eb2e790f4141480596dddccdc54c",
+      "no_new_acceptance_verdict": true
+    },
+    {
+      "name": "child1004-10006",
+      "groups": {
+        "all_measured": {
+          "samples": 990,
+          "contact_mode_counts": {
+            "unsupported": 1,
+            "central_body_contact": 769,
+            "proximal_leg_contact": 10,
+            "tarsal_only": 210,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.00010699609978283287,
+            "p25": 0.06993944881173425,
+            "median": 0.2377890284675163,
+            "p75": 1.1271664350578445,
+            "max": 42.99721582988367
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 6491.944036925894,
+            "claw_tarsus5": 3816.027205794224,
+            "other_tarsal": 155.23710720690514,
+            "proximal_leg": 38.865523799944725
+          }
+        },
+        "standing": {
+          "samples": 405,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 214,
+            "proximal_leg_contact": 7,
+            "tarsal_only": 184,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.00010699609978283287,
+            "p25": 0.4954692381758107,
+            "median": 1.022613799337417,
+            "p75": 2.1695722634945622,
+            "max": 17.212241599498213
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 1176.9563612657041,
+            "claw_tarsus5": 3082.2265426290323,
+            "other_tarsal": 155.23710720690514,
+            "proximal_leg": 24.552453563991293
+          }
+        },
+        "high_only": {
+          "samples": 40,
+          "contact_mode_counts": {
+            "unsupported": 0,
+            "central_body_contact": 37,
+            "proximal_leg_contact": 0,
+            "tarsal_only": 3,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.003863891400554098,
+            "p25": 0.3857178260718001,
+            "median": 0.7641357095226866,
+            "p75": 0.9808899423702865,
+            "max": 8.442842942821468
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 218.0807227706052,
+            "claw_tarsus5": 185.34879831982227,
+            "other_tarsal": 0.0,
+            "proximal_leg": 0.0
+          }
+        },
+        "upright_failure": {
+          "samples": 544,
+          "contact_mode_counts": {
+            "unsupported": 1,
+            "central_body_contact": 517,
+            "proximal_leg_contact": 3,
+            "tarsal_only": 23,
+            "indeterminate_low_force": 0
+          },
+          "COM_abs_vertical_velocity_mm_s": {
+            "min": 0.0006665233156506953,
+            "p25": 0.037616138561498556,
+            "median": 0.0841376042360926,
+            "p75": 0.18187140633964877,
+            "max": 42.99721582988367
+          },
+          "region_vertical_reaction_sum": {
+            "central_body": 5092.563543101944,
+            "claw_tarsus5": 548.4518648453693,
+            "other_tarsal": 0.0,
+            "proximal_leg": 14.313070235953429
+          }
+        }
+      },
+      "legacy_standing_fraction": 0.4090909090909091,
+      "legacy_regime": "FALL",
+      "reaction_partition_max_error": 0.0,
+      "output_sha256": "234355f8e43f6d658feea4b3b0016d1e56fb9d8e54b46677fcaf2ee89e577b19",
+      "no_new_acceptance_verdict": true
+    }
+  ]
+}
