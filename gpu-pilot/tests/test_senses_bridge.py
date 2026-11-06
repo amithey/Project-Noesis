@@ -60,4 +60,3 @@ def test_adapter_integration_has_no_drive_without_signal_and_respects_gain():
 
 def test_every_declared_modality_rule_names_known_columns():
     assert all(col in ("Class", "Sub Class", "Function") for rules in MODALITIES.values() for col, _ in rules)
-
