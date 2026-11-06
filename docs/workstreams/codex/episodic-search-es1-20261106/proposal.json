@@ -1,0 +1,15 @@
+{
+  "bank_sha256": {
+    "parent": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "plus": "1cbbe73a27f6d9c4b1e21a2c4199c3a134951ee773503d0c20e6757c1e403ae3",
+    "minus": "6f2a301b1c7566981fcaf41ce33fff2663e7ce01720c7bb5446a1ac6d734fba6"
+  },
+  "targets": 562,
+  "plastic_edges": 85390,
+  "direction_sha256": "49c42de67e5232d5db33cab290c00c5a74fb890ca0eddfd52afc351bab8bd117",
+  "max_abs_original_relative_step": 0.020000000000000115,
+  "antithetic_max_center_error": 1.1368683772161603e-13,
+  "signs_topology_original_bounds_validated": true,
+  "nonplastic_weights_exact": true,
+  "no_clipping": true
+}
