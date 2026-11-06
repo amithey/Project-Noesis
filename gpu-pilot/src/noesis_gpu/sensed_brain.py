@@ -71,4 +71,3 @@ def sensed_class(base):
             return [(idx, rate, weight)] if len(idx) else []
 
     return SensedBrain
-
