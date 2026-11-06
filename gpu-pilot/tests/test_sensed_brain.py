@@ -142,4 +142,3 @@ def test_nonactive_modes_never_evaluate_the_field(mode):
                                field=forbidden_field, gain=50.0, mode=mode, level=.5)
     parts = brain._extra_drive_parts({})
     assert bool(parts) == (mode == "constant")
-
