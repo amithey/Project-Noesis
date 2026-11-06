@@ -1,0 +1,277 @@
+{
+  "status": "completed_audited_X1",
+  "code_commit": "89abec5894e0ccdd38c75aed0a9fa515b9b43a52",
+  "seconds": 770.2960000000894,
+  "cases": [
+    {
+      "mode": "legacy",
+      "bank": "parent",
+      "drive": "on",
+      "summary": {
+        "standing_fraction": 0.9121212121212121,
+        "mean_stance_slip_mm_s": 2.444266638107961,
+        "heading_forward_distance_mm": -0.35057667445625057,
+        "net_forward_displacement_mm": -0.17902276618468924,
+        "total_leg_steps": 69,
+        "tripod_coordination": {
+          "alternation_index": 0.3865319865319865,
+          "correlation": -0.209471919107445,
+          "intra_tripod_1_sync": 0.6357328702978392,
+          "intra_tripod_2_sync": 0.6562080161503789,
+          "tripod_coordination_score": 0.05230267453074392,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE"
+      }
+    },
+    {
+      "mode": "corrected",
+      "bank": "parent",
+      "drive": "on",
+      "summary": {
+        "standing_fraction": 0.8525252525252526,
+        "mean_stance_slip_mm_s": 2.2262556456576825,
+        "heading_forward_distance_mm": 0.25817966682560994,
+        "net_forward_displacement_mm": 0.40074242610353916,
+        "total_leg_steps": 59,
+        "tripod_coordination": {
+          "alternation_index": 0.3003367003367004,
+          "correlation": -0.05856704821726793,
+          "intra_tripod_1_sync": 0.6109722288017446,
+          "intra_tripod_2_sync": 0.6295427099238156,
+          "tripod_coordination_score": 0.010910225929575471,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE"
+      }
+    },
+    {
+      "mode": "legacy",
+      "bank": "parent",
+      "drive": "off",
+      "summary": {
+        "standing_fraction": 0.8919191919191919,
+        "mean_stance_slip_mm_s": 2.9446992889175343,
+        "heading_forward_distance_mm": 0.20373271519570285,
+        "net_forward_displacement_mm": -0.055377350988171516,
+        "total_leg_steps": 46,
+        "tripod_coordination": {
+          "alternation_index": 0.5417508417508416,
+          "correlation": -0.1794097640904519,
+          "intra_tripod_1_sync": 0.7004914711337789,
+          "intra_tripod_2_sync": 0.7442987599345616,
+          "tripod_coordination_score": 0.07021347550446162,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE"
+      }
+    },
+    {
+      "mode": "corrected",
+      "bank": "parent",
+      "drive": "off",
+      "summary": {
+        "standing_fraction": 0.9767676767676767,
+        "mean_stance_slip_mm_s": 2.2335912257475328,
+        "heading_forward_distance_mm": 0.09855191685171003,
+        "net_forward_displacement_mm": -0.12143091408430226,
+        "total_leg_steps": 48,
+        "tripod_coordination": {
+          "alternation_index": 0.5707070707070707,
+          "correlation": -0.27862528847751145,
+          "intra_tripod_1_sync": 0.7185857860732326,
+          "intra_tripod_2_sync": 0.7923915443788991,
+          "tripod_coordination_score": 0.1201328380999071,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE"
+      }
+    },
+    {
+      "mode": "legacy",
+      "bank": "child",
+      "drive": "on",
+      "summary": {
+        "standing_fraction": 0.9222222222222223,
+        "mean_stance_slip_mm_s": 2.2386020973506557,
+        "heading_forward_distance_mm": 0.7172002508768611,
+        "net_forward_displacement_mm": 1.0408758934846825,
+        "total_leg_steps": 63,
+        "tripod_coordination": {
+          "alternation_index": 0.25656565656565655,
+          "correlation": -0.11140588786820455,
+          "intra_tripod_1_sync": 0.5895447505839704,
+          "intra_tripod_2_sync": 0.5966872433232284,
+          "tripod_coordination_score": 0.016952989918546026,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE"
+      }
+    },
+    {
+      "mode": "legacy",
+      "bank": "child",
+      "drive": "off",
+      "summary": {
+        "standing_fraction": 0.9888888888888889,
+        "mean_stance_slip_mm_s": 2.6527668883780184,
+        "heading_forward_distance_mm": 0.8842742924715747,
+        "net_forward_displacement_mm": 0.7784084002105752,
+        "total_leg_steps": 58,
+        "tripod_coordination": {
+          "alternation_index": 0.5303030303030303,
+          "correlation": -0.3296393770495632,
+          "intra_tripod_1_sync": 0.7381085995605379,
+          "intra_tripod_2_sync": 0.7257282788124907,
+          "tripod_coordination_score": 0.12794575518270593,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE"
+      }
+    },
+    {
+      "mode": "corrected",
+      "bank": "child",
+      "drive": "on",
+      "summary": {
+        "standing_fraction": 0.896969696969697,
+        "mean_stance_slip_mm_s": 2.4328180040320984,
+        "heading_forward_distance_mm": 1.0268473148106392,
+        "net_forward_displacement_mm": 1.1151832688591532,
+        "total_leg_steps": 55,
+        "tripod_coordination": {
+          "alternation_index": 0.35521885521885516,
+          "correlation": -0.09911148853976752,
+          "intra_tripod_1_sync": 0.6552556837851445,
+          "intra_tripod_2_sync": 0.6190670539062371,
+          "tripod_coordination_score": 0.02243207486538065,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_UNCOORDINATED"
+      }
+    },
+    {
+      "mode": "corrected",
+      "bank": "child",
+      "drive": "off",
+      "summary": {
+        "standing_fraction": 0.8949494949494949,
+        "mean_stance_slip_mm_s": 2.047435149648509,
+        "heading_forward_distance_mm": 0.7473988231801255,
+        "net_forward_displacement_mm": 0.7703288235889932,
+        "total_leg_steps": 54,
+        "tripod_coordination": {
+          "alternation_index": 0.35723905723905724,
+          "correlation": -0.13396485797535587,
+          "intra_tripod_1_sync": 0.632875873202136,
+          "intra_tripod_2_sync": 0.635256704115222,
+          "tripod_coordination_score": 0.030344814453149935,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE"
+      }
+    }
+  ],
+  "interaction": {
+    "legacy": {
+      "child_minus_parent_on": {
+        "standing_fraction": 0.010101010101010166,
+        "mean_stance_slip_mm_s": -0.20566454075730523,
+        "heading_forward_distance_mm": 1.0677769253331117,
+        "net_forward_displacement_mm": 1.2198986596693717,
+        "total_leg_steps": -6
+      },
+      "child_minus_parent_off": {
+        "standing_fraction": 0.09696969696969704,
+        "mean_stance_slip_mm_s": -0.29193240053951586,
+        "heading_forward_distance_mm": 0.6805415772758718,
+        "net_forward_displacement_mm": 0.8337857511987468,
+        "total_leg_steps": 12
+      },
+      "difference_of_differences_on_minus_off": {
+        "standing_fraction": -0.08686868686868687,
+        "mean_stance_slip_mm_s": 0.08626785978221063,
+        "heading_forward_distance_mm": 0.3872353480572399,
+        "net_forward_displacement_mm": 0.38611290847062496,
+        "total_leg_steps": -18
+      },
+      "one_seed_only": true,
+      "model_promoted": false,
+      "walking_proven": false
+    },
+    "corrected": {
+      "child_minus_parent_on": {
+        "standing_fraction": 0.0444444444444444,
+        "mean_stance_slip_mm_s": 0.20656235837441583,
+        "heading_forward_distance_mm": 0.7686676479850292,
+        "net_forward_displacement_mm": 0.714440842755614,
+        "total_leg_steps": -4
+      },
+      "child_minus_parent_off": {
+        "standing_fraction": -0.08181818181818179,
+        "mean_stance_slip_mm_s": -0.18615607609902396,
+        "heading_forward_distance_mm": 0.6488469063284155,
+        "net_forward_displacement_mm": 0.8917597376732955,
+        "total_leg_steps": 6
+      },
+      "difference_of_differences_on_minus_off": {
+        "standing_fraction": 0.1262626262626262,
+        "mean_stance_slip_mm_s": 0.3927184344734398,
+        "heading_forward_distance_mm": 0.11982074165661372,
+        "net_forward_displacement_mm": -0.1773188949176815,
+        "total_leg_steps": -10
+      },
+      "one_seed_only": true,
+      "model_promoted": false,
+      "walking_proven": false
+    }
+  },
+  "posthoc_transport_onsets": [
+    {
+      "mode": "legacy",
+      "bank": "parent",
+      "posthoc_descriptive": true,
+      "first_desired_different_chunk": 11,
+      "first_physical_angles_different_chunk": 11
+    },
+    {
+      "mode": "legacy",
+      "bank": "child",
+      "posthoc_descriptive": true,
+      "first_desired_different_chunk": 12,
+      "first_physical_angles_different_chunk": 12
+    },
+    {
+      "mode": "corrected",
+      "bank": "parent",
+      "posthoc_descriptive": true,
+      "first_desired_different_chunk": 11,
+      "first_physical_angles_different_chunk": 11
+    },
+    {
+      "mode": "corrected",
+      "bank": "child",
+      "posthoc_descriptive": true,
+      "first_desired_different_chunk": 14,
+      "first_physical_angles_different_chunk": 14
+    }
+  ],
+  "all_three_bridges_exact": true,
+  "all_latent_and_neural_seed_streams_exact": true,
+  "all_pad_formulas_exact": true,
+  "all_weights_readonly_unchanged": true,
+  "ordinary_frozen_evaluator_rejects_current_on": true,
+  "source_parent_prior_data_unchanged": true,
+  "all_jobs_exit0_empty": true,
+  "lease_released": true,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "One reused development seed1004 and one S2training birth per mapping; no training-seed replication.",
+    "Current-on is fixed-weight exposure, not an ordinary frozen/no-exploration validation.",
+    "Interaction is descriptive; neither current benefit nor difference of differences proves learned walking or generalization.",
+    "S2retention screens remain failed; no model promoted, weight merge, new training or rule change.",
+    "All inputs/core/body matched within a mapping except the declared weight/current interventions.",
+    "First divergence chunks are posthoc transport descriptions, not a fitted learning-credit delay."
+  ]
+}
