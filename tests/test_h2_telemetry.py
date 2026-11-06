@@ -42,3 +42,33 @@ def test_com_world_velocity_includes_mass_offset_under_root_rotation():
 def test_multiple_free_roots_are_not_silently_called_one_fly():
     m=mujoco.MjModel.from_xml_string('<mujoco><worldbody><body><freejoint/><geom type="sphere" size=".1"/></body><body><freejoint/><geom type="sphere" size=".1"/></body></worldbody></mujoco>')
     with pytest.raises(ValueError):mass_layout(m,[1])
+
+
+def test_fused_anatomical_name_does_not_drop_or_double_count_compiled_mass():
+    m=mujoco.MjModel.from_xml_string('<mujoco><compiler fusestatic="true"/><worldbody><body name="fly"><freejoint/><geom type="sphere" size=".1" mass="1"/><body name="head" pos="1 0 0"><geom type="sphere" size=".1" mass="2"/></body></body></worldbody></mujoco>')
+    assert mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_BODY,'head')==-1
+    layout=mass_layout(m,[1,-1,1]);assert layout['total_mass']==3 and layout['unmapped_anatomical_count']==1
+    assert layout['body_ids'].tolist()==[1]
+
+
+def test_actual_native_fused_model_mass_contact_measurement_without_steps():
+    import os,json
+    from pathlib import Path
+    from noesis_gpu.backend import FlyGymBatch
+    body=FlyGymBatch(1,'cpu');body.observe();m,d=body.sim.mj_model,body.sim.mj_data
+    native=body.sim._internal_bodyids_by_fly[body.fly.name];layout=mass_layout(m,native)
+    critical=native[np.r_[body.thorax,body.feet]];assert np.all(critical>0) and len(set(critical.tolist()))==7
+    before=(d.qpos.copy(),d.qvel.copy(),d.qacc.copy(),d.ctrl.copy(),d.sensordata.copy())
+    state,_=snapshot(m,d,layout,body.sim._internal_ground_geom_ids,native[body.feet])
+    segments=[body.fly.get_bodysegs_order()[i] for i in body.feet]
+    upstream=body.sim.get_bodysegment_contact_forces(body.fly.name,segments,ground_only=True)
+    np.testing.assert_allclose(state['claw_ground_force'],upstream,atol=1e-10,rtol=1e-10)
+    for actual,expected in zip((d.qpos,d.qvel,d.qacc,d.ctrl,d.sensordata),before):np.testing.assert_array_equal(actual,expected)
+    assert d.time==0 and layout['unmapped_anatomical_count']==1
+    if 'H2_STATIC_RESULT' in os.environ:
+        Path(os.environ['H2_STATIC_RESULT']).write_text(json.dumps(dict(status='passed_native_static_measurement',
+            model_time=d.time,physics_steps=0,neural_steps=0,compiled_nbody=m.nbody,total_mass=layout['total_mass'],
+            missing_fused_count=layout['unmapped_anatomical_count'],critical_ids=critical.tolist(),
+            force_closure_max_error=float(state['force_closure_max_error']),
+            upstream_claw_force_max_error=float(np.max(np.abs(state['claw_ground_force']-upstream))),
+            whole_COM=state['com'].tolist(),production_fusestatic=bool(body.sim.world.mjcf_root.compiler.fusestatic)),indent=2),encoding='utf-8')
