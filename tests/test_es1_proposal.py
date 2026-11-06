@@ -1,15 +1,24 @@
 """Scientific invariant and native-loader checks for the ES1 proposal operator."""
 import hashlib
-from types import SimpleNamespace
+import inspect
+from pathlib import Path
+import sys
 
 import numpy as np
 import pytest
 from scipy import sparse
 
+# Repository tests/ imports the operator from scripts/. The prepared host also
+# places both files in work/ and supplies that directory on PYTHONPATH.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
+pytest.importorskip('noesis_gpu.controller', reason='Requires the isolated native pilot environment')
 from es1_proposal import propose, write_candidate, assess
 from noesis.lif import LIFNetwork
 from noesis.plasticity import MotorPlasticity
 from noesis_gpu.controller import import_checkpoint
+
+if 'bias_correct_reward_error' not in inspect.signature(MotorPlasticity).parameters:
+    pytest.skip('Requires pinned core42c2076, not the hub legacy core', allow_module_level=True)
 
 
 def test_antithetic_signed_proposals_preserve_parent_zero_topology_and_references():
