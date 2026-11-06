@@ -1,0 +1,333 @@
+{
+  "status": "completed_audited_A1",
+  "source_commit": "dd61cd9ec5663d8d452ee141f8f8009c1ad7dd38",
+  "seconds": 498.96900000050664,
+  "physical_screen": {
+    "passed": false,
+    "standing_retained": false,
+    "slip_retained": false,
+    "median_heading_gain_mm": -0.22546960294500848,
+    "median_net_forward_gain_mm": -0.16971210566028533,
+    "positive_forward_progress": true,
+    "cycles_retained": true,
+    "tripod_retained": false,
+    "model_promoted": false,
+    "walking_proven": false
+  },
+  "cases": [
+    {
+      "standing_fraction": 0.9626262626262626,
+      "mean_stance_slip_mm_s": 3.0581713360264406,
+      "heading_forward_distance_mm": 0.298359305310338,
+      "net_forward_displacement_mm": 0.022346444869974825,
+      "total_leg_steps": 58,
+      "leg_step_counts": {
+        "LF": 12,
+        "LM": 15,
+        "LH": 13,
+        "RF": 5,
+        "RM": 9,
+        "RH": 4
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5956228956228957,
+        "correlation": -0.4280747312389304,
+        "intra_tripod_1_sync": 0.7590599115956949,
+        "intra_tripod_2_sync": 0.7457272584824133,
+        "tripod_coordination_score": 0.19183862825923673,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "mode": "legacy",
+      "seed": 10006,
+      "per_leg_pad_release_fraction": [
+        0.9626262626262626,
+        0.9040404040404041,
+        0.17676767676767677,
+        0.7505050505050505,
+        0.9313131313131313,
+        0.0
+      ],
+      "mean_pad_release_fraction": 0.6208754208754209
+    },
+    {
+      "standing_fraction": 0.9262626262626262,
+      "mean_stance_slip_mm_s": 2.4513905837137027,
+      "heading_forward_distance_mm": 0.367481110296653,
+      "net_forward_displacement_mm": 0.32808024537797886,
+      "total_leg_steps": 69,
+      "leg_step_counts": {
+        "LF": 11,
+        "LM": 13,
+        "LH": 15,
+        "RF": 7,
+        "RM": 16,
+        "RH": 7
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.4552188552188553,
+        "correlation": -0.28299391254600087,
+        "intra_tripod_1_sync": 0.7071577976904198,
+        "intra_tripod_2_sync": 0.6790639929160047,
+        "tripod_coordination_score": 0.08928943227267308,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "mode": "corrected",
+      "seed": 10006,
+      "per_leg_pad_release_fraction": [
+        0.03535353535353535,
+        0.11818181818181818,
+        0.27575757575757576,
+        0.3575757575757576,
+        0.031313131313131314,
+        0.8828282828282829
+      ],
+      "mean_pad_release_fraction": 0.28350168350168353,
+      "standing_change_pp": -3.6363636363636376,
+      "slip_change_percent": -19.841293558821448,
+      "heading_change_mm": 0.06912180498631498,
+      "net_forward_change_mm": 0.305733800508004
+    },
+    {
+      "standing_fraction": 0.9444444444444444,
+      "mean_stance_slip_mm_s": 2.4901644202802085,
+      "heading_forward_distance_mm": 0.33179266889018316,
+      "net_forward_displacement_mm": 0.3839992223829025,
+      "total_leg_steps": 52,
+      "leg_step_counts": {
+        "LF": 10,
+        "LM": 12,
+        "LH": 12,
+        "RF": 6,
+        "RM": 8,
+        "RH": 4
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5552188552188553,
+        "correlation": -0.5413615563084424,
+        "intra_tripod_1_sync": 0.7047769667773337,
+        "intra_tripod_2_sync": 0.763821573421867,
+        "tripod_coordination_score": 0.2207113742218327,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "mode": "legacy",
+      "seed": 10007,
+      "per_leg_pad_release_fraction": [
+        0.8464646464646465,
+        0.794949494949495,
+        0.25555555555555554,
+        0.597979797979798,
+        0.696969696969697,
+        0.012121212121212121
+      ],
+      "mean_pad_release_fraction": 0.534006734006734
+    },
+    {
+      "standing_fraction": 0.9707070707070707,
+      "mean_stance_slip_mm_s": 2.1066817056835974,
+      "heading_forward_distance_mm": 0.2505522276744846,
+      "net_forward_displacement_mm": 0.26013716955312427,
+      "total_leg_steps": 62,
+      "leg_step_counts": {
+        "LF": 12,
+        "LM": 13,
+        "LH": 16,
+        "RF": 5,
+        "RM": 10,
+        "RH": 6
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.3939393939393939,
+        "correlation": -0.24956257577907964,
+        "intra_tripod_1_sync": 0.6476370248632692,
+        "intra_tripod_2_sync": 0.6657313398027229,
+        "tripod_coordination_score": 0.06456028327918838,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "mode": "corrected",
+      "seed": 10007,
+      "per_leg_pad_release_fraction": [
+        0.047474747474747475,
+        0.14343434343434344,
+        0.21818181818181817,
+        0.41414141414141414,
+        0.0797979797979798,
+        0.9727272727272728
+      ],
+      "mean_pad_release_fraction": 0.31262626262626264,
+      "standing_change_pp": 2.626262626262632,
+      "slip_change_percent": -15.399895343194213,
+      "heading_change_mm": -0.08124044121569857,
+      "net_forward_change_mm": -0.12386205282977825
+    },
+    {
+      "standing_fraction": 0.8929292929292929,
+      "mean_stance_slip_mm_s": 2.2499830438353756,
+      "heading_forward_distance_mm": 1.2018815669844556,
+      "net_forward_displacement_mm": 1.468320629755359,
+      "total_leg_steps": 73,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 13,
+        "LH": 11,
+        "RF": 19,
+        "RM": 15,
+        "RH": 6
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.32255892255892255,
+        "correlation": -0.23152657399302826,
+        "intra_tripod_1_sync": 0.6433515292197145,
+        "intra_tripod_2_sync": 0.5833545902099468,
+        "tripod_coordination_score": 0.045805796699067855,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_UNCOORDINATED",
+      "mode": "legacy",
+      "seed": 10010,
+      "per_leg_pad_release_fraction": [
+        0.8010101010101011,
+        0.6858585858585858,
+        0.6545454545454545,
+        0.4262626262626263,
+        0.5080808080808081,
+        0.029292929292929294
+      ],
+      "mean_pad_release_fraction": 0.5175084175084175
+    },
+    {
+      "standing_fraction": 0.9434343434343434,
+      "mean_stance_slip_mm_s": 2.647836883557514,
+      "heading_forward_distance_mm": 0.8321828023101372,
+      "net_forward_displacement_mm": 0.34492307384401616,
+      "total_leg_steps": 61,
+      "leg_step_counts": {
+        "LF": 10,
+        "LM": 12,
+        "LH": 13,
+        "RF": 8,
+        "RM": 10,
+        "RH": 8
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.5323232323232323,
+        "correlation": -0.4952420565800014,
+        "intra_tripod_1_sync": 0.7090624624208886,
+        "intra_tripod_2_sync": 0.7095386286035057,
+        "tripod_coordination_score": 0.18699208877827647,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "mode": "corrected",
+      "seed": 10010,
+      "per_leg_pad_release_fraction": [
+        0.05353535353535353,
+        0.06161616161616162,
+        0.4777777777777778,
+        0.14646464646464646,
+        0.06262626262626263,
+        0.9616161616161616
+      ],
+      "mean_pad_release_fraction": 0.29393939393939394,
+      "standing_change_pp": 5.05050505050505,
+      "slip_change_percent": 17.682526133350194,
+      "heading_change_mm": -0.3696987646743184,
+      "net_forward_change_mm": -1.123397555911343
+    },
+    {
+      "standing_fraction": 0.9191919191919192,
+      "mean_stance_slip_mm_s": 2.9327522746019024,
+      "heading_forward_distance_mm": -0.05008821844232747,
+      "net_forward_displacement_mm": -0.045329986741564264,
+      "total_leg_steps": 57,
+      "leg_step_counts": {
+        "LF": 11,
+        "LM": 14,
+        "LH": 10,
+        "RF": 4,
+        "RM": 11,
+        "RH": 7
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.48148148148148157,
+        "correlation": -0.10793572702484067,
+        "intra_tripod_1_sync": 0.7233474478994046,
+        "intra_tripod_2_sync": 0.6928728122119037,
+        "tripod_coordination_score": 0.036799813411694436,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "mode": "legacy",
+      "seed": 10011,
+      "per_leg_pad_release_fraction": [
+        0.9313131313131313,
+        0.9242424242424242,
+        0.23434343434343435,
+        0.6828282828282828,
+        0.8373737373737373,
+        0.0
+      ],
+      "mean_pad_release_fraction": 0.6016835016835017
+    },
+    {
+      "standing_fraction": 0.8909090909090909,
+      "mean_stance_slip_mm_s": 2.4318695191127886,
+      "heading_forward_distance_mm": -0.5726905542146954,
+      "net_forward_displacement_mm": -0.2608921452323567,
+      "total_leg_steps": 59,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 12,
+        "LH": 16,
+        "RF": 4,
+        "RM": 13,
+        "RH": 5
+      },
+      "tripod_coordination": {
+        "alternation_index": 0.49797979797979797,
+        "correlation": -0.3498251720855746,
+        "intra_tripod_1_sync": 0.7119194595165919,
+        "intra_tripod_2_sync": 0.719538118438467,
+        "tripod_coordination_score": 0.12468415531104791,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "mode": "corrected",
+      "seed": 10011,
+      "per_leg_pad_release_fraction": [
+        0.06565656565656566,
+        0.1292929292929293,
+        0.29393939393939394,
+        0.3575757575757576,
+        0.10101010101010101,
+        0.9575757575757575
+      ],
+      "mean_pad_release_fraction": 0.3175084175084175,
+      "standing_change_pp": -2.8282828282828354,
+      "slip_change_percent": -17.078931617472005,
+      "heading_change_mm": -0.5226023357723679,
+      "net_forward_change_mm": -0.21556215849079244
+    }
+  ],
+  "all_legacy_replays_exact": true,
+  "all_pad_formulas_exact": true,
+  "one_factor_context_verified": true,
+  "ordinary_compare_rejects_different_mappings": true,
+  "source_parent_data_unchanged": true,
+  "all_worker_trees_empty": true,
+  "lease_released": true,
+  "learning": false,
+  "weights_unchanged": true,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "Four reused development seeds, same learned parent and5s horizon; no final validation.",
+    "FK1 static lift convention and this frozen dynamic performance question are distinct.",
+    "A bank trained under legacy adhesion can react differently to a sign-corrected interface; this test does not measure retraining.",
+    "Simulated adhesion is an assumed neural-command mapping, not validated biological force control.",
+    "A physical screen pass alone is not stable walking/balance recovery or retained learning; a failure does not undo static geometry."
+  ]
+}
