@@ -1,0 +1,26 @@
+{
+  "status": "passed_native_static_measurement",
+  "model_time": 0.0,
+  "physics_steps": 0,
+  "neural_steps": 0,
+  "compiled_nbody": 69,
+  "total_mass": 0.0010243099999999998,
+  "missing_fused_count": 1,
+  "critical_ids": [
+    1,
+    28,
+    36,
+    44,
+    52,
+    60,
+    68
+  ],
+  "force_closure_max_error": 0.0,
+  "upstream_claw_force_max_error": 0.0,
+  "whole_COM": [
+    -0.3081187310888971,
+    0.00041594253433696463,
+    1.9693333471292096
+  ],
+  "production_fusestatic": true
+}
