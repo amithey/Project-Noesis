@@ -74,6 +74,10 @@ class FrozenBrain:
     def _current_drive(self, dt_ms):
         return {}
 
+    def _extra_drive_parts(self, observation):
+        """Optional disjoint sensory drive; the ordinary brain adds none."""
+        return []
+
     def step(self, observation, dt_ms):
         from noesis.environment_senses import merge_drive
         from noesis.lif import _seed
@@ -88,6 +92,7 @@ class FrozenBrain:
             (self.senses.idx, self.senses.drive(states), self.sensory_weight),
             (self.balance.idx, self.balance.drive(observation["up_body"], observation["omega"]),
              self.sensory_weight),
+            *self._extra_drive_parts(observation),
         ])
         # Existing LIF uses a thread-global Numba RNG. A per-world seed stream on
         # each chunk makes world 0 independent of how many other worlds run.

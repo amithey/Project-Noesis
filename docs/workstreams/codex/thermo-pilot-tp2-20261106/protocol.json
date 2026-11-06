@@ -1,0 +1,39 @@
+{
+  "experiment": "TP2 constant thermo amplitude, RNG-matched sham",
+  "date": "2026-11-06",
+  "source_hashes": {
+    "pilot": "0e6c07f4acd09b4f2acb6bcd8ba8003ff12b418a479b3ea8063231f7e565aa37",
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888"
+  },
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "seeds": [
+    10006,
+    10007
+  ],
+  "modes": [
+    "plain",
+    "sham",
+    "stimulus"
+  ],
+  "seconds_per_job": 5,
+  "chunks_per_job": 1000,
+  "warmup_ms": 50,
+  "thermo_gain": 50.0,
+  "thermo_signal": 0.5,
+  "thermo_rate_hz": 25.0,
+  "event_weights": {
+    "sham": 0.0,
+    "stimulus": 400.0
+  },
+  "process_budget_seconds": 300,
+  "aggregate_budget_seconds": 1800,
+  "invariance_gate": "plain exactly replays B2; paired sham/stimulus drive indices/order/rates and full625word MT RNG states identical for all1000chunks",
+  "neural_criterion": "stimulus mean warm-afferent rate exceeds sham by>=5Hz/cell on BOTH reused development seeds",
+  "retention_criterion": "stimulus standing>=.90 AND standing>=sham AND slip<=sham on BOTH seeds; descriptive frozen screen",
+  "stop": "technical/invariance/context/hash/resource failure, timeout or remaining budget<300s; no retries, gain scan or extra seeds",
+  "watchdog": "Windows Job Object assigned to suspended worker before resume; descendants contained, job emptiness verified before lease release",
+  "learning": false,
+  "model_promoted": false,
+  "walking_proven": false
+}

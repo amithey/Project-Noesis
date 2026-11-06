@@ -1,0 +1,10 @@
+{
+  "path": "thermo-pilot-tp2-20261106-evidence.zip",
+  "bytes": 22477145,
+  "sha256": "53a2c6129f3cc6c6d0eb55f58863f206fcbc1e4157842f9bd84b387079a7e8ec",
+  "files": 35,
+  "crc_and_all_hashes_verified": true,
+  "raw_graph_cache_weights_private_lease_excluded": true,
+  "release_uploaded": false,
+  "release_blocker": "CLI authentication invalid; browser logged out at last verified check."
+}
