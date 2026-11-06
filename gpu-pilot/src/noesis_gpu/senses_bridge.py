@@ -55,4 +55,3 @@ def build_channels(neurons: pd.DataFrame, gains: Mapping[str, float], taken: Ite
         channels.append(ChannelSpec(modality, idx, gain=float(gain), description="senses_bridge", **spec))
         used = np.union1d(used, idx)
     return channels
-
