@@ -1,0 +1,716 @@
+{
+  "status": "completed_audited_SR1",
+  "code_commit": "f7660f106e260a2e3240fccf18b83196a1f5bf4b",
+  "seconds": 1424.9529999997467,
+  "replication": {
+    "training_birth_count": 3,
+    "new_training_birth_count": 2,
+    "probes_per_dev_bank": 4,
+    "banks": [
+      {
+        "training_seed": 1004,
+        "own_seed_gain": {
+          "standing_fraction": 0.09696969696969704,
+          "mean_stance_slip_mm_s": -0.29193240053951586,
+          "heading_forward_distance_mm": 0.6805415772758718,
+          "net_forward_displacement_mm": 0.8337857511987468,
+          "total_leg_steps": 12
+        },
+        "own_seed_parent_standing": 0.8919191919191919,
+        "own_seed_child_standing": 0.9888888888888889,
+        "dev_standing_gain_mean": -0.1154040404040404,
+        "dev_standing_gain_median": 0.008585858585858586,
+        "dev_standing_gain_min": -0.5535353535353535,
+        "dev_standing_ge90_count": 3,
+        "dev_standing_improve_count": 2,
+        "dev_child_standing": {
+          "10006": 0.4090909090909091,
+          "10007": 0.9414141414141414,
+          "10010": 0.9676767676767677,
+          "10011": 0.9393939393939394
+        },
+        "strict_screen": {
+          "passed": false,
+          "standing_retained": false,
+          "slip_retained": false,
+          "median_paired_gains": {
+            "heading_forward_distance_mm": -0.173707954847333,
+            "net_forward_displacement_mm": -0.8184306178682822,
+            "total_leg_steps": -2.0
+          },
+          "median_tripod_gain": -0.0873007599144657,
+          "standing_stage_only": true,
+          "walking_proven": false,
+          "model_promoted": false
+        }
+      },
+      {
+        "training_seed": 1005,
+        "own_seed_gain": {
+          "standing_fraction": -0.01717171717171717,
+          "mean_stance_slip_mm_s": 0.5537208027511955,
+          "heading_forward_distance_mm": 0.15172762128243011,
+          "net_forward_displacement_mm": -0.00765983055655195,
+          "total_leg_steps": 2
+        },
+        "own_seed_parent_standing": 0.9666666666666667,
+        "own_seed_child_standing": 0.9494949494949495,
+        "dev_standing_gain_mean": -0.0037878787878788123,
+        "dev_standing_gain_median": 0.0015151515151514694,
+        "dev_standing_gain_min": -0.06767676767676767,
+        "dev_standing_ge90_count": 3,
+        "dev_standing_improve_count": 2,
+        "dev_child_standing": {
+          "10006": 0.9767676767676767,
+          "10007": 0.8767676767676768,
+          "10010": 0.9424242424242424,
+          "10011": 0.908080808080808
+        },
+        "strict_screen": {
+          "passed": false,
+          "standing_retained": false,
+          "slip_retained": true,
+          "median_paired_gains": {
+            "heading_forward_distance_mm": 0.43782676746670246,
+            "net_forward_displacement_mm": 0.46040359139781534,
+            "total_leg_steps": 3.0
+          },
+          "median_tripod_gain": -0.09196912177103293,
+          "standing_stage_only": true,
+          "walking_proven": false,
+          "model_promoted": false
+        }
+      },
+      {
+        "training_seed": 1006,
+        "own_seed_gain": {
+          "standing_fraction": -0.07575757575757569,
+          "mean_stance_slip_mm_s": 0.09397215305910134,
+          "heading_forward_distance_mm": -1.046829982323905,
+          "net_forward_displacement_mm": -1.2264068409067297,
+          "total_leg_steps": 8
+        },
+        "own_seed_parent_standing": 0.9404040404040404,
+        "own_seed_child_standing": 0.8646464646464647,
+        "dev_standing_gain_mean": -0.015151515151515138,
+        "dev_standing_gain_median": -0.021212121212121182,
+        "dev_standing_gain_min": -0.054545454545454564,
+        "dev_standing_ge90_count": 3,
+        "dev_standing_improve_count": 2,
+        "dev_child_standing": {
+          "10006": 0.9181818181818182,
+          "10007": 0.9464646464646465,
+          "10010": 0.8383838383838383,
+          "10011": 0.9555555555555556
+        },
+        "strict_screen": {
+          "passed": false,
+          "standing_retained": false,
+          "slip_retained": false,
+          "median_paired_gains": {
+            "heading_forward_distance_mm": -0.027187666217774367,
+            "net_forward_displacement_mm": -0.16708213742629457,
+            "total_leg_steps": -2.5
+          },
+          "median_tripod_gain": 0.03537000567076444,
+          "standing_stage_only": true,
+          "walking_proven": false,
+          "model_promoted": false
+        }
+      }
+    ],
+    "strict_screen_pass_count": 0,
+    "descriptive_only": true,
+    "training_seed_variability_not_fully_estimated": true,
+    "model_promoted": false,
+    "walking_proven": false
+  },
+  "posthoc_weight_update_cosines": [
+    {
+      "birth_a": 1004,
+      "birth_b": 1005,
+      "signed_relative_weight_delta_cosine": -0.013993240502359288,
+      "posthoc_descriptive": true,
+      "not_gradient_signal_proof": true
+    },
+    {
+      "birth_a": 1004,
+      "birth_b": 1006,
+      "signed_relative_weight_delta_cosine": 0.05905688773022486,
+      "posthoc_descriptive": true,
+      "not_gradient_signal_proof": true
+    },
+    {
+      "birth_a": 1005,
+      "birth_b": 1006,
+      "signed_relative_weight_delta_cosine": 0.09875107907340087,
+      "posthoc_descriptive": true,
+      "not_gradient_signal_proof": true
+    }
+  ],
+  "posthoc_standing_failure_breakdown": [
+    {
+      "bank": "parent",
+      "training_seed": null,
+      "evaluation_seed": 10006,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.03737373737373737,
+      "upright_failure_fraction": 0.00404040404040404,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.03535353535353535,
+      "no_claw_support_fraction": 0.00202020202020202,
+      "nonstanding_bouts": 5,
+      "longest_nonstanding_seconds": 0.135,
+      "criterion_mask_counts": {
+        "0": 953,
+        "4": 31,
+        "5": 4,
+        "8": 2
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "parent",
+      "training_seed": null,
+      "evaluation_seed": 10007,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.05555555555555555,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.04040404040404041,
+      "no_claw_support_fraction": 0.01616161616161616,
+      "nonstanding_bouts": 11,
+      "longest_nonstanding_seconds": 0.095,
+      "criterion_mask_counts": {
+        "0": 935,
+        "4": 39,
+        "8": 15,
+        "12": 1
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "parent",
+      "training_seed": null,
+      "evaluation_seed": 10010,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.10707070707070707,
+      "upright_failure_fraction": 0.02727272727272727,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.06060606060606061,
+      "no_claw_support_fraction": 0.020202020202020204,
+      "nonstanding_bouts": 13,
+      "longest_nonstanding_seconds": 0.15,
+      "criterion_mask_counts": {
+        "0": 884,
+        "1": 27,
+        "4": 59,
+        "8": 19,
+        "12": 1
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "parent",
+      "training_seed": null,
+      "evaluation_seed": 10011,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.08080808080808081,
+      "upright_failure_fraction": 0.01717171717171717,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.07777777777777778,
+      "no_claw_support_fraction": 0.0030303030303030303,
+      "nonstanding_bouts": 6,
+      "longest_nonstanding_seconds": 0.195,
+      "criterion_mask_counts": {
+        "0": 910,
+        "4": 60,
+        "5": 17,
+        "8": 3
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1004,
+      "evaluation_seed": 10006,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.5909090909090909,
+      "upright_failure_fraction": 0.5494949494949495,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.05656565656565657,
+      "no_claw_support_fraction": 0.34545454545454546,
+      "nonstanding_bouts": 3,
+      "longest_nonstanding_seconds": 2.735,
+      "criterion_mask_counts": {
+        "0": 405,
+        "1": 187,
+        "4": 40,
+        "5": 16,
+        "8": 1,
+        "9": 341
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1004,
+      "evaluation_seed": 10007,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.05858585858585859,
+      "upright_failure_fraction": 0.015151515151515152,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.03333333333333333,
+      "no_claw_support_fraction": 0.010101010101010102,
+      "nonstanding_bouts": 13,
+      "longest_nonstanding_seconds": 0.08,
+      "criterion_mask_counts": {
+        "0": 932,
+        "1": 15,
+        "4": 33,
+        "8": 10
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1004,
+      "evaluation_seed": 10010,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.03232323232323232,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.022222222222222223,
+      "no_claw_support_fraction": 0.011111111111111112,
+      "nonstanding_bouts": 12,
+      "longest_nonstanding_seconds": 0.045,
+      "criterion_mask_counts": {
+        "0": 958,
+        "4": 21,
+        "8": 10,
+        "12": 1
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1004,
+      "evaluation_seed": 10011,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.06060606060606061,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.051515151515151514,
+      "no_claw_support_fraction": 0.00909090909090909,
+      "nonstanding_bouts": 14,
+      "longest_nonstanding_seconds": 0.11,
+      "criterion_mask_counts": {
+        "0": 930,
+        "4": 51,
+        "8": 9
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "parent-own",
+      "training_seed": 1004,
+      "evaluation_seed": 1004,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.10808080808080808,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.10303030303030303,
+      "no_claw_support_fraction": 0.006060606060606061,
+      "nonstanding_bouts": 12,
+      "longest_nonstanding_seconds": 0.16,
+      "criterion_mask_counts": {
+        "0": 883,
+        "4": 101,
+        "8": 5,
+        "12": 1
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child-own",
+      "training_seed": 1004,
+      "evaluation_seed": 1004,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.011111111111111112,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.005050505050505051,
+      "no_claw_support_fraction": 0.006060606060606061,
+      "nonstanding_bouts": 7,
+      "longest_nonstanding_seconds": 0.025,
+      "criterion_mask_counts": {
+        "0": 979,
+        "4": 5,
+        "8": 6
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1005,
+      "evaluation_seed": 10006,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.023232323232323233,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.014141414141414142,
+      "no_claw_support_fraction": 0.00909090909090909,
+      "nonstanding_bouts": 10,
+      "longest_nonstanding_seconds": 0.07,
+      "criterion_mask_counts": {
+        "0": 967,
+        "4": 14,
+        "8": 9
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1005,
+      "evaluation_seed": 10007,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.12323232323232323,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.1111111111111111,
+      "no_claw_support_fraction": 0.012121212121212121,
+      "nonstanding_bouts": 16,
+      "longest_nonstanding_seconds": 0.35000000000000003,
+      "criterion_mask_counts": {
+        "0": 868,
+        "4": 110,
+        "8": 12
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1005,
+      "evaluation_seed": 10010,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.05757575757575758,
+      "upright_failure_fraction": 0.014141414141414142,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.025252525252525252,
+      "no_claw_support_fraction": 0.01818181818181818,
+      "nonstanding_bouts": 8,
+      "longest_nonstanding_seconds": 0.125,
+      "criterion_mask_counts": {
+        "0": 933,
+        "1": 14,
+        "4": 25,
+        "8": 18
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1005,
+      "evaluation_seed": 10011,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.09191919191919191,
+      "upright_failure_fraction": 0.014141414141414142,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.09090909090909091,
+      "no_claw_support_fraction": 0.0030303030303030303,
+      "nonstanding_bouts": 5,
+      "longest_nonstanding_seconds": 0.135,
+      "criterion_mask_counts": {
+        "0": 899,
+        "4": 74,
+        "5": 14,
+        "8": 1,
+        "12": 2
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "parent-own",
+      "training_seed": 1005,
+      "evaluation_seed": 1005,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.03333333333333333,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.022222222222222223,
+      "no_claw_support_fraction": 0.011111111111111112,
+      "nonstanding_bouts": 12,
+      "longest_nonstanding_seconds": 0.11,
+      "criterion_mask_counts": {
+        "0": 957,
+        "4": 22,
+        "8": 11
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child-own",
+      "training_seed": 1005,
+      "evaluation_seed": 1005,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.050505050505050504,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.045454545454545456,
+      "no_claw_support_fraction": 0.006060606060606061,
+      "nonstanding_bouts": 8,
+      "longest_nonstanding_seconds": 0.085,
+      "criterion_mask_counts": {
+        "0": 940,
+        "4": 44,
+        "8": 5,
+        "12": 1
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1006,
+      "evaluation_seed": 10006,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.08181818181818182,
+      "upright_failure_fraction": 0.007070707070707071,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.07878787878787878,
+      "no_claw_support_fraction": 0.0030303030303030303,
+      "nonstanding_bouts": 7,
+      "longest_nonstanding_seconds": 0.17,
+      "criterion_mask_counts": {
+        "0": 909,
+        "4": 71,
+        "5": 7,
+        "8": 3
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1006,
+      "evaluation_seed": 10007,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.05353535353535353,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.044444444444444446,
+      "no_claw_support_fraction": 0.00909090909090909,
+      "nonstanding_bouts": 10,
+      "longest_nonstanding_seconds": 0.1,
+      "criterion_mask_counts": {
+        "0": 937,
+        "4": 44,
+        "8": 9
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1006,
+      "evaluation_seed": 10010,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.16161616161616163,
+      "upright_failure_fraction": 0.026262626262626262,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.1494949494949495,
+      "no_claw_support_fraction": 0.012121212121212121,
+      "nonstanding_bouts": 9,
+      "longest_nonstanding_seconds": 0.23,
+      "criterion_mask_counts": {
+        "0": 830,
+        "4": 122,
+        "5": 26,
+        "8": 12
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child",
+      "training_seed": 1006,
+      "evaluation_seed": 10011,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.044444444444444446,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.022222222222222223,
+      "no_claw_support_fraction": 0.022222222222222223,
+      "nonstanding_bouts": 9,
+      "longest_nonstanding_seconds": 0.11,
+      "criterion_mask_counts": {
+        "0": 946,
+        "4": 22,
+        "8": 22
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "parent-own",
+      "training_seed": 1006,
+      "evaluation_seed": 1006,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.0595959595959596,
+      "upright_failure_fraction": 0.0,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.05757575757575758,
+      "no_claw_support_fraction": 0.0030303030303030303,
+      "nonstanding_bouts": 6,
+      "longest_nonstanding_seconds": 0.20500000000000002,
+      "criterion_mask_counts": {
+        "0": 931,
+        "4": 56,
+        "8": 2,
+        "12": 1
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    },
+    {
+      "bank": "child-own",
+      "training_seed": 1006,
+      "evaluation_seed": 1006,
+      "posthoc_descriptive": true,
+      "nonstanding_fraction": 0.13535353535353536,
+      "upright_failure_fraction": 0.02727272727272727,
+      "low_height_fraction": 0.0,
+      "high_height_fraction": 0.13131313131313133,
+      "no_claw_support_fraction": 0.00404040404040404,
+      "nonstanding_bouts": 10,
+      "longest_nonstanding_seconds": 0.19,
+      "criterion_mask_counts": {
+        "0": 856,
+        "4": 103,
+        "5": 27,
+        "8": 4
+      },
+      "mask_bits": {
+        "upright": 1,
+        "low_height": 2,
+        "high_height": 4,
+        "no_claw_support": 8
+      }
+    }
+  ],
+  "all_training_horizons_and_logs_complete": true,
+  "all_checkpoint_reference_sign_topology_bounds_flags_verified": true,
+  "all_context_pad_formulas_verified": true,
+  "source_parent_prior_children_data_unchanged": true,
+  "all_jobs_exit0_empty": true,
+  "lease_released": true,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "Three training births, not twelve independent training replications.",
+    "Own-seed gains are training-seed checks; shared development seeds reused, final validation unused.",
+    "Three births cannot fully estimate variability or establish overfitting, learning absence or causal mechanism.",
+    "All banks reported, no selection/merge/default change/model promotion.",
+    "Weight-delta cosine is posthoc descriptive, not proof of a correct/incorrect learning gradient.",
+    "Standing/proxy retention screens do not establish balance recovery, stable walking or environmental responses."
+  ]
+}
