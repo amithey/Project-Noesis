@@ -1,0 +1,836 @@
+{
+  "status": "completed_synthetic_closed_loop_CL1",
+  "seconds": 11.45299999974668,
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_sha256": [
+    "d2998745933d1ad008a37876f4bb6ef0f95fd5b055a2d635ec7b3b40a8839712",
+    "b6eb0be56f80fd32370782b41269120e9313dd267f4839060a90db9a0d5241cd"
+  ],
+  "train_seeds": [
+    50000,
+    50001,
+    50002,
+    50003,
+    50004,
+    50005,
+    50006,
+    50007,
+    50008,
+    50009,
+    50010,
+    50011,
+    50012,
+    50013,
+    50014,
+    50015
+  ],
+  "frozen_synthetic_probe_seeds": [
+    60000,
+    60001,
+    60002,
+    60003
+  ],
+  "baseline_probe_returns": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "online_minus_parent": {
+    "mean": 0.0,
+    "standard_error": 0.0,
+    "z": null,
+    "positive_births": 0,
+    "independent_births": 16
+  },
+  "online_minus_yoked": {
+    "mean": 0.0,
+    "standard_error": 0.0,
+    "z": null,
+    "positive_births": 0,
+    "independent_births": 16
+  },
+  "registered_screen_pass": false,
+  "all_original_bounds_and_signs": true,
+  "all_learning_off_exact": true,
+  "yoked_reward_marginals_exact": true,
+  "rows": [
+    {
+      "seed": 50000,
+      "weights": {
+        "online": [
+          25.418976858057064,
+          -9.891556951074753
+        ],
+        "yoked": [
+          24.90019931339423,
+          -10.0267355020595
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.013801689607403633,
+        "yoked": -0.003332788835090472,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50001,
+      "weights": {
+        "online": [
+          25.33212262194464,
+          -9.900680853970238
+        ],
+        "yoked": [
+          25.007400127445482,
+          -10.003915342328725
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.01160840974038091,
+        "yoked": -4.7764567526531465e-05,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50002,
+      "weights": {
+        "online": [
+          25.611989037756082,
+          -9.835111771424561
+        ],
+        "yoked": [
+          25.279778267969803,
+          -9.93363513264496
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.020484192183893635,
+        "yoked": 0.008913808727148087,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50003,
+      "weights": {
+        "online": [
+          25.61169141879737,
+          -9.846171893383843
+        ],
+        "yoked": [
+          25.121684249851178,
+          -9.994873440134537
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.019925233706755252,
+        "yoked": 0.0026900129902966974,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50004,
+      "weights": {
+        "online": [
+          25.675119328785872,
+          -9.836383769595326
+        ],
+        "yoked": [
+          24.958053816907515,
+          -10.017420391549596
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.02168319809595115,
+        "yoked": -0.0017099432393294922,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50005,
+      "weights": {
+        "online": [
+          25.506332279639103,
+          -9.829748213648076
+        ],
+        "yoked": [
+          24.628805088981057,
+          -10.115602850311195
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.018639234910378333,
+        "yoked": -0.01320404073593856,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50006,
+      "weights": {
+        "online": [
+          25.90542530028407,
+          -9.77846841022058
+        ],
+        "yoked": [
+          24.81099287599467,
+          -10.106115413622137
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.029185085494652374,
+        "yoked": -0.009085913161213377,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50007,
+      "weights": {
+        "online": [
+          25.60767368456392,
+          -9.863256582887454
+        ],
+        "yoked": [
+          24.814954498042912,
+          -10.035273182274633
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.01899064454690569,
+        "yoked": -0.005464569152873411,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50008,
+      "weights": {
+        "online": [
+          25.58199897719811,
+          -9.877269451875076
+        ],
+        "yoked": [
+          25.205080085767133,
+          -9.944082222530598
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.017776506950208437,
+        "yoked": 0.006897490588812782,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50009,
+      "weights": {
+        "online": [
+          25.480113954743384,
+          -9.876822340343205
+        ],
+        "yoked": [
+          24.857664948172186,
+          -10.044918990419305
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.01576116207770739,
+        "yoked": -0.005092650557521505,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50010,
+      "weights": {
+        "online": [
+          25.0010521099331,
+          -10.001870787047029
+        ],
+        "yoked": [
+          25.238968101578212,
+          -9.959746282968478
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": -7.249715368951026e-05,
+        "yoked": 0.006792047883140362,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50011,
+      "weights": {
+        "online": [
+          25.840109205085415,
+          -9.814060761106342
+        ],
+        "yoked": [
+          24.818045321989896,
+          -10.038847461721547
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.026099146046391186,
+        "yoked": -0.005581466646279454,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50012,
+      "weights": {
+        "online": [
+          25.42031988340345,
+          -9.859560877465144
+        ],
+        "yoked": [
+          24.882245389317067,
+          -10.07656818830074
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.015428353794811833,
+        "yoked": -0.006183501628695687,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50013,
+      "weights": {
+        "online": [
+          26.062383502047194,
+          -9.755538059943525
+        ],
+        "yoked": [
+          24.380510140757966,
+          -10.156849686165895
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.03347076704376761,
+        "yoked": -0.020232281493135384,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50014,
+      "weights": {
+        "online": [
+          25.369294196384608,
+          -9.90465598848962
+        ],
+        "yoked": [
+          25.039916359800458,
+          -10.001887728568843
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.012153084503211065,
+        "yoked": 0.0007039407675669684,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    },
+    {
+      "seed": 50015,
+      "weights": {
+        "online": [
+          25.354377858892974,
+          -9.924957899483038
+        ],
+        "yoked": [
+          24.883131327909197,
+          -10.022779914786337
+        ],
+        "off": [
+          25.0,
+          -10.0
+        ]
+      },
+      "probe_returns": {
+        "online": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "yoked": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "off": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "mean_frozen_delta": {
+        "online": 0.0,
+        "yoked": 0.0,
+        "off": 0.0
+      },
+      "weight_direction": {
+        "online": 0.010839662203707578,
+        "yoked": -0.003476369181132921,
+        "off": 0.0
+      },
+      "online_minus_yoked": 0.0
+    }
+  ],
+  "physical_simulation": false,
+  "checkpoint_written": false,
+  "walking_proven": false,
+  "limits": [
+    "Tiny arbitrary signed3-neuron graph and monotone firing objective, no fly, muscles or physics.",
+    "Four reused synthetic probe streams averaged within each independent training birth; not64independent observations.",
+    "Yoked reward has exactly matching marginal but shifted timing; it is not an independent reward generator.",
+    "A failed screen is not a proof that learning is absent; no tuning or repeat is authorized by this result."
+  ]
+}
