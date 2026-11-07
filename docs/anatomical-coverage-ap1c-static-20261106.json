@@ -1,0 +1,20 @@
+{
+  "physical_integration_steps": 0,
+  "neural_steps": 0,
+  "model_time": 0.0,
+  "implicit_ground_geoms": 0,
+  "explicit_ground_pairs": 55,
+  "all_ground_geometry_classified": true,
+  "compound_proximal_geoms": 6,
+  "production_collision_pairs_unchanged": true,
+  "native_inputs_exact": true,
+  "fixture_is_not_learned_fly_success": true,
+  "native_compound_links": [
+    "lf_trochanterfemur",
+    "lm_trochanterfemur",
+    "lh_trochanterfemur",
+    "rf_trochanterfemur",
+    "rm_trochanterfemur",
+    "rh_trochanterfemur"
+  ]
+}

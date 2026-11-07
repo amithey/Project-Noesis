@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-07",
+  "status": "complete_pilot_original_rules_failed",
+  "goal_complete": false,
+  "simulation_active": false,
+  "canonical_lease_active": false,
+  "model_promoted": false,
+  "stage_advanced": false,
+  "validated_best": null,
+  "walking_proven": false,
+  "evaluated_training_source": "a05b0daa3c4416f1ffc0a2c59f8770f77069bd8b",
+  "evaluated_coverage_source": "a1fbcd3240c839e13e665bf7fdebfde7dc223cd0",
+  "candidate_sha256": "aced093428ea850e6f091f36fa13caa86afad0948ca0deb6cc5f3d85321b265c",
+  "full_frozen_cells": 15,
+  "legacy_absolute_standing_passes": 4,
+  "development_seeds": 4,
+  "retention_pass_against_parent": false,
+  "retention_pass_against_native_control": false,
+  "anatomical_each_seed_vs_both_pass": false,
+  "anatomical_conditions_pass_seeds": 2,
+  "pilot_training_births": 1,
+  "artifact": {
+    "path": "anatomical-feedback-ap1c-20261106-evidence.zip",
+    "bytes": 72972023,
+    "sha256": "2f60d305c87dcf08640476fbe541b6aaf3eb66aa69cfd563553cdcd52a676540",
+    "files": 184,
+    "crc_and_all_hashes_verified": true,
+    "raw_graph_cache_private_lease_excluded": true,
+    "release_uploaded": false
+  },
+  "next_step": "AP2 fixed-method replication proposal for training seeds1004/1006; not implemented/allocated yet; require own code/tests/protocol and fresh resources",
+  "publication_scope": "Compact scientific result; extensive private integrity manifest remains local"
+}

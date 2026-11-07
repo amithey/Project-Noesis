@@ -1,0 +1,347 @@
+{
+  "status": "audited_complete_AP1C",
+  "evaluated_training_source": "a05b0daa3c4416f1ffc0a2c59f8770f77069bd8b",
+  "evaluated_correction_source": "a1fbcd3240c839e13e665bf7fdebfde7dc223cd0",
+  "correction_aggregate_seconds": 183.65699999965727,
+  "previous_B_aggregate_seconds": 955.4840000001714,
+  "original_A0_control_aggregate_seconds": 289.2350000003353,
+  "total_AP1_allocation_seconds": 1428.376000000164,
+  "new_frozen_jobs": 3,
+  "previous_B_complete_workers": 11,
+  "previous_B_partial_failed_workers": 1,
+  "reused_complete_disabled_births": 1,
+  "reused_H2B_frozen_cells": 2,
+  "frozen_cells": 15,
+  "retention": {
+    "parent": {
+      "passed": false,
+      "standing_retained": false,
+      "slip_retained": false,
+      "median_paired_gains": {
+        "heading_forward_distance_mm": -0.12380052580821524,
+        "net_forward_displacement_mm": -0.14109665097140778,
+        "total_leg_steps": 8.5
+      },
+      "median_tripod_gain": -0.053106391715907614,
+      "standing_stage_only": true,
+      "walking_proven": false,
+      "model_promoted": false
+    },
+    "control": {
+      "passed": false,
+      "standing_retained": false,
+      "slip_retained": false,
+      "median_paired_gains": {
+        "heading_forward_distance_mm": -0.08358800584215065,
+        "net_forward_displacement_mm": 0.10973125849008702,
+        "total_leg_steps": 0.0
+      },
+      "median_tripod_gain": 0.012018214403363408,
+      "standing_stage_only": true,
+      "walking_proven": false,
+      "model_promoted": false
+    }
+  },
+  "anatomical_comparisons": {
+    "1005": {
+      "parent": {
+        "tarsal_only_fraction_gain": 0.03333333333333327,
+        "mean_non_tarsal_fraction_change": -0.0475727162301795
+      },
+      "control": {
+        "tarsal_only_fraction_gain": 0.009090909090909038,
+        "mean_non_tarsal_fraction_change": -0.02794723943394259
+      }
+    },
+    "10006": {
+      "parent": {
+        "tarsal_only_fraction_gain": 0.19494949494949493,
+        "mean_non_tarsal_fraction_change": -0.12396684911488978
+      },
+      "control": {
+        "tarsal_only_fraction_gain": 0.05858585858585852,
+        "mean_non_tarsal_fraction_change": -0.05680588095595035
+      }
+    },
+    "10007": {
+      "parent": {
+        "tarsal_only_fraction_gain": 0.19999999999999996,
+        "mean_non_tarsal_fraction_change": -0.10885911802317261
+      },
+      "control": {
+        "tarsal_only_fraction_gain": 0.036363636363636376,
+        "mean_non_tarsal_fraction_change": 0.013567759285669417
+      }
+    },
+    "10010": {
+      "parent": {
+        "tarsal_only_fraction_gain": -0.1767676767676768,
+        "mean_non_tarsal_fraction_change": 0.09247432106502684
+      },
+      "control": {
+        "tarsal_only_fraction_gain": -0.13535353535353534,
+        "mean_non_tarsal_fraction_change": 0.07342324823107971
+      }
+    },
+    "10011": {
+      "parent": {
+        "tarsal_only_fraction_gain": 0.14444444444444443,
+        "mean_non_tarsal_fraction_change": -0.0609452094191979
+      },
+      "control": {
+        "tarsal_only_fraction_gain": 0.20505050505050504,
+        "mean_non_tarsal_fraction_change": -0.09211398342188676
+      }
+    }
+  },
+  "anatomical_primary_pass": false,
+  "combined_pilot_rule_pass": false,
+  "unchanged_source_data_priors": true,
+  "all_full_horizons_exit_zero_empty_tree": true,
+  "lease_released": true,
+  "failed_366_body_367_anatomy_prefix_exact": true,
+  "independent_birth_confirmation_required": true,
+  "pilot_training_births": 1,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "One selected development training seed, no independent-birth confirmation.",
+    "Contact modes and reaction fractions are descriptors, not validated standing/balance labels.",
+    "A retained legacy proxy or leg cycles would not certify walking or environment response.",
+    "All raw artifacts are local signed evidence until authenticated Release upload."
+  ],
+  "training": {
+    "control": {
+      "checkpoint_sha256": "46a6975dc7a1479f794034258abae67ff178d31772ac961d54617519a2b00853",
+      "recomputed_native_transitions": 5000,
+      "actual_objective": "curriculum-standing-v7",
+      "mean_native_reward": 0.5772659801736337,
+      "mean_applied_reward": 0.5772659801736337,
+      "mean_effective_penalty": 0.0,
+      "nonzero_penalty_rows": 0
+    },
+    "candidate": {
+      "checkpoint_sha256": "aced093428ea850e6f091f36fa13caa86afad0948ca0deb6cc5f3d85321b265c",
+      "recomputed_native_transitions": 5000,
+      "actual_objective": "curriculum-standing-v7-ap1-nontarsal-0.5",
+      "mean_native_reward": 0.5545836159087089,
+      "mean_applied_reward": 0.40034052523530544,
+      "mean_effective_penalty": 0.15424309067340347,
+      "nonzero_penalty_rows": 3228
+    }
+  },
+  "rows": [
+    {
+      "bank": "parent",
+      "seed": 1005,
+      "own_seed": true,
+      "standing_fraction": 0.9666666666666667,
+      "stance_slip_mm_s": 2.0014209739530937,
+      "heading_forward_mm": 1.0020360793068055,
+      "net_forward_mm": 0.9463424698847798,
+      "total_leg_steps": 66,
+      "tripod_score": 0.020040138198047844,
+      "regime": "STEPPING_UNCOORDINATED",
+      "mean_non_tarsal_fraction": 0.2588053722420642,
+      "tarsal_only_fraction": 0.4777777777777778
+    },
+    {
+      "bank": "parent",
+      "seed": 10006,
+      "own_seed": false,
+      "standing_fraction": 0.9626262626262626,
+      "stance_slip_mm_s": 3.0581713360264406,
+      "heading_forward_mm": 0.298359305310338,
+      "net_forward_mm": 0.022346444869974825,
+      "total_leg_steps": 58,
+      "tripod_score": 0.19183862825923673,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.2755952718687433,
+      "tarsal_only_fraction": 0.42323232323232324
+    },
+    {
+      "bank": "parent",
+      "seed": 10007,
+      "own_seed": false,
+      "standing_fraction": 0.9444444444444444,
+      "stance_slip_mm_s": 2.4901644202802085,
+      "heading_forward_mm": 0.33179266889018316,
+      "net_forward_mm": 0.3839992223829025,
+      "total_leg_steps": 52,
+      "tripod_score": 0.2207113742218327,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.3045633660525177,
+      "tarsal_only_fraction": 0.398989898989899
+    },
+    {
+      "bank": "parent",
+      "seed": 10010,
+      "own_seed": false,
+      "standing_fraction": 0.8929292929292929,
+      "stance_slip_mm_s": 2.2499830438353756,
+      "heading_forward_mm": 1.2018815669844556,
+      "net_forward_mm": 1.468320629755359,
+      "total_leg_steps": 73,
+      "tripod_score": 0.045805796699067855,
+      "regime": "STEPPING_UNCOORDINATED",
+      "mean_non_tarsal_fraction": 0.15387061287767848,
+      "tarsal_only_fraction": 0.6747474747474748
+    },
+    {
+      "bank": "parent",
+      "seed": 10011,
+      "own_seed": false,
+      "standing_fraction": 0.9191919191919192,
+      "stance_slip_mm_s": 2.9327522746019024,
+      "heading_forward_mm": -0.05008821844232747,
+      "net_forward_mm": -0.045329986741564264,
+      "total_leg_steps": 57,
+      "tripod_score": 0.036799813411694436,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.2587275360405171,
+      "tarsal_only_fraction": 0.4383838383838384
+    },
+    {
+      "bank": "control",
+      "seed": 1005,
+      "own_seed": true,
+      "standing_fraction": 0.9494949494949495,
+      "stance_slip_mm_s": 2.555141776704289,
+      "heading_forward_mm": 1.1537637005892356,
+      "net_forward_mm": 0.9386826393282278,
+      "total_leg_steps": 68,
+      "tripod_score": 0.14021186112284026,
+      "regime": "STEPPING_UNCOORDINATED",
+      "mean_non_tarsal_fraction": 0.23917989544582727,
+      "tarsal_only_fraction": 0.502020202020202
+    },
+    {
+      "bank": "control",
+      "seed": 10006,
+      "own_seed": false,
+      "standing_fraction": 0.9767676767676767,
+      "stance_slip_mm_s": 2.313278478875339,
+      "heading_forward_mm": 0.6141190803761389,
+      "net_forward_mm": 0.5437547375352476,
+      "total_leg_steps": 71,
+      "tripod_score": 0.0451546089279025,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.20843430370980384,
+      "tarsal_only_fraction": 0.5595959595959596
+    },
+    {
+      "bank": "control",
+      "seed": 10007,
+      "own_seed": false,
+      "standing_fraction": 0.8767676767676768,
+      "stance_slip_mm_s": 2.07053336069042,
+      "heading_forward_mm": 0.891686428757787,
+      "net_forward_mm": 0.7833981125132604,
+      "total_leg_steps": 56,
+      "tripod_score": 0.040572035852438015,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.1821364887436757,
+      "tarsal_only_fraction": 0.5626262626262626
+    },
+    {
+      "bank": "control",
+      "seed": 10010,
+      "own_seed": false,
+      "standing_fraction": 0.9424242424242424,
+      "stance_slip_mm_s": 2.185433927282505,
+      "heading_forward_mm": 0.2806024277664159,
+      "net_forward_mm": 0.10841084311074958,
+      "total_leg_steps": 67,
+      "tripod_score": 0.00855157248833623,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.1729216857116256,
+      "tarsal_only_fraction": 0.6333333333333333
+    },
+    {
+      "bank": "control",
+      "seed": 10011,
+      "own_seed": false,
+      "standing_fraction": 0.908080808080808,
+      "stance_slip_mm_s": 2.5265632001136566,
+      "heading_forward_mm": 0.9008343382634667,
+      "net_forward_mm": 0.959051220676364,
+      "total_leg_steps": 59,
+      "tripod_score": 0.08906904122746266,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.289896310043206,
+      "tarsal_only_fraction": 0.37777777777777777
+    },
+    {
+      "bank": "candidate",
+      "seed": 1005,
+      "own_seed": true,
+      "standing_fraction": 0.9727272727272728,
+      "stance_slip_mm_s": 1.980245096933234,
+      "heading_forward_mm": 1.3327019848200696,
+      "net_forward_mm": 1.4524259992759543,
+      "total_leg_steps": 64,
+      "tripod_score": 0.03708134039148996,
+      "regime": "STEPPING_UNCOORDINATED",
+      "mean_non_tarsal_fraction": 0.21123265601188468,
+      "tarsal_only_fraction": 0.5111111111111111
+    },
+    {
+      "bank": "candidate",
+      "seed": 10006,
+      "own_seed": false,
+      "standing_fraction": 0.9191919191919192,
+      "stance_slip_mm_s": 2.1626232106642127,
+      "heading_forward_mm": 1.2691968985625919,
+      "net_forward_mm": 1.2212487270436623,
+      "total_leg_steps": 64,
+      "tripod_score": 0.07787819756809365,
+      "regime": "STEPPING_UNCOORDINATED",
+      "mean_non_tarsal_fraction": 0.1516284227538535,
+      "tarsal_only_fraction": 0.6181818181818182
+    },
+    {
+      "bank": "candidate",
+      "seed": 10007,
+      "own_seed": false,
+      "standing_fraction": 0.9151515151515152,
+      "stance_slip_mm_s": 2.1429318745094625,
+      "heading_forward_mm": 0.06943259888703279,
+      "net_forward_mm": 0.3253666399850198,
+      "total_leg_steps": 63,
+      "tripod_score": 0.031884876018973676,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.1957042480293451,
+      "tarsal_only_fraction": 0.598989898989899
+    },
+    {
+      "bank": "candidate",
+      "seed": 10010,
+      "own_seed": false,
+      "standing_fraction": 0.9181818181818182,
+      "stance_slip_mm_s": 2.3832684334925576,
+      "heading_forward_mm": 1.2166405853711755,
+      "net_forward_mm": 1.0504881883415795,
+      "total_leg_steps": 55,
+      "tripod_score": 0.12935869819634796,
+      "regime": "STEPPING_UNCOORDINATED",
+      "mean_non_tarsal_fraction": 0.24634493394270532,
+      "tarsal_only_fraction": 0.49797979797979797
+    },
+    {
+      "bank": "candidate",
+      "seed": 10011,
+      "own_seed": false,
+      "standing_fraction": 0.9535353535353536,
+      "stance_slip_mm_s": 2.3455444433620793,
+      "heading_forward_mm": -0.4007341159292799,
+      "net_forward_mm": -0.2688907062864971,
+      "total_leg_steps": 68,
+      "tripod_score": 0.04454746067102229,
+      "regime": "STEPPING_IN_PLACE",
+      "mean_non_tarsal_fraction": 0.19778232662131923,
+      "tarsal_only_fraction": 0.5828282828282828
+    }
+  ],
+  "decision": "Mixed pilot; original retention and prespecified anatomical criteria failed, no adoption or promotion",
+  "publication_scope": "Compact scientific statistics only; private file-integrity manifests retained locally"
+}
