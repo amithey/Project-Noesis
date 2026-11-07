@@ -1,0 +1,11 @@
+{
+  "status": "verified_FA2_dependency_provenance",
+  "runtime_source_files_checked": 91,
+  "postrun_auditor_modules_checked": 2,
+  "source_dependencies_match_sealed_AP2_references": true,
+  "analysis_source_sha256": "baa6a277203871539c4060c8c64d8ca89813d2254f4965d6a3a71258aa6df815",
+  "physics_steps": 0,
+  "neural_steps": 0,
+  "old_scores_and_verdicts_unchanged": true,
+  "private_integrity_maps_not_published": true
+}

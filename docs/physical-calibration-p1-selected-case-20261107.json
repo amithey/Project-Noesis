@@ -1,0 +1,19 @@
+{
+  "proposal": "P1 diagnostic only, not allocated",
+  "recorded_case": "candidate-1004-10011",
+  "training_source": "7692865891a05a939c983ce8ee1946b9f768fff4",
+  "candidate_sha256": "068b49a0d44f4dca6fd53bd0950048a4db1a3ebd891ac0e0727ff0a39ff33c10",
+  "probe_seed": 10011,
+  "selection": "First run after1s with z>1.5/up>=.7/atleast3loadedclaws/C1tarsal-only lastingatleast10samples; choose middle sample",
+  "source_run_sample_indices": [
+    387,
+    398
+  ],
+  "event_chunk": 393,
+  "event_time_seconds": 1.965,
+  "thorax_height": 1.59958802872579,
+  "uprightness": 0.8975291136774695,
+  "loaded_claws": 4,
+  "COM_vertical_velocity_mm_s": 3.453198534797125,
+  "selection_is_diagnostic_not_validation": true
+}
