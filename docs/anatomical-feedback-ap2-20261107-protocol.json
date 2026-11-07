@@ -1,0 +1,54 @@
+{
+  "experiment": "AP2 fixed-method cross-birth replication",
+  "date": "2026-11-07",
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "native_control_sha256": {
+    "1004": "07aa4f8198c20dae779d1a836fffb4bf6ddef76f3d62c0af55a050a2b2293e43",
+    "1006": "4da00819274782cb197a00237efef052785c6b1421f7beb6ae62b9c5c937c880"
+  },
+  "new_training_seeds": [
+    1004,
+    1006
+  ],
+  "original_training_seed": 1005,
+  "development_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "own_seed_descriptive": true,
+  "formula": "clip(native_v7-.5*q_non_tarsal,-1,1)",
+  "measurement_revision": "C1-native-trochanterfemur-proximal",
+  "training_seconds": 25,
+  "learning_updates": 4990,
+  "frozen_seconds": 5,
+  "learning_rate": 0.2,
+  "eligibility_ms": 100,
+  "original_reference_bound": 0.5,
+  "exploration_mv_ms": 1.5,
+  "aggregate_seconds": 5400,
+  "training_worker_seconds": 600,
+  "frozen_worker_seconds": 300,
+  "maximum_new_jobs": 25,
+  "new_births": 4,
+  "new_reference_probes": 11,
+  "new_candidate_probes": 10,
+  "reused_reference_cells": 5,
+  "sequence": "For birth1004then1006: disabled25s exact old replay; missing parent/control reference bank; sameparent candidate25s; five frozen candidate cells",
+  "primary": "Original strict standing/slip/proxy retention versus both references AND increased tarsal-only/reduced mean non-tarsal fraction at EACH shareddev seed; all3births reported including failed1005",
+  "stop": "technical/hash/context/horizon/mass/force/parity/resource/timeout/remaining-full-worker-budget failure; no automatic retry/retune or partial scientific interpretation",
+  "no_best_checkpoint_selection": true,
+  "no_weight_pooling": true,
+  "model_promoted": false,
+  "walking_proven": false,
+  "shared_parent_dev_cells_are_not_independent_replications": true,
+  "reserved_final_seeds_unused": [
+    10,
+    11,
+    200,
+    201,
+    202
+  ],
+  "publication_scope": "Compact scientific protocol; extensive local integrity manifest retained locally"
+}
