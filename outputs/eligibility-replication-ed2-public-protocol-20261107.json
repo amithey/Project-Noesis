@@ -1,0 +1,55 @@
+{
+  "experiment": "ED2 fixed-method independent training-birth replication",
+  "date": "2026-11-07",
+  "common_parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "original_training_seed": 1005,
+  "new_training_seeds": [
+    1006,
+    1007
+  ],
+  "development_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "own_seed_descriptive": true,
+  "fixed_method": "Same PS1 scalar objective; native0 versus full-eligibility delay10chunks50ms; no coefficient/delay sweep",
+  "objective": "physical-standing-ps1-v1",
+  "learning_rate": 0.2,
+  "eligibility_ms": 100,
+  "original_reference_bound": 0.5,
+  "exploration_mv_ms": 1.5,
+  "seconds_train": 25,
+  "learning_attempts_per_birth": 4990,
+  "seconds_frozen": 5,
+  "maximum_new_jobs": 26,
+  "aggregate_seconds": 9300,
+  "training_worker_seconds": 600,
+  "frozen_worker_seconds": 300,
+  "sequence": [
+    "exact prior positive-delay1005 replay",
+    "new parent-own1007 frozen reference",
+    "paired0/50ms25s births1006 then10matched frozen probes",
+    "paired0/50ms25s births1007 then10matched frozen probes"
+  ],
+  "original_failed_birth_required": true,
+  "main_frozen_bank_positions": 45,
+  "main_unique_cells": 37,
+  "auxiliary_unique_cells": 12,
+  "primary": "Unchanged ED1 EACHdev physical directions versus parent/control, strict original retention versus parent/control/v7/AP1 and anatomical rule; every birth reported including failed1005",
+  "secondary": "Predeclared descriptive four-development-seed mean physical changes versus concurrent control per birth; never rescue primary or select winner",
+  "proof": "Exact positive-delay replay before new births; same reward/motor/native-run AST; every actual queue/weight-step/moment check, raw innovation distinguished from used eligibility; original bounds and source/context guards",
+  "final_reserved_seeds_unused": [
+    10,
+    11,
+    200,
+    201,
+    202
+  ],
+  "stop": "hash/context/mass/force/reward/queue/weight/checkpoint/sidecar/replay/prefix/horizon/resource/time/full-worker-budget failure; no automatic retry/retune/partial inference",
+  "limits": "Three training births share development reference cells; not independent frozen replications or proof of physical ability. No model promotion or winner selection.",
+  "physical_balance_validated": false,
+  "model_promoted": false,
+  "walking_proven": false
+}
