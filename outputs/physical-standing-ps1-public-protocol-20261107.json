@@ -1,0 +1,58 @@
+{
+  "experiment": "PS1 fixed physical-standing scalar-objective pilot",
+  "date": "2026-11-07",
+  "common_parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "control_training_sha256": "068b49a0d44f4dca6fd53bd0950048a4db1a3ebd891ac0e0727ff0a39ff33c10",
+  "training_seed": 1004,
+  "development_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "own_seed_descriptive": true,
+  "objective": "physical-standing-ps1-v1",
+  "formula": "2*upright*tarsal_share*vertical_load_quality*claw_support*motion_quality-1",
+  "components": {
+    "upright": "clip((up.z-.7)/.3,0,1)",
+    "tarsal_share": "(claw+other_tarsal vertical reaction)/all vertical reaction, zero if unsupported",
+    "vertical_load_quality": "exp(-abs(total_vertical_reaction/whole_fly_weight-1))",
+    "claw_support": "min(number_loaded_claws/3,1)",
+    "motion_quality": "1/(1+(COM_speed/1mm_s)^2+(body_angular_speed/1rad_s)^2)"
+  },
+  "scale_status": "Fixed engineering modelling assumptions, not biological calibration or physical acceptance thresholds",
+  "factor": "Only scalar objective: exact AP1 control versus PS1 candidate from same parent; no height term in PS1, original height/evaluation metrics retained unchanged",
+  "seconds_train": 25,
+  "seconds_frozen": 5,
+  "learning_updates_per_birth": 4990,
+  "learning_rate": 0.2,
+  "eligibility_ms": 100,
+  "original_reference_bound": 0.5,
+  "exploration_mv_ms": 1.5,
+  "aggregate_seconds": 2700,
+  "training_worker_seconds": 600,
+  "frozen_worker_seconds": 300,
+  "maximum_new_jobs": 7,
+  "sequence": [
+    "exact AP1 control birth1004",
+    "PS1 candidate birth1004",
+    "candidate frozen own1004",
+    "candidate frozen10006",
+    "candidate frozen10007",
+    "candidate frozen10010",
+    "candidate frozen10011"
+  ],
+  "reused_frozen_reference_cells": 15,
+  "reference_banks": [
+    "parent",
+    "v7",
+    "AP1"
+  ],
+  "primary": "Exploratory all4dev: PS1 mean quality higher and mean COMspeed/body angular speed/non-tarsal reaction fraction lower versus each reference; no own-seed selection or aggregate rescue",
+  "retention": "Report unchanged strict standing/slip/heading/netforward/cycles/tripod criteria against parent, v7 and AP1 separately; retain old anatomical comparison versus parent/AP1; none replaced by PS1 reward",
+  "limits": "One learning birth pilot; no physical standing gate, generalized efficacy, retained ability, gait or validated-best claim. Even positive pilot requires independent births and physical validation.",
+  "stop": "technical/hash/context/mass/force/accounting/sidecar/exactcontrol/prefix/horizon/resource/timeout/insufficient-full-worker-budget failure; no automatic retry, retuning or partial inference",
+  "model_promoted": false,
+  "physical_balance_validated": false,
+  "walking_proven": false
+}
