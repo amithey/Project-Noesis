@@ -1,0 +1,32 @@
+{
+  "experiment": "AP1C frozen-only native compound-link coverage correction",
+  "date": "2026-11-07",
+  "candidate_sha256": "aced093428ea850e6f091f36fa13caa86afad0948ca0deb6cc5f3d85321b265c",
+  "training_source": "a05b0daa3c4416f1ffc0a2c59f8770f77069bd8b",
+  "original_training_seconds": 25,
+  "original_training_updates": 4990,
+  "new_training_jobs": 0,
+  "learning_updates": 0,
+  "seeds": [
+    10007,
+    10010,
+    10011
+  ],
+  "seconds": 5,
+  "chunks": 1000,
+  "maximum_new_jobs": 3,
+  "aggregate_seconds": 900,
+  "worker_seconds": 300,
+  "descriptor_change": "Exactly six native *_trochanterfemur links -> proximal_leg; old C0 supported-domain identical, other unknown loaded anatomy still rejects",
+  "scientific_formula_and_gates_unchanged": true,
+  "completed_A0_B_banks_reused_without_rerun": true,
+  "failed_partial_B_seed10007_preserved": true,
+  "require_exact_partial_body_anatomy_prefix": true,
+  "stop": "technical/hash/context/horizon/mass/force/prefix/resource/timeout/remaining-full-worker-budget failure; no automatic retry/retune/partial scientific verdict",
+  "model_promoted": false,
+  "walking_proven": false,
+  "one_training_birth_requires_independent_confirmation": true,
+  "publication_scope": "Compact scientific protocol only; extensive local integrity manifest is retained locally, not published",
+  "source_branch": "codex/anatomical-coverage-ap1c-20261106",
+  "base_branch_commit": "078886fc00e4cd39b76b4f996c4775c2fe6fbdeb"
+}
