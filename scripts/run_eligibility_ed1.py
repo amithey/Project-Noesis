@@ -124,7 +124,7 @@ def execute(p):
     def resources():
         if any(x.pid not in own and (x.info['name'] or '').lower() in ('python.exe','pythonw.exe') for x in psutil.process_iter(['name'])):raise RuntimeError('Competing Python')
         ram=psutil.virtual_memory().available/2**30
-        if ram<2 or psutil.disk_usage(root).free<2*2**30:raise RuntimeError('RAM/disk below2GiB')
+        if ram<2 or psutil.disk_usage(str(root)).free<2*2**30:raise RuntimeError('RAM/disk below2GiB')
         return ram
     def unchanged():return all(sha(root/n)==h for group in ('source_hashes','prior_hashes','artifact_hashes') for n,h in p[group].items())
     def data_ok():return all(sha(root/'work/NoesisData'/f['path'])==f['sha256'] for f in data)
