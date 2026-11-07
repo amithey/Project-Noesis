@@ -47,6 +47,6 @@ def delayed_learner(native,delay_chunks):
             digest=lambda x:hashlib.sha256(memoryview(np.ascontiguousarray(x))).hexdigest()
             self.ed1_records.append(dict(update_index=update,used_source_update_index=update-delay_chunks if update>=delay_chunks else -1,
                 current_eligibility_sha256=digest(current),used_eligibility_sha256=digest(used),
-                used_eligibility_L2=float(np.linalg.norm(used)),delay_chunks=delay_chunks))
+                used_eligibility_L2=float(np.sqrt(np.sum(used*used))),delay_chunks=delay_chunks))
             return {**result,'changed_edges':int(np.count_nonzero(new!=old)),**self.metrics()}
     return Delayed
