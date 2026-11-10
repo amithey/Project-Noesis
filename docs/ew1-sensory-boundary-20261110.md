@@ -1,0 +1,13 @@
+# Current sensory integration boundary
+
+Read-only source review during EW1; no new execution, import tests, sensory implementation or runtime change. This is a map for the full active goal, not physical validation.
+
+The protected runtime's ordinary FrozenBrain.step drives joint-position/velocity, load and balance inputs through the existing SensoryMap/BalanceMap. FrozenBrain._extra_drive_parts returns an empty list. Native run.py constructs the ordinary FrozenPopulation and reports those four existing input types. EW1 only wraps observation/import accounting; it does not replace the brain with SensedBrain or enable an additional modality. Thus EW1 cannot demonstrate new external-sense learning even if its motor learning pilot succeeds.
+
+The same isolated runtime also contains sensed_brain.py, senses_bridge.py and external_senses.py. The opt-in SensedBrain subclass uses the existing extra-drive hook for warm/cool channels. Its GradientField is explicitly an experimenter-defined position field, not simulated temperature physics or a measured environmental sensor. Gains are modelling assumptions, and the position unit is not established by that class alone. The bridge selects afferents from connectome annotations, rejects overlap with leg/balance channels, and requires caller-supplied gains. None of that establishes learned environmental behaviour.
+
+Older coordination records stating that there is no controller sensory hook describe an earlier integration snapshot; they must not be treated as an accurate description of the current isolated source. Conversely, the existence of an optional hook is not evidence that the current EW1 worker activates it. The active run's actual report/context and source pin remain authoritative.
+
+Gemini's historical handoff/review still distinguishes software tests from physical/neural evidence and identifies canonical manifest, units, raw provenance and transfer-curve/control limitations. Those historical concerns are not resolved by this static source read. Existing opt-in thermo work is also not a new validation of a rectified joint/load transfer function.
+
+For future integration after motor-learning results: retain the same documented parent, review each sensory candidate separately, explicitly declare field/units/gain and selected afferents, require disabled/no-signal/constant/active matched controls, and preserve physical retention. Do not change senses and learning together or combine independently trained checkpoints. No new integration or simulation is allocated by this note. Reserved final seeds remain unused. Full stable standing/balance/walking/environment-response objective is unmet.
