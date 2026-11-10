@@ -1,0 +1,21 @@
+{
+  "experiment": "WS1 bounded existing-neural-weight sensitivity",
+  "status": "completed_independently_audited",
+  "planned_workers": 11,
+  "complete_full_horizon_workers": 11,
+  "baseline_replay_exact": true,
+  "actual_native_checkpoint_import_verified": true,
+  "source_prior_data_and_variants_unchanged": true,
+  "original_sign_topology_and_weight_bounds_preserved": true,
+  "variant_cells_with_changed_native_desired_commands": 10,
+  "variant_cells_with_changed_actual_joint_and_body_trajectories": 10,
+  "variant_cells_tested": 10,
+  "strict_development_retention_pass": {"minus": false, "plus": false},
+  "constructed_not_trained": true,
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false,
+  "interpretation": "The tested existing-neural-weight directions affect native brain/body output; neither untrained offset preserves the original retention conditions. No winner or learned ability is established.",
+  "limits": "Two fixed offsets around one common parent; not proof of a useful learning rule, biological calibration, all-direction sensitivity, stability or gait. Full neural spike reconstruction was not performed.",
+  "next_hypothesis": "Prepare reward-directed episodic neural-weight learning with independent negative/no-update controls and unchanged frozen retention before allocating another run."
+}
