@@ -1,0 +1,51 @@
+{
+  "experiment": "MP1 measured-policy learning acceptance",
+  "date": "2026-11-10",
+  "common_parent": "Same original experimental parent, not any EW1 child or retrospectively selected probe",
+  "training_seeds": [
+    1010,
+    1011
+  ],
+  "existing_development_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "fresh_frozen_seeds": [
+    11008,
+    11009
+  ],
+  "directions": 4,
+  "direction_rng_seed": 2026111001,
+  "probe_step": 0.01,
+  "matched_gradient_max_step": 0.01,
+  "minimum_worst_training_return_gain": 1e-06,
+  "algorithm": "Choose actual measured whole policy maximizing worst training-context gain; strict positive margin acceptance, canonical first-index ties, otherwise parent fallback. No mixing candidate weights.",
+  "controls": "No-update parent, reward-reversed measured selector, and matched-scale EW1-style gradient from the SAME fresh trial data",
+  "objective": "physical-standing-ps1-v1",
+  "warmup_samples": 10,
+  "return_samples": 990,
+  "seconds_per_worker": 5,
+  "maximum_new_workers": 45,
+  "worker_seconds": 300,
+  "aggregate_seconds": 13500,
+  "sequence": [
+    "Exact baseline replay",
+    "Two training-parent controls",
+    "All16fresh symmetric probe trials",
+    "Save/reload candidate, negative, matched-gradient and optimizer state",
+    "Two fresh frozen-parent controls AFTER selection",
+    "All24candidate/negative/gradient evaluations at training+existing4+fresh2 contexts"
+  ],
+  "existing_rule": "Original strict physical directions, strict standing/slip/locomotion retention and anatomical rule versus parent/negative/gradient across all four existing contexts",
+  "fresh_rule": "No regression in physical metrics/anatomical support plus unchanged strict retention across two first-use contexts; no impossible strict gain beyond already perfect support",
+  "comparison": "Candidate training acceptance is by construction, NOT independent efficacy; parent fallback cannot pass combined pilot",
+  "common_setting_change": "Both methods use matched1percent probes/steps in this fresh cohort; this is not an exact EW1 scientific replication",
+  "persistence": "Selected checkpoint byte-identical to measured probe or parent; independent state retains all returns/lineage and reproduces selection and gradient before evaluation",
+  "stop": "Source/input/data/created/import/horizon/setting/replay/resource/timeout/containment or full remaining-worker budget failure; no retry, retune, skipping or partial promotion",
+  "limits": "One learning round, four directions, fixed engineering objective and legacy proxies; fresh contexts are not final biological/robustness qualification",
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false
+}
