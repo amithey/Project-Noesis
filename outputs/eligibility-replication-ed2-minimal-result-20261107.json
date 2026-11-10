@@ -1,0 +1,56 @@
+{
+  "status": "independently_audited_ED2",
+  "runtime_source_commit": "9604f188a7d36b0bb7967fba77ce951dbf8593a5",
+  "seconds": 3571.6720000002533,
+  "new_complete_workers": 26,
+  "main_bank_positions": 45,
+  "unique_frozen_cells": 49,
+  "source_prior_children_data_unchanged": true,
+  "all_full_horizons_receipts_exit_zero_trees_empty": true,
+  "lease_released": true,
+  "physical_balance_validated": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": "Independent reward/statistic/moment/provenance audit; live independent weight-step checks, not offline full neural-spike reconstruction. Three births share reference cells; no statistical efficacy or physical-ability proof.",
+  "training_birth_count": 3,
+  "original_failed_birth_preserved": true,
+  "combined_pilot_pass_count": 0,
+  "descriptive_mean_direction_birth_count": 1,
+  "descriptive_means_never_rescue_primary_failure": true,
+  "per_birth": [
+    {
+      "training_seed": 1005,
+      "combined_pilot_pass": false,
+      "retention_pass": {
+        "parent": false,
+        "control": false,
+        "v7": false,
+        "AP1": false,
+        "previous_PS1": false
+      }
+    },
+    {
+      "training_seed": 1006,
+      "combined_pilot_pass": false,
+      "retention_pass": {
+        "parent": false,
+        "control": false,
+        "v7": false,
+        "AP1": false,
+        "previous_PS1": false
+      }
+    },
+    {
+      "training_seed": 1007,
+      "combined_pilot_pass": false,
+      "retention_pass": {
+        "parent": false,
+        "control": false,
+        "v7": false,
+        "AP1": false,
+        "previous_PS1": false
+      }
+    }
+  ],
+  "publication_scope": "Minimal new replication verdict only; no rejected receipt metadata, old reference performance tables or private integrity maps"
+}
