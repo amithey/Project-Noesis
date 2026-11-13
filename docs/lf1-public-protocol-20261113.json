@@ -1,0 +1,15 @@
+{
+  "study": "LF1 TRAIN-only finite-probe geometry",
+  "training_contexts": 6,
+  "directions": 4,
+  "probe_step": 0.01,
+  "l1_coefficient_radius": 0.01,
+  "offline_seconds": 180,
+  "numeric_tolerance": 1e-08,
+  "surrogate_gain_threshold": 1e-06,
+  "zero_new_simulation": true,
+  "checkpoint_or_optimizer_write": false,
+  "held_out_scoring": false,
+  "independent_primal_dual_check": true,
+  "limits": "Finite-probe surrogate diagnosis only; no calibrated derivative, actual policy, efficacy or physical validation."
+}
