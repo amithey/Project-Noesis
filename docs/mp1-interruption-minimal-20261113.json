@@ -1,0 +1,11 @@
+{
+  "status": "verified_incomplete_MP1_prefix",
+  "completed_workers": 29,
+  "failed_attempts": 1,
+  "missing_workers": 16,
+  "original_study_complete": false,
+  "scientific_verdict_available": false,
+  "candidate_training_replay_exact": true,
+  "model_promoted": false,
+  "technical_cause": "Verified automatic host idle sleep overlapped the timed-out worker"
+}

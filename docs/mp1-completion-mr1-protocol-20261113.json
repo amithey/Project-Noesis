@@ -1,0 +1,20 @@
+{
+  "experiment": "MR1 explicit completion of technically interrupted MP1",
+  "date": "2026-11-13",
+  "original_status": "failed_incomplete",
+  "reused_completed_workers": 29,
+  "original_failed_attempts_preserved": 1,
+  "additional_workers": 16,
+  "worker_seconds": 300,
+  "aggregate_seconds": 4800,
+  "seconds_per_worker": 5,
+  "sequence": "First missing negative1010 exact parent replay; remaining seven negative and all eight gradient cells in original order",
+  "unchanged": "Original frozen worker, models, source, seeds, objective and acceptance/retention criteria; no training/selection repeated",
+  "preservation": "Original failed result, timed-out attempt and29complete cells never overwritten; two allocations and46attempts remain explicit",
+  "power": "Temporary thread-scoped system-idle-sleep request only during bounded allocation; restore on exit; explicit user sleep is still possible",
+  "stop": "Request/resource/hash/source/data/import/full-horizon/matched-settings/exact-first-replay/timeout/containment/remaining-budget failure; no automatic retry",
+  "no_exact_episode_resume": true,
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false
+}
