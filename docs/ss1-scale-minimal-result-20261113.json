@@ -1,0 +1,18 @@
+{
+  "status": "completed_independent_SS1_audit",
+  "full_new_workers": 25,
+  "training_contexts": 6,
+  "canonical_direction": 0,
+  "complete_training_cases": 42,
+  "raw_returns_and_scale_criteria_reproduced": true,
+  "actual_probe_import_and_reference_bounds_verified": true,
+  "exact_baseline": true,
+  "compatible_contexts": 0,
+  "all_contexts_compatible": false,
+  "smallest_scale_cross_context_sign_consistent": false,
+  "model_selected": false,
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false,
+  "limits": "One prechosen direction and finite scales on existing TRAIN contexts. Engineering compatibility thresholds, not calibrated gradients, a smaller-step remedy, efficacy or physical skill."
+}
