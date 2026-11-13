@@ -1,0 +1,21 @@
+{
+  "status": "completed_readonly_LF1",
+  "training_contexts": 6,
+  "directions": 4,
+  "raw_training_cases": 54,
+  "raw_returns_and_saved_panel_reproduced": true,
+  "independent_primal_dual_certificate_passed": true,
+  "linear_surrogate_classification": "no_margin_above_threshold",
+  "mixed_sign_directions": 4,
+  "midpoint_departure_exceeds_odd_amplitude_cells": 15,
+  "direction_context_cells": 24,
+  "new_simulation_workers": 0,
+  "held_out_scoring": false,
+  "checkpoint_or_optimizer_written": false,
+  "actual_policy_selected": false,
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false,
+  "original_MP2_parent_fallback_preserved": true,
+  "limits": "Posthoc finite-probe linear surrogate only; no validated derivative, actual weight update, causal mechanism or physical improvement."
+}
