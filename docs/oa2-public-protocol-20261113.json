@@ -1,0 +1,15 @@
+{
+  "study": "OA2 training-buffer decision sensitivity",
+  "training_parent_controls": 2,
+  "training_probes": 16,
+  "new_simulation_workers": 0,
+  "offline_seconds": 180,
+  "warmup_samples": 10,
+  "return_samples": 990,
+  "original_decision_reproduction_required": true,
+  "alternative": "OA1 actuator-adjusted quasi-static load reference only",
+  "held_out_data_used_for_decisions": false,
+  "checkpoint_or_optimizer_write": false,
+  "stop": "Any provenance, source, receipt, role, horizon, return or saved-state mismatch; no retry or tuning",
+  "limits": "TRAIN ONLY, hypothetical same-buffer decisions; no adoption or efficacy, original failed verdict preserved"
+}

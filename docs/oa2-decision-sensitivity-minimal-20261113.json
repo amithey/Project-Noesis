@@ -1,0 +1,18 @@
+{
+  "status": "completed_readonly_OA2",
+  "training_parent_controls": 2,
+  "training_probes": 16,
+  "original_raw_returns_reproduced": true,
+  "original_decisions_and_saved_state_reproduced": true,
+  "hypothetical_candidate_identity_changed": false,
+  "hypothetical_negative_identity_changed": false,
+  "new_simulation_workers": 0,
+  "held_out_data_used_for_decisions": false,
+  "checkpoint_or_optimizer_written": false,
+  "alternative_reference_adopted": false,
+  "original_failed_verdict_preserved": true,
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false,
+  "limits": "Posthoc same-buffer hypothetical decision sensitivity only. Quasi-static reference omits acceleration, other applied forces and calibration. No causal explanation, better reward or efficacy established."
+}
