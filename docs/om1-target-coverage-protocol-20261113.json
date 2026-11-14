@@ -1,0 +1,21 @@
+{
+  "experiment": "OM1",
+  "registration_issue_comment": 6875651036,
+  "offline_wall_seconds": 180,
+  "new_simulation_workers": 0,
+  "input_roles": [
+    "common parent checkpoint",
+    "signed neuron metadata",
+    "SS1 baseline neuron cache and completed baseline report",
+    "pinned native motor and joint ordering source"
+  ],
+  "acceptance": [
+    "verify input and source SHA-256 before and after",
+    "compare all metadata rows to cache after the native root column rename",
+    "compare selected checkpoint target columns against nonzero entries in both native muscle matrices",
+    "reproduce counts by coordinate enumeration",
+    "pass analytic fixtures",
+    "release aggregates only"
+  ],
+  "limits": "Descriptive coverage of the existing mapping. No inference about indirect influence, learning efficacy or walking."
+}
