@@ -1,0 +1,38 @@
+{
+  "status": "completed",
+  "completed_workers": 25,
+  "seconds": 1552.0939999995753,
+  "arms": {
+    "mapped/-1": {
+      "contexts_reward_improved": 4,
+      "contexts_angular_speed_increased": 3,
+      "passes_training_gate": false
+    },
+    "mapped/+1": {
+      "contexts_reward_improved": 1,
+      "contexts_angular_speed_increased": 3,
+      "passes_training_gate": false
+    },
+    "remaining/-1": {
+      "contexts_reward_improved": 2,
+      "contexts_angular_speed_increased": 1,
+      "passes_training_gate": false
+    },
+    "remaining/+1": {
+      "contexts_reward_improved": 4,
+      "contexts_angular_speed_increased": 3,
+      "passes_training_gate": false
+    }
+  },
+  "retained_signs": {
+    "mapped": null,
+    "remaining": null
+  },
+  "tree_empty": true,
+  "lease_released": true,
+  "awake_released": true,
+  "raw_evidence_replay_passed": true,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": "One fixed matched direction per target set on six training contexts. Search failure does not establish inability to learn or general superiority of either set."
+}
