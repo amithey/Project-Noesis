@@ -1,0 +1,38 @@
+{
+  "experiment": "MB1",
+  "registration": 6958339614,
+  "train_contexts": 6,
+  "maximum_workers": 25,
+  "seconds_per_worker": 5,
+  "wall_limit_worker": 300,
+  "wall_limit_total": 7800,
+  "relative_amplitude": 0.005,
+  "axis_order": [
+    "Femur",
+    "Tibia"
+  ],
+  "sign_order": [
+    -1,
+    1
+  ],
+  "direction": "Sum corresponding six native Gpos-Gneg rows, normalize maximum absolute target loading, project onto selected incoming edges; exclude insufficient symmetric headroom",
+  "representation": {
+    "Femur": {
+      "edges": 17282,
+      "targets": 108,
+      "positive_pools": 6,
+      "negative_pools": 6,
+      "relative_l2_norm": 0.5460540887077227
+    },
+    "Tibia": {
+      "edges": 16062,
+      "targets": 114,
+      "positive_pools": 6,
+      "negative_pools": 6,
+      "relative_l2_norm": 0.2841894469745978
+    }
+  },
+  "selection": "Worst-context gain >1e-6 and zero angular regression contexts; rank by worst gain with fixed axis/sign tie order",
+  "guards": "Exact parent replay then all24trials; stop on first failed source/data/import/resource/horizon/time/containment check",
+  "promotion": "Independent physical retention required separately"
+}
