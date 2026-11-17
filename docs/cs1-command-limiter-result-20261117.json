@@ -1,0 +1,40 @@
+{
+  "status": "completed_CS1",
+  "recordings": 30,
+  "summaries": {
+    "parent": {
+      "limiter_fraction": 0.0026174442841109505,
+      "normalized_excursion_rms": 0.2291004115019801
+    },
+    "mapped/-1": {
+      "limiter_fraction": 0.0016634599967933301,
+      "normalized_excursion_rms": 0.22422986713163728,
+      "desired_difference_rms_rad": 0.26650594833744773,
+      "command_difference_rms_rad": 0.2665280605291735
+    },
+    "mapped/+1": {
+      "limiter_fraction": 0.002244668911335578,
+      "normalized_excursion_rms": 0.22841869379243487,
+      "desired_difference_rms_rad": 0.26919397245240173,
+      "command_difference_rms_rad": 0.26921288029913487
+    },
+    "remaining/-1": {
+      "limiter_fraction": 0.002044252044252044,
+      "normalized_excursion_rms": 0.22884379815108613,
+      "desired_difference_rms_rad": 0.23930952222270824,
+      "command_difference_rms_rad": 0.23932437808404008
+    },
+    "remaining/+1": {
+      "limiter_fraction": 0.0027056277056277055,
+      "normalized_excursion_rms": 0.22704773569516357,
+      "desired_difference_rms_rad": 0.25975078655664563,
+      "command_difference_rms_rad": 0.2597646124902435
+    }
+  },
+  "native_recurrence_exact": true,
+  "adhesion_exact": true,
+  "input_source_hashes_unchanged": true,
+  "new_simulation_workers": 0,
+  "walking_proven": false,
+  "limits": "Reconstructed controller commands. Activation states and actuator forces are unobserved."
+}
