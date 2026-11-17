@@ -1,0 +1,32 @@
+{
+  "registration_comment": 6950302372,
+  "train_contexts": 6,
+  "maximum_workers": 25,
+  "simulated_seconds": 5,
+  "worker_wall_seconds": 300,
+  "aggregate_wall_seconds": 7800,
+  "relative_step": 0.005,
+  "draw_seed": 2026111401,
+  "matched_edges_per_checkpoint": 31854,
+  "eligible_edges": {
+    "mapped": 53535,
+    "remaining": 31855
+  },
+  "perturbed_target_count": {
+    "mapped": 389,
+    "remaining": 173
+  },
+  "represented_pools": {
+    "mapped": {
+      "positive": 39,
+      "negative": 37
+    },
+    "remaining": {
+      "positive": 0,
+      "negative": 0
+    }
+  },
+  "sequence": "Exact parent replay, then both signs for each group on six TRAIN contexts",
+  "rank": "Maximum worst-context gain greater than 1e-6; reject any TRAIN angular regression; ties take negative sign first",
+  "stop": "First failed guard, no retry; require independent frozen retention before adoption"
+}
