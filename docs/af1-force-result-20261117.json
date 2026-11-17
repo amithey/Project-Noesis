@@ -1,0 +1,25 @@
+{
+  "status": "completed_AF1_audit",
+  "replay_exact": true,
+  "complete_workers": 2,
+  "summaries": {
+    "1010": {
+      "bound_hit_fraction": 0.0,
+      "peak_normalized_force": 0.20435706563458336,
+      "longest_bound_hit_seconds": 0.0,
+      "samples": 49500,
+      "actuators": 42
+    },
+    "1011": {
+      "bound_hit_fraction": 0.0,
+      "peak_normalized_force": 0.19889554315918453,
+      "longest_bound_hit_seconds": 0.0,
+      "samples": 49500,
+      "actuators": 42
+    }
+  },
+  "source_input_created_guards": true,
+  "walking_proven": false,
+  "model_promoted": false,
+  "limits": "Two frozen TRAIN replays, observed actuation-space forces. No causal intervention."
+}
