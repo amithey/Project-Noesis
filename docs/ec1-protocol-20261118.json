@@ -1,0 +1,38 @@
+{
+  "experiment": "EC1",
+  "registration": 6982382007,
+  "train_seeds": {
+    "stage1": 1010,
+    "carry": 1011,
+    "reset": 1011
+  },
+  "lineage": {
+    "stage1": "common parent",
+    "carry": "stage1 weights",
+    "reset": "common parent"
+  },
+  "frozen_train_contexts": [
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015
+  ],
+  "maximum_new_workers": 22,
+  "training_workers": 3,
+  "frozen_workers": 19,
+  "training_seconds": 25,
+  "frozen_seconds": 5,
+  "training_worker_limit": 600,
+  "frozen_worker_limit": 300,
+  "aggregate_limit": 9000,
+  "learning_rate": 0.2,
+  "exploration": 1.5,
+  "eligibility_ms": 100,
+  "delay_chunks": 0,
+  "original_reference_bound": 0.5,
+  "fixed_endpoint": "carry",
+  "acceptance": "Worst paired reward gain >1e-6 vs parent/reset; original physical/anatomical/standing/slip criteria; zero regression vs stage1 across six contexts; later independent physical validation before adoption",
+  "stop": "First source/input/created/resource/import/horizon/reward/update/receipt/time/lease failure, no retry"
+}
