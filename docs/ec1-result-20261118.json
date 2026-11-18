@@ -1,0 +1,47 @@
+{
+  "status": "completed_EC1_audit",
+  "complete_workers": 22,
+  "complete_training_births": 3,
+  "actual_weight_updates_audited": 14970,
+  "all_checkpoint_transfers_verified": true,
+  "episode_trace_reset_verified": true,
+  "warmup_replay_exact": true,
+  "frozen_contexts": 6,
+  "comparisons": {
+    "parent": {
+      "retention_passed": false,
+      "worst_reward_gate": false,
+      "passes": false,
+      "standing_retained": false,
+      "contexts_reward_improved": 3,
+      "contexts_physical_pass": 0,
+      "slip_retained": false,
+      "contexts_anatomical_pass": 0
+    },
+    "reset": {
+      "retention_passed": false,
+      "worst_reward_gate": false,
+      "passes": false,
+      "standing_retained": false,
+      "contexts_reward_improved": 3,
+      "contexts_physical_pass": 1,
+      "slip_retained": false,
+      "contexts_anatomical_pass": 1
+    },
+    "stage1": {
+      "retention_passed": false,
+      "worst_reward_gate": false,
+      "passes": false,
+      "standing_retained": false,
+      "contexts_reward_improved": 2,
+      "contexts_physical_pass": 0,
+      "slip_retained": false,
+      "contexts_anatomical_pass": 3
+    }
+  },
+  "endpoint_meets_training_criteria": false,
+  "fixed_endpoint": "carry",
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": "TRAIN-context weight carry with unequal previous exposure of reset control. Independent physical validation remains required."
+}
