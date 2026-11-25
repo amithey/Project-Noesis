@@ -63,6 +63,10 @@ def walk_gate(c, p):
         # added 2026-11-25 after R0 showed raw touchdowns are contact flicker (tightening only)
         "real_steps_4plus_legs_2plus_debounced_steps": ok and all(
             sum(t >= 2 for t in r.get("debounced_steps_per_leg", [])) >= 4 for r in c),
+        # added 2026-11-25 per Amit: stable walking must use ALL legs
+        "all_6_legs_2plus_debounced_steps": ok and all(
+            all(t >= 2 for t in r.get("debounced_steps_per_leg", [0])) and
+            len(r.get("debounced_steps_per_leg", [])) == 6 for r in c),
         "forward_beats_parent_every_seed": ok and all(
             a["forward_mm"] > b["forward_mm"] + 0.5 for a, b in zip(c, p)),
     }

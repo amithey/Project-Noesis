@@ -252,12 +252,17 @@ def fitness(result, stage, displacement_weight=0.05):
 
     stand: mean curriculum-standing-v7 reward (support, posture, low slip).
     walk : mean curriculum-gripped-step-v8 reward plus net forward displacement
-           per simulated second, gated by staying up (multiplied by standing).
+           per simulated second and the share of legs that really step, both
+           multiplied by the standing fraction (all six legs must participate).
     """
     if stage == "stand":
         return result["mean_reward"]
     per_second = result["forward_mm"] / result["seconds"]
-    return result["mean_reward"] + displacement_weight * per_second * result["standing_fraction"]
+    # all-leg participation: share of the six legs making >= 1 real (debounced) step per second
+    need = max(1, int(round(result["seconds"])))
+    legs = sum(n >= need for n in result.get("debounced_steps_per_leg", [])) / 6
+    return result["mean_reward"] + result["standing_fraction"] * (
+        displacement_weight * per_second + 0.15 * legs)
 
 
 STAGE_OBJECTIVE = {"stand": "curriculum-standing-v7", "walk": "curriculum-gripped-step-v8"}
