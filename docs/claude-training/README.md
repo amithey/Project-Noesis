@@ -49,3 +49,4 @@ See [GATES.md](GATES.md). Fixed before any run; never relaxed after seeing resul
 | [R0](runs/R0-parent-eval.md) | 2026-11-25 | parent baseline (no training) | - | - | - (held-out v7 0.608/0.617/0.626) | FAIL (standing 0.90-0.91) | FAIL (fwd 0.3-1.6 mm) | [R0-parent-eval-10s.mp4](videos/R0-parent-eval-10s.mp4) |
 | [smoke](runs/smoke.md) | 2026-11-25 | ES (pipeline check) | stand | 1 x 5 x 0.5 s | 0.652 (centre) | n/a | n/a | - |
 | [R1](runs/R1-es-stand.md) | 2026-11-25 | ES | stand | 3/20 x 13 x 1.5 s | aborted (best = parent; varying seed) | not run | not run | - |
+| [R1b](runs/R1b-es-stand-fixedseeds.md) | 2026-11-25 | ES, fixed seeds 30000-1 | stand | 15 x 13 x 2 seeds x 1.5 s | 0.742 (parent 0.706) | FAIL (standing 0.94/0.98/0.87; v7 mean 0.658 vs 0.617) | FAIL | [R1b-...-10s.mp4](videos/R1b-es-stand-fixedseeds-10s.mp4) |

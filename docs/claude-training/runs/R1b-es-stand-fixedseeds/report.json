@@ -1,0 +1,8 @@
+{
+  "status": "completed",
+  "best_centre_fitness": 0.742225838801059,
+  "wall_hours": 1.3504982392655478,
+  "model_promoted": false,
+  "walking_proven": false,
+  "note": "training score only; acceptance requires es_evaluate.py on held-out seeds"
+}
