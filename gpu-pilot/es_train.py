@@ -135,10 +135,13 @@ def parser():
     ap.add_argument("--generations", type=int, default=20)
     ap.add_argument("--pairs", type=int, default=6, help="ES antithetic pairs (population = 2*pairs)")
     ap.add_argument("--popsize", type=int, default=12, help="CMA population")
-    ap.add_argument("--sigma", type=float, default=0.08)
-    ap.add_argument("--lr", type=float, default=0.03)
+    ap.add_argument("--sigma", type=float, default=0.05)
+    ap.add_argument("--lr", type=float, default=0.01)
     ap.add_argument("--seconds", type=float, default=1.5)
-    ap.add_argument("--seeds-per-gen", type=int, default=1)
+    ap.add_argument("--seeds-per-gen", type=int, default=2)
+    ap.add_argument("--vary-seeds", action="store_true",
+                    help="new training seeds each generation (default: one fixed seed set, so centre "
+                         "scores are comparable across generations; held-out seeds are separate)")
     ap.add_argument("--train-seed-base", type=int, default=30000)
     ap.add_argument("--grouping", choices=("fine", "coarse"), default="fine")
     ap.add_argument("--init-gains", type=Path, default=None, help="start from a previous best-gains.npy")
@@ -196,7 +199,8 @@ def main():
                 break
             t0 = time.time()
             cands = opt.ask()
-            seeds = [args.train_seed_base + gen * 100 + k for k in range(args.seeds_per_gen)]
+            offset = gen * 100 if args.vary_seeds else 0
+            seeds = [args.train_seed_base + offset + k for k in range(args.seeds_per_gen)]
             jobs = [(c, s, args.seconds, args.stage) for c in cands for s in seeds]
             jobs += [(opt.mean.copy(), s, args.seconds, args.stage) for s in seeds]  # centre
             results = pool.map(_job, jobs, chunksize=1)
