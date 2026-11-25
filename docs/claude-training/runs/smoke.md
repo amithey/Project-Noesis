@@ -23,7 +23,7 @@ No held-out evaluation for the smoke test (it is a pipeline check, not a candida
 
 ### Environment notes / fixes
 - Code fix: `dump()` in `src/noesis_gpu/es_brain.py` could not serialize numpy bools from the gate checks.
-  It now converts numpy scalars/arrays, and the console summary in `es_evaluate.py` does the same (commit `b883767`).
+  It now converts numpy scalars/arrays, and the console summary in `es_evaluate.py` does the same (commit `7a71f53`).
   No other code changes.
 - Memory (sampled every 10 s during R0): each pool worker ≈ 510–560 MB, main process ≈ 800 MB.
   Free RAM at idle was already only ~2.5 GB of 15.7 GB (other apps use ~83%), so the "<80% RAM" target cannot

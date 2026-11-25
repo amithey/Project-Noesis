@@ -16,7 +16,7 @@ python es_evaluate.py --output <project>\gpu-pilot\outputs\claude-es\R0-parent-e
 - **Wall time:** 429 s for 6 episodes + the 10 s video (7 min 25 s total including startup).
   Per-seed wall times for a 5 s episode with 3 running in parallel: 117–146 s (table below).
 - **Note:** the first attempt (18:42–18:51) finished all episodes and the video but crashed while writing
-  `evaluation.json` (numpy bool not JSON-serializable). Fixed in commit `b883767`, then re-run. Results are deterministic, so nothing changed apart from the file being written.
+  `evaluation.json` (numpy bool not JSON-serializable). Fixed in commit `7a71f53`, then re-run. Results are deterministic, so nothing changed apart from the file being written.
 
 ### Held-out evaluation (5 s frozen, seeds 20001-20003)
 
