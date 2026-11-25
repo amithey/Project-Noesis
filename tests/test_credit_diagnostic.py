@@ -1,19 +1,21 @@
-import sys
 import os
+import sys
 from pathlib import Path
+
 import numpy as np
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'gpu-pilot/tests'))
 if os.environ.get('NOESIS_SOURCE'):
     sys.path.insert(0,os.environ['NOESIS_SOURCE'])
-from credit_diagnostic import replay_rewards, lag_correlations, association_reference
+from credit_diagnostic import association_reference, lag_correlations, replay_rewards
 
 
 def test_actual_small_brain_normalization_is_exactly_replayed(tmp_path):
     from noesis_gpu.learning import LearningBrain
-    from test_weight_integrity import build
     from test_learning import state
+    from test_weight_integrity import build
     cn,parent=build(tmp_path)
     brain=LearningBrain(cn,np.zeros(42),np.full(42,-.7),np.full(42,.7),checkpoint=parent,seed=7)
     rewards=np.random.default_rng(12).normal(.2,.4,150)
@@ -30,7 +32,7 @@ def test_actual_small_brain_normalization_is_exactly_replayed(tmp_path):
 
 def test_fft_lags_match_direct_pearson_and_detect_known_delay():
     rng=np.random.default_rng(14);x=rng.normal(size=(600,4));y=np.r_[np.zeros(7),x[:-7,2]]
-    corr,active,width=lag_correlations(x,y,20)
+    corr,active,width=lag_correlations(x,y,20)  # noqa: RUF059
     for lag in [-20,-7,0,7,20]:
         for col in range(4):
             direct=np.corrcoef(x[20:580,col],y[20+lag:580+lag])[0,1]

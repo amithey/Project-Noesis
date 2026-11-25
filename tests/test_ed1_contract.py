@@ -1,9 +1,10 @@
 import numpy as np
 import pytest
+from ed1_contract import audited_learner
 from scipy import sparse
+
 from noesis.lif import LIFNetwork
 from noesis.plasticity import MotorPlasticity
-from ed1_contract import audited_learner
 
 
 def make(delay):

@@ -12,14 +12,12 @@ def test_request_is_scoped_and_released_after_failure():
     def request(flags):
         calls.append(flags)
         return CONTINUOUS
-    with pytest.raises(ValueError):
-        with keep_system_awake(request):
-            assert calls == [CONTINUOUS | SYSTEM_REQUIRED]
-            raise ValueError('interrupted training')
+    with pytest.raises(ValueError), keep_system_awake(request):
+        assert calls == [CONTINUOUS | SYSTEM_REQUIRED]
+        raise ValueError('interrupted training')
     assert calls == [CONTINUOUS | SYSTEM_REQUIRED, CONTINUOUS]
 
 
 def test_failed_request_does_not_start_training():
-    with pytest.raises(RuntimeError, match='Could not'):
-        with keep_system_awake(lambda _: 0):
-            pytest.fail('body must not execute')
+    with pytest.raises(RuntimeError, match='Could not'), keep_system_awake(lambda _: 0):
+        pytest.fail('body must not execute')

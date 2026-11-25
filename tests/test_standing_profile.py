@@ -1,18 +1,26 @@
 import copy
 import sys
 from pathlib import Path
+
 import numpy as np
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from run_duration_study import (TRACE_FIELDS,V9_DIAGNOSTICS,PROBES,standing_trace_check,
-    standing_report_check,standing_decision)
+from run_duration_study import (
+    PROBES,
+    TRACE_FIELDS,
+    V9_DIAGNOSTICS,
+    standing_decision,
+    standing_report_check,
+    standing_trace_check,
+)
 
 
 def traces(tmp_path):
     a,b=tmp_path/'standing',tmp_path/'gripped';a.mkdir();b.mkdir()
     data={k:np.zeros((5000,1)) for k in TRACE_FIELDS};data['learning_active']=np.arange(5000)>=10
-    log=dict(drive=np.zeros((4990,2)),credit=np.zeros((4990,3)),drive_idx=np.array([2,4]),
-        motor_indices=np.array([2,4,6]),control_chunk_index=np.arange(10,5000),control_ms=np.array(5.))
+    log={'drive': np.zeros((4990,2)),'credit': np.zeros((4990,3)),'drive_idx': np.array([2,4]),
+        'motor_indices': np.array([2,4,6]),'control_chunk_index': np.arange(10,5000),'control_ms': np.array(5.)}
     np.savez(b/'training-observations.npz',**data)
     candidate={k:v.copy() for k,v in data.items() if k not in V9_DIAGNOSTICS}
     candidate['reward'][:]=.7
@@ -62,8 +70,8 @@ def test_only_registered_profile_metadata_may_change(change):
 
 
 def cases():
-    return {a:{s:dict(seed=s,standing_fraction=.96 if a=='child25' else .95,mean_stance_slip_mm_s=2.,
-        heading_forward_distance_mm=0.,net_forward_displacement_mm=0.,leg_step_counts={leg:0 for leg in ('LF','LM','LH','RF','RM','RH')})
+    return {a:{s:{'seed': s,'standing_fraction': .96 if a=='child25' else .95,'mean_stance_slip_mm_s': 2.,
+        'heading_forward_distance_mm': 0.,'net_forward_displacement_mm': 0.,'leg_step_counts': {leg:0 for leg in ('LF','LM','LH','RF','RM','RH')}}
         for s in PROBES} for a in ('parent','control25','child25')}
 
 

@@ -1,16 +1,18 @@
 """R4 process-guard tests; fake children are not physical evidence."""
 import json
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
+
 import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from run_resource_envelope import preflight, stop_reason, monitored_run
+from run_resource_envelope import monitored_run, preflight, stop_reason
 from training_resources import assess
 
 
 def test_diagnostic_envelope_does_not_change_training_default():
-    samples = [dict(available_gib=2.1, host_cpu_percent=40.) for _ in range(10)]
+    samples = [{'available_gib': 2.1, 'host_cpu_percent': 40.} for _ in range(10)]
     assert preflight(samples)['passed']
     assert not assess(samples)['passed']
     for key, value in [('available_gib', 1.99), ('host_cpu_percent', 60.01)]:
@@ -46,7 +48,7 @@ def test_long_monitor_does_not_kill_at_short_deadline_and_reaps_at930(tmp_path):
             return self.returncode
         def kill(self):self.killed=True;self.returncode=-9
     child=Child()
-    def sample(_):now[0]=next(ticks);return dict(host_available_gib=2.)
+    def sample(_):now[0]=next(ticks);return {'host_available_gib': 2.}
     path=tmp_path/'long.log'
     with pytest.raises(RuntimeError,match='deadline'):
         monitored_run(['fake'],path,spawn=lambda *a,**k:child,clock=lambda:now[0],sample=sample,process_seconds=930)
@@ -73,9 +75,9 @@ def test_owned_child_reaped_and_telemetry_saved_on_all_terminal_paths(tmp_path, 
         if failure == 'telemetry': raise ValueError('unreadable')
         if failure == 'interrupt': raise KeyboardInterrupt()
         if failure == 'deadline': now[0] = 331.
-        return dict(host_available_gib=.8 if failure == 'memory' else 2.)
+        return {'host_available_gib': .8 if failure == 'memory' else 2.}
     # Deadline is checked on the next sample after the clock advances.
-    kwargs = dict(spawn=spawn, clock=lambda: now[0], sample=sample)
+    kwargs = {'spawn': spawn, 'clock': lambda: now[0], 'sample': sample}
     path = tmp_path / 'owned.log'
     if failure:
         expected = KeyboardInterrupt if failure == 'interrupt' else ValueError if failure == 'telemetry' else RuntimeError

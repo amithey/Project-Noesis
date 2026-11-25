@@ -1,11 +1,21 @@
 import copy
 import sys
 from pathlib import Path
+
 import numpy as np
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from run_duration_study import (TRACE_FIELDS,PROBES,duration_decision,lr_trace_check,
-                               lr_report_check,verify_lr_control,T1B_CHILD,lr_bank_audit)
+from run_duration_study import (
+    PROBES,
+    T1B_CHILD,
+    TRACE_FIELDS,
+    duration_decision,
+    lr_bank_audit,
+    lr_report_check,
+    lr_trace_check,
+    verify_lr_control,
+)
 
 
 def traces(tmp_path):
@@ -13,8 +23,8 @@ def traces(tmp_path):
     control.mkdir();candidate.mkdir()
     data={k:np.zeros((5000,1)) for k in TRACE_FIELDS}
     data['learning_active']=np.arange(5000)>=10
-    log=dict(drive=np.zeros((4990,2)),credit=np.zeros((4990,3)),drive_idx=np.array([2,4]),
-             motor_indices=np.array([2,4,6]),control_chunk_index=np.arange(10,5000),control_ms=np.array(5.))
+    log={'drive': np.zeros((4990,2)),'credit': np.zeros((4990,3)),'drive_idx': np.array([2,4]),
+             'motor_indices': np.array([2,4,6]),'control_chunk_index': np.arange(10,5000),'control_ms': np.array(5.)}
     for p in (control,candidate):
         np.savez(p/'training-observations.npz',**data)
         np.savez(p/'exploration-log.npz',**log)
@@ -64,10 +74,10 @@ def test_only_explicit_learning_rate_metadata_may_differ(changed):
 
 
 def test_control25_names_preserve_all_original_retention_and_progress_gates():
-    cases={arm:{seed:dict(seed=seed,standing_fraction=.95,mean_stance_slip_mm_s=2.,
-          heading_forward_distance_mm=1.3 if arm=='child25' else .3,
-          net_forward_displacement_mm=1.3 if arm=='child25' else .3,
-          leg_step_counts={leg:3 for leg in ('LF','LM','LH','RF','RM','RH')})
+    cases={arm:{seed:{'seed': seed,'standing_fraction': .95,'mean_stance_slip_mm_s': 2.,
+          'heading_forward_distance_mm': 1.3 if arm=='child25' else .3,
+          'net_forward_displacement_mm': 1.3 if arm=='child25' else .3,
+          'leg_step_counts': {leg:3 for leg in ('LF','LM','LH','RF','RM','RH')}}
           for seed in PROBES} for arm in ('parent','control25','child25')}
     d=duration_decision(cases,control_arm='control25')
     assert d['exploratory_method_rule_pass'] and 'control25' in d['medians']
@@ -82,8 +92,8 @@ def test_control25_names_preserve_all_original_retention_and_progress_gates():
 @pytest.mark.parametrize('bad',[False,True])
 def test_only_audited_complete_known_t1b_control_is_accepted(tmp_path,monkeypatch,bad):
     import audit_duration_result
-    monkeypatch.setattr(audit_duration_result,'audit',lambda *args:dict(
-        child25_sha256='partial' if bad else T1B_CHILD,complete_frozen_probes=12))
+    monkeypatch.setattr(audit_duration_result,'audit',lambda *args:{
+        'child25_sha256': 'partial' if bad else T1B_CHILD,'complete_frozen_probes': 12})
     (tmp_path/'result.json').write_text('{}')
     if bad:
         with pytest.raises(ValueError):verify_lr_control(tmp_path,tmp_path,tmp_path)
@@ -92,9 +102,9 @@ def test_only_audited_complete_known_t1b_control_is_accepted(tmp_path,monkeypatc
 
 @pytest.mark.parametrize('changed',[None,'learning_rate','eligibility','bound','sign','topology','original','normalization'])
 def test_bank_exception_allows_only_registered_lr_metadata(tmp_path,changed):
-    original=dict(topology=np.array([1,2]),motor_indices=np.array([0,1]),initial_weights=np.array([2.,-2.]),
-        weights=np.array([2.,-2.]),parameters=np.array([.2,100.,.5]),rule=np.array('perturbation'),
-        version=np.array(4),normalize_reward_error=np.array(True),bias_correct_reward_error=np.array(True))
+    original={'topology': np.array([1,2]),'motor_indices': np.array([0,1]),'initial_weights': np.array([2.,-2.]),
+        'weights': np.array([2.,-2.]),'parameters': np.array([.2,100.,.5]),'rule': np.array('perturbation'),
+        'version': np.array(4),'normalize_reward_error': np.array(True),'bias_correct_reward_error': np.array(True)}
     parent=tmp_path/'parent.npz';child=tmp_path/'child.npz';np.savez(parent,**original)
     candidate=copy.deepcopy(original);candidate['parameters'][0]=.02
     if changed=='learning_rate':candidate['parameters'][0]=.03

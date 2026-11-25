@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from x1_drive import current_intervention,transfer_interaction
+from x1_drive import current_intervention, transfer_interaction
 
 
 def test_current_mask_preserves_targets_and_input():

@@ -24,8 +24,9 @@ def test_brain_volume_renders_activity_with_installed_matplotlib():
 def test_connections_remain_visible_when_silent_and_can_be_isolated():
     import matplotlib
     matplotlib.use("Agg")
-    from noesis.viz.brain_map import BrainVolume
     from types import SimpleNamespace
+
+    from noesis.viz.brain_map import BrainVolume
 
     volume = BrainVolume(np.array([[0., 0., 0.], [1., 0., 0.], [2., 1., 0.]]),
                          np.array([0, 1]), np.array([1, 2]), np.array([1., -1.]))

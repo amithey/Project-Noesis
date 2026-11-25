@@ -1,15 +1,17 @@
 import sys
 from pathlib import Path
+
 import numpy as np
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from run_duration_study import PROBES,duration_decision,prefix_check
+from run_duration_study import PROBES, duration_decision, prefix_check
 
 
 def cases():
-    return {arm:{seed:dict(seed=seed,standing_fraction=.95,mean_stance_slip_mm_s=2.,
-             heading_forward_distance_mm=.3+(arm=='child25'),net_forward_displacement_mm=.3+(arm=='child25'),
-             leg_step_counts={leg:3 for leg in ['LF','LM','LH','RF','RM','RH']}) for seed in PROBES}
+    return {arm:{seed:{'seed': seed,'standing_fraction': .95,'mean_stance_slip_mm_s': 2.,
+             'heading_forward_distance_mm': .3+(arm=='child25'),'net_forward_displacement_mm': .3+(arm=='child25'),
+             'leg_step_counts': {leg:3 for leg in ['LF','LM','LH','RF','RM','RH']}} for seed in PROBES}
             for arm in ['parent','control5','child25']}
 
 

@@ -1,10 +1,12 @@
 import hashlib
+
 import numpy as np
 import pytest
+from ed1_eligibility import delayed_learner
 from scipy import sparse
+
 from noesis.lif import LIFNetwork
 from noesis.plasticity import MotorPlasticity
-from ed1_eligibility import delayed_learner
 
 
 def learner(delay=None,rate=.2):

@@ -1,7 +1,8 @@
 import numpy as np
 import pytest
+from sc1_signal import lag_correlation, normalized_signal
 from scipy import sparse
-from sc1_signal import normalized_signal,lag_correlation
+
 from noesis.lif import LIFNetwork
 from noesis.plasticity import MotorPlasticity
 

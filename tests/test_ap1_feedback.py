@@ -1,6 +1,12 @@
 import numpy as np
 import pytest
-from ap1_feedback import non_tarsal_fraction,corrected_reward,apply_feedback,validate_ap1_training,OBJECTIVE
+from ap1_feedback import (
+    OBJECTIVE,
+    apply_feedback,
+    corrected_reward,
+    non_tarsal_fraction,
+    validate_ap1_training,
+)
 
 
 def test_anatomical_fraction_no_force_and_conservative_regions():
@@ -36,22 +42,22 @@ def test_scalar_only_correction_preserves_other_native_terms_and_disabled_object
     shaped=apply_feedback(native,.8,.5)
     assert shaped['reward']==pytest.approx(.2) and native['reward']==.6
     assert set(shaped)==set(native)
-    for k in native:
+    for k in native:  # noqa: PLC0206
         if k!='reward':assert shaped[k] is native[k]
 
 
 def test_contact_summary_uses_same_990_measured_chunks_as_native():
     from run_anatomical_ap1 import contact_summary
-    a=dict(region_vertical_reaction=np.ones((1001,4)),non_tarsal_fraction=np.zeros(1001),
-        contact_mode_code=np.full(1001,3),com_velocity=np.zeros((1001,3)))
+    a={'region_vertical_reaction': np.ones((1001,4)),'non_tarsal_fraction': np.zeros(1001),
+        'contact_mode_code': np.full(1001,3),'com_velocity': np.zeros((1001,3))}
     a['contact_mode_code'][:11]=1
     result=contact_summary(a)
     assert result['samples']==990 and result['mode_fractions']['tarsal_only']==1
 
 
 def test_real_native_observer_zero_time_exact_inputs_and_no_state_mutation():
-    from noesis_gpu.backend import FlyGymBatch
     from ap1_body import observing_body
+    from noesis_gpu.backend import FlyGymBatch
     a=FlyGymBatch(1,'cpu');expected=a.observe()
     instances=[];b=observing_body(FlyGymBatch,instances)(1,'cpu');actual=b.observe()
     assert set(actual)==set(expected)

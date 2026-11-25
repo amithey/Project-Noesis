@@ -5,15 +5,15 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
-from runtime_diagnostic import compare_traces, validate_report, PARENT
+from runtime_diagnostic import PARENT, compare_traces, validate_report
 
 
 def test_only_exact_reviewed_pytest_identity_is_allowed(tmp_path):
-    from runtime_diagnostic import allowed_test_worker,command_digest
     from compare_exploration import digest
+    from runtime_diagnostic import allowed_test_worker, command_digest
     source=tmp_path/'test_synthetic.py';source.write_text('def test_small(): pass\n')
-    identity=dict(pid=123,create_time=10.,cmdline=['python.exe','-m','pytest','test_synthetic.py','-q'],cwd=str(tmp_path))
-    approved=dict(pid=123,create_time=10.,command_sha256=command_digest(identity['cmdline']),cwd=str(tmp_path),test_source=str(source),test_source_sha256=digest(source))
+    identity={'pid': 123,'create_time': 10.,'cmdline': ['python.exe','-m','pytest','test_synthetic.py','-q'],'cwd': str(tmp_path)}
+    approved={'pid': 123,'create_time': 10.,'command_sha256': command_digest(identity['cmdline']),'cwd': str(tmp_path),'test_source': str(source),'test_source_sha256': digest(source)}
     assert allowed_test_worker(identity,[approved])
     assert not allowed_test_worker(dict(identity,pid=124),[approved])
     assert not allowed_test_worker(dict(identity,create_time=11.),[approved])
@@ -24,11 +24,11 @@ def test_only_exact_reviewed_pytest_identity_is_allowed(tmp_path):
 
 
 def report():
-    return dict(status='completed_transport_pilot', learning=False, motor_exploration=0,
-                weights_unchanged=True, completed_control_chunks=1000,
-                simulated_seconds_per_world=5, checkpoint_sha256=PARENT, seeds=[10006],
-                worlds=1, backend='cpu', controller='brain', setup_wall_seconds=1,
-                loop_wall_seconds=2, total_wall_seconds=3)
+    return {'status': 'completed_transport_pilot', 'learning': False, 'motor_exploration': 0,
+                'weights_unchanged': True, 'completed_control_chunks': 1000,
+                'simulated_seconds_per_world': 5, 'checkpoint_sha256': PARENT, 'seeds': [10006],
+                'worlds': 1, 'backend': 'cpu', 'controller': 'brain', 'setup_wall_seconds': 1,
+                'loop_wall_seconds': 2, 'total_wall_seconds': 3}
 
 
 @pytest.mark.parametrize('key,value', [('completed_control_chunks', 316), ('learning', True),

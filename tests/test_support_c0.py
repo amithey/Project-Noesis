@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from support_descriptor_c0 import describe_support,static_fixture,anatomical_region
+from support_descriptor_c0 import anatomical_region, describe_support, static_fixture
 
 
 @pytest.mark.parametrize('kind,expected',[

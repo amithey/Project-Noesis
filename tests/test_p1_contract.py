@@ -1,6 +1,13 @@
 import numpy as np
 import pytest
-from p1_telemetry import pulse_force,dynamics,instrumented_body,START,WIDTH,FRACTION,PHYSICS_DT
+from p1_telemetry import (
+    FRACTION,
+    PHYSICS_DT,
+    START,
+    dynamics,
+    instrumented_body,
+    pulse_force,
+)
 
 
 def test_fixed_chunk_force_and_impulse_without_leg_or_action_control():

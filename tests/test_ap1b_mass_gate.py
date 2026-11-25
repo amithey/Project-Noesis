@@ -1,7 +1,8 @@
 import json
+
 import numpy as np
 import pytest
-from run_anatomical_ap1b import anatomy,root
+from run_anatomical_ap1b import anatomy, root
 
 
 def test_full_native_replay_passes_existing_mass_tolerance_without_hiding_discrepancy():

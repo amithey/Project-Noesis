@@ -1,9 +1,11 @@
 import sys
 from pathlib import Path
+
 import numpy as np
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from exploration_motor_audit import project,corresponding_correlations
+from exploration_motor_audit import corresponding_correlations, project
 
 
 def test_anatomical_opposite_pools_and_zero_channel():

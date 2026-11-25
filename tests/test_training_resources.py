@@ -1,12 +1,14 @@
 import sys
 from pathlib import Path
+
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from training_resources import assess,window_due
+from training_resources import assess, window_due
 
 
 def samples():
-    return [dict(available_gib=3.5,host_cpu_percent=20.) for _ in range(10)]
+    return [{'available_gib': 3.5,'host_cpu_percent': 20.} for _ in range(10)]
 
 
 def test_transient_good_snapshot_cannot_hide_pressure():

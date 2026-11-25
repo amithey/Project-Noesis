@@ -1,8 +1,10 @@
 """Control preserves drive/credit logging and forbids every weight/learning update."""
 from types import SimpleNamespace
+
 import numpy as np
 import pytest
-from p0_control import control_brain,validate_control_native
+from p0_control import control_brain, validate_control_native
+
 from test_s2_contract import report
 
 

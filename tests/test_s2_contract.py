@@ -1,19 +1,20 @@
 """Reject incomplete births and single-seed regressions before S2 model interpretation."""
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import numpy as np
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from s2_contract import validate_training_report,standing_retention
+from s2_contract import standing_retention, validate_training_report
 
 
 def report():
-    return dict(status='completed_training_birth',requested_seconds=25,simulated_seconds=25,
-                completed_chunks=5000,learning_updates=4990,reward_objective='curriculum-standing-v7',
-                learning_rate=.2,eligibility_ms=100,motor_exploration_mv_ms=1.5,original_weight_bound=.5,
-                control_ms=5,physics_dt=.0001,birth_ms=50,learning=True,worlds=1,
-                exploration_log=dict(steps=4990,first_control_chunk=10))
+    return {'status': 'completed_training_birth','requested_seconds': 25,'simulated_seconds': 25,
+                'completed_chunks': 5000,'learning_updates': 4990,'reward_objective': 'curriculum-standing-v7',
+                'learning_rate': .2,'eligibility_ms': 100,'motor_exploration_mv_ms': 1.5,'original_weight_bound': .5,
+                'control_ms': 5,'physics_dt': .0001,'birth_ms': 50,'learning': True,'worlds': 1,
+                'exploration_log': {'steps': 4990,'first_control_chunk': 10}}
 
 
 def test_full_exact_contract_is_accepted():validate_training_report(report())
@@ -32,9 +33,9 @@ def test_missing_log_is_not_complete_evidence():
 
 
 def row(standing=.95,slip=2.,heading=.2,net=.1,cycles=10,tripod=.1):
-    return dict(standing_fraction=standing,mean_stance_slip_mm_s=slip,heading_forward_distance_mm=heading,
-                net_forward_displacement_mm=net,total_leg_steps=cycles,
-                tripod_coordination=dict(tripod_coordination_score=tripod))
+    return {'standing_fraction': standing,'mean_stance_slip_mm_s': slip,'heading_forward_distance_mm': heading,
+                'net_forward_displacement_mm': net,'total_leg_steps': cycles,
+                'tripod_coordination': {'tripod_coordination_score': tripod}}
 
 
 def test_one_seed_regression_cannot_hide_behind_median_improvement():

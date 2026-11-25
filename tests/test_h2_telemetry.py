@@ -1,7 +1,7 @@
-import numpy as np
 import mujoco
+import numpy as np
 import pytest
-from h2_telemetry import mass_layout,com_state,world_ground_contacts,snapshot
+from h2_telemetry import com_state, mass_layout, snapshot, world_ground_contacts
 
 
 def fixture():
@@ -52,8 +52,10 @@ def test_fused_anatomical_name_does_not_drop_or_double_count_compiled_mass():
 
 
 def test_actual_native_fused_model_mass_contact_measurement_without_steps():
-    import os,json
+    import json
+    import os
     from pathlib import Path
+
     from noesis_gpu.backend import FlyGymBatch
     body=FlyGymBatch(1,'cpu');body.observe();m,d=body.sim.mj_model,body.sim.mj_data
     native=body.sim._internal_bodyids_by_fly[body.fly.name];layout=mass_layout(m,native)
@@ -66,9 +68,9 @@ def test_actual_native_fused_model_mass_contact_measurement_without_steps():
     for actual,expected in zip((d.qpos,d.qvel,d.qacc,d.ctrl,d.sensordata),before):np.testing.assert_array_equal(actual,expected)
     assert d.time==0 and layout['unmapped_anatomical_count']==1
     if 'H2_STATIC_RESULT' in os.environ:
-        Path(os.environ['H2_STATIC_RESULT']).write_text(json.dumps(dict(status='passed_native_static_measurement',
-            model_time=d.time,physics_steps=0,neural_steps=0,compiled_nbody=m.nbody,total_mass=layout['total_mass'],
-            missing_fused_count=layout['unmapped_anatomical_count'],critical_ids=critical.tolist(),
-            force_closure_max_error=float(state['force_closure_max_error']),
-            upstream_claw_force_max_error=float(np.max(np.abs(state['claw_ground_force']-upstream))),
-            whole_COM=state['com'].tolist(),production_fusestatic=bool(body.sim.world.mjcf_root.compiler.fusestatic)),indent=2),encoding='utf-8')
+        Path(os.environ['H2_STATIC_RESULT']).write_text(json.dumps({'status': 'passed_native_static_measurement',
+            'model_time': d.time,'physics_steps': 0,'neural_steps': 0,'compiled_nbody': m.nbody,'total_mass': layout['total_mass'],
+            'missing_fused_count': layout['unmapped_anatomical_count'],'critical_ids': critical.tolist(),
+            'force_closure_max_error': float(state['force_closure_max_error']),
+            'upstream_claw_force_max_error': float(np.max(np.abs(state['claw_ground_force']-upstream))),
+            'whole_COM': state['com'].tolist(),'production_fusestatic': bool(body.sim.world.mjcf_root.compiler.fusestatic)},indent=2),encoding='utf-8')

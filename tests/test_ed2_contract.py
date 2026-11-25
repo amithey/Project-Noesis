@@ -1,16 +1,17 @@
-import ast,copy
+import ast
 from pathlib import Path
+
 import pytest
 from ap2_contract import DEV
-from ed2_contract import configuration,replication_summary,BIRTHS
+from ed2_contract import BIRTHS, configuration, replication_summary
 
 
 def fixture():
     def row(seed,candidate):
-        return dict(summary=dict(seed=seed,standing_fraction=.95,mean_stance_slip_mm_s=.1,heading_forward_distance_mm=1.,net_forward_displacement_mm=1.,total_leg_steps=10,
-            tripod_coordination=dict(tripod_coordination_score=.5)),
-            anatomical=dict(mode_fractions=dict(tarsal_only=.6 if candidate else .5),mean_non_tarsal_fraction=.2 if candidate else .3),
-            physical=dict(mean_PS1_quality=.05 if candidate else .02,mean_COM_speed_mm_s=1. if candidate else 2.,mean_angular_speed_rad_s=1. if candidate else 2.,mean_non_tarsal_fraction=.2 if candidate else .3))
+        return {'summary': {'seed': seed,'standing_fraction': .95,'mean_stance_slip_mm_s': .1,'heading_forward_distance_mm': 1.,'net_forward_displacement_mm': 1.,'total_leg_steps': 10,
+            'tripod_coordination': {'tripod_coordination_score': .5}},
+            'anatomical': {'mode_fractions': {'tarsal_only': .6 if candidate else .5},'mean_non_tarsal_fraction': .2 if candidate else .3},
+            'physical': {'mean_PS1_quality': .05 if candidate else .02,'mean_COM_speed_mm_s': 1. if candidate else 2.,'mean_angular_speed_rad_s': 1. if candidate else 2.,'mean_non_tarsal_fraction': .2 if candidate else .3}}
     return {birth:{bank:{s:row(s,bank=='candidate') for s in ((birth,*DEV) if bank in ('parent','control','candidate') else DEV)}
         for bank in ('parent','control','candidate','v7','AP1','previous_PS1')} for birth in BIRTHS}
 
@@ -46,8 +47,8 @@ def test_reward_motor_and_native_run_configuration_ast_unchanged():
     here=Path(__file__).parent
     old,new=(ast.parse((here/name).read_text()) for name in ('ed1_worker.py','ed2_worker.py'))
     for name in ('factory','observed_pad'):
-        get=lambda tree:next(n for n in ast.walk(tree) if isinstance(n,ast.FunctionDef) and n.name==name)
+        get=lambda tree:next(n for n in ast.walk(tree) if isinstance(n,ast.FunctionDef) and n.name==name)  # noqa: B023
         assert ast.dump(get(old),include_attributes=False)==ast.dump(get(new),include_attributes=False)
     for name in ('common','command'):
-        get=lambda tree:next(n for n in ast.walk(tree) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in n.targets))
+        get=lambda tree:next(n for n in ast.walk(tree) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in n.targets))  # noqa: B023
         assert ast.dump(get(old),include_attributes=False)==ast.dump(get(new),include_attributes=False)

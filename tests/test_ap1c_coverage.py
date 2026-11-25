@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 import numpy as np
 import pytest
 import support_descriptor_c0 as old
@@ -26,9 +27,9 @@ def test_all_previously_supported_inputs_remain_exact():
 
 
 def test_actual_compiled_floor_collision_coverage_and_native_readonly_inputs():
-    from noesis_gpu.backend import FlyGymBatch
-    from ap1c_body import observing_body
     import mujoco
+    from ap1c_body import observing_body
+    from noesis_gpu.backend import FlyGymBatch
     a=FlyGymBatch(1,'cpu');expected=a.observe();instances=[]
     b=observing_body(FlyGymBatch,instances)(1,'cpu');actual=b.observe();m=b.sim.mj_model
     for k in expected:np.testing.assert_array_equal(actual[k],expected[k])
@@ -45,13 +46,13 @@ def test_actual_compiled_floor_collision_coverage_and_native_readonly_inputs():
     rows=[]
     for geom in sorted(potential):
         body=int(m.geom_bodyid[geom]);name=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,body)
-        rows.append(dict(geom_id=geom,body_id=body,body_name=name,region=new.anatomical_region(name)))
+        rows.append({'geom_id': geom,'body_id': body,'body_name': name,'region': new.anatomical_region(name)})
     assert implicit_count==0 and len(explicit)==m.npair==55 and len(rows)==55
     compound=[r for r in rows if r['body_name'].endswith('_trochanterfemur')]
     assert len(compound)==6 and all(r['region']=='proximal_leg' for r in compound)
     root=Path(__file__).resolve().parents[1]
-    (root/'outputs/anatomical-coverage-ap1c-static-20261106.json').write_text(json.dumps(dict(
-        physical_integration_steps=0,neural_steps=0,model_time=float(b.sim.mj_data.time),
-        implicit_ground_geoms=implicit_count,explicit_ground_pairs=len(explicit),all_ground_geometry_classified=True,
-        compound_proximal_geoms=6,production_collision_pairs_unchanged=True,native_inputs_exact=True,
-        fixture_is_not_learned_fly_success=True,rows=rows),indent=2),encoding='utf-8')
+    (root/'outputs/anatomical-coverage-ap1c-static-20261106.json').write_text(json.dumps({
+        'physical_integration_steps': 0,'neural_steps': 0,'model_time': float(b.sim.mj_data.time),
+        'implicit_ground_geoms': implicit_count,'explicit_ground_pairs': len(explicit),'all_ground_geometry_classified': True,
+        'compound_proximal_geoms': 6,'production_collision_pairs_unchanged': True,'native_inputs_exact': True,
+        'fixture_is_not_learned_fly_success': True,'rows': rows},indent=2),encoding='utf-8')

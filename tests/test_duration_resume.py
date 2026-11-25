@@ -1,30 +1,43 @@
 """Synthetic safety tests; none establish physical retention or walking."""
-import sys
 import json
+import sys
 from pathlib import Path
+
 import numpy as np
 import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from resume_duration_evaluation import (ARMS, CORE, PARENT, CONTROL, PROBES,
-    full_training, finite_spent, remaining_job_budget, pending, receipt, check_receipts)
+from resume_duration_evaluation import (
+    ARMS,
+    CONTROL,
+    CORE,
+    PARENT,
+    PROBES,
+    check_receipts,
+    finite_spent,
+    full_training,
+    pending,
+    receipt,
+    remaining_job_budget,
+)
 
 
 def context():
     sources = {'core': 'corehash', 'pilot': 'pilothash'}
-    report = dict(status='completed_training_birth', seed=1000, requested_seconds=25,
-        simulated_seconds=25, completed_chunks=5000, learning_updates=4990,
-        learning_rate=.2, motor_exploration_mv_ms=1.5, cycle_weight=.1,
-        import_checkpoint_sha256=PARENT, reward_objective='curriculum-gripped-cycle-v9',
-        model_promoted=False, walking_proven=False, noesis_source_sha256='corehash',
-        control_ms=5., physics_dt=.0001, eligibility_ms=100, birth_ms=50,
-        original_weight_bound=.5, worlds=1, backend='cpu', learning=True)
-    protocol = dict(parent_sha256=PARENT, control5_sha256=CONTROL, core_commit=CORE,
-        source_hashes=sources, training_seed=1000, training_seconds=25,
-        training_chunks=5000, learning_updates=4990, probe_seeds=list(PROBES),
-        budget_seconds=3600, learning_rate=.2, cycle_weight=.1, exploration_mv_ms=1.5,
-        training_inner_seconds=900, training_process_seconds=930,
-        probe_inner_seconds=300, probe_process_seconds=330, minimum_available_gib=3,
-        maximum_host_cpu_percent=30, resource_window_samples=10)
+    report = {'status': 'completed_training_birth', 'seed': 1000, 'requested_seconds': 25,
+        'simulated_seconds': 25, 'completed_chunks': 5000, 'learning_updates': 4990,
+        'learning_rate': .2, 'motor_exploration_mv_ms': 1.5, 'cycle_weight': .1,
+        'import_checkpoint_sha256': PARENT, 'reward_objective': 'curriculum-gripped-cycle-v9',
+        'model_promoted': False, 'walking_proven': False, 'noesis_source_sha256': 'corehash',
+        'control_ms': 5., 'physics_dt': .0001, 'eligibility_ms': 100, 'birth_ms': 50,
+        'original_weight_bound': .5, 'worlds': 1, 'backend': 'cpu', 'learning': True}
+    protocol = {'parent_sha256': PARENT, 'control5_sha256': CONTROL, 'core_commit': CORE,
+        'source_hashes': sources, 'training_seed': 1000, 'training_seconds': 25,
+        'training_chunks': 5000, 'learning_updates': 4990, 'probe_seeds': list(PROBES),
+        'budget_seconds': 3600, 'learning_rate': .2, 'cycle_weight': .1, 'exploration_mv_ms': 1.5,
+        'training_inner_seconds': 900, 'training_process_seconds': 930,
+        'probe_inner_seconds': 300, 'probe_process_seconds': 330, 'minimum_available_gib': 3,
+        'maximum_host_cpu_percent': 30, 'resource_window_samples': 10}
     return report, protocol, sources
 
 
@@ -60,18 +73,18 @@ def test_interrupted_reservation_is_charged_without_fresh_budget():
 
 
 def test_resume_keeps_registered_order_and_skips_only_receipted_jobs():
-    evidence = [dict(arm='parent', seed=10006), dict(arm='control5', seed=10006)]
+    evidence = [{'arm': 'parent', 'seed': 10006}, {'arm': 'control5', 'seed': 10006}]
     jobs = pending(evidence)
     assert len(jobs) == 10 and jobs[0] == ('child25', 10006)
-    assert evidence == [dict(arm='parent', seed=10006), dict(arm='control5', seed=10006)]
-    assert pending([dict(arm=a, seed=s) for s in PROBES for a in ARMS]) == []
-    for rows in [evidence + evidence[:1], [dict(arm='child25', seed=10)], [dict(arm='averaged', seed=10006)]]:
+    assert evidence == [{'arm': 'parent', 'seed': 10006}, {'arm': 'control5', 'seed': 10006}]
+    assert pending([{'arm': a, 'seed': s} for s in PROBES for a in ARMS]) == []
+    for rows in [evidence + evidence[:1], [{'arm': 'child25', 'seed': 10}], [{'arm': 'averaged', 'seed': 10006}]]:
         with pytest.raises(ValueError): pending(rows)
 
 
 def frozen_fixture(tmp_path):
     """Artificial arrays for receipt validation; no actual fly was simulated."""
-    from noesis_gpu.evaluate import summarize, MATCHED_SETTINGS
+    from noesis_gpu.evaluate import MATCHED_SETTINGS, summarize
     directory = tmp_path / 'frozen-child25-10006'; directory.mkdir()
     report = {k: {} for k in MATCHED_SETTINGS}
     report.update(status='completed_transport_pilot', controller='brain', worlds=1,
@@ -80,8 +93,8 @@ def frozen_fixture(tmp_path):
         requested_simulated_seconds_per_world=5, simulated_seconds_per_world=5,
         seeds=[10006], checkpoint_sha256='childhash', noesis_source_sha256='corehash')
     (directory / 'report.json').write_text(json.dumps(report), encoding='utf-8')
-    arrays = {k: np.zeros((1000, 1, *s)) for k, s in dict(position=(3,), up_body=(3,),
-        heading=(3,), feet_position=(6, 3), foot_load=(6,)).items()}
+    arrays = {k: np.zeros((1000, 1, *s)) for k, s in {'position': (3,), 'up_body': (3,),
+        'heading': (3,), 'feet_position': (6, 3), 'foot_load': (6,)}.items()}
     arrays['up_body'][:, :, 2] = 1
     arrays['heading'][:, :, 0] = 1
     np.savez(directory / 'observations.npz', **arrays)
@@ -91,7 +104,7 @@ def frozen_fixture(tmp_path):
 
 
 def test_modified_observations_cannot_reuse_a_completed_receipt(tmp_path):
-    directory, report, arrays = frozen_fixture(tmp_path)
+    directory, report, arrays = frozen_fixture(tmp_path)  # noqa: RUF059
     row, _, _ = receipt(directory, 'child25', 10006, 'childhash')
     assert check_receipts([row], {'child25': 'childhash'}, 'corehash')['child25'][10006]['walking_proven'] is False
     with pytest.raises(ValueError, match='source/timing'):
@@ -136,8 +149,8 @@ def test_process_failure_reserves_budget_first_excludes_evidence_and_releases_le
     monkeypatch.setattr(m, 'audit_bank', lambda *a: None)
     monkeypatch.setattr(m, 'prefix_check', lambda *a: None)
     monkeypatch.setattr(m, 'check_receipts', lambda *a: {})
-    monkeypatch.setattr(m, 'inventory', lambda: [])
-    monkeypatch.setattr(m, 'sample_quiescence', lambda: [])
+    monkeypatch.setattr(m, 'inventory', list)
+    monkeypatch.setattr(m, 'sample_quiescence', list)
     monkeypatch.setattr(m, 'assess', lambda _: {'passed': True})
     class Child:
         killed = False

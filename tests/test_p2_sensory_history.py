@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from p2_sensory_history import history_population,FIELDS
+from p2_sensory_history import FIELDS, history_population
 
 
 def fixture():
@@ -29,7 +29,7 @@ def test_exact_history_alignment_and_output_delegation_without_motor_replay():
         np.testing.assert_array_equal(command,expected+7)
         np.testing.assert_array_equal(pads,(initial['load'] if chunk==0 else history['load'][chunk-1])+3)
         np.testing.assert_array_equal(population.received['position'],current['position'])
-        for k in saved:np.testing.assert_array_equal(current[k],saved[k])
+        for k in saved:np.testing.assert_array_equal(current[k],saved[k])  # noqa: PLC0206
     for k in history:np.testing.assert_array_equal(history[k],frozen[k])
     assert len(population.p2_records)==1000 and instances==[population]
     with pytest.raises(ValueError):population.step(initial,5)
@@ -60,4 +60,4 @@ def test_private_history_copy_and_reject_input_mutation():
     population=history_population(Mutator,fixture()[0],[])()
     before={k:v.copy() for k,v in initial.items()}
     with pytest.raises(AssertionError):population.step(initial,5)
-    for k in before:np.testing.assert_array_equal(initial[k],before[k])
+    for k in before:np.testing.assert_array_equal(initial[k],before[k])  # noqa: PLC0206

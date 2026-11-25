@@ -1,13 +1,15 @@
 import sys
 from pathlib import Path
+
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from run_standing_baseline import decision,PROBES
+from run_standing_baseline import PROBES, decision
 
 
 def cases():
-    return {arm:{s:dict(single_probe_standing_check=True,standing_fraction=.95,mean_stance_slip_mm_s=2.,
-        heading_forward_distance_mm=0.,net_forward_displacement_mm=0.) for s in PROBES} for arm in ('parent','anchor')}
+    return {arm:{s:{'single_probe_standing_check': True,'standing_fraction': .95,'mean_stance_slip_mm_s': 2.,
+        'heading_forward_distance_mm': 0.,'net_forward_displacement_mm': 0.} for s in PROBES} for arm in ('parent','anchor')}
 
 
 def test_qualification_never_implies_walking_promotion_or_stage_advancement():

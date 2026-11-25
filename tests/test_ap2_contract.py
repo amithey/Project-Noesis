@@ -1,12 +1,13 @@
 import copy
+
 import pytest
-from ap2_contract import DEV,BIRTHS,anatomical_rule,replication_summary
+from ap2_contract import BIRTHS, DEV, anatomical_rule, replication_summary
 
 
 def entry(seed,standing=.95,tarsal=.7,q=.1):
-    return dict(summary=dict(seed=seed,standing_fraction=standing,mean_stance_slip_mm_s=1.,heading_forward_distance_mm=1.,
-        net_forward_displacement_mm=1.,total_leg_steps=10.,tripod_coordination={'tripod_coordination_score':.5}),
-        anatomical=dict(mode_fractions={'tarsal_only':tarsal},mean_non_tarsal_fraction=q))
+    return {'summary': {'seed': seed,'standing_fraction': standing,'mean_stance_slip_mm_s': 1.,'heading_forward_distance_mm': 1.,
+        'net_forward_displacement_mm': 1.,'total_leg_steps': 10.,'tripod_coordination': {'tripod_coordination_score':.5}},
+        'anatomical': {'mode_fractions': {'tarsal_only':tarsal},'mean_non_tarsal_fraction': q}}
 
 
 def banks():
@@ -55,6 +56,7 @@ def test_equality_is_not_anatomical_improvement_and_own_seed_is_not_a_gate():
     ('train','control','.5','1004'),('frozen','candidate','.5','10006')])
 def test_worker_rejects_reserved_or_undeclared_training_arms_before_loading(monkeypatch,phase,bank,strength,seed):
     import sys
+
     import ap2_worker
     monkeypatch.setattr(sys,'argv',['ap2_worker.py','--phase',phase,'--bank',bank,'--strength',strength,'--seed',seed,
         '--training-seed','1004','--root','.','--output','not-created','--checkpoint','not-read.npz'])

@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
+
 import numpy as np
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from audit_standing_entry import failures
 
@@ -8,7 +10,7 @@ from audit_standing_entry import failures
 def observation(n=100):
     p=np.zeros((n,3));p[:,2]=.5
     u=np.zeros((n,3));u[:,2]=1
-    return dict(position=p,up_body=u,foot_load=np.ones((n,6)))
+    return {'position': p,'up_body': u,'foot_load': np.ones((n,6))}
 
 
 def test_overlapping_failure_causes_are_not_counted_as_separate_episodes():

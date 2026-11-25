@@ -1,30 +1,40 @@
 """T1B admission/receipt tests are synthetic, not physical learning evidence."""
 import copy
-from pathlib import Path
 import sys
+from pathlib import Path
+
 import pytest
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from run_duration_study import (resource_decision,guarded_receipt_metadata,CORE,PARENT,CONTROL,
-    SOURCES,TRACE_FIELDS,LOG_FIELDS)
+from run_duration_study import (
+    CONTROL,
+    CORE,
+    LOG_FIELDS,
+    PARENT,
+    SOURCES,
+    TRACE_FIELDS,
+    guarded_receipt_metadata,
+    resource_decision,
+)
 
 
 def metadata():
-    protocol=dict(experiment='D4M guarded training replay',core_commit=CORE,source_hashes=SOURCES,
-        parent_sha256=PARENT,expected_checkpoint_sha256=CONTROL,seed=1000,seconds=5,chunks=1000,
-        learning_updates=990,learning_rate=.2,cycle_weight=.1,exploration_mv_ms=1.5,
-        cpu_admission_statistic='mean',launch_mean_cpu_percent=60,launch_minimum_gib=2,
-        launch_samples=10,in_run_stop_gib=1,telemetry_interval_seconds=2,
-        aggregate_seconds=420,inner_seconds=300,process_seconds=330,prior_wall_seconds=10.)
-    result=dict(status='completed_guarded_training_replay',checkpoint_sha256=CONTROL,
-        shared_training_last_updated=False,T1_gate_changed=False,scientific_gates_changed=False,
-        model_promoted=False,walking_proven=False,trace_exact_fields={k:True for k in TRACE_FIELDS},
-        exploration_exact_fields={k:True for k in LOG_FIELDS},wall_seconds=100.,aggregate_active_seconds=110.,
-        jobs=[dict(exit_code=0,final_exit_code=0)])
+    protocol={'experiment': 'D4M guarded training replay','core_commit': CORE,'source_hashes': SOURCES,
+        'parent_sha256': PARENT,'expected_checkpoint_sha256': CONTROL,'seed': 1000,'seconds': 5,'chunks': 1000,
+        'learning_updates': 990,'learning_rate': .2,'cycle_weight': .1,'exploration_mv_ms': 1.5,
+        'cpu_admission_statistic': 'mean','launch_mean_cpu_percent': 60,'launch_minimum_gib': 2,
+        'launch_samples': 10,'in_run_stop_gib': 1,'telemetry_interval_seconds': 2,
+        'aggregate_seconds': 420,'inner_seconds': 300,'process_seconds': 330,'prior_wall_seconds': 10.}
+    result={'status': 'completed_guarded_training_replay','checkpoint_sha256': CONTROL,
+        'shared_training_last_updated': False,'T1_gate_changed': False,'scientific_gates_changed': False,
+        'model_promoted': False,'walking_proven': False,'trace_exact_fields': {k:True for k in TRACE_FIELDS},
+        'exploration_exact_fields': {k:True for k in LOG_FIELDS},'wall_seconds': 100.,'aggregate_active_seconds': 110.,
+        'jobs': [{'exit_code': 0,'final_exit_code': 0}]}
     return protocol,result
 
 
 def test_guarded_admission_is_opt_in_and_records_legacy_decision():
-    samples=[dict(available_gib=2.5,host_cpu_percent=40.) for _ in range(10)]
+    samples=[{'available_gib': 2.5,'host_cpu_percent': 40.} for _ in range(10)]
     saved=copy.deepcopy(samples)
     assert not resource_decision(samples)['passed']
     guarded=resource_decision(samples,True)

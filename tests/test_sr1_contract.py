@@ -1,11 +1,12 @@
 import copy
+
 import pytest
 from sr1_contract import replication_summary
 
 
 def inputs():
-    row=dict(standing_fraction=.95,mean_stance_slip_mm_s=2.,heading_forward_distance_mm=.1,
-             net_forward_displacement_mm=.1,total_leg_steps=10,tripod_coordination={'tripod_coordination_score':.2})
+    row={'standing_fraction': .95,'mean_stance_slip_mm_s': 2.,'heading_forward_distance_mm': .1,
+             'net_forward_displacement_mm': .1,'total_leg_steps': 10,'tripod_coordination': {'tripod_coordination_score':.2}}
     parents={s:copy.deepcopy(row) for s in (10006,10007,10010,10011)}
     children={s:copy.deepcopy(parents) for s in (1004,1005,1006)}
     own={s:(copy.deepcopy(row),copy.deepcopy(row)) for s in children}

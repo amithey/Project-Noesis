@@ -1,12 +1,12 @@
 """Pad-direction boundary/locality and strict physical screen checks."""
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import numpy as np
 import pytest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from adhesion_mapping import negative_femur_adhesion,screen
+from adhesion_mapping import negative_femur_adhesion, screen
 
 
 def test_release_follows_negative_femur_only_and_has_no_leg_order_or_state():
@@ -33,9 +33,9 @@ def test_invalid_angles_fail(values):
 
 
 def row(standing=.95,slip=2.,heading=0.,net=0.,cycles=10,tripod=.1):
-    return dict(standing_fraction=standing,mean_stance_slip_mm_s=slip,heading_forward_distance_mm=heading,
-                net_forward_displacement_mm=net,total_leg_steps=cycles,
-                tripod_coordination=dict(tripod_coordination_score=tripod))
+    return {'standing_fraction': standing,'mean_stance_slip_mm_s': slip,'heading_forward_distance_mm': heading,
+                'net_forward_displacement_mm': net,'total_leg_steps': cycles,
+                'tripod_coordination': {'tripod_coordination_score': tripod}}
 
 
 def test_progress_does_not_override_retention_or_nonfinite_evidence():

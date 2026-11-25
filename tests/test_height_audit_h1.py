@@ -1,10 +1,10 @@
 import numpy as np
-from height_audit_h1 import intervals,masks,score_row
+from height_audit_h1 import intervals, masks, score_row
 
 
 def fixture():
-    return dict(position=np.array([[0.,0.,1.],[0.,0.,1.5]]),up_body=np.tile([0.,0.,1.],(2,1)),
-                heading=np.tile([1.,0.,0.],(2,1)),velocity=np.zeros((2,42)),foot_load=np.ones((2,6)),feet_position=np.zeros((2,6,3)))
+    return {'position': np.array([[0.,0.,1.],[0.,0.,1.5]]),'up_body': np.tile([0.,0.,1.],(2,1)),
+                'heading': np.tile([1.,0.,0.],(2,1)),'velocity': np.zeros((2,42)),'foot_load': np.ones((2,6)),'feet_position': np.zeros((2,6,3))}
 
 
 def test_bout_edges_and_no_dropped_single_sample():

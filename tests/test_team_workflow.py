@@ -20,10 +20,9 @@ def seed_queue(state):
 
 
 def test_lock_excludes_second_coordinator(tmp_path):
-    with w.coordinator_lock(tmp_path):
-        with pytest.raises(RuntimeError, match="Another"):
-            with w.coordinator_lock(tmp_path):
-                pass
+    with w.coordinator_lock(tmp_path), pytest.raises(RuntimeError, match="Another"):  # noqa: SIM117
+        with w.coordinator_lock(tmp_path):
+            pass
 
 
 def test_provider_error_cannot_be_marked_complete():

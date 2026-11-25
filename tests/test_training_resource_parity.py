@@ -1,21 +1,32 @@
 """D4 synthetic receipt tests, not evidence of physical learning."""
-from pathlib import Path
-import sys
 import json
+import sys
+from pathlib import Path
+
 import numpy as np
 import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from run_training_resource_parity import validate_training, exact_archive, TRACE_FIELDS, PARENT, SOURCES
-from run_training_resource_parity import admission_window, prior_refusal, CORE, EXPECTED
+from run_training_resource_parity import (
+    CORE,
+    EXPECTED,
+    PARENT,
+    SOURCES,
+    TRACE_FIELDS,
+    admission_window,
+    exact_archive,
+    prior_refusal,
+    validate_training,
+)
 
 
 def report():
-    return dict(status='completed_training_birth', seed=1000, worlds=1, backend='cpu', learning=True,
-        requested_seconds=5, simulated_seconds=5, completed_chunks=1000, learning_updates=990,
-        learning_rate=.2, motor_exploration_mv_ms=1.5, cycle_weight=.1, eligibility_ms=100,
-        original_weight_bound=.5, control_ms=5., physics_dt=.0001, birth_ms=50,
-        reward_objective='curriculum-gripped-cycle-v9', import_checkpoint_sha256=PARENT,
-        noesis_source_sha256=SOURCES['core'])
+    return {'status': 'completed_training_birth', 'seed': 1000, 'worlds': 1, 'backend': 'cpu', 'learning': True,
+        'requested_seconds': 5, 'simulated_seconds': 5, 'completed_chunks': 1000, 'learning_updates': 990,
+        'learning_rate': .2, 'motor_exploration_mv_ms': 1.5, 'cycle_weight': .1, 'eligibility_ms': 100,
+        'original_weight_bound': .5, 'control_ms': 5., 'physics_dt': .0001, 'birth_ms': 50,
+        'reward_objective': 'curriculum-gripped-cycle-v9', 'import_checkpoint_sha256': PARENT,
+        'noesis_source_sha256': SOURCES['core']}
 
 
 def test_only_original_complete_training_context_is_accepted():
@@ -46,7 +57,7 @@ def test_all19_complete_finite_trace_fields_must_match(tmp_path, change):
 
 def test_log_indices_and_scalar_timing_are_compared_without_invented_rows(tmp_path):
     a, b = tmp_path / 'candidate.npz', tmp_path / 'reference.npz'
-    values = dict(control_chunk_index=np.arange(10, 1000), control_ms=np.array(5.))
+    values = {'control_chunk_index': np.arange(10, 1000), 'control_ms': np.array(5.)}
     np.savez(a, **values); np.savez(b, **values)
     assert all(exact_archive(a, b).values())
     values['control_chunk_index'] = np.arange(0, 990); np.savez(a, **values)
@@ -54,7 +65,7 @@ def test_log_indices_and_scalar_timing_are_compared_without_invented_rows(tmp_pa
 
 
 def test_prospective_mean_contrast_keeps_original_decision_and_memory_floor():
-    samples = [dict(available_gib=3., host_cpu_percent=30.) for _ in range(10)]
+    samples = [{'available_gib': 3., 'host_cpu_percent': 30.} for _ in range(10)]
     samples[-1]['host_cpu_percent'] = 90.
     assert not admission_window(samples)['passed']
     mean = admission_window(samples, mean_cpu=True)
@@ -69,14 +80,14 @@ def test_prospective_mean_contrast_keeps_original_decision_and_memory_floor():
 
 def refusal_fixture(path):
     reference = {'reference-file': 'reference-hash'}
-    protocol = dict(experiment='D4 guarded training replay', core_commit=CORE, source_hashes=SOURCES,
-        parent_sha256=PARENT, expected_checkpoint_sha256=EXPECTED, reference_files=reference,
-        seed=1000, seconds=5, chunks=1000, learning_updates=990, learning_rate=.2,
-        cycle_weight=.1, exploration_mv_ms=1.5, aggregate_seconds=420, inner_seconds=300, process_seconds=330)
-    result = dict(status='stopped', jobs=[], error='D4 resource preflight refused; no training launched', wall_seconds=10.078)
-    samples = [dict(available_gib=3., host_cpu_percent=30.) for _ in range(10)]; samples[-1]['host_cpu_percent'] = 90.
+    protocol = {'experiment': 'D4 guarded training replay', 'core_commit': CORE, 'source_hashes': SOURCES,
+        'parent_sha256': PARENT, 'expected_checkpoint_sha256': EXPECTED, 'reference_files': reference,
+        'seed': 1000, 'seconds': 5, 'chunks': 1000, 'learning_updates': 990, 'learning_rate': .2,
+        'cycle_weight': .1, 'exploration_mv_ms': 1.5, 'aggregate_seconds': 420, 'inner_seconds': 300, 'process_seconds': 330}
+    result = {'status': 'stopped', 'jobs': [], 'error': 'D4 resource preflight refused; no training launched', 'wall_seconds': 10.078}
+    samples = [{'available_gib': 3., 'host_cpu_percent': 30.} for _ in range(10)]; samples[-1]['host_cpu_percent'] = 90.
     for name, value in [('protocol.json', protocol), ('result.json', result),
-                        ('resource-preflight.json', dict(samples=samples, decision=admission_window(samples)))]:
+                        ('resource-preflight.json', {'samples': samples, 'decision': admission_window(samples)})]:
         (path / name).write_text(json.dumps(value), encoding='utf-8')
     return reference, protocol, result
 
@@ -84,7 +95,7 @@ def refusal_fixture(path):
 @pytest.mark.parametrize('change', ['job', 'train-folder', 'source', 'wall', 'already-allocated', None])
 def test_mean_followup_only_accepts_unused_zero_job_matching_refusal(tmp_path, change):
     reference, protocol, result = refusal_fixture(tmp_path)
-    if change == 'job': result['jobs'] = [dict(status='partial')]
+    if change == 'job': result['jobs'] = [{'status': 'partial'}]
     if change == 'train-folder': (tmp_path / 'train').mkdir()
     if change == 'source': protocol['source_hashes'] = {'core': 'other', 'pilot': 'other'}
     if change == 'wall': result['wall_seconds'] = float('nan')
