@@ -46,4 +46,5 @@ See [GATES.md](GATES.md). Fixed before any run; never relaxed after seeing resul
 
 | Run | Date | Method | Stage | Gens x pop x sec | Best train fitness | Stand gate | Walk gate | Video |
 |---|---|---|---|---|---|---|---|---|
-| R0 | 2026-11-25 | parent baseline (no training) | - | - | - | pending | pending | pending |
+| [R0](runs/R0-parent-eval.md) | 2026-11-25 | parent baseline (no training) | - | - | - (held-out v7 0.608/0.617/0.626) | FAIL (standing 0.90-0.91) | FAIL (fwd 0.3-1.6 mm) | [R0-parent-eval-10s.mp4](videos/R0-parent-eval-10s.mp4) |
+| [smoke](runs/smoke.md) | 2026-11-25 | ES (pipeline check) | stand | 1 x 5 x 0.5 s | 0.652 (centre) | n/a | n/a | - |
