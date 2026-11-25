@@ -1,0 +1,49 @@
+# Claude training track: standing, then walking (from 2026-11-25)
+
+Goal: train the fly's connectome "brain" (FlyWire/MANC LIF network in FlyGym 2)
+until it passes fixed acceptance gates for **standing**, then for **walking**.
+Every run is documented here (`runs/`), and every progress step has a saved
+10-second video (`videos/`).
+
+## What was learned from the previous ~40 experiments (E2 to EC1, Oct 28 - Nov 18)
+
+* All used the same family: per-step reward-modulated perturbation plasticity
+  on ~85k edges into leg motor/circuit neurons, with OU exploration currents.
+* Weight changes stayed tiny (about 1e-5 relative, at most ~1%) and noisy.
+  Training rewards rose in some contexts, but **frozen** evaluation never kept
+  the gain (EC1: retention failed against parent, reset and stage-1 controls).
+* Structured muscle-pool search (MB1/MC1), command limiter (CS1), force bounds
+  (AF1), eligibility delay (ED1/ED2), episodic carry (EW1/EC1) all failed gates.
+* The frozen parent already "stands" ~91-93% of the time (claw-only support),
+  so the standing problem is mostly about stability and slip; walking was never
+  observed (no tripod, no consistent forward displacement).
+
+So repeating per-step plasticity with new hyperparameters is unlikely to help.
+
+## Methods in this track
+
+| ID | Method | Why it differs |
+|---|---|---|
+| ES | OpenAI evolution strategies, antithetic pairs, rank shaping, Adam | Episode-level credit; trains exactly what is evaluated (frozen brain, no exploration current) |
+| CMA | Separable CMA-ES | Adapts per-group search scale; robust on noisy returns |
+| (later) ES-coarse | ES with gains shared across the six legs (~30 groups) | Lower-dimensional, symmetric; tests if fewer parameters learn faster |
+| (later) curriculum | Walk stage starts from the best stand-stage gains | Standing first, then walking |
+
+Parameterisation (all methods): one multiplicative gain per *group* of existing
+plastic edges. Group = postsynaptic population (each leg joint's agonist or
+antagonist motor pool, or circuit class/side/neuromere) x presynaptic sign.
+Topology and signs never change; every magnitude stays within the project's
+original-reference +-50% bound. Checkpoints are MotorPlasticity-compatible.
+
+Code: `gpu-pilot/es_train.py`, `gpu-pilot/es_evaluate.py`,
+`gpu-pilot/src/noesis_gpu/es_brain.py`.
+
+## Acceptance gates
+
+See [GATES.md](GATES.md). Fixed before any run; never relaxed after seeing results.
+
+## Run log
+
+| Run | Date | Method | Stage | Gens x pop x sec | Best train fitness | Stand gate | Walk gate | Video |
+|---|---|---|---|---|---|---|---|---|
+| R0 | 2026-11-25 | parent baseline (no training) | - | - | - | pending | pending | pending |
