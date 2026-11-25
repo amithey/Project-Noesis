@@ -167,7 +167,8 @@ def main():
     report["wall_seconds"] = time.time() - started
     dump(out / "evaluation.json", report)
     print(json.dumps({k: report.get(k) for k in ("label", "stand_gate_passed", "walk_gate_passed",
-                                                 "stand_gate", "walk_gate")}, indent=2))
+                                                 "stand_gate", "walk_gate")}, indent=2,
+                     default=lambda o: o.item() if isinstance(o, np.generic) else str(o)))
 
 
 if __name__ == "__main__":

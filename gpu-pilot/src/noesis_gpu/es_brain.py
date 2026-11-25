@@ -242,5 +242,14 @@ def fitness(result, stage, displacement_weight=0.05):
 STAGE_OBJECTIVE = {"stand": "curriculum-standing-v7", "walk": "curriculum-gripped-step-v8"}
 
 
+def _json_default(o):
+    """Convert numpy scalars/arrays (e.g. np.bool_ from gate checks) to plain Python."""
+    if isinstance(o, np.generic):
+        return o.item()
+    if isinstance(o, np.ndarray):
+        return o.tolist()
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+
+
 def dump(path, obj):
-    Path(path).write_text(json.dumps(obj, indent=2, allow_nan=False), encoding="utf-8")
+    Path(path).write_text(json.dumps(obj, indent=2, allow_nan=False, default=_json_default), encoding="utf-8")
