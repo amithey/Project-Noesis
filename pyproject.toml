@@ -10,7 +10,7 @@ requires-python = ">=3.11"
 dependencies = ["numpy>=1.26", "scipy>=1.11", "pandas>=2.1", "pyarrow>=14", "numba>=0.59"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "ruff>=0.5"]
+dev = ["pytest>=8", "ruff>=0.5", "psutil>=5.9", "mujoco>=3.1", "matplotlib>=3.8", "imageio>=2.31"]
 body = ["flygym>=1.2", "networkx>=3"]
 
 [tool.setuptools.packages.find]
