@@ -190,7 +190,8 @@ class Evaluator:
         if not rewards:
             raise ValueError("episode shorter than settling interval")
         loads = np.array(feet_load)
-        touchdowns = (loads[1:] & ~loads[:-1]).sum(axis=0)  # per leg swing->stance events
+        touchdowns = (loads[1:] & ~loads[:-1]).sum(axis=0)  # raw contact flicker count
+        steps = debounced_steps(loads)
         displacement = (before["position"][:2] - start_pos[:2])
         return {
             "seed": int(seed), "seconds": float(seconds), "objective": objective,
@@ -206,6 +207,7 @@ class Evaluator:
             "forward_mm": float(displacement @ heading),
             "path_mm": float(np.sum(np.abs(speeds)) * CONTROL_MS / 1000),
             "touchdowns_per_leg": touchdowns.astype(int).tolist(),
+            "debounced_steps_per_leg": steps,
             "wall_seconds": time.perf_counter() - started,
             "total_spikes": int(brain.total_spikes),
         }
@@ -224,6 +226,25 @@ class Evaluator:
         net.data[self.groups.edge_indices] = self.groups.weights(gains)
         learner.save(path)
         return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def debounced_steps(loads, min_swing=8, min_stance=8):
+    """Real steps per leg: a swing (no claw load) lasting >= min_swing control steps (40 ms)
+    followed by a stance lasting >= min_stance steps. Raw contact flicker does not count."""
+    loads = np.asarray(loads, bool)
+    out = []
+    for leg in loads.T:
+        runs, value, length = [], leg[0], 0
+        for x in leg:
+            if x == value:
+                length += 1
+            else:
+                runs.append((bool(value), length))
+                value, length = x, 1
+        runs.append((bool(value), length))
+        out.append(int(sum(1 for (a, la), (b, lb) in zip(runs, runs[1:])
+                           if not a and la >= min_swing and b and lb >= min_stance)))
+    return out
 
 
 def fitness(result, stage, displacement_weight=0.05):

@@ -21,3 +21,9 @@ Implemented in `gpu-pilot/es_evaluate.py`.
 
 Passing a gate is recorded as "gate passed", not as "walking proven" or a
 promoted model; promotion would still need independent validation.
+
+## Addendum 2026-11-25 (after R0, tightening only)
+R0 showed 12-73 raw "touchdowns" per leg on the untrained parent: claw contact
+flicker, not stepping. Walking gate criterion 4 is kept, and a sixth criterion is
+added: **at least 4 legs with >= 2 debounced steps** on every seed (a swing of
+>= 40 ms without claw load followed by >= 40 ms of stance). No criterion was relaxed.
