@@ -149,9 +149,13 @@ def infer_motor_sides(connectome):
         s_ = "L" if vote > 0 else "R"
         new.iloc[idx] = "left" if s_ == "L" else "right"
         assigned[s_] += 1
-    connectome.neurons = n.assign(**{"Soma side": pd.Series(new.to_numpy(), index=n.index)})
-    return {"unknown_side_leg_motor_neurons": int(len(unknown)), **assigned,
-            "rule": "input-synapse-weighted side majority, |vote| >= 0.2"}
+    import dataclasses
+
+    # the connectome is a frozen dataclass: return a copy with the new neuron table
+    connectome = dataclasses.replace(
+        connectome, neurons=n.assign(**{"Soma side": pd.Series(new.to_numpy(), index=n.index)}))
+    return connectome, {"unknown_side_leg_motor_neurons": int(len(unknown)), **assigned,
+                        "rule": "input-synapse-weighted side majority, |vote| >= 0.2"}
 
 
 class _WeightHolder:
@@ -167,7 +171,9 @@ class Evaluator:
         from noesis.lif import LIFNetwork, LIFParams
 
         self.cn, _ = load_training_brain(Path(data), Path(cache))
-        self.side_audit = infer_motor_sides(self.cn) if infer_sides else None
+        self.side_audit = None
+        if infer_sides:
+            self.cn, self.side_audit = infer_motor_sides(self.cn)
         net = LIFNetwork(self.cn.W, LIFParams(dt=0.5, da=1.0), seed=0)
         self.indptr, self.indices = net.indptr, net.indices
         self.base_data = net.data.copy()
