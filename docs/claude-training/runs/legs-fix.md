@@ -36,3 +36,15 @@ Femur_roll may also have an opposite overall sign convention. Waiting for the co
 
 ## Related
 - R4 (4 seeds) was interrupted for this work: [R4-es-stand-4seeds.md](R4-es-stand-4seeds.md).
+
+## Step 2b — convention-safe ranges (`7cc8b67`): sanity check **PASSED**
+Pitch joints use the real mean and range when within 0.6 rad of native, otherwise the real window is shifted onto the native rest.
+Roll/yaw joints keep the native rest with a symmetric window of the real span.
+`leg_usage_audit --legs real --kinematics KIN --seconds 3`: max_abs_shift **0.475 rad**; rules real 22 / shifted 2 / symmetric 18; mean range 1.52 rad.
+No collapse. Per leg (cmd_std / angle_std / claw load / steps): LF .189/.152/.59/3, LM .186/.146/.12/2, LH .253/.202/.44/2,
+RF .216/.171/.29/1, RM .172/.144/.46/3, RH .158/.121/.61/4. File: `audit-legs/leg-usage-parent-reallegs-v2.json`.
+
+## Step 3–4 — A/B/C comparison and baseline
+See [R0d.md](R0d.md) for the full table. By the rule only A (native legs) qualified (B stands 0.63, C 0.34), so R0d = A baseline.
+The R5 that was queued on A was **skipped before it started** (no compute spent) when the coordinator switched training to B
+on Amit's request: the brain should learn to stand on the real ranges. B baseline = [R0e](R0e.md); R5 trains on B.

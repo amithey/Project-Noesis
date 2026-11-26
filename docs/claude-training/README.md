@@ -54,3 +54,5 @@ See [GATES.md](GATES.md). Fixed before any run; never relaxed after seeing resul
 | [R3](runs/R3-es-stand-from-R1b.md) | 2026-11-26 | ES from R1b (no change) | stand | 12/15 x 13 x 2 seeds x 1.5 s | 0.765 (start 0.742) | FAIL (standing 0.91/0.92/0.84; v7 mean 0.591; no improvement) | FAIL (all-6-legs steps PASS) | [R3-...-10s.mp4](videos/R3-es-stand-from-R1b-10s.mp4) |
 | [R0c](runs/R0c-parent-sizemuscle-eval.md) | 2026-11-26 | parent, `--muscle size` (no training) | - | - | - (held-out v7 0.407/0.437/0.557) | FAIL (standing 0.77-0.86; sits on abdomen) → size muscles not adopted | FAIL | stills in runs/audit-legs |
 | [R4](runs/R4-es-stand-4seeds.md) | 2026-11-26 | ES from R1b, `--seeds-per-gen 4` | stand | 7/12 x 13 x 4 seeds x 1.5 s | interrupted; 0.7004 (start 0.6998) | not run | not run | - |
+| [legs-fix](runs/legs-fix.md) | 2026-11-26 | `--legs real` (rest/range from real fly kinematics); A/B/C comparison | - | - | - | A .905 / B .633 / C .336 mean standing | - | - |
+| [R0d](runs/R0d.md) | 2026-11-26 | baseline A: native legs, mean muscles (no training) | - | - | - | FAIL | FAIL (stride ≥0.3 PASS) | [R0d-baseline.mp4](videos/R0d-baseline.mp4) |
