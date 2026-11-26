@@ -34,6 +34,7 @@ def main():
     ap.add_argument("--project", type=Path, default=DEFAULT_PROJECT)
     ap.add_argument("--core", type=Path, default=DEFAULT_CORE)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
+    ap.add_argument("--infer-mn-sides", action="store_true")
     args = ap.parse_args()
     _paths(args.core)
     from noesis_gpu.backend import FlyGymBatch
@@ -44,8 +45,10 @@ def main():
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=True)
     ev = Evaluator((args.project / "data").resolve(),
-                   (args.project / "gpu-pilot/outputs/claude-es/brain-cache").resolve(), args.checkpoint)
-    gains = np.load(args.gains) if args.gains else np.ones(ev.groups.n_groups)
+                   (args.project / "gpu-pilot/outputs/claude-es/brain-cache").resolve(), args.checkpoint,
+                   infer_sides=args.infer_mn_sides)
+    from es_train import load_gains
+    gains = load_gains(args.gains, ev.groups.names) if args.gains else np.ones(ev.groups.n_groups)
     body = FlyGymBatch(1, "cpu")
     brain = FrozenBrain(ev.cn, body.rest, body.lo, body.hi, seed=args.seed,
                         shared_weights=_WeightHolder(ev.indptr, ev.indices, ev.data_for(gains)))
@@ -83,7 +86,7 @@ def main():
                      "empty_pools": [r["joint"] for r in rows if r["pool_pos"] + r["pool_neg"] == 0],
                      "mean_cmd_std": float(np.mean([r["cmd_std"] for r in rows])),
                      "mean_angle_std": float(np.mean([r["angle_std"] for r in rows]))}
-    report = {"gains": str(args.gains), "seed": args.seed, "seconds": args.seconds, "legs": legs,
+    report = {"motor_side_inference": ev.side_audit, "gains": str(args.gains), "seed": args.seed, "seconds": args.seconds, "legs": legs,
               "joints": joints}
     dump(out / "leg-usage.json", report)
     print(f"{'leg':4} {'MNs':>4} {'cmd_std':>8} {'ang_std':>8} {'load':>5} {'steps':>5}  empty pools")

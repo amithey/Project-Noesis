@@ -40,13 +40,13 @@ def _paths(core):
             sys.path.insert(0, p)
 
 
-def _init(core, data, cache, checkpoint, grouping, threads):
+def _init(core, data, cache, checkpoint, grouping, threads, infer_sides=False):
     global _EVAL
     os.environ.setdefault("NUMBA_NUM_THREADS", str(threads))
     _paths(core)
     from noesis_gpu.es_brain import Evaluator
 
-    _EVAL = Evaluator(data, cache, checkpoint, grouping)
+    _EVAL = Evaluator(data, cache, checkpoint, grouping, infer_sides)
 
 
 def _job(args):
@@ -59,6 +59,26 @@ def _job(args):
     except Exception as error:  # a physics blow-up is a bad candidate, not a crashed run
         result = {"seed": int(seed), "error": f"{type(error).__name__}: {error}", "fitness": -1.0}
     return result
+
+
+def load_gains(path, names):
+    """Load a gain vector; if its run used other groups, map by group name (new groups -> 1)."""
+    gains = np.load(path)
+    if len(gains) == len(names):
+        config = Path(path).with_name("config.json")
+        if not config.is_file():
+            return gains
+        old = [g["name"] for g in json.loads(config.read_text(encoding="utf-8"))["groups"]]
+        if old == list(names):
+            return gains
+    config = Path(path).with_name("config.json")
+    if not config.is_file():
+        raise ValueError(f"{path}: group count differs and no config.json to map names")
+    old = [g["name"] for g in json.loads(config.read_text(encoding="utf-8"))["groups"]]
+    by_name = dict(zip(old, gains))
+    print(json.dumps({"event": "gain_mapping", "matched": sum(n in by_name for n in names),
+                      "new_groups": sum(n not in by_name for n in names)}), flush=True)
+    return np.array([by_name.get(n, 1.0) for n in names])
 
 
 def ranks(values):
@@ -152,6 +172,8 @@ def parser():
     ap.add_argument("--core", type=Path, default=DEFAULT_CORE)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
     ap.add_argument("--rng-seed", type=int, default=0)
+    ap.add_argument("--infer-mn-sides", action="store_true",
+                    help="assign leg motor neurons with no annotated side by input-synapse majority")
     return ap
 
 
@@ -167,13 +189,13 @@ def main():
     from noesis_gpu.run import file_digest, source_digest
 
     started = time.time()
-    local = Evaluator(data, cache, args.checkpoint, args.grouping)  # for groups + checkpoint writing
+    local = Evaluator(data, cache, args.checkpoint, args.grouping, args.infer_mn_sides)  # groups + checkpoints
     n = local.groups.n_groups
     rng = np.random.default_rng(args.rng_seed)
     opt = (OpenAIES(n, args.sigma, args.lr, args.pairs, rng) if args.method == "es"
            else SepCMA(n, args.sigma, args.popsize, rng))
     if args.init_gains:
-        opt.mean = np.clip(np.load(args.init_gains), 0.5, 1.5)
+        opt.mean = np.clip(load_gains(args.init_gains, local.groups.names), 0.5, 1.5)
     config = {**{k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
               "method_description": {
                   "es": "OpenAI-ES, antithetic pairs, centred-rank shaping, Adam on group gains",
@@ -183,13 +205,15 @@ def main():
               "checkpoint_sha256": file_digest(args.checkpoint),
               "noesis_source_sha256": source_digest(args.core),
               "constraints": "existing edges only; signs fixed; |w| within original +-50%; frozen evaluation",
-              "groups": local.groups.describe(), "started_unix": started}
+              "groups": local.groups.describe(), "started_unix": started,
+              "motor_side_inference": local.side_audit}
     dump(out / "config.json", config)
     print(json.dumps({"event": "config", "n_groups": n, "plastic_edges": config["plastic_edges"]}), flush=True)
 
     ctx = mp.get_context("spawn")
     pool = ctx.Pool(args.workers, initializer=_init,
-                    initargs=(args.core, data, cache, args.checkpoint, args.grouping, args.threads_per_worker))
+                    initargs=(args.core, data, cache, args.checkpoint, args.grouping, args.threads_per_worker,
+                              args.infer_mn_sides))
     best, best_gains, status = -np.inf, opt.mean.copy(), "completed"
     log = (out / "generations.jsonl").open("a", encoding="utf-8")
     try:

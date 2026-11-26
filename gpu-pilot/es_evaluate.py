@@ -146,6 +146,7 @@ def main():
     ap.add_argument("--project", type=Path, default=DEFAULT_PROJECT)
     ap.add_argument("--core", type=Path, default=DEFAULT_CORE)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
+    ap.add_argument("--infer-mn-sides", action="store_true")
     args = ap.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=True)
@@ -155,18 +156,20 @@ def main():
     import es_train
     from noesis_gpu.es_brain import Evaluator, dump
 
-    es_train._init(args.core, data, cache, args.checkpoint, args.grouping, 1)
+    es_train._init(args.core, data, cache, args.checkpoint, args.grouping, 1, args.infer_mn_sides)
     ev = es_train._EVAL
-    gains = np.load(args.gains) if args.gains else np.ones(ev.groups.n_groups)
+    gains = (es_train.load_gains(args.gains, ev.groups.names) if args.gains
+             else np.ones(ev.groups.n_groups))
     started = time.time()
-    report = {"label": args.label, "gains": str(args.gains), "held_out_seeds": HELD_OUT,
+    report = {"motor_side_inference": ev.side_audit, "label": args.label, "gains": str(args.gains), "held_out_seeds": HELD_OUT,
               "seconds": args.seconds}
     if not args.video_only:
         parent = np.ones(ev.groups.n_groups)
         jobs = [(g, s, args.seconds, "curriculum-gripped-step-v8") for g in (gains, parent) for s in HELD_OUT]
         ctx = mp.get_context("spawn")
         with ctx.Pool(min(args.workers, len(jobs)), initializer=_init,
-                      initargs=(args.core, data, cache, args.checkpoint, args.grouping, 1)) as pool:
+                      initargs=(args.core, data, cache, args.checkpoint, args.grouping, 1,
+                                args.infer_mn_sides)) as pool:
             res = pool.map(_eval, jobs, chunksize=1)
         cand, par = res[:3], res[3:]
         sg, wg = stand_gate(cand, par), walk_gate(cand, par)

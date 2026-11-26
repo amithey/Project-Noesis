@@ -119,6 +119,41 @@ def build_groups(connectome, net, motor_indices, start_data=None, grouping="fine
     return EdgeGroups(edges, original, start, group, list(names), motor_indices)
 
 
+def infer_motor_sides(connectome):
+    """Opt-in body-interface repair: give leg motor neurons with no annotated side
+    (neither Nerve nor Soma side) the side that supplies most of their synaptic input.
+
+    The connectome (edges, weights, signs) is unchanged; only the neuron-to-leg
+    mapping used by the muscle model gains assignments. Returns an audit dict.
+    """
+    import pandas as pd
+
+    from noesis.motor import _nerve_or_soma_side
+
+    n = connectome.neurons
+    side = _nerve_or_soma_side(n.fillna({"Nerve": ""}) if "Nerve" in n else n)
+    side = side.where(side.isin(["L", "R"]))
+    mn = n["Class"].eq("leg_motor_neuron").to_numpy()
+    unknown = np.flatnonzero(mn & side.isna().to_numpy())
+    csc = connectome.W.tocsc()
+    code = side.map({"L": 1.0, "R": -1.0}).fillna(0.0).to_numpy()
+    assigned = {"L": 0, "R": 0, "undecided": 0}
+    new = n["Soma side"].astype(object).copy()
+    for idx in unknown:
+        rows = csc.indices[csc.indptr[idx]:csc.indptr[idx + 1]]
+        w = np.abs(csc.data[csc.indptr[idx]:csc.indptr[idx + 1]])
+        vote = float((w * code[rows]).sum()) / max(float((w * np.abs(code[rows])).sum()), 1e-12)
+        if abs(vote) < 0.2:
+            assigned["undecided"] += 1
+            continue
+        s_ = "L" if vote > 0 else "R"
+        new.iloc[idx] = "left" if s_ == "L" else "right"
+        assigned[s_] += 1
+    connectome.neurons = n.assign(**{"Soma side": pd.Series(new.to_numpy(), index=n.index)})
+    return {"unknown_side_leg_motor_neurons": int(len(unknown)), **assigned,
+            "rule": "input-synapse-weighted side majority, |vote| >= 0.2"}
+
+
 class _WeightHolder:
     def __init__(self, indptr, indices, data):
         self.indptr, self.indices, self.data = indptr, indices, data
@@ -127,11 +162,12 @@ class _WeightHolder:
 class Evaluator:
     """Per-process cache of the connectome; evaluates gain vectors in fresh bodies."""
 
-    def __init__(self, data, cache, checkpoint, grouping="fine"):
+    def __init__(self, data, cache, checkpoint, grouping="fine", infer_sides=False):
         from noesis.embodiment import load_training_brain
         from noesis.lif import LIFNetwork, LIFParams
 
         self.cn, _ = load_training_brain(Path(data), Path(cache))
+        self.side_audit = infer_motor_sides(self.cn) if infer_sides else None
         net = LIFNetwork(self.cn.W, LIFParams(dt=0.5, da=1.0), seed=0)
         self.indptr, self.indices = net.indptr, net.indices
         self.base_data = net.data.copy()
