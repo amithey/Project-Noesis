@@ -173,6 +173,10 @@ def parser():
     ap.add_argument("--core", type=Path, default=DEFAULT_CORE)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
     ap.add_argument("--rng-seed", type=int, default=0)
+    ap.add_argument("--resume", action="store_true",
+                    help="continue an unfinished run in --output from its last completed generation "
+                         "(ES optimizer state from opt-state.npz; CMA restarts its covariance; older runs fall back to last-mean-gains.npy "
+                         "with a fresh Adam state). --generations is the total, counting earlier generations")
     ap.add_argument("--legs", choices=("native", "real"), default="native",
                     help="'real': rest pose and joint ranges from real fly walking kinematics")
     ap.add_argument("--kinematics", default=None, help="path to single_steps_untethered.pkl")
@@ -186,7 +190,7 @@ def parser():
 def main():
     args = parser().parse_args()
     out = args.output.resolve()
-    out.mkdir(parents=True, exist_ok=False)
+    out.mkdir(parents=True, exist_ok=args.resume)
     data = (args.project / "data").resolve()
     cache = (args.project / "gpu-pilot/outputs/claude-es/brain-cache").resolve()
     cache.mkdir(parents=True, exist_ok=True)
@@ -201,8 +205,28 @@ def main():
     rng = np.random.default_rng(args.rng_seed)
     opt = (OpenAIES(n, args.sigma, args.lr, args.pairs, rng) if args.method == "es"
            else SepCMA(n, args.sigma, args.popsize, rng))
-    if args.init_gains:
+    if args.init_gains and not args.resume:
         opt.mean = np.clip(load_gains(args.init_gains, local.groups.names), 0.5, 1.5)
+    first_gen, best, best_gains, resume_note = 0, -np.inf, opt.mean.copy(), None
+    if args.resume:
+        rows = [json.loads(x) for x in (out / "generations.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+        first_gen = rows[-1]["generation"] + 1 if rows else 0
+        state = out / "opt-state.npz"
+        if state.is_file():
+            z = np.load(state, allow_pickle=False)
+            opt.mean = z["mean"].copy()
+            if args.method == "es":
+                opt.m, opt.v, opt.t = z["m"].copy(), z["v"].copy(), int(z["t"])
+            rng.bit_generator.state = json.loads(str(z["rng_state"]))
+            resume_note = "exact: optimizer state from opt-state.npz"
+        else:
+            opt.mean = np.load(out / "last-mean-gains.npy")
+            resume_note = "approximate: mean from last-mean-gains.npy, fresh Adam/RNG state (run predates opt-state.npz)"
+        if rows:
+            best = max(r["best_centre_fitness"] for r in rows)
+        if (out / "best-gains.npy").is_file():
+            best_gains = np.load(out / "best-gains.npy")
+        print(json.dumps({"event": "resume", "from_generation": first_gen, "best": best, "note": resume_note}), flush=True)
     config = {**{k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
               "method_description": {
                   "es": "OpenAI-ES, antithetic pairs, centred-rank shaping, Adam on group gains",
@@ -215,6 +239,11 @@ def main():
               "groups": local.groups.describe(), "started_unix": started,
               "motor_side_inference": local.side_audit, "muscle_model": args.muscle,
               "legs": args.legs, "kinematics": str(getattr(local, "kinematics", None))}
+    if args.resume:
+        prev = json.loads((out / "config.json").read_text(encoding="utf-8"))
+        prev.setdefault("resumes", []).append({"unix": started, "from_generation": first_gen, "note": resume_note,
+                                               "generations_total": args.generations})
+        config = prev
     dump(out / "config.json", config)
     print(json.dumps({"event": "config", "n_groups": n, "plastic_edges": config["plastic_edges"]}), flush=True)
 
@@ -222,10 +251,10 @@ def main():
     pool = ctx.Pool(args.workers, initializer=_init,
                     initargs=(args.core, data, cache, args.checkpoint, args.grouping, args.threads_per_worker,
                               args.infer_mn_sides, args.muscle, args.legs, args.kinematics))
-    best, best_gains, status = -np.inf, opt.mean.copy(), "completed"
+    status = "completed"
     log = (out / "generations.jsonl").open("a", encoding="utf-8")
     try:
-        for gen in range(args.generations):
+        for gen in range(first_gen, args.generations):
             if time.time() - started > args.wall_hours * 3600:
                 status = "stopped_wall_budget"
                 break
@@ -263,6 +292,9 @@ def main():
             log.write(json.dumps(row) + "\n")
             log.flush()
             np.save(out / "last-mean-gains.npy", opt.mean)
+            np.savez(out / "opt-state.npz", mean=opt.mean, generation=gen,
+                     m=getattr(opt, "m", np.zeros(0)), v=getattr(opt, "v", np.zeros(0)), t=getattr(opt, "t", 0),
+                     rng_state=json.dumps(rng.bit_generator.state))
             print(json.dumps({"event": "generation", **{k2: row[k2] for k2 in (
                 "generation", "pop_fitness_mean", "pop_fitness_max", "centre_fitness",
                 "best_centre_fitness", "errors", "wall_seconds")}}), flush=True)
