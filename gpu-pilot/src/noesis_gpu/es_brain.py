@@ -188,7 +188,8 @@ class _WeightHolder:
 class Evaluator:
     """Per-process cache of the connectome; evaluates gain vectors in fresh bodies."""
 
-    def __init__(self, data, cache, checkpoint, grouping="fine", infer_sides=False, muscle="mean"):
+    def __init__(self, data, cache, checkpoint, grouping="fine", infer_sides=False, muscle="mean",
+                 legs="native", kinematics=None):
         from noesis.embodiment import load_training_brain
         from noesis.lif import LIFNetwork, LIFParams
 
@@ -196,6 +197,12 @@ class Evaluator:
         if muscle not in ("mean", "size"):
             raise ValueError("muscle must be 'mean' or 'size'")
         self.muscle = muscle
+        if legs not in ("native", "real"):
+            raise ValueError("legs must be 'native' or 'real'")
+        self.legs, self.leg_audit = legs, None
+        if legs == "real":
+            from .real_legs import find_kinematics
+            self.kinematics = find_kinematics(kinematics)
         self.side_audit = None
         if infer_sides:
             self.cn, self.side_audit = infer_motor_sides(self.cn)
@@ -212,6 +219,15 @@ class Evaluator:
         net.data = original
         self.groups = build_groups(self.cn, net, motor, self.parent_data, grouping)
 
+    def make_body(self):
+        from .backend import FlyGymBatch
+
+        body = FlyGymBatch(1, "cpu")
+        if self.legs == "real":
+            from .real_legs import apply_real_legs
+            self.leg_audit = apply_real_legs(body, self.kinematics)
+        return body
+
     def data_for(self, gains):
         data = self.parent_data.copy()
         data[self.groups.edge_indices] = self.groups.weights(gains)
@@ -223,7 +239,7 @@ class Evaluator:
         from .learning import score_transition, standing_mask
 
         started = time.perf_counter()
-        body = FlyGymBatch(1, "cpu")
+        body = self.make_body()
         holder = _WeightHolder(self.indptr, self.indices, self.data_for(gains))
         brain = FrozenBrain(self.cn, body.rest, body.lo, body.hi, seed=seed, shared_weights=holder)
         if self.muscle == "size":

@@ -151,6 +151,8 @@ def main():
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
     ap.add_argument("--infer-mn-sides", action="store_true")
     ap.add_argument("--muscle", choices=("mean", "size"), default="mean")
+    ap.add_argument("--legs", choices=("native", "real"), default="native")
+    ap.add_argument("--kinematics", default=None)
     args = ap.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=True)
@@ -161,12 +163,12 @@ def main():
     from noesis_gpu.es_brain import Evaluator, dump
 
     es_train._init(args.core, data, cache, args.checkpoint, args.grouping, 1, args.infer_mn_sides,
-                   args.muscle)
+                   args.muscle, args.legs, args.kinematics)
     ev = es_train._EVAL
     gains = (es_train.load_gains(args.gains, ev.groups.names) if args.gains
              else np.ones(ev.groups.n_groups))
     started = time.time()
-    report = {"muscle_model": args.muscle, "motor_side_inference": ev.side_audit, "label": args.label, "gains": str(args.gains), "held_out_seeds": HELD_OUT,
+    report = {"legs": args.legs, "muscle_model": args.muscle, "motor_side_inference": ev.side_audit, "label": args.label, "gains": str(args.gains), "held_out_seeds": HELD_OUT,
               "seconds": args.seconds}
     if not args.video_only:
         parent = np.ones(ev.groups.n_groups)
@@ -174,7 +176,7 @@ def main():
         ctx = mp.get_context("spawn")
         with ctx.Pool(min(args.workers, len(jobs)), initializer=_init,
                       initargs=(args.core, data, cache, args.checkpoint, args.grouping, 1,
-                                args.infer_mn_sides, args.muscle)) as pool:
+                                args.infer_mn_sides, args.muscle, args.legs, args.kinematics)) as pool:
             res = pool.map(_eval, jobs, chunksize=1)
         cand, par = res[:3], res[3:]
         sg, wg = stand_gate(cand, par), walk_gate(cand, par)
