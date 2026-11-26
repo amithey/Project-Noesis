@@ -1,0 +1,65 @@
+{
+  "experiment": "P2 own-baseline sensory-history causality diagnostic",
+  "date": "2026-11-07",
+  "checkpoint_sha256": {
+    "parent": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "candidate": "068b49a0d44f4dca6fd53bd0950048a4db1a3ebd891ac0e0727ff0a39ff33c10"
+  },
+  "seed": 10011,
+  "worlds": 1,
+  "seconds": 5,
+  "chunks": 1000,
+  "learning_updates": 0,
+  "motor_exploration": 0,
+  "sequence": [
+    "parent-baseline",
+    "candidate-baseline",
+    "parent-pulse",
+    "candidate-pulse"
+  ],
+  "maximum_new_jobs": 4,
+  "aggregate_seconds": 1200,
+  "worker_seconds": 300,
+  "sensory_intervention": {
+    "fields": [
+      "angles",
+      "velocity",
+      "load",
+      "up_body",
+      "omega"
+    ],
+    "timing": "chunk0 pristine live input; chunkk>0 own baseline post-step rowk-1",
+    "motor_replay": false,
+    "native_brain_rng_muscles_unchanged": true,
+    "live_body_observation_preserved": true
+  },
+  "pulse": {
+    "world_axis": "+X",
+    "target": "compiled thorax body COM",
+    "start_chunk": 393,
+    "start_seconds": 1.965,
+    "width_chunks": 4,
+    "duration_seconds": 0.02,
+    "force_fraction_of_weight": 0.1
+  },
+  "source_reference": "Published P1 matched closed-loop cases; original AP2 birth verdicts unchanged",
+  "analysis": {
+    "intervals": "All post-pulse states t>=1.965, and separately final1s t>=4.0; endpoints inclusive",
+    "physical_metrics": [
+      "fraction up_body.z<0.7",
+      "tarsal-only contact fraction",
+      "mean non-tarsal vertical reaction fraction",
+      "mean COM speed",
+      "mean absolute vertical COM speed",
+      "mean body angular speed",
+      "COM height range"
+    ],
+    "matched_comparison": "Compare live P1 feedback versus P2 own-history input separately for each checkpoint; no pooled winner or binary recovery/ability pass",
+    "interpretation": "Condition differences isolate this sensory-history intervention in one selected deterministic context, not general usefulness or learned balance"
+  },
+  "controls": "Both no-pulse workers must exactly reproduce P1 full physical traces and commands before pulse allocation; every pulse history must match its own baseline neural inputs, commands and spike total",
+  "stop": "source/checkpoint/context/history/timing/force/mass/horizon/prefix/receipt/resource/timeout/remaining-full-worker-budget failure; no automatic retry or parameter tuning",
+  "physical_balance_validated": false,
+  "model_promoted": false,
+  "walking_proven": false
+}

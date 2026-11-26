@@ -1,0 +1,53 @@
+{
+  "status": "resource_only_watch_completed_fresh_launch_gate_refused",
+  "user_preference": "Work opportunistically when measured resources allow; no app termination or gate relaxation",
+  "watch_status": "quiescent_window_observed_no_simulation_started",
+  "watch_elapsed_seconds": 70.31299999999464,
+  "watch_decisions": [
+    {
+      "passed": false,
+      "sample_count": 10,
+      "minimum_available_gib": 2.691333770751953,
+      "maximum_host_cpu_percent": 63.0,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    },
+    {
+      "passed": true,
+      "sample_count": 10,
+      "minimum_available_gib": 3.061267852783203,
+      "maximum_host_cpu_percent": 29.9,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    }
+  ],
+  "attempt3": {
+    "status": "inventory_refused_no_simulation",
+    "identified_process": "Reviewed synthetic Claude pytest; later not live, exit status unobserved",
+    "worker_files_changed": false,
+    "worker_terminated_by_codex": false
+  },
+  "attempt4": {
+    "status": "sustained_resource_gate_refused_no_simulation",
+    "decision": {
+      "passed": false,
+      "sample_count": 10,
+      "minimum_available_gib": 3.0166587829589844,
+      "maximum_host_cpu_percent": 70.3,
+      "required_available_gib": 3.0,
+      "allowed_host_cpu_percent": 30.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    },
+    "simulation_started": false
+  },
+  "resource_monitor_active": false,
+  "training_active": false,
+  "scientific_conclusion": "No new25s duration/retention evidence; prior T1 remains incomplete",
+  "model_promoted": false,
+  "walking_proven": false,
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30",
+  "archive_sha256": "f64214795a1ad487183275e4ff20590ba11abd38283c8cdfbbf297f45f19a5af",
+  "artifact_archive": "resource-r1-preflight-evidence.zip"
+}

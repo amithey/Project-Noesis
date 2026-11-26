@@ -1,0 +1,64 @@
+{
+  "status": "completed_full_training_reproduction_and_logging_parity",
+  "wall_seconds": 248.43799999999464,
+  "exact_trace_fields": {
+    "angles": true,
+    "velocity": true,
+    "position": true,
+    "feet_position": true,
+    "heading": true,
+    "up_body": true,
+    "omega": true,
+    "ground_contact": true,
+    "load": true,
+    "foot_load": true,
+    "command": true,
+    "adhesion": true,
+    "reward": true,
+    "standing": true,
+    "stance_slip_mm_s": true,
+    "learning_active": true,
+    "cycle_credit": true,
+    "reward_unclipped": true,
+    "actual_bonus_after_clipping": true
+  },
+  "model_promoted": false,
+  "walking_proven": false,
+  "pilot_commit": "f3baf9f5ed3f9bc88760a84abd58eaf909e66d1b",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0"
+  },
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "expected_checkpoint_sha256": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
+  "jobs": [
+    {
+      "name": "plain",
+      "process_wall_seconds": 120.82799999999406,
+      "available_gib_at_start": 3.4344024658203125,
+      "checkpoint_sha256": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
+      "completed_chunks": 1000,
+      "learning_updates": 990,
+      "inner_wall_seconds": 117.15296089999902
+    },
+    {
+      "name": "logged",
+      "process_wall_seconds": 127.14100000000326,
+      "available_gib_at_start": 3.3823471069335938,
+      "checkpoint_sha256": "2074b1e2c12061a03e13d60daf93e07a6517d832bc1f31fe914a797784d70214",
+      "completed_chunks": 1000,
+      "learning_updates": 990,
+      "inner_wall_seconds": 123.51830210001208,
+      "log_alignment": {
+        "steps": 990,
+        "first_control_chunk": 10,
+        "last_control_chunk": 999
+      }
+    }
+  ],
+  "scope": "Full5s training reproducibility and logging transparency for one parent/seed; not a learning improvement or walking proof.",
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30",
+  "artifact_archive": "runtime-d2-d3-evidence.zip",
+  "archive_sha256": "f9a17f8700eeaae21fdbf6f88f0f1b4323283c28e14e9188d00d6613da3c0a5e"
+}

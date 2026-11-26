@@ -1,0 +1,47 @@
+{
+  "experiment": "P1 frozen physical-disturbance calibration",
+  "date": "2026-11-07",
+  "checkpoint_sha256": {
+    "parent": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+    "candidate": "068b49a0d44f4dca6fd53bd0950048a4db1a3ebd891ac0e0727ff0a39ff33c10"
+  },
+  "seed": 10011,
+  "seconds": 5,
+  "chunks": 1000,
+  "anatomy_samples": 1001,
+  "microsteps": 50000,
+  "learning_updates": 0,
+  "motor_exploration": 0,
+  "neural_controller_unchanged": true,
+  "sequence": [
+    "parent-baseline",
+    "candidate-baseline",
+    "parent-pulse",
+    "candidate-pulse"
+  ],
+  "maximum_new_jobs": 4,
+  "aggregate_seconds": 1200,
+  "worker_seconds": 300,
+  "pulse": {
+    "world_axis": "+X",
+    "target": "compiled thorax body COM",
+    "start_chunk": 393,
+    "start_seconds": 1.965,
+    "width_chunks": 4,
+    "duration_seconds": 0.02,
+    "force_fraction_of_weight": 0.1
+  },
+  "force_epoch": "Verified before/after EVERYmj_step. Snapshot force is preceding-chunk input held until next advance, not a new instantaneous force outside scheduled physics steps.",
+  "prefix": {
+    "native_body_rows": 393,
+    "anatomy_full_telemetry_rows": 394,
+    "neural_command_rows": 394
+  },
+  "analysis": "Each model relative to its own exact baseline: COM/up/contact/command/adhesion deviations and actual impulse, no binary recovery/ranking/gait/retention verdict",
+  "selection_is_moving_known_case_not_standing_positive": true,
+  "new_gate": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "stop": "hash/context/mass/force/horizon/prefix/resource/timeout/remaining-full-worker-budget failure; no automatic retry/retune or partial interpretation",
+  "publication_scope": "Compact scientific protocol only; extensive private integrity maps local"
+}

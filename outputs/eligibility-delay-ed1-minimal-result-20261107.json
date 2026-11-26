@@ -1,0 +1,27 @@
+{
+  "status": "independently_audited_ED1",
+  "runtime_source_commit": "5dbdf9637adb862b90ba8b949acfb6025bf93bcf",
+  "seconds": 1668.7810000004247,
+  "new_workers": 13,
+  "frozen_positions": 27,
+  "all_four_development_physical_directions_improve": false,
+  "combined_exploratory_pilot_pass": false,
+  "source_prior_data_unchanged": true,
+  "all_full_horizons_receipts_exit_zero_trees_empty": true,
+  "lease_released": true,
+  "limits": "Weight steps/full eligibility equality checked independently online; offline verifies recorded moments/hash provenance, not full neural-spike reconstruction. One seed, engineering objective, no general efficacy or ability proof.",
+  "physical_balance_validated": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "candidate_checkpoint_sha256": "2ea9ae22e6659ae7086a1fca30e478ce7dd3e34aefc4587eb428eb2d9e1b772b",
+  "zero_delay_replay_exact": true,
+  "original_retention_pass": {
+    "parent": false,
+    "control": false,
+    "v7": false,
+    "AP1": false,
+    "previous_PS1": false
+  },
+  "anatomical_rule_pass": false,
+  "publication_scope": "Minimal NEW ED1 verdict only; no pending-approval old PS1 performance metrics or private maps"
+}

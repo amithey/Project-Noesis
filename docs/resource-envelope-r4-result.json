@@ -1,0 +1,108 @@
+{
+  "status": "completed_two_frozen_feasibility_repeats",
+  "pilot_commit": "48503ab99fdadacc93e3e8d45471872e4cb0ebdd",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0"
+  },
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "seed": 10006,
+  "completed_physical_repeats": 2,
+  "seconds_per_repeat": 5,
+  "control_chunks_per_repeat": 1000,
+  "wall_seconds": 231.75,
+  "same_seed_exact_observation_fields_between_repeats": 10,
+  "same_seed_exact_observation_fields_vs_D1": 10,
+  "observations_sha256": "6961701c5297e739713b0596adc45d57b4da13a72366f8d3c23d1e80876cca85",
+  "jobs": [
+    {
+      "repeat": 1,
+      "total_wall_seconds": 95.819808500004,
+      "setup_wall_seconds": 34.1631924000103,
+      "loop_wall_seconds": 61.640373400005046,
+      "min_run_available_gib": 2.4771804809570312,
+      "max_child_rss_gib": 0.7375030517578125,
+      "max_run_host_cpu_percent": 67.9
+    },
+    {
+      "repeat": 2,
+      "total_wall_seconds": 111.81405429998995,
+      "setup_wall_seconds": 28.81700089998776,
+      "loop_wall_seconds": 82.9774771000084,
+      "min_run_available_gib": 2.268604278564453,
+      "max_child_rss_gib": 0.6275749206542969,
+      "max_run_host_cpu_percent": 97.4
+    }
+  ],
+  "launch_decisions": [
+    {
+      "passed": true,
+      "sample_count": 10,
+      "minimum_available_gib": 2.6629638671875,
+      "maximum_host_cpu_percent": 50.5,
+      "required_available_gib": 2.0,
+      "allowed_host_cpu_percent": 60.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    },
+    {
+      "passed": true,
+      "sample_count": 10,
+      "minimum_available_gib": 3.2459678649902344,
+      "maximum_host_cpu_percent": 33.7,
+      "required_available_gib": 2.0,
+      "allowed_host_cpu_percent": 60.0,
+      "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+    }
+  ],
+  "common_metrics": {
+    "standing_fraction": 0.9626262626262626,
+    "mean_stance_slip_mm_s": 3.0581713360264406,
+    "heading_forward_distance_mm": 0.298359305310338,
+    "net_forward_displacement_mm": 0.022346444869974825,
+    "leg_step_counts": {
+      "LF": 12,
+      "LM": 15,
+      "LH": 13,
+      "RF": 5,
+      "RM": 9,
+      "RH": 4
+    },
+    "locomotion_regime": "STEPPING_IN_PLACE"
+  },
+  "weights_unchanged": true,
+  "learning": false,
+  "checkpoint_created": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "T1_gate_changed": false,
+  "scientific_gates_changed": false,
+  "training_throughput_verified": false,
+  "interpretation": "N2same-seed frozen feasibility only. Does not validate all2GiB/60percent conditions, training throughput or causal resource effect. Observed minimum launchRAM2.663GiB, inrun2.269GiB. Model unchanged and motion remains STEPPING_IN_PLACE.",
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-resource-r4-2026-10-31",
+  "archive": {
+    "name": "runtime-r4-frozen-feasibility-evidence.zip",
+    "bytes": 1876565,
+    "sha256": "effcfcac4406a8b5138bfdf9a3780923be640d16971c8afb1dbb4eac98f56c87"
+  },
+  "archive_local_verification": "CRC and every file SHA256 matched; raw data/derived graph caches excluded",
+  "artifact_upload_verification": [
+    {
+      "name": "runtime-r4-frozen-feasibility-evidence.zip",
+      "sha256": "effcfcac4406a8b5138bfdf9a3780923be640d16971c8afb1dbb4eac98f56c87",
+      "remote_digest": "sha256:effcfcac4406a8b5138bfdf9a3780923be640d16971c8afb1dbb4eac98f56c87",
+      "size": 1876565,
+      "digest_match": true,
+      "size_match": true
+    },
+    {
+      "name": "runtime-r4-manifest.json",
+      "sha256": "8523dbf656c0577fdabd0514c6385b592f80139c1a0f50ef0ad53b1ed6386758",
+      "remote_digest": "sha256:8523dbf656c0577fdabd0514c6385b592f80139c1a0f50ef0ad53b1ed6386758",
+      "size": 2610,
+      "digest_match": true,
+      "size_match": true
+    }
+  ],
+  "artifact_upload_verified": true
+}

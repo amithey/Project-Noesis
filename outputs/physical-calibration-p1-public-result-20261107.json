@@ -1,0 +1,116 @@
+{
+  "status": "independently_audited_P1",
+  "runtime_source_commit": "bd14ca69b91c36e8bcdd05eead0cf8ebd181a841",
+  "simulation_seconds": 5,
+  "workers": 4,
+  "aggregate_wall_seconds": 332.75,
+  "seed": 10011,
+  "cases": {
+    "parent-baseline": {
+      "full_horizon": true,
+      "actual_microsteps": 50000,
+      "active_force_microsteps": 0,
+      "impulse_world": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "maximum_dynamic_equation_error": 2.673194998692452e-12,
+      "maximum_ground_constraint_error": 7.105427357601002e-15,
+      "neural_only_motor_commands": true,
+      "learning_updates": 0,
+      "checkpoint_unchanged": true,
+      "exact_prior_replay": true
+    },
+    "candidate-baseline": {
+      "full_horizon": true,
+      "actual_microsteps": 50000,
+      "active_force_microsteps": 0,
+      "impulse_world": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "maximum_dynamic_equation_error": 1.2185807918285718e-12,
+      "maximum_ground_constraint_error": 7.105427357601002e-15,
+      "neural_only_motor_commands": true,
+      "learning_updates": 0,
+      "checkpoint_unchanged": true,
+      "exact_prior_replay": true
+    },
+    "parent-pulse": {
+      "full_horizon": true,
+      "actual_microsteps": 50000,
+      "active_force_microsteps": 200,
+      "impulse_world": [
+        0.020096962200000065,
+        0.0,
+        0.0
+      ],
+      "maximum_dynamic_equation_error": 2.673194998692452e-12,
+      "maximum_ground_constraint_error": 7.105427357601002e-15,
+      "neural_only_motor_commands": true,
+      "learning_updates": 0,
+      "checkpoint_unchanged": true
+    },
+    "candidate-pulse": {
+      "full_horizon": true,
+      "actual_microsteps": 50000,
+      "active_force_microsteps": 200,
+      "impulse_world": [
+        0.020096962200000065,
+        0.0,
+        0.0
+      ],
+      "maximum_dynamic_equation_error": 1.2185807918285718e-12,
+      "maximum_ground_constraint_error": 7.105427357601002e-15,
+      "neural_only_motor_commands": true,
+      "learning_updates": 0,
+      "checkpoint_unchanged": true
+    }
+  },
+  "responses": {
+    "parent": {
+      "exact_prefix_verified": true,
+      "max_COM_deviation_mm": 1.5383447350422628,
+      "max_COM_velocity_deviation_mm_s": 27.42851551877597,
+      "final_1s_RMS_COM_deviation_mm": 1.220549469519909,
+      "final_1s_mean_velocity_deviation_mm_s": 3.54896933468552,
+      "changed_neural_command_rows": 604,
+      "maximum_neural_command_L2_difference_radians": 2.163735795685614,
+      "changed_adhesion_rows": 320,
+      "different_contact_mode_samples": 266,
+      "max_up_vector_difference": 0.550797876784342,
+      "first_changed_command_chunk": 396,
+      "mechanical_response_is_not_neural_or_balance_qualification": true
+    },
+    "candidate": {
+      "exact_prefix_verified": true,
+      "max_COM_deviation_mm": 1.0701367461635514,
+      "max_COM_velocity_deviation_mm_s": 27.974436575803107,
+      "final_1s_RMS_COM_deviation_mm": 0.4746483562579318,
+      "final_1s_mean_velocity_deviation_mm_s": 5.139987742389523,
+      "changed_neural_command_rows": 604,
+      "maximum_neural_command_L2_difference_radians": 2.305242050261103,
+      "changed_adhesion_rows": 561,
+      "different_contact_mode_samples": 271,
+      "max_up_vector_difference": 0.7438328485230845,
+      "first_changed_command_chunk": 396,
+      "mechanical_response_is_not_neural_or_balance_qualification": true
+    }
+  },
+  "source_prior_data_unchanged": true,
+  "receipts_exit_zero_empty_trees": true,
+  "lease_released": true,
+  "conclusion": "Delivered pulse and matched measurement pipeline verified. Neural commands change after perturbation, but neither beneficial feedback nor stable balance/retention/walking is established.",
+  "limits": [
+    "One selected moving case, one direction and force; no representative balance validation.",
+    "Changed neural commands are not a sensory-causality ablation or proof of useful correction.",
+    "Recorded mass-times-acceleration is checked against component forces; dense mass matrix was checked online, not independently reconstructed offline.",
+    "No new learning, model ranking, acceptance gate or promotion. AP2 original zero-of-three verdict unchanged."
+  ],
+  "physical_balance_validated": false,
+  "neural_feedback_qualified": false,
+  "model_promoted": false,
+  "walking_proven": false
+}

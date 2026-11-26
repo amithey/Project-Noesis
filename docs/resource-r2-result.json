@@ -1,0 +1,73 @@
+{
+  "status": "resource_watch_deadline_no_quiescent_window",
+  "budget_seconds": 11.0,
+  "windows": [
+    {
+      "start_elapsed": 0.0,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 2.1601295471191406,
+        "maximum_host_cpu_percent": 84.9,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793368778.697328,
+          "available_gib": 2.192180633544922,
+          "host_cpu_percent": 56.6
+        },
+        {
+          "unix_time": 1793368779.709751,
+          "available_gib": 2.1959762573242188,
+          "host_cpu_percent": 73.8
+        },
+        {
+          "unix_time": 1793368780.7143993,
+          "available_gib": 2.187885284423828,
+          "host_cpu_percent": 84.9
+        },
+        {
+          "unix_time": 1793368781.716191,
+          "available_gib": 2.1826019287109375,
+          "host_cpu_percent": 56.7
+        },
+        {
+          "unix_time": 1793368782.7183797,
+          "available_gib": 2.1819076538085938,
+          "host_cpu_percent": 59.5
+        },
+        {
+          "unix_time": 1793368783.720034,
+          "available_gib": 2.1601295471191406,
+          "host_cpu_percent": 60.7
+        },
+        {
+          "unix_time": 1793368784.7229578,
+          "available_gib": 2.2336502075195312,
+          "host_cpu_percent": 35.1
+        },
+        {
+          "unix_time": 1793368785.7248118,
+          "available_gib": 2.2356109619140625,
+          "host_cpu_percent": 32.6
+        },
+        {
+          "unix_time": 1793368786.7263167,
+          "available_gib": 2.191051483154297,
+          "host_cpu_percent": 59.7
+        },
+        {
+          "unix_time": 1793368787.727579,
+          "available_gib": 2.228015899658203,
+          "host_cpu_percent": 59.5
+        }
+      ]
+    }
+  ],
+  "simulation_started": false,
+  "elapsed_seconds": 11.0,
+  "environment_note": "Initial resource-only invocation failed to import psutil before sampling; corrected PYTHONPATH in fresh R2b output. No dependency installed and no simulation launched."
+}

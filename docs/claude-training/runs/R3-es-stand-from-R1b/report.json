@@ -1,0 +1,8 @@
+{
+  "status": "stopped_wall_budget",
+  "best_centre_fitness": 0.7649833900000375,
+  "wall_hours": 10.932211973932054,
+  "model_promoted": false,
+  "walking_proven": false,
+  "note": "training score only; acceptance requires es_evaluate.py on held-out seeds"
+}

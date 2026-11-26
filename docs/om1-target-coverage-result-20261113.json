@@ -1,0 +1,23 @@
+{
+  "status": "completed_om1_offline_audit",
+  "metadata_verified_rowwise": true,
+  "input_and_source_digests_unchanged": true,
+  "independent_count_verified": true,
+  "simulation_workers": 0,
+  "counts": {
+    "selected_targets": 562,
+    "joint_rows": 42,
+    "positive_nonempty_pools": 39,
+    "positive_covered_pools": 39,
+    "positive_selected_targets": 275,
+    "negative_nonempty_pools": 37,
+    "negative_covered_pools": 37,
+    "negative_selected_targets": 135,
+    "selected_targets_both_signs": 21,
+    "selected_targets_mapped": 389,
+    "selected_targets_unmapped": 173
+  },
+  "qualification": "Direct coverage only. Indirect effects of other selected targets and efficacy of a restricted search remain untested.",
+  "trained_candidate": false,
+  "walking_proven": false
+}

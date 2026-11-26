@@ -1,0 +1,73 @@
+{
+  "status": "resource_watch_deadline_no_quiescent_window",
+  "budget_seconds": 11.0,
+  "windows": [
+    {
+      "start_elapsed": 0.0,
+      "decision": {
+        "passed": false,
+        "sample_count": 10,
+        "minimum_available_gib": 2.157970428466797,
+        "maximum_host_cpu_percent": 85.5,
+        "required_available_gib": 3.0,
+        "allowed_host_cpu_percent": 30.0,
+        "note": "Observed preflight window only; does not guarantee future resources or isolate historical slowdown cause"
+      },
+      "samples": [
+        {
+          "unix_time": 1793371382.820529,
+          "available_gib": 2.2750511169433594,
+          "host_cpu_percent": 65.5
+        },
+        {
+          "unix_time": 1793371383.822467,
+          "available_gib": 2.240009307861328,
+          "host_cpu_percent": 75.3
+        },
+        {
+          "unix_time": 1793371384.8236163,
+          "available_gib": 2.2374954223632812,
+          "host_cpu_percent": 40.9
+        },
+        {
+          "unix_time": 1793371385.825545,
+          "available_gib": 2.2392120361328125,
+          "host_cpu_percent": 35.0
+        },
+        {
+          "unix_time": 1793371386.8274512,
+          "available_gib": 2.2277565002441406,
+          "host_cpu_percent": 62.0
+        },
+        {
+          "unix_time": 1793371387.829474,
+          "available_gib": 2.157970428466797,
+          "host_cpu_percent": 81.5
+        },
+        {
+          "unix_time": 1793371388.830972,
+          "available_gib": 2.206806182861328,
+          "host_cpu_percent": 81.9
+        },
+        {
+          "unix_time": 1793371389.832518,
+          "available_gib": 2.2434959411621094,
+          "host_cpu_percent": 85.5
+        },
+        {
+          "unix_time": 1793371390.834254,
+          "available_gib": 2.191364288330078,
+          "host_cpu_percent": 58.1
+        },
+        {
+          "unix_time": 1793371391.8362722,
+          "available_gib": 2.174713134765625,
+          "host_cpu_percent": 50.1
+        }
+      ]
+    }
+  ],
+  "simulation_started": false,
+  "elapsed_seconds": 11.0,
+  "independent_progress": "Reviewed new Gemini4a78e0b delivery;44provenance-asserted tests passed and exact repairs sent. No physical-learning evidence."
+}

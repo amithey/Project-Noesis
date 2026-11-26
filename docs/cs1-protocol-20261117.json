@@ -1,0 +1,24 @@
+{
+  "experiment": "CS1",
+  "registration": 6954287823,
+  "recordings": 30,
+  "training_contexts": 6,
+  "offline_seconds": 180,
+  "workers": 0,
+  "warmup_samples": 10,
+  "full_samples": 1000,
+  "command_increment_rad": 0.06,
+  "checks": [
+    "sealed evidence hashes",
+    "finite full-horizon arrays",
+    "native command update AST recurrence exact",
+    "recorded femur offsets and pad commands exact",
+    "pre/post source and input hashes"
+  ],
+  "summary": [
+    "limiter occupancy",
+    "normalized command excursion RMS",
+    "trial-parent desired and reconstructed-command RMS difference"
+  ],
+  "limits": "Controller reconstruction only. Activation states and actuator forces are not recorded by this audit."
+}

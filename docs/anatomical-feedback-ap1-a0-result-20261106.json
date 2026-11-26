@@ -1,0 +1,31 @@
+{
+  "status": "failed",
+  "jobs": [
+    {
+      "name": "train-control-1005",
+      "phase": "train",
+      "bank": "control",
+      "seed": 1005,
+      "receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 288.6710000000894,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 22.549407958984375
+    }
+  ],
+  "training": {},
+  "cells": {},
+  "retention": {},
+  "model_promoted": false,
+  "walking_proven": false,
+  "error_type": "AssertionError",
+  "error": "",
+  "seconds": 289.2350000003353,
+  "source_prior_children_unchanged": true,
+  "data_unchanged": true,
+  "process_tree_empty_verified": true,
+  "lease_released": true
+}

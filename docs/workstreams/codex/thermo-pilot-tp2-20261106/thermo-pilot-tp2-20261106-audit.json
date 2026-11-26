@@ -1,0 +1,294 @@
+{
+  "status": "completed_audited_TP2",
+  "source_commit": "e0cbd109bb6e018bd253c9f1b5e1698e0421b276",
+  "cases": [
+    {
+      "seed": 10006,
+      "mode": "plain",
+      "warm_rate_hz_per_neuron": 13.265993265993265,
+      "warm_hz_per_cell": [
+        0.0,
+        0.0,
+        41.81818181818182,
+        0.0,
+        0.0,
+        37.77777777777778
+      ],
+      "cool_rate_hz_per_neuron": 9.797979797979798,
+      "standing_fraction": 0.9626262626262626,
+      "mean_stance_slip_mm_s": 3.0581713360264406,
+      "heading_forward_distance_mm": 0.298359305310338,
+      "net_forward_displacement_mm": 0.022346444869974825,
+      "leg_step_counts": {
+        "LF": 12,
+        "LM": 15,
+        "LH": 13,
+        "RF": 5,
+        "RM": 9,
+        "RH": 4
+      },
+      "total_leg_steps": 58,
+      "tripod_coordination": {
+        "alternation_index": 0.5956228956228957,
+        "correlation": -0.4280747312389304,
+        "intra_tripod_1_sync": 0.7590599115956949,
+        "intra_tripod_2_sync": 0.7457272584824133,
+        "tripod_coordination_score": 0.19183862825923673,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "seed": 10006,
+      "mode": "sham",
+      "warm_rate_hz_per_neuron": 13.67003367003367,
+      "warm_hz_per_cell": [
+        0.0,
+        0.0,
+        42.82828282828282,
+        0.0,
+        0.0,
+        39.19191919191919
+      ],
+      "cool_rate_hz_per_neuron": 10.47138047138047,
+      "standing_fraction": 0.9616161616161616,
+      "mean_stance_slip_mm_s": 2.999590609273561,
+      "heading_forward_distance_mm": -0.06438695662222454,
+      "net_forward_displacement_mm": -0.12550593986546923,
+      "leg_step_counts": {
+        "LF": 9,
+        "LM": 11,
+        "LH": 12,
+        "RF": 7,
+        "RM": 9,
+        "RH": 5
+      },
+      "total_leg_steps": 53,
+      "tripod_coordination": {
+        "alternation_index": 0.5447811447811448,
+        "correlation": -0.1748796189869172,
+        "intra_tripod_1_sync": 0.7043008005947164,
+        "intra_tripod_2_sync": 0.7385847657431551,
+        "tripod_coordination_score": 0.0687326612690429,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "seed": 10006,
+      "mode": "stimulus",
+      "warm_rate_hz_per_neuron": 35.050505050505045,
+      "warm_hz_per_cell": [
+        16.161616161616163,
+        25.252525252525253,
+        66.26262626262626,
+        24.646464646464647,
+        14.14141414141414,
+        63.838383838383834
+      ],
+      "cool_rate_hz_per_neuron": 10.774410774410773,
+      "standing_fraction": 0.8868686868686869,
+      "mean_stance_slip_mm_s": 2.958332421925571,
+      "heading_forward_distance_mm": 0.2739005028578221,
+      "net_forward_displacement_mm": -0.5086367564541736,
+      "leg_step_counts": {
+        "LF": 13,
+        "LM": 12,
+        "LH": 12,
+        "RF": 2,
+        "RM": 7,
+        "RH": 3
+      },
+      "total_leg_steps": 49,
+      "tripod_coordination": {
+        "alternation_index": 0.6373737373737374,
+        "correlation": -0.4111299955241429,
+        "intra_tripod_1_sync": 0.7366801010126863,
+        "intra_tripod_2_sync": 0.820009182970697,
+        "tripod_coordination_score": 0.20396012445605832,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "warm_gain_hz_per_cell": 21.380471380471377,
+      "warm_gain_per_cell": [
+        16.161616161616163,
+        25.252525252525253,
+        23.434343434343432,
+        24.646464646464647,
+        14.14141414141414,
+        24.646464646464644
+      ],
+      "standing_change_pp": -7.474747474747467,
+      "slip_change_percent": -1.375460611872692,
+      "neural_criterion_pass": true,
+      "retention_criterion_pass": false
+    },
+    {
+      "seed": 10007,
+      "mode": "plain",
+      "warm_rate_hz_per_neuron": 8.181818181818182,
+      "warm_hz_per_cell": [
+        0.0,
+        0.0,
+        25.252525252525253,
+        0.0,
+        0.0,
+        23.838383838383837
+      ],
+      "cool_rate_hz_per_neuron": 6.127946127946127,
+      "standing_fraction": 0.9444444444444444,
+      "mean_stance_slip_mm_s": 2.4901644202802085,
+      "heading_forward_distance_mm": 0.33179266889018316,
+      "net_forward_displacement_mm": 0.3839992223829025,
+      "leg_step_counts": {
+        "LF": 10,
+        "LM": 12,
+        "LH": 12,
+        "RF": 6,
+        "RM": 8,
+        "RH": 4
+      },
+      "total_leg_steps": 52,
+      "tripod_coordination": {
+        "alternation_index": 0.5552188552188553,
+        "correlation": -0.5413615563084424,
+        "intra_tripod_1_sync": 0.7047769667773337,
+        "intra_tripod_2_sync": 0.763821573421867,
+        "tripod_coordination_score": 0.2207113742218327,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "seed": 10007,
+      "mode": "sham",
+      "warm_rate_hz_per_neuron": 12.558922558922557,
+      "warm_hz_per_cell": [
+        0.0,
+        0.0,
+        38.78787878787879,
+        0.0,
+        0.0,
+        36.56565656565657
+      ],
+      "cool_rate_hz_per_neuron": 9.427609427609427,
+      "standing_fraction": 0.8737373737373737,
+      "mean_stance_slip_mm_s": 2.724622590841112,
+      "heading_forward_distance_mm": 0.521811119456925,
+      "net_forward_displacement_mm": 0.5656886774148929,
+      "leg_step_counts": {
+        "LF": 10,
+        "LM": 13,
+        "LH": 12,
+        "RF": 6,
+        "RM": 9,
+        "RH": 5
+      },
+      "total_leg_steps": 55,
+      "tripod_coordination": {
+        "alternation_index": 0.5144781144781144,
+        "correlation": -0.28127647581584714,
+        "intra_tripod_1_sync": 0.703348468229482,
+        "intra_tripod_2_sync": 0.7314422730038972,
+        "tripod_coordination_score": 0.103814708008647,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE"
+    },
+    {
+      "seed": 10007,
+      "mode": "stimulus",
+      "warm_rate_hz_per_neuron": 36.83501683501683,
+      "warm_hz_per_cell": [
+        21.01010101010101,
+        28.28282828282828,
+        67.67676767676767,
+        26.86868686868687,
+        15.353535353535353,
+        61.81818181818181
+      ],
+      "cool_rate_hz_per_neuron": 10.942760942760941,
+      "standing_fraction": 0.8929292929292929,
+      "mean_stance_slip_mm_s": 3.0102946043822465,
+      "heading_forward_distance_mm": 0.7616533942869173,
+      "net_forward_displacement_mm": 0.7953788454575912,
+      "leg_step_counts": {
+        "LF": 11,
+        "LM": 14,
+        "LH": 13,
+        "RF": 3,
+        "RM": 8,
+        "RH": 5
+      },
+      "total_leg_steps": 54,
+      "tripod_coordination": {
+        "alternation_index": 0.5932659932659933,
+        "correlation": -0.39290843807809084,
+        "intra_tripod_1_sync": 0.7304899406386627,
+        "intra_tripod_2_sync": 0.7576314130478432,
+        "tripod_coordination_score": 0.17343995952008504,
+        "tripod_gait_detected": false
+      },
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "warm_gain_hz_per_cell": 24.276094276094273,
+      "warm_gain_per_cell": [
+        21.01010101010101,
+        28.28282828282828,
+        28.88888888888888,
+        26.86868686868687,
+        15.353535353535353,
+        25.252525252525245
+      ],
+      "standing_change_pp": 1.9191919191919204,
+      "slip_change_percent": 10.48482877964192,
+      "neural_criterion_pass": true,
+      "retention_criterion_pass": false
+    }
+  ],
+  "seconds": 382.81300000008196,
+  "full_MT_state_gate": {
+    "10006": true,
+    "10007": true
+  },
+  "plain_B2_replay": {
+    "10006": true,
+    "10007": true
+  },
+  "stimulus_TP1_constant_replay": {
+    "10006": true,
+    "10007": true
+  },
+  "exploratory_command_divergence": {
+    "10006": {
+      "role": "Exploratory descriptive divergence, not a new primary gate or lag/coupling test",
+      "first_changed_command_chunk": 5,
+      "changed_command_chunks": 996,
+      "command_rms_difference_rad": 0.22180539566061555,
+      "command_max_abs_difference_rad": 0.9738318039637466,
+      "changed_adhesion_chunks": 571
+    },
+    "10007": {
+      "role": "Exploratory descriptive divergence, not a new primary gate or lag/coupling test",
+      "first_changed_command_chunk": 4,
+      "changed_command_chunks": 997,
+      "command_rms_difference_rad": 0.23933800532511404,
+      "command_max_abs_difference_rad": 1.0656345095948165,
+      "changed_adhesion_chunks": 606
+    }
+  },
+  "all_neural_criteria_pass": true,
+  "all_retention_criteria_pass": false,
+  "weights_unchanged": true,
+  "source_unchanged": true,
+  "lease_released": true,
+  "learning": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "Two reused development seeds, frozen5s probes; no independent final validation or retained-learning evidence.",
+    "Constant analytic warm input, not changing environmental temperature or thermotaxis.",
+    "Sham retains zero-weight event/active-set processing; it is not a no-input deployment baseline.",
+    "This amplitude contrast controls the identified RNG nuisance, not every possible biological modelling error.",
+    "Strict physical screen is descriptive; no promotion, default activation or gain retuning."
+  ]
+}

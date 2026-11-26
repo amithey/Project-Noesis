@@ -1,0 +1,55 @@
+{
+  "status": "technical_failure_before_simulation",
+  "code_commit": "4bde8da979265e7fcfff04350d86c4c82a26cd08",
+  "completed_cases": 0,
+  "completed_physics_chunks": 0,
+  "primary_error": "metadata mass-layout rejected missing fused head ID -1",
+  "secondary_error": "partial metadata writer assumed constructor completed",
+  "static_diagnosis": {
+    "status": "completed_static_body_mapping",
+    "original_fusestatic": true,
+    "native_body_mapping_count": 69,
+    "missing_fused_names": [
+      {
+        "segment": "BodySegment(name='c_head')",
+        "name": "nmf/c_head",
+        "compiled_id": -1
+      }
+    ],
+    "positive_unique_count": 68,
+    "critical_thorax_claw_ids": [
+      1,
+      28,
+      36,
+      44,
+      52,
+      60,
+      68
+    ],
+    "all_critical_observation_ids_valid": true,
+    "compiled_nbody": 69,
+    "unfused_diagnostic_nbody": 70,
+    "original_total_mass": 0.0010243099999999996,
+    "unfused_diagnostic_total_mass": 0.0010243099999999996,
+    "selected_subtree_mass": 0.0010243099999999998,
+    "all_missing_names_restored_without_fusion": true,
+    "production_model_fusion_not_changed": true,
+    "physical_integration_steps": 0,
+    "neural_steps": 0,
+    "original_model_time": 0.0
+  },
+  "original_source_prior_checkpoint_data_unchanged": true,
+  "all_processes_empty": true,
+  "lease_released": true,
+  "scientific_interpretation": false,
+  "new_allocation_required": true,
+  "model_promoted": false,
+  "artifact": {
+    "path": "body-telemetry-h2-a0-20261106-evidence.zip",
+    "bytes": 19173,
+    "sha256": "af5bdd43dbbca67aba77216b41002e04239a2f6db49dafcd09082d55423df381",
+    "files": 14,
+    "crc_and_all_hashes_verified": true,
+    "release_uploaded": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "digest": "sha256:6548cf9b53258a41a5ab6428002b7a848682f4644a0ac38ee9aa225d7847d168",
+      "name": "standing-profile-s1-evidence.zip",
+      "size": 43598494,
+      "verified": true
+    },
+    {
+      "digest": "sha256:bb3b95ef79fef2b534bc15c6502f1f2808988a4d830113000c39e95115e33738",
+      "name": "standing-profile-s1-manifest.json",
+      "size": 36175,
+      "verified": true
+    }
+  ],
+  "url": "https://github.com/amithey/Project-Noesis/releases/tag/standing-profile-s1-2026-11-01",
+  "local_zip_crc_and_all91_file_hashes_verified": true,
+  "model_promoted": false
+}

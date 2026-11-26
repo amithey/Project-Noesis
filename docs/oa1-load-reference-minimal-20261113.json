@@ -1,0 +1,16 @@
+{
+  "status": "completed_readonly_OA1",
+  "completed_cases": 24,
+  "cases_with_recorded_actuator_contribution": 24,
+  "cases_with_changed_load_component": 24,
+  "cases_with_changed_counterfactual_quality": 24,
+  "region_ground_equivalence_cases": 24,
+  "new_simulation_workers": 0,
+  "original_failed_verdict_preserved": true,
+  "counterfactual_reference_adopted": false,
+  "no_policy_selected": true,
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false,
+  "limits": "Posthoc sensitivity to a quasistatic force-reference assumption, not a Newton residual, physical balance validator or explanation of learning failure. No objective/gate/weights/policy ranking changed."
+}

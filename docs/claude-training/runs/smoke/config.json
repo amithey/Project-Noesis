@@ -1,0 +1,713 @@
+{
+  "method": "es",
+  "stage": "stand",
+  "output": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\claude-es\\smoke",
+  "generations": 1,
+  "pairs": 2,
+  "popsize": 12,
+  "sigma": 0.08,
+  "lr": 0.03,
+  "seconds": 0.5,
+  "seeds_per_gen": 1,
+  "train_seed_base": 30000,
+  "grouping": "fine",
+  "init_gains": null,
+  "workers": 2,
+  "threads_per_worker": 1,
+  "wall_hours": 6.0,
+  "project": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis",
+  "core": "C:\\Users\\heyma\\.codex\\worktrees\\brain-body-feedback\\Project Noesis\\src",
+  "checkpoint": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\standing-001-train-11000\\weights-last.npz",
+  "rng_seed": 0,
+  "method_description": "OpenAI-ES, antithetic pairs, centred-rank shaping, Adam on group gains",
+  "n_groups": 136,
+  "plastic_edges": 85390,
+  "neurons": 158262,
+  "edges": 3006456,
+  "checkpoint_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+  "noesis_source_sha256": "f52dff5a0d4d3eb14f08c30d6f9be7e646a06adf1361bb2d4b0dde1a9870396b",
+  "constraints": "existing edges only; signs fixed; |w| within original +-50%; frozen evaluation",
+  "groups": [
+    {
+      "id": 0,
+      "name": "MN:RFCoxa:+|E",
+      "edges": 595
+    },
+    {
+      "id": 1,
+      "name": "MN:RFFemur:-|E",
+      "edges": 744
+    },
+    {
+      "id": 2,
+      "name": "MN:RMFemur:-|E",
+      "edges": 727
+    },
+    {
+      "id": 3,
+      "name": "MN:RMTibia:+|E",
+      "edges": 1772
+    },
+    {
+      "id": 4,
+      "name": "MN:RMCoxa:-|E",
+      "edges": 309
+    },
+    {
+      "id": 5,
+      "name": "MN:RHCoxa:+|E",
+      "edges": 361
+    },
+    {
+      "id": 6,
+      "name": "IN:single_leg_neuromere:R:?|E",
+      "edges": 2678
+    },
+    {
+      "id": 7,
+      "name": "MN:RMCoxa:+|E",
+      "edges": 483
+    },
+    {
+      "id": 8,
+      "name": "MN:RFTarsus1:+|E",
+      "edges": 391
+    },
+    {
+      "id": 9,
+      "name": "MN:RMFemur_roll:-|E",
+      "edges": 415
+    },
+    {
+      "id": 10,
+      "name": "MN:RHTibia:+|E",
+      "edges": 1598
+    },
+    {
+      "id": 11,
+      "name": "MN:RHFemur:-|E",
+      "edges": 690
+    },
+    {
+      "id": 12,
+      "name": "MN:RFCoxa:-|E",
+      "edges": 787
+    },
+    {
+      "id": 13,
+      "name": "MN:RFTibia:+|E",
+      "edges": 827
+    },
+    {
+      "id": 14,
+      "name": "MN:LMFemur:+|I",
+      "edges": 723
+    },
+    {
+      "id": 15,
+      "name": "IN:single_leg_neuromere:L:?|I",
+      "edges": 2143
+    },
+    {
+      "id": 16,
+      "name": "MN:LMTibia:+|I",
+      "edges": 787
+    },
+    {
+      "id": 17,
+      "name": "IN:wing_motor_neuron:L:?|I",
+      "edges": 2998
+    },
+    {
+      "id": 18,
+      "name": "IN:wing_motor_neuron:R:?|I",
+      "edges": 2929
+    },
+    {
+      "id": 19,
+      "name": "MN:RMFemur_roll:-|I",
+      "edges": 313
+    },
+    {
+      "id": 20,
+      "name": "IN:wing_motor_neuron:L:?|E",
+      "edges": 4015
+    },
+    {
+      "id": 21,
+      "name": "MN:RMFemur:+|E",
+      "edges": 839
+    },
+    {
+      "id": 22,
+      "name": "MN:RMTarsus1:+|E",
+      "edges": 453
+    },
+    {
+      "id": 23,
+      "name": "MN:LMTibia:+|E",
+      "edges": 1156
+    },
+    {
+      "id": 24,
+      "name": "MN:LMFemur_roll:+|E",
+      "edges": 348
+    },
+    {
+      "id": 25,
+      "name": "IN:sequential_leg_neuromeres:L:?|E",
+      "edges": 509
+    },
+    {
+      "id": 26,
+      "name": "MN:LMTarsus1:+|E",
+      "edges": 499
+    },
+    {
+      "id": 27,
+      "name": "IN:single_leg_neuromere:R:?|I",
+      "edges": 2083
+    },
+    {
+      "id": 28,
+      "name": "IN:sequential_leg_neuromeres:R:?|I",
+      "edges": 527
+    },
+    {
+      "id": 29,
+      "name": "IN:neck_motor_neuron:L:?|I",
+      "edges": 1418
+    },
+    {
+      "id": 30,
+      "name": "MN:LMFemur:+|E",
+      "edges": 906
+    },
+    {
+      "id": 31,
+      "name": "MN:LHCoxa:+|E",
+      "edges": 577
+    },
+    {
+      "id": 32,
+      "name": "MN:RHFemur_roll:-|E",
+      "edges": 385
+    },
+    {
+      "id": 33,
+      "name": "MN:LHFemur_roll:+|E",
+      "edges": 288
+    },
+    {
+      "id": 34,
+      "name": "MN:LHTibia:-|E",
+      "edges": 422
+    },
+    {
+      "id": 35,
+      "name": "IN:single_leg_neuromere:L:?|E",
+      "edges": 2843
+    },
+    {
+      "id": 36,
+      "name": "MN:LHTibia:+|E",
+      "edges": 1806
+    },
+    {
+      "id": 37,
+      "name": "MN:LHFemur:-|E",
+      "edges": 798
+    },
+    {
+      "id": 38,
+      "name": "MN:LHTarsus1:+|E",
+      "edges": 526
+    },
+    {
+      "id": 39,
+      "name": "MN:LHCoxa:+|I",
+      "edges": 414
+    },
+    {
+      "id": 40,
+      "name": "MN:LHFemur_roll:+|I",
+      "edges": 246
+    },
+    {
+      "id": 41,
+      "name": "MN:LHTarsus1:-|I",
+      "edges": 74
+    },
+    {
+      "id": 42,
+      "name": "MN:LHFemur:-|I",
+      "edges": 439
+    },
+    {
+      "id": 43,
+      "name": "MN:RHTibia:+|I",
+      "edges": 1080
+    },
+    {
+      "id": 44,
+      "name": "MN:RHFemur:-|I",
+      "edges": 389
+    },
+    {
+      "id": 45,
+      "name": "MN:RHTarsus1:+|I",
+      "edges": 457
+    },
+    {
+      "id": 46,
+      "name": "MN:RHTibia:-|I",
+      "edges": 216
+    },
+    {
+      "id": 47,
+      "name": "MN:RHCoxa:+|I",
+      "edges": 257
+    },
+    {
+      "id": 48,
+      "name": "MN:RHFemur:+|I",
+      "edges": 809
+    },
+    {
+      "id": 49,
+      "name": "MN:LHFemur:+|E",
+      "edges": 966
+    },
+    {
+      "id": 50,
+      "name": "MN:LFCoxa_yaw:+|I",
+      "edges": 211
+    },
+    {
+      "id": 51,
+      "name": "MN:LFFemur_roll:+|I",
+      "edges": 297
+    },
+    {
+      "id": 52,
+      "name": "MN:LFFemur:-|I",
+      "edges": 459
+    },
+    {
+      "id": 53,
+      "name": "IN:wing_motor_neuron:R:?|E",
+      "edges": 4065
+    },
+    {
+      "id": 54,
+      "name": "MN:LHCoxa_yaw:+|E",
+      "edges": 207
+    },
+    {
+      "id": 55,
+      "name": "MN:RHFemur:+|E",
+      "edges": 1016
+    },
+    {
+      "id": 56,
+      "name": "IN:neck_motor_neuron:R:?|E",
+      "edges": 1500
+    },
+    {
+      "id": 57,
+      "name": "MN:RMTarsus1:+|I",
+      "edges": 429
+    },
+    {
+      "id": 58,
+      "name": "MN:RFFemur:+|E",
+      "edges": 1025
+    },
+    {
+      "id": 59,
+      "name": "MN:LMTibia:-|E",
+      "edges": 321
+    },
+    {
+      "id": 60,
+      "name": "MN:LMCoxa:+|E",
+      "edges": 555
+    },
+    {
+      "id": 61,
+      "name": "MN:RFFemur:+|I",
+      "edges": 901
+    },
+    {
+      "id": 62,
+      "name": "MN:RFCoxa:+|I",
+      "edges": 442
+    },
+    {
+      "id": 63,
+      "name": "MN:RFTibia:-|E",
+      "edges": 322
+    },
+    {
+      "id": 64,
+      "name": "IN:sequential_leg_neuromeres:R:?|E",
+      "edges": 597
+    },
+    {
+      "id": 65,
+      "name": "MN:LHCoxa_roll:-|E",
+      "edges": 164
+    },
+    {
+      "id": 66,
+      "name": "MN:LHCoxa_yaw:+|I",
+      "edges": 175
+    },
+    {
+      "id": 67,
+      "name": "MN:LHCoxa_roll:-|I",
+      "edges": 89
+    },
+    {
+      "id": 68,
+      "name": "IN:sequential_leg_neuromeres:L:?|I",
+      "edges": 416
+    },
+    {
+      "id": 69,
+      "name": "MN:LHTarsus1:+|I",
+      "edges": 484
+    },
+    {
+      "id": 70,
+      "name": "MN:LHTarsus1:-|E",
+      "edges": 88
+    },
+    {
+      "id": 71,
+      "name": "MN:RMFemur:-|I",
+      "edges": 465
+    },
+    {
+      "id": 72,
+      "name": "MN:RMTibia:-|I",
+      "edges": 184
+    },
+    {
+      "id": 73,
+      "name": "MN:RMTarsus1:-|I",
+      "edges": 119
+    },
+    {
+      "id": 74,
+      "name": "MN:RMTibia:+|I",
+      "edges": 1161
+    },
+    {
+      "id": 75,
+      "name": "MN:RMFemur:+|I",
+      "edges": 723
+    },
+    {
+      "id": 76,
+      "name": "MN:RMCoxa:+|I",
+      "edges": 310
+    },
+    {
+      "id": 77,
+      "name": "MN:RMCoxa:-|I",
+      "edges": 209
+    },
+    {
+      "id": 78,
+      "name": "MN:RMCoxa_roll:+|I",
+      "edges": 36
+    },
+    {
+      "id": 79,
+      "name": "IN:neck_motor_neuron:L:?|E",
+      "edges": 2039
+    },
+    {
+      "id": 80,
+      "name": "MN:LFFemur:+|E",
+      "edges": 1015
+    },
+    {
+      "id": 81,
+      "name": "MN:LFTibia:+|E",
+      "edges": 516
+    },
+    {
+      "id": 82,
+      "name": "MN:LFCoxa:+|E",
+      "edges": 515
+    },
+    {
+      "id": 83,
+      "name": "MN:LFCoxa:-|E",
+      "edges": 502
+    },
+    {
+      "id": 84,
+      "name": "MN:LFFemur:-|E",
+      "edges": 663
+    },
+    {
+      "id": 85,
+      "name": "MN:LFCoxa_yaw:+|E",
+      "edges": 330
+    },
+    {
+      "id": 86,
+      "name": "MN:LFTarsus1:+|E",
+      "edges": 203
+    },
+    {
+      "id": 87,
+      "name": "IN:neck_motor_neuron:R:?|I",
+      "edges": 1095
+    },
+    {
+      "id": 88,
+      "name": "MN:RHCoxa:-|E",
+      "edges": 115
+    },
+    {
+      "id": 89,
+      "name": "MN:RHCoxa_roll:+|E",
+      "edges": 146
+    },
+    {
+      "id": 90,
+      "name": "MN:LMTarsus1:+|I",
+      "edges": 435
+    },
+    {
+      "id": 91,
+      "name": "MN:LHTibia:+|I",
+      "edges": 1227
+    },
+    {
+      "id": 92,
+      "name": "MN:LMFemur:-|E",
+      "edges": 547
+    },
+    {
+      "id": 93,
+      "name": "MN:RHTibia:-|E",
+      "edges": 411
+    },
+    {
+      "id": 94,
+      "name": "MN:LMCoxa:+|I",
+      "edges": 353
+    },
+    {
+      "id": 95,
+      "name": "MN:RFFemur:-|I",
+      "edges": 443
+    },
+    {
+      "id": 96,
+      "name": "MN:RHFemur_roll:-|I",
+      "edges": 301
+    },
+    {
+      "id": 97,
+      "name": "MN:LFFemur:+|I",
+      "edges": 820
+    },
+    {
+      "id": 98,
+      "name": "MN:RHCoxa:-|I",
+      "edges": 90
+    },
+    {
+      "id": 99,
+      "name": "MN:RMTarsus1:-|E",
+      "edges": 98
+    },
+    {
+      "id": 100,
+      "name": "MN:RMCoxa_roll:+|E",
+      "edges": 35
+    },
+    {
+      "id": 101,
+      "name": "MN:RFFemur_roll:-|E",
+      "edges": 412
+    },
+    {
+      "id": 102,
+      "name": "MN:LHFemur:+|I",
+      "edges": 805
+    },
+    {
+      "id": 103,
+      "name": "MN:LHTibia:-|I",
+      "edges": 234
+    },
+    {
+      "id": 104,
+      "name": "MN:RFTarsus1:+|I",
+      "edges": 413
+    },
+    {
+      "id": 105,
+      "name": "MN:LFCoxa:+|I",
+      "edges": 392
+    },
+    {
+      "id": 106,
+      "name": "MN:LFFemur_roll:+|E",
+      "edges": 457
+    },
+    {
+      "id": 107,
+      "name": "MN:RFFemur_roll:-|I",
+      "edges": 288
+    },
+    {
+      "id": 108,
+      "name": "MN:RFCoxa:-|I",
+      "edges": 534
+    },
+    {
+      "id": 109,
+      "name": "MN:RFCoxa_roll:+|E",
+      "edges": 75
+    },
+    {
+      "id": 110,
+      "name": "MN:LMTibia:-|I",
+      "edges": 150
+    },
+    {
+      "id": 111,
+      "name": "MN:LMFemur_roll:+|I",
+      "edges": 272
+    },
+    {
+      "id": 112,
+      "name": "MN:LMCoxa_yaw:+|I",
+      "edges": 202
+    },
+    {
+      "id": 113,
+      "name": "MN:LMFemur:-|I",
+      "edges": 370
+    },
+    {
+      "id": 114,
+      "name": "MN:LMTarsus1:-|I",
+      "edges": 62
+    },
+    {
+      "id": 115,
+      "name": "MN:RHTarsus1:-|I",
+      "edges": 59
+    },
+    {
+      "id": 116,
+      "name": "MN:LFTibia:-|E",
+      "edges": 119
+    },
+    {
+      "id": 117,
+      "name": "MN:LMCoxa_yaw:+|E",
+      "edges": 346
+    },
+    {
+      "id": 118,
+      "name": "MN:RFTibia:-|I",
+      "edges": 190
+    },
+    {
+      "id": 119,
+      "name": "MN:RMTibia:-|E",
+      "edges": 372
+    },
+    {
+      "id": 120,
+      "name": "MN:LFCoxa:-|I",
+      "edges": 361
+    },
+    {
+      "id": 121,
+      "name": "MN:LFTarsus1:+|I",
+      "edges": 245
+    },
+    {
+      "id": 122,
+      "name": "MN:LFCoxa_roll:-|E",
+      "edges": 44
+    },
+    {
+      "id": 123,
+      "name": "MN:RHTarsus1:+|E",
+      "edges": 499
+    },
+    {
+      "id": 124,
+      "name": "MN:RFCoxa_roll:+|I",
+      "edges": 46
+    },
+    {
+      "id": 125,
+      "name": "MN:RFTibia:+|I",
+      "edges": 613
+    },
+    {
+      "id": 126,
+      "name": "MN:RFTarsus1:-|I",
+      "edges": 49
+    },
+    {
+      "id": 127,
+      "name": "MN:RFTarsus1:-|E",
+      "edges": 54
+    },
+    {
+      "id": 128,
+      "name": "MN:LMTarsus1:-|E",
+      "edges": 41
+    },
+    {
+      "id": 129,
+      "name": "MN:LFTibia:+|I",
+      "edges": 468
+    },
+    {
+      "id": 130,
+      "name": "MN:LFTibia:-|I",
+      "edges": 110
+    },
+    {
+      "id": 131,
+      "name": "MN:RHCoxa_roll:+|I",
+      "edges": 86
+    },
+    {
+      "id": 132,
+      "name": "MN:RHTarsus1:-|E",
+      "edges": 84
+    },
+    {
+      "id": 133,
+      "name": "MN:LFTarsus1:-|E",
+      "edges": 13
+    },
+    {
+      "id": 134,
+      "name": "MN:LFCoxa_roll:-|I",
+      "edges": 29
+    },
+    {
+      "id": 135,
+      "name": "MN:LFTarsus1:-|I",
+      "edges": 12
+    }
+  ],
+  "started_unix": 1795625946.4595897
+}

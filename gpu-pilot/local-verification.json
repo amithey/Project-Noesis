@@ -1,0 +1,57 @@
+{
+  "upstream_commit": "ca65a510c2afe6ac61c51df4f274c8d190c2f95f",
+  "tests_passed": 23,
+  "tests_skipped": 1,
+  "skipped_test": "real NVIDIA CUDA batched-body test",
+  "ruff": "passed",
+  "hardware_observed": "Intel(R) Iris(R) Xe Graphics",
+  "cuda_verified": false,
+  "full_brain_cpu_pilot": {
+    "status": "completed_transport_pilot",
+    "neurons": 158262,
+    "edges": 3006456,
+    "checkpoint_sha256": "078cfe3ce59964ca655d39287f9f60249dde878dc13c119a7ee01749d8b4afe8",
+    "completed_control_chunks": 10,
+    "simulated_seconds_per_world": 0.05,
+    "total_wall_seconds": 54.60274080000818,
+    "weights_unchanged": true,
+    "spikes_per_world": [
+      31016
+    ],
+    "displacement_mm": [
+      [
+        0.03048865216998209,
+        0.04770853005569046,
+        -1.063749395450058
+      ]
+    ]
+  },
+  "observed_short_pilot": {
+    "last_thorax_height_mm": 1.036250604549942,
+    "last_uprightness": 0.9940969143252799,
+    "minimum_uprightness": 0.9940969143252799,
+    "last_grounded_legs": 3
+  },
+  "standing_proven": false,
+  "walking_proven": false,
+  "model_promoted": false,
+  "neural_execution": "CPU; frozen weights shared read-only",
+  "packages": {
+    "flygym": "2.1.0",
+    "mujoco": "3.9.0",
+    "numpy": "2.5.4",
+    "numba": "0.68.0",
+    "pandas": "3.0.1",
+    "pyarrow": "26.0.0"
+  },
+  "transport_command_learning_enabled": false,
+  "training_entry_point_available": true,
+  "latest_test_run": {
+    "passed": 23,
+    "skipped_nvidia_only": 1,
+    "ruff": "passed",
+    "log": "outputs/tests-learning-py312.txt"
+  },
+  "experimental_training_result": "outputs/standing-learning-001-comparison.json",
+  "initial_transport_tests_passed": 21
+}

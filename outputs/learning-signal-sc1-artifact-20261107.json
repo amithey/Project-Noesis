@@ -1,0 +1,9 @@
+{
+  "path": "learning-signal-sc1-20261107-evidence.zip",
+  "bytes": 7600,
+  "sha256": "994390ed4c19d86c3b64aefa3d2aaeceef340fa73d36cf4e2c66e6dc54a801f6",
+  "files": 5,
+  "crc_and_all_hashes_verified": true,
+  "release_uploaded": false,
+  "scope": "Diagnostic source and private output only, signed inputs remain in prior PS1 archive; no raw connectome/cache/environment/private lease; private maps stay local"
+}

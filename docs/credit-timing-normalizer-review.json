@@ -1,0 +1,27 @@
+{
+  "status": "candidate_normalizer_exactly_matches_C1_on_three_complete_physical_logs",
+  "source_commit": "bbbfd7765172c6cafc30023d1786d8cb3fcdf7ac",
+  "cases": [
+    {
+      "seed": 1000,
+      "active_rows": 990,
+      "exact_array_equal": true,
+      "max_absolute_error": 0.0
+    },
+    {
+      "seed": 1001,
+      "active_rows": 990,
+      "exact_array_equal": true,
+      "max_absolute_error": 0.0
+    },
+    {
+      "seed": 1002,
+      "active_rows": 990,
+      "exact_array_equal": true,
+      "max_absolute_error": 0.0
+    }
+  ],
+  "whole_credit_timing_tool_accepted": false,
+  "pending": "PCA pooling invariance and null/provenance review; no worker code integrated",
+  "walking_proven": false
+}

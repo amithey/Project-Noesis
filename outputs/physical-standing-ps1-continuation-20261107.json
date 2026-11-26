@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-07",
+  "goal_status": "active_unachieved",
+  "phase": "PS1_complete_independently_audited",
+  "runtime_source_commit": "411161424a161e000ba83ae89dac2c503867d5fe",
+  "result_commit": "c9660197da381c9aa5a62467cbe535374ef63852",
+  "pull_request": "https://github.com/amithey/Project-Noesis/pull/47",
+  "active_workers": false,
+  "host_lease_released": true,
+  "validated_best": null,
+  "model_promoted": false,
+  "physical_balance_validated": false,
+  "walking_proven": false,
+  "declared_scientific_conditions_met": false,
+  "technical_audit_passed": true,
+  "minimal_verdict": "outputs/physical-standing-ps1-public-result-20261107.json",
+  "artifact_receipt": "outputs/physical-standing-ps1-20261107-artifact.json",
+  "artifact_release_uploaded": false,
+  "next": [
+    "Review the failed support/motion/retention pattern and useful reward/credit signal before any further allocation.",
+    "Preserve the failed experimental candidate and exact control; no unchanged continuation or promotion is assumed.",
+    "Coordinate Claude learning and Gemini physical review through team issues; no peer activity or approval inferred."
+  ],
+  "pending_specific_publication_approvals": [
+    "Detailed P1 narrative",
+    "PS1 offline objective-audit numeric table",
+    "Detailed PR47 result body; title-only completion update succeeded"
+  ],
+  "publication_limit": "Do not repost rejected payloads by another route. Full private integrity maps and archive containing pending-approval material remain local."
+}

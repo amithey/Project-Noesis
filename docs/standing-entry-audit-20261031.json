@@ -1,0 +1,638 @@
+{
+  "status": "offline_standing_and_native_reward_replay_complete",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0"
+  },
+  "current_parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "standing_ancestor_sha256": "fb80cfcc3018329209784751570d7ffb1ed33aa9ef48fceaa85588862f7626a8",
+  "parent_ancestry": {
+    "seed": 1000,
+    "profile": "curriculum-gripped-cycle-v9",
+    "seconds": 5.0,
+    "learning_rate": 0.2,
+    "report_sha256": "08b59b4e64b52c8a516610ab59677f3cf05ecd94c68b325d86ad516b7fc0c2b8"
+  },
+  "frozen_parent": {
+    "10006": {
+      "standing_fraction": 0.9626262626262626,
+      "failed_samples": 37,
+      "reasons": {
+        "height_below": 0,
+        "height_above": 35,
+        "upright_below": 4,
+        "no_tarsus_support": 2
+      },
+      "exclusive_reason_bitmasks": {
+        "2": 31,
+        "6": 4,
+        "8": 2
+      },
+      "reason_bit_order": [
+        "height_below",
+        "height_above",
+        "upright_below",
+        "no_tarsus_support"
+      ],
+      "episodes": 5,
+      "failures_at_least100ms": 1,
+      "max_failure_ms": 135,
+      "longest_episodes": [
+        {
+          "start_ms": 4065,
+          "duration_ms": 135,
+          "min_height_mm": 1.501680937613136,
+          "min_upright": 0.69212160790399,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 2530,
+          "duration_ms": 30,
+          "min_height_mm": 1.5027303457865886,
+          "min_upright": 0.8316588406928577,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 3430,
+          "duration_ms": 10,
+          "min_height_mm": 1.500714986302089,
+          "min_upright": 0.8122217268364296,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 3495,
+          "duration_ms": 5,
+          "min_height_mm": 1.3536842833047775,
+          "min_upright": 0.8668967899675131,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 3705,
+          "duration_ms": 5,
+          "min_height_mm": 1.0446793982079214,
+          "min_upright": 0.9566687776809419,
+          "left_censored": false,
+          "right_censored": false
+        }
+      ],
+      "diagnostic_duration_cutoff_is_not_a_new_success_gate": true,
+      "inputs": {
+        "report.json": "374018145930444995221db182117117b32534201532508382b5027dc8695b77",
+        "observations.npz": "6961701c5297e739713b0596adc45d57b4da13a72366f8d3c23d1e80876cca85"
+      }
+    },
+    "10007": {
+      "standing_fraction": 0.9444444444444444,
+      "failed_samples": 55,
+      "reasons": {
+        "height_below": 0,
+        "height_above": 40,
+        "upright_below": 0,
+        "no_tarsus_support": 16
+      },
+      "exclusive_reason_bitmasks": {
+        "2": 39,
+        "8": 15,
+        "10": 1
+      },
+      "reason_bit_order": [
+        "height_below",
+        "height_above",
+        "upright_below",
+        "no_tarsus_support"
+      ],
+      "episodes": 11,
+      "failures_at_least100ms": 0,
+      "max_failure_ms": 95,
+      "longest_episodes": [
+        {
+          "start_ms": 4260,
+          "duration_ms": 95,
+          "min_height_mm": 1.5005519462532377,
+          "min_upright": 0.7849406061514953,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 3965,
+          "duration_ms": 65,
+          "min_height_mm": 1.5048270802147785,
+          "min_upright": 0.7668644725012305,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 2490,
+          "duration_ms": 40,
+          "min_height_mm": 1.500719786954474,
+          "min_upright": 0.8181325890025098,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 1730,
+          "duration_ms": 35,
+          "min_height_mm": 0.7828658705966096,
+          "min_upright": 0.8606292903291857,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 1780,
+          "duration_ms": 10,
+          "min_height_mm": 0.7770285723600684,
+          "min_upright": 0.8539596278357487,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 145,
+          "duration_ms": 5,
+          "min_height_mm": 1.3792481580523923,
+          "min_upright": 0.9612952475724077,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 725,
+          "duration_ms": 5,
+          "min_height_mm": 1.1173055737380768,
+          "min_upright": 0.7781737939046603,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 745,
+          "duration_ms": 5,
+          "min_height_mm": 0.9437725621327798,
+          "min_upright": 0.7665808710408133,
+          "left_censored": false,
+          "right_censored": false
+        }
+      ],
+      "diagnostic_duration_cutoff_is_not_a_new_success_gate": true,
+      "inputs": {
+        "report.json": "3aa1b30ddb23d917f70ed74207fc117190121a33e62d5bd0a8a43bf9c2b922a6",
+        "observations.npz": "c95ad24947a6f8eebcfcd4881588bb89eea3b6bc66eba841f9804a0401cfb40b"
+      }
+    },
+    "10010": {
+      "standing_fraction": 0.8929292929292929,
+      "failed_samples": 106,
+      "reasons": {
+        "height_below": 0,
+        "height_above": 60,
+        "upright_below": 27,
+        "no_tarsus_support": 20
+      },
+      "exclusive_reason_bitmasks": {
+        "2": 59,
+        "4": 27,
+        "8": 19,
+        "10": 1
+      },
+      "reason_bit_order": [
+        "height_below",
+        "height_above",
+        "upright_below",
+        "no_tarsus_support"
+      ],
+      "episodes": 13,
+      "failures_at_least100ms": 2,
+      "max_failure_ms": 150,
+      "longest_episodes": [
+        {
+          "start_ms": 3625,
+          "duration_ms": 150,
+          "min_height_mm": 1.5022476014836268,
+          "min_upright": 0.8614102036920818,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 3815,
+          "duration_ms": 135,
+          "min_height_mm": 0.893005516376595,
+          "min_upright": 0.6180056251749512,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 3465,
+          "duration_ms": 55,
+          "min_height_mm": 1.5065083592145672,
+          "min_upright": 0.8648941789432387,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 1090,
+          "duration_ms": 50,
+          "min_height_mm": 1.5192917329465268,
+          "min_upright": 0.9259695689355327,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 745,
+          "duration_ms": 45,
+          "min_height_mm": 1.505496649911476,
+          "min_upright": 0.9084546419002557,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 4225,
+          "duration_ms": 35,
+          "min_height_mm": 0.7474148796225937,
+          "min_upright": 0.8454714619262061,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 4360,
+          "duration_ms": 30,
+          "min_height_mm": 0.7196937416662711,
+          "min_upright": 0.7909735171618234,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 795,
+          "duration_ms": 5,
+          "min_height_mm": 1.4592665679816526,
+          "min_upright": 0.9049486601526024,
+          "left_censored": false,
+          "right_censored": false
+        }
+      ],
+      "diagnostic_duration_cutoff_is_not_a_new_success_gate": true,
+      "inputs": {
+        "report.json": "746da19a5cbe3bf644a65ce1995b2d484dcb8878831b038d6f9cc53425fce3d6",
+        "observations.npz": "e483530ede3cf3385158e6f48073c2b7c90bec85c6abda82bdebcd558a32353e"
+      }
+    },
+    "10011": {
+      "standing_fraction": 0.9191919191919192,
+      "failed_samples": 80,
+      "reasons": {
+        "height_below": 0,
+        "height_above": 77,
+        "upright_below": 17,
+        "no_tarsus_support": 3
+      },
+      "exclusive_reason_bitmasks": {
+        "2": 60,
+        "6": 17,
+        "8": 3
+      },
+      "reason_bit_order": [
+        "height_below",
+        "height_above",
+        "upright_below",
+        "no_tarsus_support"
+      ],
+      "episodes": 6,
+      "failures_at_least100ms": 2,
+      "max_failure_ms": 195,
+      "longest_episodes": [
+        {
+          "start_ms": 1810,
+          "duration_ms": 195,
+          "min_height_mm": 1.505066169080058,
+          "min_upright": 0.6322244216651112,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 3655,
+          "duration_ms": 155,
+          "min_height_mm": 1.5014236452301244,
+          "min_upright": 0.758561500020281,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 2170,
+          "duration_ms": 35,
+          "min_height_mm": 1.5017276769615977,
+          "min_upright": 0.8366354888569295,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 455,
+          "duration_ms": 5,
+          "min_height_mm": 1.284634326842424,
+          "min_upright": 0.8912738393097673,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 790,
+          "duration_ms": 5,
+          "min_height_mm": 1.2117673377406821,
+          "min_upright": 0.8646027611935228,
+          "left_censored": false,
+          "right_censored": false
+        },
+        {
+          "start_ms": 4515,
+          "duration_ms": 5,
+          "min_height_mm": 0.8669970526599511,
+          "min_upright": 0.9567243318662186,
+          "left_censored": false,
+          "right_censored": false
+        }
+      ],
+      "diagnostic_duration_cutoff_is_not_a_new_success_gate": true,
+      "inputs": {
+        "report.json": "4121980df4d200eb930ab266eaa58aa265f90f5ced79f00a11d2279b15f1014e",
+        "observations.npz": "f39ac3537af3e37065b556748557d350e53dc80573f2435c5132a5b3870f2f4f"
+      }
+    }
+  },
+  "trainings": {
+    "T1B": {
+      "max_absolute_reward_replay_error": 0.0,
+      "transitions_recomputed": 4999,
+      "first_transition_excluded": "Initial pre-step body state not stored; no invented reconstruction",
+      "learning_transitions": 4990,
+      "training_standing": {
+        "standing_fraction": 0.8545090180360722,
+        "failed_samples": 726,
+        "reasons": {
+          "height_below": 0,
+          "height_above": 700,
+          "upright_below": 108,
+          "no_tarsus_support": 33
+        },
+        "exclusive_reason_bitmasks": {
+          "2": 587,
+          "6": 106,
+          "8": 26,
+          "10": 5,
+          "14": 2
+        },
+        "reason_bit_order": [
+          "height_below",
+          "height_above",
+          "upright_below",
+          "no_tarsus_support"
+        ],
+        "episodes": 42,
+        "failures_at_least100ms": 15,
+        "max_failure_ms": 340,
+        "longest_episodes": [
+          {
+            "start_ms": 10635,
+            "duration_ms": 340,
+            "min_height_mm": 1.5184360756947468,
+            "min_upright": 0.6172433321245521,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 17725,
+            "duration_ms": 255,
+            "min_height_mm": 1.5089865532655307,
+            "min_upright": 0.7900780941107044,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 7360,
+            "duration_ms": 230,
+            "min_height_mm": 1.5109504938065597,
+            "min_upright": 0.4912170535800493,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 15680,
+            "duration_ms": 220,
+            "min_height_mm": 1.5006034165366173,
+            "min_upright": 0.7273346330952819,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 16580,
+            "duration_ms": 205,
+            "min_height_mm": 1.5007711486232032,
+            "min_upright": 0.7039025881721023,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 22570,
+            "duration_ms": 200,
+            "min_height_mm": 1.5045387957471854,
+            "min_upright": 0.6198170481646261,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 11265,
+            "duration_ms": 165,
+            "min_height_mm": 1.5034228481963654,
+            "min_upright": 0.4365079170593614,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 16000,
+            "duration_ms": 150,
+            "min_height_mm": 1.53714065076572,
+            "min_upright": 0.49640879711494235,
+            "left_censored": false,
+            "right_censored": false
+          }
+        ],
+        "diagnostic_duration_cutoff_is_not_a_new_success_gate": true
+      },
+      "reward_mean": 0.21287448102109588,
+      "positive_reward_while_nonstanding": 0,
+      "nonstanding_learning_samples": 726,
+      "positive_learning_signal_while_nonstanding": 0,
+      "negative_learning_signal_while_standing": 702,
+      "normalizer_terminal_state_matches_bank": true,
+      "components": {
+        "standing": {
+          "mean": 0.22541082164328657,
+          "std": 0.42311420778412046
+        },
+        "support": {
+          "mean": 0.07375417501670006,
+          "std": 0.03559903316314392
+        },
+        "progress": {
+          "mean": -0.003907171097855502,
+          "std": 0.16966898192478486
+        },
+        "effort": {
+          "mean": -0.0015969196855487276,
+          "std": 0.0006908083291918181
+        },
+        "slip": {
+          "mean": -0.08362387050782301,
+          "std": 0.04946177399903478
+        },
+        "cycle": {
+          "mean": 0.0022903624900753815,
+          "std": 0.00782362600841483
+        }
+      },
+      "v7_rescore_mean": 0.5371960082836948,
+      "v7_rescore_scope": "OFFLINE reward rescore of SAME v9 trajectory; not a v7 physical rollout or learning outcome",
+      "inputs": {
+        "report.json": "e59d36a149880eb0c9ccf51a55e36c781d4cfc47ea1280e9dbd66df937b19e4b",
+        "training-observations.npz": "98c0fc5c8c5d3767ff714a1b66003a0e3d20cf3f59b0f4e99079a6eedfe9e7bc"
+      }
+    },
+    "L2": {
+      "max_absolute_reward_replay_error": 0.0,
+      "transitions_recomputed": 4999,
+      "first_transition_excluded": "Initial pre-step body state not stored; no invented reconstruction",
+      "learning_transitions": 4990,
+      "training_standing": {
+        "standing_fraction": 0.8494989979959919,
+        "failed_samples": 751,
+        "reasons": {
+          "height_below": 0,
+          "height_above": 726,
+          "upright_below": 69,
+          "no_tarsus_support": 29
+        },
+        "exclusive_reason_bitmasks": {
+          "2": 653,
+          "6": 69,
+          "8": 25,
+          "10": 4
+        },
+        "reason_bit_order": [
+          "height_below",
+          "height_above",
+          "upright_below",
+          "no_tarsus_support"
+        ],
+        "episodes": 52,
+        "failures_at_least100ms": 18,
+        "max_failure_ms": 280,
+        "longest_episodes": [
+          {
+            "start_ms": 7885,
+            "duration_ms": 280,
+            "min_height_mm": 1.5114976113002117,
+            "min_upright": 0.6012793110474657,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 21575,
+            "duration_ms": 235,
+            "min_height_mm": 1.50090534555872,
+            "min_upright": 0.7550816246328551,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 3910,
+            "duration_ms": 220,
+            "min_height_mm": 1.503019408826946,
+            "min_upright": 0.5524830573530142,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 7350,
+            "duration_ms": 220,
+            "min_height_mm": 1.501224652531601,
+            "min_upright": 0.7522663895609019,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 10450,
+            "duration_ms": 195,
+            "min_height_mm": 1.5079685315571543,
+            "min_upright": 0.3425225009148948,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 19610,
+            "duration_ms": 190,
+            "min_height_mm": 1.5072986972370874,
+            "min_upright": 0.794433582490161,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 6680,
+            "duration_ms": 175,
+            "min_height_mm": 1.5071635382334405,
+            "min_upright": 0.7719580273839208,
+            "left_censored": false,
+            "right_censored": false
+          },
+          {
+            "start_ms": 1525,
+            "duration_ms": 170,
+            "min_height_mm": 1.502959188961119,
+            "min_upright": 0.8253802920156688,
+            "left_censored": false,
+            "right_censored": false
+          }
+        ],
+        "diagnostic_duration_cutoff_is_not_a_new_success_gate": true
+      },
+      "reward_mean": 0.21241608720167068,
+      "positive_reward_while_nonstanding": 0,
+      "nonstanding_learning_samples": 751,
+      "positive_learning_signal_while_nonstanding": 0,
+      "negative_learning_signal_while_standing": 623,
+      "normalizer_terminal_state_matches_bank": true,
+      "components": {
+        "standing": {
+          "mean": 0.21939879759519032,
+          "std": 0.42907417607647813
+        },
+        "support": {
+          "mean": 0.07309285237140947,
+          "std": 0.03596969295226452
+        },
+        "progress": {
+          "mean": 0.0027986675493157117,
+          "std": 0.16411234118604043
+        },
+        "effort": {
+          "mean": -0.0015954188745877854,
+          "std": 0.000707513597885282
+        },
+        "slip": {
+          "mean": -0.08379146897152728,
+          "std": 0.045507979419196605
+        },
+        "cycle": {
+          "mean": 0.0021995746368239917,
+          "std": 0.00737516176203835
+        }
+      },
+      "v7_rescore_mean": 0.5289876366965042,
+      "v7_rescore_scope": "OFFLINE reward rescore of SAME v9 trajectory; not a v7 physical rollout or learning outcome",
+      "inputs": {
+        "report.json": "f6a0547aef48fb3ebc2485f51d9c3688cae08e02d2e1eec3d2621d085818c719",
+        "training-observations.npz": "926ba33fca9826c2693539ddb3eac345b339601f6334b1a0550260f0f92ed2b4"
+      }
+    }
+  },
+  "thresholds_changed": false,
+  "model_promoted": false,
+  "new_simulation_started": false,
+  "scope": "Existing observations only; ancestral four-seed standing not inferred from descendant failure or historical two-seed gate"
+}

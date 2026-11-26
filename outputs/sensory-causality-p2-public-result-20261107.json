@@ -1,0 +1,175 @@
+{
+  "status": "independently_audited_P2",
+  "runtime_source_commit": "4f6011c1ee5828e840964877eeea5ea5fcdc1626",
+  "workers": 4,
+  "simulation_seconds": 5,
+  "seed": 10011,
+  "aggregate_wall_seconds": 358.0779999997467,
+  "cases": {
+    "parent-baseline": {
+      "full_horizon": true,
+      "physics_steps": 50000,
+      "neural_input_rows": 1000,
+      "neural_output_matches_own_baseline": true,
+      "spike_total_matches_own_baseline": true,
+      "checkpoint_unchanged": true,
+      "actual_active_force_steps": 0,
+      "exact_no_pulse_physical_replay": true
+    },
+    "candidate-baseline": {
+      "full_horizon": true,
+      "physics_steps": 50000,
+      "neural_input_rows": 1000,
+      "neural_output_matches_own_baseline": true,
+      "spike_total_matches_own_baseline": true,
+      "checkpoint_unchanged": true,
+      "actual_active_force_steps": 0,
+      "exact_no_pulse_physical_replay": true
+    },
+    "parent-pulse": {
+      "full_horizon": true,
+      "physics_steps": 50000,
+      "neural_input_rows": 1000,
+      "neural_output_matches_own_baseline": true,
+      "spike_total_matches_own_baseline": true,
+      "checkpoint_unchanged": true,
+      "actual_active_force_steps": 200,
+      "exact_no_pulse_physical_replay": false
+    },
+    "candidate-pulse": {
+      "full_horizon": true,
+      "physics_steps": 50000,
+      "neural_input_rows": 1000,
+      "neural_output_matches_own_baseline": true,
+      "spike_total_matches_own_baseline": true,
+      "checkpoint_unchanged": true,
+      "actual_active_force_steps": 200,
+      "exact_no_pulse_physical_replay": false
+    }
+  },
+  "matched_physical_descriptions": {
+    "parent": {
+      "live_feedback": {
+        "post_pulse": {
+          "samples": 608,
+          "fraction_up_below_point7": 0.02138157894736842,
+          "tarsal_only_fraction": 0.26644736842105265,
+          "mean_non_tarsal_vertical_fraction": 0.3883894572081697,
+          "mean_COM_speed_mm_s": 2.703324392149111,
+          "mean_abs_vertical_COM_speed_mm_s": 1.0849916471150367,
+          "mean_body_angular_speed_rad_s": 2.871276107234586,
+          "COM_height_range_mm": [
+            0.664537931168641,
+            1.1219033672133911
+          ]
+        },
+        "final_1s": {
+          "samples": 201,
+          "fraction_up_below_point7": 0.0,
+          "tarsal_only_fraction": 0.19900497512437812,
+          "mean_non_tarsal_vertical_fraction": 0.43302449431651757,
+          "mean_COM_speed_mm_s": 2.731190067745344,
+          "mean_abs_vertical_COM_speed_mm_s": 1.1512236533323277,
+          "mean_body_angular_speed_rad_s": 2.987295877786183,
+          "COM_height_range_mm": [
+            0.6986917343999206,
+            1.0365070241864534
+          ]
+        }
+      },
+      "own_history_input": {
+        "post_pulse": {
+          "samples": 608,
+          "fraction_up_below_point7": 0.008223684210526315,
+          "tarsal_only_fraction": 0.4555921052631579,
+          "mean_non_tarsal_vertical_fraction": 0.2807035167864537,
+          "mean_COM_speed_mm_s": 2.9494555269885225,
+          "mean_abs_vertical_COM_speed_mm_s": 1.2317363960514345,
+          "mean_body_angular_speed_rad_s": 3.1277860365555124,
+          "COM_height_range_mm": [
+            0.6088958088785767,
+            1.1219033672133911
+          ]
+        },
+        "final_1s": {
+          "samples": 201,
+          "fraction_up_below_point7": 0.0,
+          "tarsal_only_fraction": 0.19900497512437812,
+          "mean_non_tarsal_vertical_fraction": 0.41496388586295613,
+          "mean_COM_speed_mm_s": 1.9768848256009988,
+          "mean_abs_vertical_COM_speed_mm_s": 0.9473305614200956,
+          "mean_body_angular_speed_rad_s": 2.4090497961778885,
+          "COM_height_range_mm": [
+            0.6088958088785767,
+            0.8959932517416995
+          ]
+        }
+      }
+    },
+    "candidate": {
+      "live_feedback": {
+        "post_pulse": {
+          "samples": 608,
+          "fraction_up_below_point7": 0.0,
+          "tarsal_only_fraction": 0.59375,
+          "mean_non_tarsal_vertical_fraction": 0.17603866427131912,
+          "mean_COM_speed_mm_s": 3.517031076301228,
+          "mean_abs_vertical_COM_speed_mm_s": 1.7712059890171714,
+          "mean_body_angular_speed_rad_s": 3.6104480267618397,
+          "COM_height_range_mm": [
+            0.5727233784973321,
+            1.2300086618063206
+          ]
+        },
+        "final_1s": {
+          "samples": 201,
+          "fraction_up_below_point7": 0.0,
+          "tarsal_only_fraction": 0.7064676616915423,
+          "mean_non_tarsal_vertical_fraction": 0.15638197818099275,
+          "mean_COM_speed_mm_s": 3.5143647662235487,
+          "mean_abs_vertical_COM_speed_mm_s": 1.6346941552130392,
+          "mean_body_angular_speed_rad_s": 3.663007208717996,
+          "COM_height_range_mm": [
+            0.5727233784973321,
+            1.221624352625978
+          ]
+        }
+      },
+      "own_history_input": {
+        "post_pulse": {
+          "samples": 608,
+          "fraction_up_below_point7": 0.0,
+          "tarsal_only_fraction": 0.725328947368421,
+          "mean_non_tarsal_vertical_fraction": 0.1177597925961521,
+          "mean_COM_speed_mm_s": 3.577550553674712,
+          "mean_abs_vertical_COM_speed_mm_s": 1.8266008151213347,
+          "mean_body_angular_speed_rad_s": 3.7516726024860216,
+          "COM_height_range_mm": [
+            0.553310271305876,
+            1.3887829248624108
+          ]
+        },
+        "final_1s": {
+          "samples": 201,
+          "fraction_up_below_point7": 0.0,
+          "tarsal_only_fraction": 0.7611940298507462,
+          "mean_non_tarsal_vertical_fraction": 0.10123108207513305,
+          "mean_COM_speed_mm_s": 3.4147973940604044,
+          "mean_abs_vertical_COM_speed_mm_s": 1.9536437656630585,
+          "mean_body_angular_speed_rad_s": 3.39473559970661,
+          "COM_height_range_mm": [
+            0.553310271305876,
+            1.149120915716082
+          ]
+        }
+      }
+    }
+  },
+  "source_prior_data_unchanged": true,
+  "receipts_exit_zero_empty_trees": true,
+  "lease_released": true,
+  "scope": "One selected context; compare each model separately, no model ranking or new balance pass.",
+  "physical_balance_validated": false,
+  "model_promoted": false,
+  "walking_proven": false
+}

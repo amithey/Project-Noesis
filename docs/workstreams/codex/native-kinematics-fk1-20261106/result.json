@@ -1,0 +1,239 @@
+{
+  "status": "completed_FK1_geometry_only",
+  "seconds": 1.828999999910593,
+  "runtime_commit": "e0cbd109bb6e018bd253c9f1b5e1698e0421b276",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_sha256": {
+    "work\\Noesis-Sensory\\gpu-pilot\\src\\noesis_gpu\\backend.py": "2d4f5d9691dba9806bf329df0144789dc8408b4dc2018c28a89fa3c4fa38c63d",
+    "work\\Noesis-Sensory\\gpu-pilot\\src\\noesis_gpu\\bridge.py": "7316ee07685b9706d18d02b9fd6ca707d0ad9170015c056574ee16ddaa6361da",
+    "work\\Noesis-Core\\src\\noesis\\motor.py": "6c227ac1b17f1a6e61ae7906a9f64eb18107c47835f2bac4b1460fe42612d2df"
+  },
+  "source_unchanged": true,
+  "parent_unchanged": true,
+  "input_body_arrays": [
+    {
+      "path": "outputs\\episodic-search-es1-20261106\\parent-10006\\observations.npz",
+      "sha256": "6961701c5297e739713b0596adc45d57b4da13a72366f8d3c23d1e80876cca85"
+    },
+    {
+      "path": "outputs\\episodic-search-es1-20261106\\parent-10007\\observations.npz",
+      "sha256": "c95ad24947a6f8eebcfcd4881588bb89eea3b6bc66eba841f9804a0401cfb40b"
+    },
+    {
+      "path": "outputs\\episodic-search-es1-20261106\\parent-10010\\observations.npz",
+      "sha256": "e483530ede3cf3385158e6f48073c2b7c90bec85c6abda82bdebcd558a32353e"
+    },
+    {
+      "path": "outputs\\episodic-search-es1-20261106\\parent-10011\\observations.npz",
+      "sha256": "f39ac3537af3e37065b556748557d350e53dc80573f2435c5132a5b3870f2f4f"
+    }
+  ],
+  "postures": 21,
+  "joints": 42,
+  "derivative_steps_rad": [
+    0.001,
+    0.0005
+  ],
+  "foot_point": "native observed tarsus5 body origin, xpos, mm",
+  "max_finite_difference_jacobian_error_mm_rad": 7.705586924089403e-08,
+  "max_step_halving_error_mm_rad": 2.3116775160758607e-07,
+  "max_rigid_translation_error_mm": 1.3322676295501878e-15,
+  "max_other_leg_derivative_mm_rad": 0.0,
+  "boundary_channels": 0,
+  "neutral": [
+    {
+      "leg": "LF",
+      "foot_dz_per_positive_Femur_mm_rad": -1.3764616463740609,
+      "apparent_hip_angle_derivative": 0.9999714466238929,
+      "tibia_interior_angle_derivative": -0.9999967609894966,
+      "coded_trochanter_flexor_Femur_sign": -1,
+      "coded_trochanter_extensor_Femur_sign": 1
+    },
+    {
+      "leg": "LM",
+      "foot_dz_per_positive_Femur_mm_rad": -1.3268081020895162,
+      "apparent_hip_angle_derivative": 0.9999995032370368,
+      "tibia_interior_angle_derivative": -0.999999844626398,
+      "coded_trochanter_flexor_Femur_sign": -1,
+      "coded_trochanter_extensor_Femur_sign": 1
+    },
+    {
+      "leg": "LH",
+      "foot_dz_per_positive_Femur_mm_rad": -1.3566282122059459,
+      "apparent_hip_angle_derivative": 0.9999993479627989,
+      "tibia_interior_angle_derivative": -0.9999998523999576,
+      "coded_trochanter_flexor_Femur_sign": -1,
+      "coded_trochanter_extensor_Femur_sign": 1
+    },
+    {
+      "leg": "RF",
+      "foot_dz_per_positive_Femur_mm_rad": -1.3764616463740609,
+      "apparent_hip_angle_derivative": 0.9999714466238929,
+      "tibia_interior_angle_derivative": -0.9999967609894966,
+      "coded_trochanter_flexor_Femur_sign": -1,
+      "coded_trochanter_extensor_Femur_sign": 1
+    },
+    {
+      "leg": "RM",
+      "foot_dz_per_positive_Femur_mm_rad": -1.3268081020895162,
+      "apparent_hip_angle_derivative": 0.9999995032370368,
+      "tibia_interior_angle_derivative": -0.999999844626398,
+      "coded_trochanter_flexor_Femur_sign": -1,
+      "coded_trochanter_extensor_Femur_sign": 1
+    },
+    {
+      "leg": "RH",
+      "foot_dz_per_positive_Femur_mm_rad": -1.3566282122059459,
+      "apparent_hip_angle_derivative": 0.9999993479627989,
+      "tibia_interior_angle_derivative": -0.9999998523999576,
+      "coded_trochanter_flexor_Femur_sign": -1,
+      "coded_trochanter_extensor_Femur_sign": 1
+    }
+  ],
+  "pose_summary": [
+    {
+      "leg": "LF",
+      "positive_Femur_raises": 0,
+      "positive_Femur_lowers": 21,
+      "near_zero": 0,
+      "postures": 21,
+      "min_dz": -1.4856643207297182,
+      "max_dz": -0.5285451399492103
+    },
+    {
+      "leg": "LM",
+      "positive_Femur_raises": 0,
+      "positive_Femur_lowers": 21,
+      "near_zero": 0,
+      "postures": 21,
+      "min_dz": -1.629636979332938,
+      "max_dz": -0.9545702090485442
+    },
+    {
+      "leg": "LH",
+      "positive_Femur_raises": 0,
+      "positive_Femur_lowers": 21,
+      "near_zero": 0,
+      "postures": 21,
+      "min_dz": -1.849341967239404,
+      "max_dz": -1.3566282122059459
+    },
+    {
+      "leg": "RF",
+      "positive_Femur_raises": 0,
+      "positive_Femur_lowers": 21,
+      "near_zero": 0,
+      "postures": 21,
+      "min_dz": -1.6086989687984499,
+      "max_dz": -1.2681906508988927
+    },
+    {
+      "leg": "RM",
+      "positive_Femur_raises": 0,
+      "positive_Femur_lowers": 21,
+      "near_zero": 0,
+      "postures": 21,
+      "min_dz": -1.5714026177413576,
+      "max_dz": -1.113022679550102
+    },
+    {
+      "leg": "RH",
+      "positive_Femur_raises": 0,
+      "positive_Femur_lowers": 21,
+      "near_zero": 0,
+      "postures": 21,
+      "min_dz": -1.7263415705648377,
+      "max_dz": -1.1839652460543526
+    }
+  ],
+  "finite_offsets": [
+    {
+      "leg": "LF",
+      "Femur_offset_rad": -0.1,
+      "own_foot_dz_mm": 0.1396572367470239,
+      "adhesion": 1.0
+    },
+    {
+      "leg": "LF",
+      "Femur_offset_rad": 0.1,
+      "own_foot_dz_mm": -0.1351765127858534,
+      "adhesion": 0.0
+    },
+    {
+      "leg": "LM",
+      "Femur_offset_rad": -0.1,
+      "own_foot_dz_mm": 0.13478607268067555,
+      "adhesion": 1.0
+    },
+    {
+      "leg": "LM",
+      "Femur_offset_rad": 0.1,
+      "own_foot_dz_mm": -0.13013351049016575,
+      "adhesion": 0.0
+    },
+    {
+      "leg": "LH",
+      "Femur_offset_rad": -0.1,
+      "own_foot_dz_mm": 0.13831852969630698,
+      "adhesion": 1.0
+    },
+    {
+      "leg": "LH",
+      "Femur_offset_rad": 0.1,
+      "own_foot_dz_mm": -0.1325551406780574,
+      "adhesion": 0.0
+    },
+    {
+      "leg": "RF",
+      "Femur_offset_rad": -0.1,
+      "own_foot_dz_mm": 0.1396572367470239,
+      "adhesion": 1.0
+    },
+    {
+      "leg": "RF",
+      "Femur_offset_rad": 0.1,
+      "own_foot_dz_mm": -0.1351765127858534,
+      "adhesion": 0.0
+    },
+    {
+      "leg": "RM",
+      "Femur_offset_rad": -0.1,
+      "own_foot_dz_mm": 0.13478607268067555,
+      "adhesion": 1.0
+    },
+    {
+      "leg": "RM",
+      "Femur_offset_rad": 0.1,
+      "own_foot_dz_mm": -0.13013351049016575,
+      "adhesion": 0.0
+    },
+    {
+      "leg": "RH",
+      "Femur_offset_rad": -0.1,
+      "own_foot_dz_mm": 0.13831852969630698,
+      "adhesion": 1.0
+    },
+    {
+      "leg": "RH",
+      "Femur_offset_rad": 0.1,
+      "own_foot_dz_mm": -0.1325551406780574,
+      "adhesion": 0.0
+    }
+  ],
+  "model_time_start": 0.0,
+  "model_time_end": 0.0,
+  "dynamics_steps": 0,
+  "neural_steps": 0,
+  "controller_changed": false,
+  "weights_changed": false,
+  "walking_proven": false,
+  "model_promoted": false,
+  "limits": [
+    "Active-joint snapshots only; root and passive joints fixed neutral, not recorded-state replay.",
+    "Partial derivative holds all other joints fixed; simultaneous joint/body motion can alter real vertical velocity.",
+    "Desired-angle pad condition and actual-joint geometry differ under actuator lag.",
+    "Apparent 3D interior angles are geometric measurements, not biological torque or muscle validation.",
+    "Infinitesimal central derivatives near limits can sample outside the configured range; flags reported, no dynamics.",
+    "Geometry alone does not prove a cause of failed standing/walking or justify a sign/policy change."
+  ]
+}

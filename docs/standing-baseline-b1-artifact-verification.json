@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "digest": "sha256:677543a7553a11125a5f866e2e5944a327f51c3d51e00823c071de871f0d5445",
+      "name": "standing-baseline-b1-evidence.zip",
+      "size": 13314291,
+      "verified": true
+    },
+    {
+      "digest": "sha256:619260a93b840c2c06217a1da7afcc369c4eb87f80c200b3c456aaf111d5118f",
+      "name": "standing-baseline-b1-manifest.json",
+      "size": 47329,
+      "verified": true
+    }
+  ],
+  "url": "https://github.com/amithey/Project-Noesis/releases/tag/standing-baseline-b1-2026-11-01",
+  "local_zip_crc_and_all69_file_hashes_verified": true,
+  "model_promoted": false
+}

@@ -1,0 +1,31 @@
+{
+  "status": "awaiting_committed_source_and_paired_artifacts",
+  "team_message": "ac881245155e",
+  "owner_reported_branch": "feature/habitat-in-view",
+  "owner_reported_test": {
+    "duration_seconds": 0.2,
+    "seed": 42,
+    "physical_simulation": false
+  },
+  "reported_mass": 0.0010243,
+  "reported_gravity_magnitude": 9810.0,
+  "calculated_weight_raw_units": 10.048383,
+  "stimulus_raw_units": 5.0,
+  "calculated_body_weight_fraction": 0.49759249821588214,
+  "unit_correction": "raw simulation force units, not mN",
+  "independently_verified": [
+    "arithmetic only",
+    "cited report absent from primary checkout at HEAD 2d35d0a"
+  ],
+  "not_independently_verified": [
+    "model mass and gravity source",
+    "reported resting load",
+    "paired spike artifacts",
+    "historical metadata identity"
+  ],
+  "missing_report": "docs/workstreams/gemini/sensory_mapping_and_validation_report.md",
+  "scientific_limit": "Reduced tonic modeled drive or brain-only spikes do not demonstrate improved physical standing, retention or walking.",
+  "integrated": false,
+  "simulation_allocated": false,
+  "next": "Owner supplies committed source and hashed paired evidence; review before allocating matched physical comparison."
+}

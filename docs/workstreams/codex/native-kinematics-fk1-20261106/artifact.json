@@ -1,0 +1,10 @@
+{
+  "path": "native-kinematics-fk1-20261106-evidence.zip",
+  "bytes": 41884,
+  "sha256": "9ec25a9dc94fee22445d294db6aac4d4f21f996c9c1f0062f5b45a70f3d2c904",
+  "files": 4,
+  "all_hashes_and_crc_verified": true,
+  "no_dynamics_or_neural_execution": true,
+  "raw_graph_cache_assets_private_lease_excluded": true,
+  "release_uploaded": false
+}

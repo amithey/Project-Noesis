@@ -1,0 +1,60 @@
+{
+  "experiment": "ED1 fixed full-eligibility delay pilot",
+  "date": "2026-11-07",
+  "common_parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "replay_seed": 1004,
+  "replay_checkpoint_sha256": "993299d65117cd64202d3dc0019ac7ed8761bee4238df4969c6f19dade59c1f2",
+  "training_seed": 1005,
+  "development_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "own_seed_descriptive": true,
+  "factor": "Full eligibility trace used for weight step: native current trace versus trace10updates(50ms)old; same PS1 scalar objective, brain/body/senses/RNG/exploration/normalizer/original bounds",
+  "timing_hypothesis": "Unvalidated fixed engineering candidate; observational correlations did not establish optimum, causality or efficacy",
+  "learning_rate": 0.2,
+  "eligibility_ms": 100,
+  "original_reference_bound": 0.5,
+  "exploration_mv_ms": 1.5,
+  "objective": "physical-standing-ps1-v1",
+  "delay_chunks": {
+    "replay": 0,
+    "control": 0,
+    "candidate": 10
+  },
+  "control_ms": 5,
+  "delayed_initial_zero_updates": 10,
+  "checkpoint_semantics": "Weights-only transfer; delayed queue not checkpointed; exact trace resume prohibited",
+  "seconds_train": 25,
+  "learning_attempts_per_birth": 4990,
+  "seconds_frozen": 5,
+  "maximum_new_jobs": 13,
+  "aggregate_seconds": 4800,
+  "training_worker_seconds": 600,
+  "frozen_worker_seconds": 300,
+  "sequence": [
+    "zero-delay exact PS1seed1004 replay",
+    "zero-delay PS1seed1005 control",
+    "50ms-delay PS1seed1005 candidate",
+    "five frozen control probes own1005+fourdev",
+    "five frozen candidate probes own1005+fourdev"
+  ],
+  "reused_frozen_reference_positions": 17,
+  "final_reserved_seeds_unused": [
+    10,
+    11,
+    200,
+    201,
+    202
+  ],
+  "proof": "Every live weight step independently recomputed; independent full-trace queue/hash/time chain; raw generated innovation is distinguished from actual used eligibility. Offline reward-moment and provenance audit; not full neural-spike reconstruction.",
+  "primary": "At EACH4dev, mean PS1quality higher and mean COMspeed/angularspeed/non-tarsal fraction lower versus BOTH parent and concurrent zero-delay control; no own-seed or pooled rescue",
+  "retention": "Unchanged strict standing/slip/heading/net/cycles/tripod versus parent, concurrent control, oldv7 and AP1; priorPS1 comparison additionally descriptive. Existing anatomical parent/control rule retained.",
+  "stop": "hash/context/mass/force/accounting/queue/weight-step/checkpoint/sidecar/replay/prefix/horizon/resource/timeout/full-worker-remaining-budget failure; no automatic retry/retuning/partial inference",
+  "limits": "One independent training seed for a timing hypothesis. Software fixtures or a positive pilot do not validate stable standing, retained ability, balance, walking or general efficacy.",
+  "model_promoted": false,
+  "walking_proven": false,
+  "physical_balance_validated": false
+}

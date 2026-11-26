@@ -1,0 +1,44 @@
+{
+  "experiment": "EW1 one between-episode neural-weight update",
+  "date": "2026-11-10",
+  "common_parent": "Same experimental common parent as approved WS1 protocol; neither untrained WS1 offset",
+  "training_seeds": [
+    1008,
+    1009
+  ],
+  "development_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "directions": 4,
+  "direction_rng_seed": 20261110,
+  "probe_relative_original_step": 0.02,
+  "update_max_relative_original_step": 0.01,
+  "algorithm": "Mean paired PS1 return differences over training seeds; four fixed Rademacher edge directions; max-absolute normalized gradient; no clipping/search/selection on evaluation data",
+  "objective": "physical-standing-ps1-v1",
+  "return_samples": 990,
+  "warmup_samples": 10,
+  "seconds_per_trial": 5,
+  "online_learning": false,
+  "learning_between_complete_episodes": true,
+  "maximum_new_workers": 31,
+  "worker_seconds": 300,
+  "aggregate_seconds": 9300,
+  "sequence": [
+    "Exact baseline replay",
+    "Two no-update training-seed parent controls",
+    "All16 symmetric perturbation training trials",
+    "Persist learned update and reward-sign-reversed negative control",
+    "Twelve matched frozen candidate/negative evaluations"
+  ],
+  "comparison": "Both training seeds improve versus parent and negative; all four development physical directions, unchanged strict retention and original anatomical rule versus both controls",
+  "zero_signal": "Numerical gradient max<=1e-12 produces zero update; all declared comparisons still run, no substitute direction or retry",
+  "scope": "One update and four random directions, not full-space optimization; development bank reused and exploratory, final seeds untouched",
+  "persistence": "Immutable parent, separate candidates and pickle-free optimizer state/return provenance; native checkpoint trace fields are historical compatibility data discarded on import",
+  "stop": "Input/source/hash/actual import/replay/full horizon/resource/containment/timeout or full remaining-worker-budget failure; no retry/retune/partial promotion",
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false
+}

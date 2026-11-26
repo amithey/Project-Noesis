@@ -1,0 +1,106 @@
+{
+  "status": "completed_fixed_association_replication",
+  "jobs": [
+    {
+      "seed": 1001,
+      "exit_code": 0,
+      "process_wall_seconds": 139.6090000000113,
+      "status": "completed_training_birth",
+      "checkpoint_sha256": "daece1dc1a3a799d8a0d33448f6bfdb0f7514a4fa4e6ee7e823b44d09caf5932",
+      "alignment": {
+        "steps": 990,
+        "first_control_chunk": 10,
+        "last_control_chunk": 999
+      },
+      "historical_trace_exact": true,
+      "fixed_motor_index": 117575,
+      "fixed_lag_ms": 180,
+      "fixed_signed_r": -0.027297948659978734,
+      "same_direction_as_C1": false,
+      "secondary_search": {
+        "observed_max_abs_r": 0.17004767475843624,
+        "best_signed_r": 0.17004767475843624,
+        "best_lag_steps": 84,
+        "best_column": 400,
+        "varying_columns": 453,
+        "constant_columns": 109,
+        "common_window_samples": 790,
+        "lag_search_steps": [
+          0,
+          100
+        ],
+        "reference_draws": 499,
+        "reference_seed": 271828,
+        "reference_99th_percentile": 0.16712190424604723,
+        "circular_shift_reference_rank": 0.002,
+        "negative_lag_max_abs_r": 0.14088731494571272,
+        "rank_is_calibrated_p_value": false,
+        "interpretation": "Development association only. Stationarity/exchangeability not established; no causal or absent-learning conclusion.",
+        "best_motor_index": 111664
+      }
+    },
+    {
+      "seed": 1002,
+      "exit_code": 0,
+      "process_wall_seconds": 140.23399999999674,
+      "status": "completed_training_birth",
+      "checkpoint_sha256": "d7013c88af9aa5a20e150f2aad6e2d4395aa2c58603ada775016e470393d1dc1",
+      "alignment": {
+        "steps": 990,
+        "first_control_chunk": 10,
+        "last_control_chunk": 999
+      },
+      "historical_trace_exact": true,
+      "fixed_motor_index": 117575,
+      "fixed_lag_ms": 180,
+      "fixed_signed_r": -0.004728402537869353,
+      "same_direction_as_C1": false,
+      "secondary_search": {
+        "observed_max_abs_r": 0.1323490406655567,
+        "best_signed_r": -0.1323490406655567,
+        "best_lag_steps": 44,
+        "best_column": 0,
+        "varying_columns": 453,
+        "constant_columns": 109,
+        "common_window_samples": 790,
+        "lag_search_steps": [
+          0,
+          100
+        ],
+        "reference_draws": 499,
+        "reference_seed": 271828,
+        "reference_99th_percentile": 0.15993938675311423,
+        "circular_shift_reference_rank": 0.65,
+        "negative_lag_max_abs_r": 0.14291574036077795,
+        "rank_is_calibrated_p_value": false,
+        "interpretation": "Development association only. Stationarity/exchangeability not established; no causal or absent-learning conclusion.",
+        "best_motor_index": 281
+      }
+    }
+  ],
+  "model_promoted": false,
+  "walking_proven": false,
+  "positive_direction_in_both": false,
+  "interpretation": "Descriptive two-seed development association. No calibrated significance/causal claim or promotion; peaks are secondary.",
+  "wall_seconds": 283.14100000000326,
+  "pilot_commit": "811499e7bdfbcdd699fc02731275566b58edd812",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "80556cd09af112567f6963441beb3cd995842a68d9f37143bd99a24e7d5c87b0"
+  },
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "discovery_seed": 1000,
+  "discovery_r": 0.16169826553025288,
+  "constant_credit_annotation_audit": {
+    "wing_motor_neuron": 60,
+    "neck_motor_neuron": 49,
+    "actually_driven": 0,
+    "base_leg_motor_exploration_targets": 389,
+    "CNS_circuit_targets": 64
+  },
+  "decision": "Do not tune eligibility to discovered180ms from this unreplicated single-cell peak. No evidence here of no learning, causal credit delay or walking.",
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30",
+  "artifact_archive": "credit-c1-c2-evidence.zip",
+  "archive_sha256": "703368374cce907f6ef42a302655e89e0ec6ca71c1a1d28ef3b008e6366d598d"
+}

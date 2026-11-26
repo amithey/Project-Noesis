@@ -1,0 +1,15 @@
+# TP2 proposal: isolate thermosensory input from random-stream changes
+
+Status: proposed, not allocated or implemented. TP1's ten complete frozen probes passed disabled-path invariance and the registered neural screen, but all four stimulus probes failed strict standing retention. No gain scan, learning birth or default activation follows from that outcome.
+
+Question: does the warm-afferent firing increase, and the physical degradation, persist against a sham that consumes the same random draws? The existing core draws once per drive index, then uses that same RNG for background events. TP1 off/zero removes the extra indices; seed equality alone therefore does not match background realization.
+
+Proposed first contrast is CONSTANT input only: six warm targets at25Hz, with external event weight400 versus0. Target indices, ordering, requested rate and drive-list length must match at every neural chunk. The existing adapter accepts zero weight without removing nonzero-rate indices. Both arms retain the same frozen parent9fd7d411/core42c2076, body, seed schedule and native sensory inputs. This is an intervention on external event amplitude; no connectome weight, sign or topology is edited. The zero-weight sham is a diagnostic control, not the deployment default.
+
+Before any physical allocation: implement only isolated observer/runner files; add a small exact-core RNG-consumption check and require per-chunk drive-list signatures/counts and a readout proving equal post-run RNG state in the paired synthetic case. Verify that no network-state branch draws extra random values. Record exact target indices and per-cell spikes, not only channel totals. Strengthen the Windows watchdog to terminate and verify the entire child process tree before releasing its owned lease on timeout. Run focused checks and publish the exact reviewed source.
+
+A prospective physical protocol would use the two reused development seeds10006/10007, a plain B2 replay per seed before the paired sham/stimulus arms: six5s jobs, CPU one world, no learning/exploration,300s per worker and1800s total under the primary lease. Final seeds remain forbidden. Confirm actual source/parent/data hashes and fresh resources before allocating; do not treat this proposal as authorization to launch another worker.
+
+Keep the same fixed>=5Hz/cell warm-response screen and standing>=.90, standing>=sham, slip<=sham descriptive retention screen on both seeds; report all deltas and failures. Before results, distinguish the neural screen from physical retention and freeze the gate implementation. Stop on incomplete/nonfinite evidence, mismatched RNG/drive context, source/parent drift, timeout or insufficient resources; no retries or parameter substitutions.
+
+Even a passing constant-input contrast would establish neither a response to a changing environment nor learned thermotaxis, walking or retained improvement. Position-dependent input, its matched control and subsequent learning/retention experiments require separate protocols. Coordinate with Claude on the diagnostic ownership; preserve the accepted default-empty hook independently of unvalidated active stimulation.

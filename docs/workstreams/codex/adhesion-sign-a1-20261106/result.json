@@ -1,0 +1,1037 @@
+{
+  "status": "completed_A1",
+  "cases": [
+    {
+      "seed": 10006,
+      "mode": "legacy",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10006,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.9626262626262626,
+        "mean_stance_slip_mm_s": 3.0581713360264406,
+        "mean_supporting_feet": 2.878787878787879,
+        "mean_uprightness": 0.8923790948315039,
+        "single_probe_standing_check": true,
+        "heading_forward_distance_mm": 0.298359305310338,
+        "net_displacement_mm": 0.804098639197447,
+        "net_forward_displacement_mm": 0.022346444869974825,
+        "total_leg_steps": 58,
+        "mean_steps_per_leg": 9.666666666666666,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 12,
+            "step_frequency_hz": 2.4242424242424243,
+            "debounced_contact_fraction": 0.8353535353535354,
+            "mean_duty_factor": 0.7296563081685904,
+            "mean_stride_length_mm": 0.17031715412769197,
+            "raw_touchdown_count": 85,
+            "raw_liftoff_count": 85
+          },
+          "LM": {
+            "step_count": 15,
+            "step_frequency_hz": 3.0303030303030303,
+            "debounced_contact_fraction": 0.3575757575757576,
+            "mean_duty_factor": 0.389755805471868,
+            "mean_stride_length_mm": 0.35964741754943114,
+            "raw_touchdown_count": 48,
+            "raw_liftoff_count": 49
+          },
+          "LH": {
+            "step_count": 13,
+            "step_frequency_hz": 2.6262626262626263,
+            "debounced_contact_fraction": 0.7151515151515152,
+            "mean_duty_factor": 0.7358700070408349,
+            "mean_stride_length_mm": 0.33678866614630043,
+            "raw_touchdown_count": 65,
+            "raw_liftoff_count": 64
+          },
+          "RF": {
+            "step_count": 5,
+            "step_frequency_hz": 1.0101010101010102,
+            "debounced_contact_fraction": 0.06363636363636363,
+            "mean_duty_factor": 0.25775266849011613,
+            "mean_stride_length_mm": 0.44983646453637255,
+            "raw_touchdown_count": 13,
+            "raw_liftoff_count": 13
+          },
+          "RM": {
+            "step_count": 9,
+            "step_frequency_hz": 1.8181818181818181,
+            "debounced_contact_fraction": 0.8181818181818182,
+            "mean_duty_factor": 0.6090291830947819,
+            "mean_stride_length_mm": 0.2825898639340761,
+            "raw_touchdown_count": 76,
+            "raw_liftoff_count": 76
+          },
+          "RH": {
+            "step_count": 4,
+            "step_frequency_hz": 0.8080808080808081,
+            "debounced_contact_fraction": 0.31212121212121213,
+            "mean_duty_factor": 0.4454366102393071,
+            "mean_stride_length_mm": 0.4607395915670433,
+            "raw_touchdown_count": 22,
+            "raw_liftoff_count": 23
+          }
+        },
+        "leg_step_counts": {
+          "LF": 12,
+          "LM": 15,
+          "LH": 13,
+          "RF": 5,
+          "RM": 9,
+          "RH": 4
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.5956228956228957,
+          "correlation": -0.4280747312389304,
+          "intra_tripod_1_sync": 0.7590599115956949,
+          "intra_tripod_2_sync": 0.7457272584824133,
+          "tripod_coordination_score": 0.19183862825923673,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "2eec82c5a9494501adb8715ba6ecd1b6b2e87ff2131c118b66b1912c6143f9d5",
+        "observations_sha256": "6961701c5297e739713b0596adc45d57b4da13a72366f8d3c23d1e80876cca85"
+      },
+      "per_leg_pad_release_fraction": [
+        0.9626262626262626,
+        0.9040404040404041,
+        0.17676767676767677,
+        0.7505050505050505,
+        0.9313131313131313,
+        0.0
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 65.59399999957532,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 19.20684814453125,
+      "report_sha256": "2eec82c5a9494501adb8715ba6ecd1b6b2e87ff2131c118b66b1912c6143f9d5",
+      "observations_sha256": "6961701c5297e739713b0596adc45d57b4da13a72366f8d3c23d1e80876cca85",
+      "adhesion_observations_sha256": "3582c7a105a73261be9bde18996ed6bb6845f7de66b5244dab531a7e6355c048"
+    },
+    {
+      "seed": 10006,
+      "mode": "corrected",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10006,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.9262626262626262,
+        "mean_stance_slip_mm_s": 2.4513905837137027,
+        "mean_supporting_feet": 2.764646464646465,
+        "mean_uprightness": 0.8783613126129153,
+        "single_probe_standing_check": true,
+        "heading_forward_distance_mm": 0.367481110296653,
+        "net_displacement_mm": 0.46677017203578963,
+        "net_forward_displacement_mm": 0.32808024537797886,
+        "total_leg_steps": 69,
+        "mean_steps_per_leg": 11.5,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 11,
+            "step_frequency_hz": 2.2222222222222223,
+            "debounced_contact_fraction": 0.8393939393939394,
+            "mean_duty_factor": 0.8284317502424433,
+            "mean_stride_length_mm": 0.18762337639964285,
+            "raw_touchdown_count": 68,
+            "raw_liftoff_count": 67
+          },
+          "LM": {
+            "step_count": 13,
+            "step_frequency_hz": 2.6262626262626263,
+            "debounced_contact_fraction": 0.25555555555555554,
+            "mean_duty_factor": 0.3592224058185324,
+            "mean_stride_length_mm": 0.29267142275271685,
+            "raw_touchdown_count": 36,
+            "raw_liftoff_count": 36
+          },
+          "LH": {
+            "step_count": 15,
+            "step_frequency_hz": 3.0303030303030303,
+            "debounced_contact_fraction": 0.602020202020202,
+            "mean_duty_factor": 0.45570243741162864,
+            "mean_stride_length_mm": 0.5454893955004365,
+            "raw_touchdown_count": 58,
+            "raw_liftoff_count": 58
+          },
+          "RF": {
+            "step_count": 7,
+            "step_frequency_hz": 1.4141414141414141,
+            "debounced_contact_fraction": 0.08080808080808081,
+            "mean_duty_factor": 0.24122072434512165,
+            "mean_stride_length_mm": 0.3327586428579174,
+            "raw_touchdown_count": 24,
+            "raw_liftoff_count": 25
+          },
+          "RM": {
+            "step_count": 16,
+            "step_frequency_hz": 3.2323232323232323,
+            "debounced_contact_fraction": 0.5525252525252525,
+            "mean_duty_factor": 0.40231705027007064,
+            "mean_stride_length_mm": 0.232631141353023,
+            "raw_touchdown_count": 52,
+            "raw_liftoff_count": 52
+          },
+          "RH": {
+            "step_count": 7,
+            "step_frequency_hz": 1.4141414141414141,
+            "debounced_contact_fraction": 0.6131313131313131,
+            "mean_duty_factor": 0.6124568201738576,
+            "mean_stride_length_mm": 0.20758980173825786,
+            "raw_touchdown_count": 53,
+            "raw_liftoff_count": 54
+          }
+        },
+        "leg_step_counts": {
+          "LF": 11,
+          "LM": 13,
+          "LH": 15,
+          "RF": 7,
+          "RM": 16,
+          "RH": 7
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.4552188552188553,
+          "correlation": -0.28299391254600087,
+          "intra_tripod_1_sync": 0.7071577976904198,
+          "intra_tripod_2_sync": 0.6790639929160047,
+          "tripod_coordination_score": 0.08928943227267308,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "603b322cebe2d03fc5d6dc3809d26acf3904681e8105a4f6df472f47db0d0309",
+        "observations_sha256": "179990fe7d4d3a592a3fd1d67842af8ed70b930aeb2205daba264a00012ba97b"
+      },
+      "per_leg_pad_release_fraction": [
+        0.03535353535353535,
+        0.11818181818181818,
+        0.27575757575757576,
+        0.3575757575757576,
+        0.031313131313131314,
+        0.8828282828282829
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 60.32899999991059,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 18.78125,
+      "report_sha256": "603b322cebe2d03fc5d6dc3809d26acf3904681e8105a4f6df472f47db0d0309",
+      "observations_sha256": "179990fe7d4d3a592a3fd1d67842af8ed70b930aeb2205daba264a00012ba97b",
+      "adhesion_observations_sha256": "8a2df73b55cb6e942430bb14d13699fdd8c9b9787c6a5700cec233b424a78771"
+    },
+    {
+      "seed": 10007,
+      "mode": "legacy",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10007,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.9444444444444444,
+        "mean_stance_slip_mm_s": 2.4901644202802085,
+        "mean_supporting_feet": 2.5313131313131314,
+        "mean_uprightness": 0.8825109153396326,
+        "single_probe_standing_check": true,
+        "heading_forward_distance_mm": 0.33179266889018316,
+        "net_displacement_mm": 0.5231293759636884,
+        "net_forward_displacement_mm": 0.3839992223829025,
+        "total_leg_steps": 52,
+        "mean_steps_per_leg": 8.666666666666666,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 10,
+            "step_frequency_hz": 2.0202020202020203,
+            "debounced_contact_fraction": 0.7636363636363637,
+            "mean_duty_factor": 0.6537922684283589,
+            "mean_stride_length_mm": 0.2833316518034775,
+            "raw_touchdown_count": 74,
+            "raw_liftoff_count": 74
+          },
+          "LM": {
+            "step_count": 12,
+            "step_frequency_hz": 2.4242424242424243,
+            "debounced_contact_fraction": 0.25656565656565655,
+            "mean_duty_factor": 0.3103745475170136,
+            "mean_stride_length_mm": 0.35784955744976327,
+            "raw_touchdown_count": 41,
+            "raw_liftoff_count": 42
+          },
+          "LH": {
+            "step_count": 12,
+            "step_frequency_hz": 2.4242424242424243,
+            "debounced_contact_fraction": 0.5282828282828282,
+            "mean_duty_factor": 0.5222790419851623,
+            "mean_stride_length_mm": 0.4475736076700303,
+            "raw_touchdown_count": 64,
+            "raw_liftoff_count": 64
+          },
+          "RF": {
+            "step_count": 6,
+            "step_frequency_hz": 1.2121212121212122,
+            "debounced_contact_fraction": 0.15151515151515152,
+            "mean_duty_factor": 0.4026771561622131,
+            "mean_stride_length_mm": 0.43110898060038444,
+            "raw_touchdown_count": 17,
+            "raw_liftoff_count": 17
+          },
+          "RM": {
+            "step_count": 8,
+            "step_frequency_hz": 1.6161616161616161,
+            "debounced_contact_fraction": 0.6878787878787879,
+            "mean_duty_factor": 0.6418191367209636,
+            "mean_stride_length_mm": 0.3004626402380378,
+            "raw_touchdown_count": 54,
+            "raw_liftoff_count": 54
+          },
+          "RH": {
+            "step_count": 4,
+            "step_frequency_hz": 0.8080808080808081,
+            "debounced_contact_fraction": 0.30808080808080807,
+            "mean_duty_factor": 0.5272354907371118,
+            "mean_stride_length_mm": 0.2927708881654134,
+            "raw_touchdown_count": 28,
+            "raw_liftoff_count": 29
+          }
+        },
+        "leg_step_counts": {
+          "LF": 10,
+          "LM": 12,
+          "LH": 12,
+          "RF": 6,
+          "RM": 8,
+          "RH": 4
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.5552188552188553,
+          "correlation": -0.5413615563084424,
+          "intra_tripod_1_sync": 0.7047769667773337,
+          "intra_tripod_2_sync": 0.763821573421867,
+          "tripod_coordination_score": 0.2207113742218327,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "a9d0166cb9c64a85240fb4f451ac1d2d4b1bfabe1d0d44998af2430fb4ce7bf7",
+        "observations_sha256": "c95ad24947a6f8eebcfcd4881588bb89eea3b6bc66eba841f9804a0401cfb40b"
+      },
+      "per_leg_pad_release_fraction": [
+        0.8464646464646465,
+        0.794949494949495,
+        0.25555555555555554,
+        0.597979797979798,
+        0.696969696969697,
+        0.012121212121212121
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 60.28199999965727,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 19.159751892089844,
+      "report_sha256": "a9d0166cb9c64a85240fb4f451ac1d2d4b1bfabe1d0d44998af2430fb4ce7bf7",
+      "observations_sha256": "c95ad24947a6f8eebcfcd4881588bb89eea3b6bc66eba841f9804a0401cfb40b",
+      "adhesion_observations_sha256": "1a6889d8ee54b4a9755684469cdfe22fcc48ce116c718706bb4d3192a79af300"
+    },
+    {
+      "seed": 10007,
+      "mode": "corrected",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10007,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.9707070707070707,
+        "mean_stance_slip_mm_s": 2.1066817056835974,
+        "mean_supporting_feet": 2.5424242424242425,
+        "mean_uprightness": 0.860670965534133,
+        "single_probe_standing_check": true,
+        "heading_forward_distance_mm": 0.2505522276744846,
+        "net_displacement_mm": 0.5687746752993672,
+        "net_forward_displacement_mm": 0.26013716955312427,
+        "total_leg_steps": 62,
+        "mean_steps_per_leg": 10.333333333333334,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 12,
+            "step_frequency_hz": 2.4242424242424243,
+            "debounced_contact_fraction": 0.7737373737373737,
+            "mean_duty_factor": 0.6607873909354589,
+            "mean_stride_length_mm": 0.21299910795223945,
+            "raw_touchdown_count": 80,
+            "raw_liftoff_count": 79
+          },
+          "LM": {
+            "step_count": 13,
+            "step_frequency_hz": 2.6262626262626263,
+            "debounced_contact_fraction": 0.2737373737373737,
+            "mean_duty_factor": 0.2919912672137281,
+            "mean_stride_length_mm": 0.3436373206240662,
+            "raw_touchdown_count": 34,
+            "raw_liftoff_count": 35
+          },
+          "LH": {
+            "step_count": 16,
+            "step_frequency_hz": 3.2323232323232323,
+            "debounced_contact_fraction": 0.4686868686868687,
+            "mean_duty_factor": 0.47931216573313284,
+            "mean_stride_length_mm": 0.48089923580549065,
+            "raw_touchdown_count": 48,
+            "raw_liftoff_count": 48
+          },
+          "RF": {
+            "step_count": 5,
+            "step_frequency_hz": 1.0101010101010102,
+            "debounced_contact_fraction": 0.06060606060606061,
+            "mean_duty_factor": 0.26626150938844434,
+            "mean_stride_length_mm": 0.4344942204099273,
+            "raw_touchdown_count": 12,
+            "raw_liftoff_count": 12
+          },
+          "RM": {
+            "step_count": 10,
+            "step_frequency_hz": 2.0202020202020203,
+            "debounced_contact_fraction": 0.5434343434343434,
+            "mean_duty_factor": 0.47535499327493014,
+            "mean_stride_length_mm": 0.2592054627158529,
+            "raw_touchdown_count": 65,
+            "raw_liftoff_count": 65
+          },
+          "RH": {
+            "step_count": 6,
+            "step_frequency_hz": 1.2121212121212122,
+            "debounced_contact_fraction": 0.6050505050505051,
+            "mean_duty_factor": 0.6482667809785111,
+            "mean_stride_length_mm": 0.13944811993517184,
+            "raw_touchdown_count": 56,
+            "raw_liftoff_count": 57
+          }
+        },
+        "leg_step_counts": {
+          "LF": 12,
+          "LM": 13,
+          "LH": 16,
+          "RF": 5,
+          "RM": 10,
+          "RH": 6
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.3939393939393939,
+          "correlation": -0.24956257577907964,
+          "intra_tripod_1_sync": 0.6476370248632692,
+          "intra_tripod_2_sync": 0.6657313398027229,
+          "tripod_coordination_score": 0.06456028327918838,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "7ac7081c141b783e87606a0c660bb77b1ab1f0ef4ea5f7c4c65daa598d78be96",
+        "observations_sha256": "f6c230e73c3a99a8e06e151f5b8cc81f71259725f930e6e9c78da237717f1ba4"
+      },
+      "per_leg_pad_release_fraction": [
+        0.047474747474747475,
+        0.14343434343434344,
+        0.21818181818181817,
+        0.41414141414141414,
+        0.0797979797979798,
+        0.9727272727272728
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 59.0,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 19.037227630615234,
+      "report_sha256": "7ac7081c141b783e87606a0c660bb77b1ab1f0ef4ea5f7c4c65daa598d78be96",
+      "observations_sha256": "f6c230e73c3a99a8e06e151f5b8cc81f71259725f930e6e9c78da237717f1ba4",
+      "adhesion_observations_sha256": "b9c6dcdd15016f1d90194e71239e29cb93ee2b53f4d59de9d1399c28ce035046"
+    },
+    {
+      "seed": 10010,
+      "mode": "legacy",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10010,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.8929292929292929,
+        "mean_stance_slip_mm_s": 2.2499830438353756,
+        "mean_supporting_feet": 2.809090909090909,
+        "mean_uprightness": 0.8683345548262076,
+        "single_probe_standing_check": false,
+        "heading_forward_distance_mm": 1.2018815669844556,
+        "net_displacement_mm": 1.4960048148239957,
+        "net_forward_displacement_mm": 1.468320629755359,
+        "total_leg_steps": 73,
+        "mean_steps_per_leg": 12.166666666666666,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 9,
+            "step_frequency_hz": 1.8181818181818181,
+            "debounced_contact_fraction": 0.7090909090909091,
+            "mean_duty_factor": 0.6124584731838734,
+            "mean_stride_length_mm": 0.2506420873155071,
+            "raw_touchdown_count": 74,
+            "raw_liftoff_count": 73
+          },
+          "LM": {
+            "step_count": 13,
+            "step_frequency_hz": 2.6262626262626263,
+            "debounced_contact_fraction": 0.23535353535353534,
+            "mean_duty_factor": 0.2967053250542627,
+            "mean_stride_length_mm": 0.2918221497905465,
+            "raw_touchdown_count": 33,
+            "raw_liftoff_count": 33
+          },
+          "LH": {
+            "step_count": 11,
+            "step_frequency_hz": 2.2222222222222223,
+            "debounced_contact_fraction": 0.47878787878787876,
+            "mean_duty_factor": 0.49351224503348146,
+            "mean_stride_length_mm": 0.43819860810656713,
+            "raw_touchdown_count": 55,
+            "raw_liftoff_count": 55
+          },
+          "RF": {
+            "step_count": 19,
+            "step_frequency_hz": 3.8383838383838382,
+            "debounced_contact_fraction": 0.32323232323232326,
+            "mean_duty_factor": 0.4347878936217405,
+            "mean_stride_length_mm": 0.20945226532004688,
+            "raw_touchdown_count": 41,
+            "raw_liftoff_count": 42
+          },
+          "RM": {
+            "step_count": 15,
+            "step_frequency_hz": 3.0303030303030303,
+            "debounced_contact_fraction": 0.4484848484848485,
+            "mean_duty_factor": 0.4391570803661605,
+            "mean_stride_length_mm": 0.2688067734362394,
+            "raw_touchdown_count": 59,
+            "raw_liftoff_count": 59
+          },
+          "RH": {
+            "step_count": 6,
+            "step_frequency_hz": 1.2121212121212122,
+            "debounced_contact_fraction": 0.807070707070707,
+            "mean_duty_factor": 0.7292676986938229,
+            "mean_stride_length_mm": 0.13361386475594397,
+            "raw_touchdown_count": 60,
+            "raw_liftoff_count": 61
+          }
+        },
+        "leg_step_counts": {
+          "LF": 9,
+          "LM": 13,
+          "LH": 11,
+          "RF": 19,
+          "RM": 15,
+          "RH": 6
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.32255892255892255,
+          "correlation": -0.23152657399302826,
+          "intra_tripod_1_sync": 0.6433515292197145,
+          "intra_tripod_2_sync": 0.5833545902099468,
+          "tripod_coordination_score": 0.045805796699067855,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_UNCOORDINATED",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "86681e6f4a9aaa349fbf18eb7cb19ae27847c842fb89644d9ca4d6b023e91ce4",
+        "observations_sha256": "e483530ede3cf3385158e6f48073c2b7c90bec85c6abda82bdebcd558a32353e"
+      },
+      "per_leg_pad_release_fraction": [
+        0.8010101010101011,
+        0.6858585858585858,
+        0.6545454545454545,
+        0.4262626262626263,
+        0.5080808080808081,
+        0.029292929292929294
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 65.18800000008196,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 18.76950454711914,
+      "report_sha256": "86681e6f4a9aaa349fbf18eb7cb19ae27847c842fb89644d9ca4d6b023e91ce4",
+      "observations_sha256": "e483530ede3cf3385158e6f48073c2b7c90bec85c6abda82bdebcd558a32353e",
+      "adhesion_observations_sha256": "dcb377494c7262108c8e3584eee2d30c87e7b4e0494b94f704ca49dab84cfca0"
+    },
+    {
+      "seed": 10010,
+      "mode": "corrected",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10010,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.9434343434343434,
+        "mean_stance_slip_mm_s": 2.647836883557514,
+        "mean_supporting_feet": 2.8575757575757574,
+        "mean_uprightness": 0.8927431848666408,
+        "single_probe_standing_check": true,
+        "heading_forward_distance_mm": 0.8321828023101372,
+        "net_displacement_mm": 1.150841387342086,
+        "net_forward_displacement_mm": 0.34492307384401616,
+        "total_leg_steps": 61,
+        "mean_steps_per_leg": 10.166666666666666,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 10,
+            "step_frequency_hz": 2.0202020202020203,
+            "debounced_contact_fraction": 0.8191919191919191,
+            "mean_duty_factor": 0.7304875102928013,
+            "mean_stride_length_mm": 0.20843933533662265,
+            "raw_touchdown_count": 69,
+            "raw_liftoff_count": 68
+          },
+          "LM": {
+            "step_count": 12,
+            "step_frequency_hz": 2.4242424242424243,
+            "debounced_contact_fraction": 0.2494949494949495,
+            "mean_duty_factor": 0.36789847970665185,
+            "mean_stride_length_mm": 0.3406957310061653,
+            "raw_touchdown_count": 32,
+            "raw_liftoff_count": 33
+          },
+          "LH": {
+            "step_count": 13,
+            "step_frequency_hz": 2.6262626262626263,
+            "debounced_contact_fraction": 0.6565656565656566,
+            "mean_duty_factor": 0.6297467019870623,
+            "mean_stride_length_mm": 0.46671065530655503,
+            "raw_touchdown_count": 57,
+            "raw_liftoff_count": 57
+          },
+          "RF": {
+            "step_count": 8,
+            "step_frequency_hz": 1.6161616161616161,
+            "debounced_contact_fraction": 0.15555555555555556,
+            "mean_duty_factor": 0.3925597562700805,
+            "mean_stride_length_mm": 0.29750436534686014,
+            "raw_touchdown_count": 16,
+            "raw_liftoff_count": 17
+          },
+          "RM": {
+            "step_count": 10,
+            "step_frequency_hz": 2.0202020202020203,
+            "debounced_contact_fraction": 0.6818181818181818,
+            "mean_duty_factor": 0.642417395040615,
+            "mean_stride_length_mm": 0.17156139490120204,
+            "raw_touchdown_count": 69,
+            "raw_liftoff_count": 70
+          },
+          "RH": {
+            "step_count": 8,
+            "step_frequency_hz": 1.6161616161616161,
+            "debounced_contact_fraction": 0.48484848484848486,
+            "mean_duty_factor": 0.4419713571575211,
+            "mean_stride_length_mm": 0.3000979130032623,
+            "raw_touchdown_count": 44,
+            "raw_liftoff_count": 43
+          }
+        },
+        "leg_step_counts": {
+          "LF": 10,
+          "LM": 12,
+          "LH": 13,
+          "RF": 8,
+          "RM": 10,
+          "RH": 8
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.5323232323232323,
+          "correlation": -0.4952420565800014,
+          "intra_tripod_1_sync": 0.7090624624208886,
+          "intra_tripod_2_sync": 0.7095386286035057,
+          "tripod_coordination_score": 0.18699208877827647,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "1a40230bd5d004279fae76c9ba027b535ec2049425b2b411c2c1c1d174eafcf0",
+        "observations_sha256": "63958fa5a46dc7514f6ca8a7f6eb962eb7d5037636f950c867088eb2c6fa65fc"
+      },
+      "per_leg_pad_release_fraction": [
+        0.05353535353535353,
+        0.06161616161616162,
+        0.4777777777777778,
+        0.14646464646464646,
+        0.06262626262626263,
+        0.9616161616161616
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 64.73499999940395,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 18.623580932617188,
+      "report_sha256": "1a40230bd5d004279fae76c9ba027b535ec2049425b2b411c2c1c1d174eafcf0",
+      "observations_sha256": "63958fa5a46dc7514f6ca8a7f6eb962eb7d5037636f950c867088eb2c6fa65fc",
+      "adhesion_observations_sha256": "04c2aba4e68f70fd1cbaf24a600e2374e1e546d87d7420cb05367b545f1bcf99"
+    },
+    {
+      "seed": 10011,
+      "mode": "legacy",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10011,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.9191919191919192,
+        "mean_stance_slip_mm_s": 2.9327522746019024,
+        "mean_supporting_feet": 2.926262626262626,
+        "mean_uprightness": 0.8941195696663717,
+        "single_probe_standing_check": true,
+        "heading_forward_distance_mm": -0.05008821844232747,
+        "net_displacement_mm": 0.49425785621012114,
+        "net_forward_displacement_mm": -0.045329986741564264,
+        "total_leg_steps": 57,
+        "mean_steps_per_leg": 9.5,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 11,
+            "step_frequency_hz": 2.2222222222222223,
+            "debounced_contact_fraction": 0.8222222222222222,
+            "mean_duty_factor": 0.8304936845751655,
+            "mean_stride_length_mm": 0.2722920146334292,
+            "raw_touchdown_count": 82,
+            "raw_liftoff_count": 81
+          },
+          "LM": {
+            "step_count": 14,
+            "step_frequency_hz": 2.8282828282828283,
+            "debounced_contact_fraction": 0.37272727272727274,
+            "mean_duty_factor": 0.48990307857021115,
+            "mean_stride_length_mm": 0.2782141154525759,
+            "raw_touchdown_count": 44,
+            "raw_liftoff_count": 45
+          },
+          "LH": {
+            "step_count": 10,
+            "step_frequency_hz": 2.0202020202020203,
+            "debounced_contact_fraction": 0.7292929292929293,
+            "mean_duty_factor": 0.6093981036466569,
+            "mean_stride_length_mm": 0.4388600345027466,
+            "raw_touchdown_count": 63,
+            "raw_liftoff_count": 63
+          },
+          "RF": {
+            "step_count": 4,
+            "step_frequency_hz": 0.8080808080808081,
+            "debounced_contact_fraction": 0.05454545454545454,
+            "mean_duty_factor": 0.09114500042530183,
+            "mean_stride_length_mm": 0.6184851979823478,
+            "raw_touchdown_count": 18,
+            "raw_liftoff_count": 19
+          },
+          "RM": {
+            "step_count": 11,
+            "step_frequency_hz": 2.2222222222222223,
+            "debounced_contact_fraction": 0.6848484848484848,
+            "mean_duty_factor": 0.6283017483861535,
+            "mean_stride_length_mm": 0.32420716183039294,
+            "raw_touchdown_count": 75,
+            "raw_liftoff_count": 75
+          },
+          "RH": {
+            "step_count": 7,
+            "step_frequency_hz": 1.4141414141414141,
+            "debounced_contact_fraction": 0.4797979797979798,
+            "mean_duty_factor": 0.5009080658604714,
+            "mean_stride_length_mm": 0.5108632880252116,
+            "raw_touchdown_count": 38,
+            "raw_liftoff_count": 39
+          }
+        },
+        "leg_step_counts": {
+          "LF": 11,
+          "LM": 14,
+          "LH": 10,
+          "RF": 4,
+          "RM": 11,
+          "RH": 7
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.48148148148148157,
+          "correlation": -0.10793572702484067,
+          "intra_tripod_1_sync": 0.7233474478994046,
+          "intra_tripod_2_sync": 0.6928728122119037,
+          "tripod_coordination_score": 0.036799813411694436,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "ef1cb584390fdaeb5b781311e80f420900741ba8f9ac98821214dc322d2c4f4e",
+        "observations_sha256": "f39ac3537af3e37065b556748557d350e53dc80573f2435c5132a5b3870f2f4f"
+      },
+      "per_leg_pad_release_fraction": [
+        0.9313131313131313,
+        0.9242424242424242,
+        0.23434343434343435,
+        0.6828282828282828,
+        0.8373737373737373,
+        0.0
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 61.0,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 19.24939727783203,
+      "report_sha256": "ef1cb584390fdaeb5b781311e80f420900741ba8f9ac98821214dc322d2c4f4e",
+      "observations_sha256": "f39ac3537af3e37065b556748557d350e53dc80573f2435c5132a5b3870f2f4f",
+      "adhesion_observations_sha256": "5b62a37deef4c03d52133cf772d8f8e1e69b2c29d8948a97238ea490a80ce167"
+    },
+    {
+      "seed": 10011,
+      "mode": "corrected",
+      "summary": {
+        "schema_version": "gait-metrics-v1.0",
+        "seed": 10011,
+        "seconds": 5.0,
+        "warmup_ms": 50,
+        "warmup_samples": 10,
+        "measured_samples": 990,
+        "warmup_standing_fraction": 0.8,
+        "standing_fraction": 0.8909090909090909,
+        "mean_stance_slip_mm_s": 2.4318695191127886,
+        "mean_supporting_feet": 2.705050505050505,
+        "mean_uprightness": 0.8762777606519199,
+        "single_probe_standing_check": false,
+        "heading_forward_distance_mm": -0.5726905542146954,
+        "net_displacement_mm": 0.9368396739186925,
+        "net_forward_displacement_mm": -0.2608921452323567,
+        "total_leg_steps": 59,
+        "mean_steps_per_leg": 9.833333333333334,
+        "leg_step_cycles": {
+          "LF": {
+            "step_count": 9,
+            "step_frequency_hz": 1.8181818181818181,
+            "debounced_contact_fraction": 0.8323232323232324,
+            "mean_duty_factor": 0.7865830443368629,
+            "mean_stride_length_mm": 0.24815300882052693,
+            "raw_touchdown_count": 88,
+            "raw_liftoff_count": 88
+          },
+          "LM": {
+            "step_count": 12,
+            "step_frequency_hz": 2.4242424242424243,
+            "debounced_contact_fraction": 0.1898989898989899,
+            "mean_duty_factor": 0.23907708269003744,
+            "mean_stride_length_mm": 0.35727094732066433,
+            "raw_touchdown_count": 25,
+            "raw_liftoff_count": 26
+          },
+          "LH": {
+            "step_count": 16,
+            "step_frequency_hz": 3.2323232323232323,
+            "debounced_contact_fraction": 0.6353535353535353,
+            "mean_duty_factor": 0.5806848602442249,
+            "mean_stride_length_mm": 0.3958851403130022,
+            "raw_touchdown_count": 65,
+            "raw_liftoff_count": 66
+          },
+          "RF": {
+            "step_count": 4,
+            "step_frequency_hz": 0.8080808080808081,
+            "debounced_contact_fraction": 0.12222222222222222,
+            "mean_duty_factor": 0.3544851855594382,
+            "mean_stride_length_mm": 0.2333253714001654,
+            "raw_touchdown_count": 12,
+            "raw_liftoff_count": 13
+          },
+          "RM": {
+            "step_count": 13,
+            "step_frequency_hz": 2.6262626262626263,
+            "debounced_contact_fraction": 0.597979797979798,
+            "mean_duty_factor": 0.463742869688431,
+            "mean_stride_length_mm": 0.2510424275241207,
+            "raw_touchdown_count": 62,
+            "raw_liftoff_count": 62
+          },
+          "RH": {
+            "step_count": 5,
+            "step_frequency_hz": 1.0101010101010102,
+            "debounced_contact_fraction": 0.5080808080808081,
+            "mean_duty_factor": 0.4791895692238942,
+            "mean_stride_length_mm": 0.3762209189299339,
+            "raw_touchdown_count": 37,
+            "raw_liftoff_count": 38
+          }
+        },
+        "leg_step_counts": {
+          "LF": 9,
+          "LM": 12,
+          "LH": 16,
+          "RF": 4,
+          "RM": 13,
+          "RH": 5
+        },
+        "tripod_coordination": {
+          "alternation_index": 0.49797979797979797,
+          "correlation": -0.3498251720855746,
+          "intra_tripod_1_sync": 0.7119194595165919,
+          "intra_tripod_2_sync": 0.719538118438467,
+          "tripod_coordination_score": 0.12468415531104791,
+          "tripod_gait_detected": false
+        },
+        "locomotion_regime": "STEPPING_IN_PLACE",
+        "support_measurement": "tarsus5-to-floor-only",
+        "slip_approximation": "horizontal tarsus5 body-center finite differences at end-of-step contact",
+        "weights_unchanged": true,
+        "learning": false,
+        "motor_exploration": 0,
+        "walking_proven": false,
+        "model_promoted": false,
+        "checkpoint_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+        "report_sha256": "0654114023e5b8307da4365bc6a8eb0cec77d466c94c084f81a0043fe1d513ba",
+        "observations_sha256": "c7e6592745a3928b9b9a88bd6305e84c7d77bfcf0cf0c2aaf0b66de2bc3536b3"
+      },
+      "per_leg_pad_release_fraction": [
+        0.06565656565656566,
+        0.1292929292929293,
+        0.29393939393939394,
+        0.3575757575757576,
+        0.10101010101010101,
+        0.9575757575757575
+      ],
+      "process_receipt": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tree_empty": true,
+        "seconds": 58.95299999974668,
+        "containment": "windows_job_before_resume"
+      },
+      "available_ram_before_gib": 19.157913208007812,
+      "report_sha256": "0654114023e5b8307da4365bc6a8eb0cec77d466c94c084f81a0043fe1d513ba",
+      "observations_sha256": "c7e6592745a3928b9b9a88bd6305e84c7d77bfcf0cf0c2aaf0b66de2bc3536b3",
+      "adhesion_observations_sha256": "c1e8817fc2f4f8216a055d314d09f70260aad6dfb3442b087eeb160b99c5da31"
+    }
+  ],
+  "legacy_replay": {
+    "10006": true,
+    "10007": true,
+    "10010": true,
+    "10011": true
+  },
+  "one_factor_context": {
+    "10006": true,
+    "10007": true,
+    "10010": true,
+    "10011": true
+  },
+  "model_promoted": false,
+  "walking_proven": false,
+  "physical_screen": {
+    "passed": false,
+    "standing_retained": false,
+    "slip_retained": false,
+    "median_heading_gain_mm": -0.22546960294500848,
+    "median_net_forward_gain_mm": -0.16971210566028533,
+    "positive_forward_progress": true,
+    "cycles_retained": true,
+    "tripod_retained": false,
+    "model_promoted": false,
+    "walking_proven": false
+  },
+  "seconds": 498.96900000050664,
+  "parent_unchanged": true,
+  "source_unchanged": true,
+  "data_unchanged": true,
+  "process_tree_empty_verified": true,
+  "lease_released": true
+}

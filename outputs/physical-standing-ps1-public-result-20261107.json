@@ -1,0 +1,29 @@
+{
+  "status": "independently_audited_PS1_pilot",
+  "runtime_source_commit": "411161424a161e000ba83ae89dac2c503867d5fe",
+  "aggregate_wall_seconds": 1233.7340000001714,
+  "new_workers": 7,
+  "training_births_completed": 2,
+  "learning_updates_per_birth": 4990,
+  "frozen_candidate_cases_completed": 5,
+  "reused_reference_cases": 15,
+  "exact_control_replay": true,
+  "source_prior_data_unchanged": true,
+  "all_full_horizons_receipts_exit_zero_trees_empty": true,
+  "lease_released": true,
+  "candidate_checkpoint_sha256": "993299d65117cd64202d3dc0019ac7ed8761bee4238df4969c6f19dade59c1f2",
+  "unchanged_retention_pass": {
+    "parent": false,
+    "v7": false,
+    "AP1": false
+  },
+  "anatomical_rule_pass": false,
+  "all_four_development_physical_directions_improve": false,
+  "combined_exploratory_pilot_pass": false,
+  "physical_balance_validated": false,
+  "validated_best": null,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": "One controlled new-objective birth; no generalized efficacy, stable standing/balance, retained skill or walking proof. Technical checks passed but declared scientific conditions did not.",
+  "publication_scope": "Minimal verdict for the NEW learning pilot only. No blocked offline audit table, reused-reference performance metrics or private integrity maps included."
+}

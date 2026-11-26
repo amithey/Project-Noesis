@@ -1,0 +1,23 @@
+{
+  "study": "SS1 finite-probe scale stability",
+  "canonical_direction": 0,
+  "training_contexts": 6,
+  "reused_parent_and_original_probe_cases": 18,
+  "new_scales": [
+    0.005,
+    0.0025
+  ],
+  "maximum_new_workers": 25,
+  "seconds_per_worker": 5,
+  "worker_seconds": 300,
+  "aggregate_seconds": 7500,
+  "signal_floor": 1e-06,
+  "relative_slope_and_midpoint_ratio_threshold": 0.25,
+  "sequence": "Exact parent1010replay; all24scale/sign/TRAIN cells; signed independent scale-analysis audit",
+  "stop": "Any source/input/data/created/resource/lease/awake/import/horizon/settings/replay/timeout/containment/budget failure; no retry",
+  "no_model_selection": true,
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false,
+  "limits": "One canonical direction and finite scales, engineering diagnostic thresholds only; no smaller-step remedy or gradient/skill qualification."
+}

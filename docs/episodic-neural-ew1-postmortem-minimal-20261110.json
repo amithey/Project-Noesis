@@ -1,0 +1,17 @@
+{
+  "direction_count": 4,
+  "training_contexts": 2,
+  "concordant_nonzero_direction_signs": 2,
+  "opposing_direction_signs": 2,
+  "zero_direction_products": 0,
+  "opposite_predicted_observed_signs": 1,
+  "measured_probe_policies_better_in_both_contexts": 1,
+  "measured_probe_policies": 8,
+  "no_policy_selected_or_adopted": true,
+  "diagnosis_is_posthoc": true,
+  "original_failed_verdict_preserved": true,
+  "limits": "Descriptive local linear-model check only, not a causal bottleneck proof, variance estimate, optimal step, effective method or independent confirmation",
+  "status": "completed_readonly_posthoc_EW1_diagnosis",
+  "new_simulation_workers": 0,
+  "next_hypothesis": "Fresh preregistered measured-policy acceptance versus an unverified mixture of policy directions; preserve controls and unchanged independent physical retention tests"
+}

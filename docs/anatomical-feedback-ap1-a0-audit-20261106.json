@@ -1,0 +1,40 @@
+{
+  "status": "audited_complete_disabled_replay_technical_gate_only",
+  "source_commit": "7753ba9e64c8eb6c48a69ee0b93121517ab42d8a",
+  "stopped_gate": "Exact equality of differently ordered floating-point mass sums",
+  "total_compiled_subtree_mass": 0.0010243099999999998,
+  "total_model_mass": 0.0010243099999999996,
+  "absolute_difference": 2.168404344971009e-19,
+  "existing_H2_mass_tolerance": {
+    "rtol": 1e-12,
+    "atol": 1e-15
+  },
+  "full_control_seconds": 25,
+  "updates": 4990,
+  "checkpoint_sha256": "46a6975dc7a1479f794034258abae67ff178d31772ac961d54617519a2b00853",
+  "all_SR1_checkpoint_body_pad_exploration_arrays_exact": true,
+  "all_reward_accounting_exact": true,
+  "independent_native_reward_transitions_recomputed": 4999,
+  "force_and_readonly_checks_passed": true,
+  "candidate_started": false,
+  "frozen_probes_started": 0,
+  "scientific_comparison_available": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "original_bank_preserved": true,
+  "file_hashes": {
+    "outputs/anatomical-feedback-ap1-20261106/protocol.json": "695c3cfeda92e225ac235980c25a3f60abf4cddfe39dbb8c3e68543e7df80ec5",
+    "outputs/anatomical-feedback-ap1-20261106/result.json": "e0813467f28b08b6bc6e3abaef9419e466ae5e7d082b6d5727da4ebc9dcd9d87",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005-receipt.json": "e104e6bbde09a5fc80c749a5ff53b1d36d561f9368057d03fe84effe603a62e7",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005.log": "7dd16ccce645539593e922ed5b28fc06560b44b5634ef84469d53a0d51b2872b",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/adhesion-observations.npz": "c30c2d4044fc60fb43399141bf4e194dda9021ffd1fb51539370e446c61d40a0",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/anatomy-observations.npz": "bd77be3c49e4ffe09f64ca77d6a5cd6b880f6162472a88a9e3f42ad1b037dc54",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/exploration-log.npz": "79caceb976ec22cbd32405ec1c00638e3183da2b404e0fa65d0ce71090d3417e",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/reward-accounting.npz": "85d383b6ebdd4a04dbdd4e8aa005ce173d727aa45f430e998d05886baaa915b6",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/training-observations.npz": "91b6772eebd2a427fffe739f67cb071962b1bf141a2806c1a5aaace50bffa355",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/weights-last.npz": "46a6975dc7a1479f794034258abae67ff178d31772ac961d54617519a2b00853",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/anatomy-model.json": "4093d07fa029d81aa60cb2a45854577e0f59021f6543b76fbf5d50d3aaf36378",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/report.json": "5229067e4ca141ca76310dc3793f9e45a57d43ccad7c970df6d57b52d70ed8aa",
+    "outputs/anatomical-feedback-ap1-20261106/train-control-1005/weights-last.model.json": "8f0917c09f7524b8607208f36e3a20b69d05f1721ead2aa0a8b802e560d9a6c0"
+  }
+}

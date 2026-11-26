@@ -1,0 +1,37 @@
+{
+  "status": "completed_MB1_MC1_combined_audit",
+  "arms": {
+    "Femur/-1": {
+      "contexts_reward_improved": 4,
+      "contexts_angular_speed_increased": 3,
+      "passes_training_gate": false
+    },
+    "Femur/+1": {
+      "contexts_reward_improved": 3,
+      "contexts_angular_speed_increased": 3,
+      "passes_training_gate": false
+    },
+    "Tibia/-1": {
+      "contexts_reward_improved": 4,
+      "contexts_angular_speed_increased": 2,
+      "passes_training_gate": false
+    },
+    "Tibia/+1": {
+      "contexts_reward_improved": 2,
+      "contexts_angular_speed_increased": 4,
+      "passes_training_gate": false
+    }
+  },
+  "retained_candidate": null,
+  "complete_distinct_cells": 25,
+  "original_complete_cells": 18,
+  "new_complete_workers": 8,
+  "allocations": 2,
+  "attempts_including_partial": 27,
+  "original_interruption_preserved": true,
+  "baseline_repeat_exact": true,
+  "raw_returns_and_selection_reproduced": true,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": "Four structured trial policies in six TRAIN contexts; independent retention required."
+}

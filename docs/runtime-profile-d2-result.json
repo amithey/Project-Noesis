@@ -1,0 +1,488 @@
+{
+  "status": "completed_profile_exact_prefix",
+  "wall_seconds": 39.125,
+  "exact_prefix_fields": {
+    "angles": true,
+    "velocity": true,
+    "position": true,
+    "feet_position": true,
+    "heading": true,
+    "up_body": true,
+    "omega": true,
+    "ground_contact": true,
+    "load": true,
+    "foot_load": true
+  },
+  "profile": {
+    "top_own": [
+      {
+        "file": "lif.py",
+        "line": 176,
+        "function": "run",
+        "primitive_calls": 100,
+        "total_calls": 100,
+        "own_seconds": 8.8867539,
+        "cumulative_seconds": 8.961948900000001
+      },
+      {
+        "file": "c_parser_wrapper.py",
+        "line": 203,
+        "function": "read",
+        "primitive_calls": 4,
+        "total_calls": 4,
+        "own_seconds": 8.695153600000001,
+        "cumulative_seconds": 10.3538409
+      },
+      {
+        "file": "compute.py",
+        "line": 257,
+        "function": "wrapper",
+        "primitive_calls": 19,
+        "total_calls": 19,
+        "own_seconds": 4.7191665,
+        "cumulative_seconds": 4.719848600000001
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method builtins.compile>",
+        "primitive_calls": 759,
+        "total_calls": 759,
+        "own_seconds": 2.1329727000000003,
+        "cumulative_seconds": 2.1329727000000003
+      },
+      {
+        "file": "string_arrow.py",
+        "line": 194,
+        "function": "_from_sequence",
+        "primitive_calls": 50,
+        "total_calls": 50,
+        "own_seconds": 1.9067361,
+        "cumulative_seconds": 1.9223764
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<method 'decompress' of 'zlib._ZlibDecompressor' objects>",
+        "primitive_calls": 1579,
+        "total_calls": 1579,
+        "own_seconds": 0.9924525000000001,
+        "cumulative_seconds": 0.9924525000000001
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method _io.open_code>",
+        "primitive_calls": 1808,
+        "total_calls": 1808,
+        "own_seconds": 0.9863903,
+        "cumulative_seconds": 0.9863903
+      },
+      {
+        "file": "array.py",
+        "line": 1447,
+        "function": "factorize",
+        "primitive_calls": 6,
+        "total_calls": 6,
+        "own_seconds": 0.8877749,
+        "cumulative_seconds": 0.9389710000000001
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method mujoco._functions.mj_step>",
+        "primitive_calls": 5000,
+        "total_calls": 5000,
+        "own_seconds": 0.7561495,
+        "cumulative_seconds": 0.7561495
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method nt.stat>",
+        "primitive_calls": 7338,
+        "total_calls": 7338,
+        "own_seconds": 0.5718602,
+        "cumulative_seconds": 0.5764973
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method zlib.crc32>",
+        "primitive_calls": 1776,
+        "total_calls": 1776,
+        "own_seconds": 0.2624864,
+        "cumulative_seconds": 0.2624864
+      },
+      {
+        "file": "construction.py",
+        "line": 531,
+        "function": "sanitize_array",
+        "primitive_calls": 103,
+        "total_calls": 103,
+        "own_seconds": 0.23699170000000003,
+        "cumulative_seconds": 2.1671423
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<method 'read' of '_io.BufferedReader' objects>",
+        "primitive_calls": 2590,
+        "total_calls": 2590,
+        "own_seconds": 0.2095775,
+        "cumulative_seconds": 0.2095775
+      },
+      {
+        "file": "motor.py",
+        "line": 250,
+        "function": "update",
+        "primitive_calls": 100,
+        "total_calls": 100,
+        "own_seconds": 0.1848422,
+        "cumulative_seconds": 0.1848929
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method _imp.create_dynamic>",
+        "primitive_calls": 146,
+        "total_calls": 147,
+        "own_seconds": 0.1839857,
+        "cumulative_seconds": 0.1851546
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<method 'decompress' of 'zlib.Decompress' objects>",
+        "primitive_calls": 122,
+        "total_calls": 122,
+        "own_seconds": 0.14796720000000002,
+        "cumulative_seconds": 0.14796720000000002
+      },
+      {
+        "file": "base_fly.py",
+        "line": 236,
+        "function": "compile",
+        "primitive_calls": 2,
+        "total_calls": 2,
+        "own_seconds": 0.14487650000000002,
+        "cumulative_seconds": 0.1643309
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method marshal.loads>",
+        "primitive_calls": 928,
+        "total_calls": 928,
+        "own_seconds": 0.1389233,
+        "cumulative_seconds": 0.1389233
+      },
+      {
+        "file": "inspect.py",
+        "line": 882,
+        "function": "cleandoc",
+        "primitive_calls": 8277,
+        "total_calls": 8277,
+        "own_seconds": 0.1385952,
+        "cumulative_seconds": 0.25919230000000004
+      },
+      {
+        "file": "ops.py",
+        "line": 358,
+        "function": "_call_cython_op",
+        "primitive_calls": 4,
+        "total_calls": 4,
+        "own_seconds": 0.1317337,
+        "cumulative_seconds": 0.1322518
+      },
+      {
+        "file": "concat.py",
+        "line": 52,
+        "function": "concat_compat",
+        "primitive_calls": 8,
+        "total_calls": 8,
+        "own_seconds": 0.1197638,
+        "cumulative_seconds": 0.11978530000000001
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method _codecs.utf_8_decode>",
+        "primitive_calls": 3937,
+        "total_calls": 3937,
+        "own_seconds": 0.11765170000000001,
+        "cumulative_seconds": 0.11765170000000001
+      },
+      {
+        "file": "ffi.py",
+        "line": 210,
+        "function": "__call__",
+        "primitive_calls": 1084,
+        "total_calls": 1086,
+        "own_seconds": 0.11066580000000001,
+        "cumulative_seconds": 0.1312538
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method _imp.exec_dynamic>",
+        "primitive_calls": 92,
+        "total_calls": 147,
+        "own_seconds": 0.108405,
+        "cumulative_seconds": 0.5975206000000001
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method numpy._core._multiarray_umath._unique_hash>",
+        "primitive_calls": 102,
+        "total_calls": 102,
+        "own_seconds": 0.0885494,
+        "cumulative_seconds": 0.0885494
+      }
+    ],
+    "top_cumulative": [
+      {
+        "file": "embodiment.py",
+        "line": 14,
+        "function": "load_training_brain",
+        "primitive_calls": 1,
+        "total_calls": 1,
+        "own_seconds": 0.0001156,
+        "cumulative_seconds": 19.0560662
+      },
+      {
+        "file": "connectome.py",
+        "line": 113,
+        "function": "corrected_scale",
+        "primitive_calls": 1,
+        "total_calls": 1,
+        "own_seconds": 0.0102413,
+        "cumulative_seconds": 18.536695700000003
+      },
+      {
+        "file": "readers.py",
+        "line": 349,
+        "function": "read_csv",
+        "primitive_calls": 4,
+        "total_calls": 4,
+        "own_seconds": 0.00023750000000000003,
+        "cumulative_seconds": 12.601505900000001
+      },
+      {
+        "file": "readers.py",
+        "line": 258,
+        "function": "_read",
+        "primitive_calls": 4,
+        "total_calls": 4,
+        "own_seconds": 0.055742700000000006,
+        "cumulative_seconds": 12.601142600000001
+      },
+      {
+        "file": "readers.py",
+        "line": 1931,
+        "function": "read",
+        "primitive_calls": 4,
+        "total_calls": 4,
+        "own_seconds": 0.000181,
+        "cumulative_seconds": 12.5168104
+      },
+      {
+        "file": "c_parser_wrapper.py",
+        "line": 203,
+        "function": "read",
+        "primitive_calls": 4,
+        "total_calls": 4,
+        "own_seconds": 8.695153600000001,
+        "cumulative_seconds": 10.3538409
+      },
+      {
+        "file": "connectome.py",
+        "line": 61,
+        "function": "neuropil_scale_factors",
+        "primitive_calls": 1,
+        "total_calls": 1,
+        "own_seconds": 0.0049547,
+        "cumulative_seconds": 10.151094800000001
+      },
+      {
+        "file": "controller.py",
+        "line": 137,
+        "function": "step",
+        "primitive_calls": 100,
+        "total_calls": 100,
+        "own_seconds": 0.0047069,
+        "cumulative_seconds": 9.361236700000001
+      },
+      {
+        "file": "controller.py",
+        "line": 77,
+        "function": "step",
+        "primitive_calls": 100,
+        "total_calls": 100,
+        "own_seconds": 0.0338738,
+        "cumulative_seconds": 9.3522602
+      },
+      {
+        "file": "lif.py",
+        "line": 176,
+        "function": "run",
+        "primitive_calls": 100,
+        "total_calls": 100,
+        "own_seconds": 8.8867539,
+        "cumulative_seconds": 8.961948900000001
+      },
+      {
+        "file": "connectome.py",
+        "line": 97,
+        "function": "nerve_cord_scale_factors",
+        "primitive_calls": 1,
+        "total_calls": 1,
+        "own_seconds": 0.0068665,
+        "cumulative_seconds": 8.374737600000001
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1349,
+        "function": "_find_and_load",
+        "primitive_calls": 89,
+        "total_calls": 2087,
+        "own_seconds": 0.018147700000000003,
+        "cumulative_seconds": 7.164785200000001
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1304,
+        "function": "_find_and_load_unlocked",
+        "primitive_calls": 68,
+        "total_calls": 1585,
+        "own_seconds": 0.0105888,
+        "cumulative_seconds": 7.1605669
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 911,
+        "function": "_load_unlocked",
+        "primitive_calls": 68,
+        "total_calls": 1548,
+        "own_seconds": 0.0074339,
+        "cumulative_seconds": 7.131045
+      },
+      {
+        "file": "<frozen importlib._bootstrap_external>",
+        "line": 993,
+        "function": "exec_module",
+        "primitive_calls": 68,
+        "total_calls": 1367,
+        "own_seconds": 0.0099485,
+        "cumulative_seconds": 7.1271706
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 480,
+        "function": "_call_with_frames_removed",
+        "primitive_calls": 110,
+        "total_calls": 4182,
+        "own_seconds": 0.029827000000000003,
+        "cumulative_seconds": 7.097711100000001
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method builtins.__import__>",
+        "primitive_calls": 100,
+        "total_calls": 844,
+        "own_seconds": 0.0024571000000000003,
+        "cumulative_seconds": 4.9807063000000005
+      },
+      {
+        "file": "accessor.py",
+        "line": 134,
+        "function": "wrapper",
+        "primitive_calls": 11,
+        "total_calls": 11,
+        "own_seconds": 0.0006364000000000001,
+        "cumulative_seconds": 4.754841300000001
+      },
+      {
+        "file": "compute.py",
+        "line": 257,
+        "function": "wrapper",
+        "primitive_calls": 19,
+        "total_calls": 19,
+        "own_seconds": 4.7191665,
+        "cumulative_seconds": 4.719848600000001
+      },
+      {
+        "file": "connectome.py",
+        "line": 56,
+        "function": "_region",
+        "primitive_calls": 4,
+        "total_calls": 4,
+        "own_seconds": 5.83e-05,
+        "cumulative_seconds": 4.6934236
+      },
+      {
+        "file": "accessor.py",
+        "line": 1637,
+        "function": "replace",
+        "primitive_calls": 5,
+        "total_calls": 5,
+        "own_seconds": 8.230000000000001e-05,
+        "cumulative_seconds": 4.6920945000000005
+      },
+      {
+        "file": "string_arrow.py",
+        "line": 454,
+        "function": "_str_replace",
+        "primitive_calls": 5,
+        "total_calls": 5,
+        "own_seconds": 5.58e-05,
+        "cumulative_seconds": 4.690515700000001
+      },
+      {
+        "file": "_arrow_string_mixins.py",
+        "line": 220,
+        "function": "_str_replace",
+        "primitive_calls": 5,
+        "total_calls": 5,
+        "own_seconds": 9.350000000000001e-05,
+        "cumulative_seconds": 4.690009300000001
+      },
+      {
+        "file": "<frozen importlib._bootstrap>",
+        "line": 1390,
+        "function": "_handle_fromlist",
+        "primitive_calls": 5787,
+        "total_calls": 7051,
+        "own_seconds": 0.012479,
+        "cumulative_seconds": 4.490483800000001
+      },
+      {
+        "file": "<frozen importlib._bootstrap_external>",
+        "line": 1066,
+        "function": "get_code",
+        "primitive_calls": 1368,
+        "total_calls": 1368,
+        "own_seconds": 0.0229696,
+        "cumulative_seconds": 3.9121606000000004
+      }
+    ]
+  },
+  "pilot_commit": "db545f096b64b65004eda7941db766361677c2f4",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "source_hashes": {
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888",
+    "pilot": "06267cdd3a7c0dff61def8d67f8ad956bdf169324e4b58ff5cf9a8b20105489e"
+  },
+  "setup_wall_seconds": 26.810842799997772,
+  "loop_wall_seconds": 10.244988899998134,
+  "total_wall_seconds": 37.09042419999605,
+  "minimum_available_gib": 2.6561508178710938,
+  "scope": "Short frozen profile; includes profiler overhead, not a speedup claim or proof of full-training reliability.",
+  "historical_stall_cause_proven": false,
+  "artifact_release": "https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30",
+  "artifact_archive": "runtime-d2-d3-evidence.zip",
+  "archive_sha256": "f9a17f8700eeaae21fdbf6f88f0f1b4323283c28e14e9188d00d6613da3c0a5e"
+}

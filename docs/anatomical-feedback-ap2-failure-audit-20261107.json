@@ -1,0 +1,1006 @@
+{
+  "status": "completed_exploratory_AP2_failure_partition",
+  "seconds": 1.031000000424683,
+  "unique_cases": 37,
+  "bank_positions": 45,
+  "source_sha256": "baa6a277203871539c4060c8c64d8ca89813d2254f4965d6a3a71258aa6df815",
+  "physics_steps": 0,
+  "neural_steps": 0,
+  "learning_updates": 0,
+  "original_standing_masks_exact": true,
+  "reason_and_mode_counts_conservative": true,
+  "original_combined_pass_count": 0,
+  "new_gate": false,
+  "new_reward": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": "Post-hoc descriptive partition of the old proxy, not ground-truth falls/standing. High/upright/claw/tarsal-only and COMspeed do not prove balance. Sample runs are end-of-step snapshots, not continuous physical stability.",
+  "publication_scope": "Compact scientific counts; full diagnostics and extensive input signatures retained locally",
+  "cases": [
+    {
+      "case_id": "parent-1004-1004",
+      "bank": "parent",
+      "training_seed": 1004,
+      "probe_seed": 1004,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.8919191919191919,
+      "longest_tarsal_only_sample_run_seconds": 0.21,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.185,
+      "reason_counts": {
+        "standing": 883,
+        "upright_failure": 0,
+        "no_claw_upright": 6,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 101
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 565,
+        "proximal_leg_contact": 43,
+        "tarsal_only": 275
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 68,
+        "tarsal_only": 33
+      },
+      "high_median_abs_COM_vz_mm_s": 0.6546861207321419
+    },
+    {
+      "case_id": "parent-dev-10006",
+      "bank": "parent",
+      "training_seed": null,
+      "probe_seed": 10006,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9626262626262626,
+      "longest_tarsal_only_sample_run_seconds": 0.37,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.26,
+      "reason_counts": {
+        "standing": 953,
+        "upright_failure": 4,
+        "no_claw_upright": 2,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 31
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 552,
+        "proximal_leg_contact": 4,
+        "tarsal_only": 397
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 9,
+        "tarsal_only": 22
+      },
+      "high_median_abs_COM_vz_mm_s": 2.9530929383791547
+    },
+    {
+      "case_id": "parent-dev-10007",
+      "bank": "parent",
+      "training_seed": null,
+      "probe_seed": 10007,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9444444444444444,
+      "longest_tarsal_only_sample_run_seconds": 0.445,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.445,
+      "reason_counts": {
+        "standing": 935,
+        "upright_failure": 0,
+        "no_claw_upright": 16,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 39
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 505,
+        "proximal_leg_contact": 47,
+        "tarsal_only": 383
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 28,
+        "tarsal_only": 11
+      },
+      "high_median_abs_COM_vz_mm_s": 0.5793103489125176
+    },
+    {
+      "case_id": "parent-dev-10010",
+      "bank": "parent",
+      "training_seed": null,
+      "probe_seed": 10010,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.8929292929292929,
+      "longest_tarsal_only_sample_run_seconds": 0.55,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.55,
+      "reason_counts": {
+        "standing": 884,
+        "upright_failure": 27,
+        "no_claw_upright": 20,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 59
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 232,
+        "proximal_leg_contact": 70,
+        "tarsal_only": 582
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 59
+      },
+      "high_median_abs_COM_vz_mm_s": 2.8477170357147426
+    },
+    {
+      "case_id": "parent-dev-10011",
+      "bank": "parent",
+      "training_seed": null,
+      "probe_seed": 10011,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9191919191919192,
+      "longest_tarsal_only_sample_run_seconds": 0.28,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.28,
+      "reason_counts": {
+        "standing": 910,
+        "upright_failure": 17,
+        "no_claw_upright": 3,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 60
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 464,
+        "proximal_leg_contact": 44,
+        "tarsal_only": 402
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 35,
+        "tarsal_only": 25
+      },
+      "high_median_abs_COM_vz_mm_s": 0.6194796392828286
+    },
+    {
+      "case_id": "control-1004-1004",
+      "bank": "control",
+      "training_seed": 1004,
+      "probe_seed": 1004,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.9888888888888889,
+      "longest_tarsal_only_sample_run_seconds": 0.405,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.405,
+      "reason_counts": {
+        "standing": 979,
+        "upright_failure": 0,
+        "no_claw_upright": 6,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 5
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 452,
+        "proximal_leg_contact": 47,
+        "tarsal_only": 480
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 4,
+        "tarsal_only": 1
+      },
+      "high_median_abs_COM_vz_mm_s": 0.3288510985909037
+    },
+    {
+      "case_id": "control-1004-10006",
+      "bank": "control",
+      "training_seed": 1004,
+      "probe_seed": 10006,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.4090909090909091,
+      "longest_tarsal_only_sample_run_seconds": 0.28,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.28,
+      "reason_counts": {
+        "standing": 405,
+        "upright_failure": 544,
+        "no_claw_upright": 1,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 40
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 214,
+        "proximal_leg_contact": 7,
+        "tarsal_only": 184
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 37,
+        "tarsal_only": 3
+      },
+      "high_median_abs_COM_vz_mm_s": 0.7641357095226866
+    },
+    {
+      "case_id": "control-1004-10007",
+      "bank": "control",
+      "training_seed": 1004,
+      "probe_seed": 10007,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9414141414141414,
+      "longest_tarsal_only_sample_run_seconds": 0.59,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.59,
+      "reason_counts": {
+        "standing": 932,
+        "upright_failure": 15,
+        "no_claw_upright": 10,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 33
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 227,
+        "proximal_leg_contact": 98,
+        "tarsal_only": 607
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 5,
+        "tarsal_only": 28
+      },
+      "high_median_abs_COM_vz_mm_s": 2.2643150095927553
+    },
+    {
+      "case_id": "control-1004-10010",
+      "bank": "control",
+      "training_seed": 1004,
+      "probe_seed": 10010,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9676767676767677,
+      "longest_tarsal_only_sample_run_seconds": 0.385,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.26,
+      "reason_counts": {
+        "standing": 958,
+        "upright_failure": 0,
+        "no_claw_upright": 11,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 21
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 425,
+        "proximal_leg_contact": 68,
+        "tarsal_only": 465
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 13,
+        "tarsal_only": 8
+      },
+      "high_median_abs_COM_vz_mm_s": 0.8826070123215353
+    },
+    {
+      "case_id": "control-1004-10011",
+      "bank": "control",
+      "training_seed": 1004,
+      "probe_seed": 10011,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9393939393939394,
+      "longest_tarsal_only_sample_run_seconds": 0.39,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.38,
+      "reason_counts": {
+        "standing": 930,
+        "upright_failure": 0,
+        "no_claw_upright": 9,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 51
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 382,
+        "proximal_leg_contact": 58,
+        "tarsal_only": 490
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 29,
+        "tarsal_only": 22
+      },
+      "high_median_abs_COM_vz_mm_s": 0.6057370239217046
+    },
+    {
+      "case_id": "candidate-1004-1004",
+      "bank": "candidate",
+      "training_seed": 1004,
+      "probe_seed": 1004,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.9454545454545454,
+      "longest_tarsal_only_sample_run_seconds": 0.44,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.195,
+      "reason_counts": {
+        "standing": 936,
+        "upright_failure": 0,
+        "no_claw_upright": 25,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 29
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 346,
+        "proximal_leg_contact": 126,
+        "tarsal_only": 464
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 29
+      },
+      "high_median_abs_COM_vz_mm_s": 1.8286506849902977
+    },
+    {
+      "case_id": "candidate-1004-10006",
+      "bank": "candidate",
+      "training_seed": 1004,
+      "probe_seed": 10006,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9494949494949495,
+      "longest_tarsal_only_sample_run_seconds": 0.8300000000000001,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.8300000000000001,
+      "reason_counts": {
+        "standing": 940,
+        "upright_failure": 0,
+        "no_claw_upright": 5,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 45
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 195,
+        "proximal_leg_contact": 30,
+        "tarsal_only": 715
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 15,
+        "tarsal_only": 30
+      },
+      "high_median_abs_COM_vz_mm_s": 2.63464221032941
+    },
+    {
+      "case_id": "candidate-1004-10007",
+      "bank": "candidate",
+      "training_seed": 1004,
+      "probe_seed": 10007,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9191919191919192,
+      "longest_tarsal_only_sample_run_seconds": 0.505,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.465,
+      "reason_counts": {
+        "standing": 910,
+        "upright_failure": 0,
+        "no_claw_upright": 21,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 59
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 290,
+        "proximal_leg_contact": 68,
+        "tarsal_only": 552
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 59
+      },
+      "high_median_abs_COM_vz_mm_s": 2.1296469189694576
+    },
+    {
+      "case_id": "candidate-1004-10010",
+      "bank": "candidate",
+      "training_seed": 1004,
+      "probe_seed": 10010,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.8939393939393939,
+      "longest_tarsal_only_sample_run_seconds": 0.46,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.46,
+      "reason_counts": {
+        "standing": 885,
+        "upright_failure": 0,
+        "no_claw_upright": 27,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 78
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 296,
+        "proximal_leg_contact": 98,
+        "tarsal_only": 491
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 32,
+        "tarsal_only": 46
+      },
+      "high_median_abs_COM_vz_mm_s": 1.2930542364469142
+    },
+    {
+      "case_id": "candidate-1004-10011",
+      "bank": "candidate",
+      "training_seed": 1004,
+      "probe_seed": 10011,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.8505050505050505,
+      "longest_tarsal_only_sample_run_seconds": 0.81,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.42,
+      "reason_counts": {
+        "standing": 842,
+        "upright_failure": 0,
+        "no_claw_upright": 16,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 132
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 376,
+        "proximal_leg_contact": 21,
+        "tarsal_only": 445
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 132
+      },
+      "high_median_abs_COM_vz_mm_s": 1.7530579342800447
+    },
+    {
+      "case_id": "parent-1005-1005",
+      "bank": "parent",
+      "training_seed": 1005,
+      "probe_seed": 1005,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.9666666666666667,
+      "longest_tarsal_only_sample_run_seconds": 0.515,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.515,
+      "reason_counts": {
+        "standing": 957,
+        "upright_failure": 0,
+        "no_claw_upright": 11,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 22
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 410,
+        "proximal_leg_contact": 96,
+        "tarsal_only": 451
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 22
+      },
+      "high_median_abs_COM_vz_mm_s": 3.7319081044578044
+    },
+    {
+      "case_id": "control-1005-1005",
+      "bank": "control",
+      "training_seed": 1005,
+      "probe_seed": 1005,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.9494949494949495,
+      "longest_tarsal_only_sample_run_seconds": 0.44,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.44,
+      "reason_counts": {
+        "standing": 940,
+        "upright_failure": 0,
+        "no_claw_upright": 6,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 44
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 440,
+        "proximal_leg_contact": 23,
+        "tarsal_only": 477
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 26,
+        "tarsal_only": 18
+      },
+      "high_median_abs_COM_vz_mm_s": 1.1031727976162626
+    },
+    {
+      "case_id": "control-1005-10006",
+      "bank": "control",
+      "training_seed": 1005,
+      "probe_seed": 10006,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9767676767676767,
+      "longest_tarsal_only_sample_run_seconds": 0.585,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.49,
+      "reason_counts": {
+        "standing": 967,
+        "upright_failure": 0,
+        "no_claw_upright": 9,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 14
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 400,
+        "proximal_leg_contact": 28,
+        "tarsal_only": 539
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 14
+      },
+      "high_median_abs_COM_vz_mm_s": 3.4522469265850733
+    },
+    {
+      "case_id": "control-1005-10007",
+      "bank": "control",
+      "training_seed": 1005,
+      "probe_seed": 10007,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.8767676767676768,
+      "longest_tarsal_only_sample_run_seconds": 0.545,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.385,
+      "reason_counts": {
+        "standing": 868,
+        "upright_failure": 0,
+        "no_claw_upright": 12,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 110
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 358,
+        "proximal_leg_contact": 63,
+        "tarsal_only": 447
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 110
+      },
+      "high_median_abs_COM_vz_mm_s": 2.0822449133282213
+    },
+    {
+      "case_id": "control-1005-10010",
+      "bank": "control",
+      "training_seed": 1005,
+      "probe_seed": 10010,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9424242424242424,
+      "longest_tarsal_only_sample_run_seconds": 0.675,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.48,
+      "reason_counts": {
+        "standing": 933,
+        "upright_failure": 14,
+        "no_claw_upright": 18,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 25
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 283,
+        "proximal_leg_contact": 66,
+        "tarsal_only": 584
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 25
+      },
+      "high_median_abs_COM_vz_mm_s": 2.018163334893201
+    },
+    {
+      "case_id": "control-1005-10011",
+      "bank": "control",
+      "training_seed": 1005,
+      "probe_seed": 10011,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.908080808080808,
+      "longest_tarsal_only_sample_run_seconds": 0.21,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.19,
+      "reason_counts": {
+        "standing": 899,
+        "upright_failure": 14,
+        "no_claw_upright": 3,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 74
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 538,
+        "proximal_leg_contact": 29,
+        "tarsal_only": 332
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 39,
+        "tarsal_only": 35
+      },
+      "high_median_abs_COM_vz_mm_s": 1.4850528227735498
+    },
+    {
+      "case_id": "candidate-1005-1005",
+      "bank": "candidate",
+      "training_seed": 1005,
+      "probe_seed": 1005,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.9727272727272728,
+      "longest_tarsal_only_sample_run_seconds": 0.395,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.395,
+      "reason_counts": {
+        "standing": 963,
+        "upright_failure": 0,
+        "no_claw_upright": 7,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 20
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 358,
+        "proximal_leg_contact": 120,
+        "tarsal_only": 485
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 20
+      },
+      "high_median_abs_COM_vz_mm_s": 2.712689683971826
+    },
+    {
+      "case_id": "candidate-1005-10006",
+      "bank": "candidate",
+      "training_seed": 1005,
+      "probe_seed": 10006,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9191919191919192,
+      "longest_tarsal_only_sample_run_seconds": 0.595,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.325,
+      "reason_counts": {
+        "standing": 910,
+        "upright_failure": 20,
+        "no_claw_upright": 6,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 54
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 317,
+        "proximal_leg_contact": 57,
+        "tarsal_only": 536
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 54
+      },
+      "high_median_abs_COM_vz_mm_s": 2.846485081651644
+    },
+    {
+      "case_id": "candidate-1005-10007",
+      "bank": "candidate",
+      "training_seed": 1005,
+      "probe_seed": 10007,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9151515151515152,
+      "longest_tarsal_only_sample_run_seconds": 0.51,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.385,
+      "reason_counts": {
+        "standing": 906,
+        "upright_failure": 0,
+        "no_claw_upright": 19,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 65
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 294,
+        "proximal_leg_contact": 86,
+        "tarsal_only": 526
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 65
+      },
+      "high_median_abs_COM_vz_mm_s": 2.2677004271111527
+    },
+    {
+      "case_id": "candidate-1005-10010",
+      "bank": "candidate",
+      "training_seed": 1005,
+      "probe_seed": 10010,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9181818181818182,
+      "longest_tarsal_only_sample_run_seconds": 0.6,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.36,
+      "reason_counts": {
+        "standing": 909,
+        "upright_failure": 0,
+        "no_claw_upright": 5,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 76
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 396,
+        "proximal_leg_contact": 53,
+        "tarsal_only": 460
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 43,
+        "tarsal_only": 33
+      },
+      "high_median_abs_COM_vz_mm_s": 0.9525006494645752
+    },
+    {
+      "case_id": "candidate-1005-10011",
+      "bank": "candidate",
+      "training_seed": 1005,
+      "probe_seed": 10011,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9535353535353536,
+      "longest_tarsal_only_sample_run_seconds": 0.71,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.71,
+      "reason_counts": {
+        "standing": 944,
+        "upright_failure": 0,
+        "no_claw_upright": 14,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 32
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 352,
+        "proximal_leg_contact": 49,
+        "tarsal_only": 543
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 32
+      },
+      "high_median_abs_COM_vz_mm_s": 1.9274763788721843
+    },
+    {
+      "case_id": "parent-1006-1006",
+      "bank": "parent",
+      "training_seed": 1006,
+      "probe_seed": 1006,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.9404040404040404,
+      "longest_tarsal_only_sample_run_seconds": 0.625,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.625,
+      "reason_counts": {
+        "standing": 931,
+        "upright_failure": 0,
+        "no_claw_upright": 3,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 56
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 459,
+        "proximal_leg_contact": 30,
+        "tarsal_only": 442
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 32,
+        "tarsal_only": 24
+      },
+      "high_median_abs_COM_vz_mm_s": 1.2351718385631671
+    },
+    {
+      "case_id": "control-1006-1006",
+      "bank": "control",
+      "training_seed": 1006,
+      "probe_seed": 1006,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.8646464646464647,
+      "longest_tarsal_only_sample_run_seconds": 0.31,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.305,
+      "reason_counts": {
+        "standing": 856,
+        "upright_failure": 27,
+        "no_claw_upright": 4,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 103
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 470,
+        "proximal_leg_contact": 33,
+        "tarsal_only": 353
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 26,
+        "tarsal_only": 77
+      },
+      "high_median_abs_COM_vz_mm_s": 1.7152365308158581
+    },
+    {
+      "case_id": "control-1006-10006",
+      "bank": "control",
+      "training_seed": 1006,
+      "probe_seed": 10006,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9181818181818182,
+      "longest_tarsal_only_sample_run_seconds": 0.47000000000000003,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.47000000000000003,
+      "reason_counts": {
+        "standing": 909,
+        "upright_failure": 7,
+        "no_claw_upright": 3,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 71
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 560,
+        "proximal_leg_contact": 10,
+        "tarsal_only": 339
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 40,
+        "tarsal_only": 31
+      },
+      "high_median_abs_COM_vz_mm_s": 0.6197052269265946
+    },
+    {
+      "case_id": "control-1006-10007",
+      "bank": "control",
+      "training_seed": 1006,
+      "probe_seed": 10007,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9464646464646465,
+      "longest_tarsal_only_sample_run_seconds": 0.47000000000000003,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.275,
+      "reason_counts": {
+        "standing": 937,
+        "upright_failure": 0,
+        "no_claw_upright": 9,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 44
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 384,
+        "proximal_leg_contact": 17,
+        "tarsal_only": 536
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 44
+      },
+      "high_median_abs_COM_vz_mm_s": 1.3996587818668575
+    },
+    {
+      "case_id": "control-1006-10010",
+      "bank": "control",
+      "training_seed": 1006,
+      "probe_seed": 10010,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.8383838383838383,
+      "longest_tarsal_only_sample_run_seconds": 0.215,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.215,
+      "reason_counts": {
+        "standing": 830,
+        "upright_failure": 26,
+        "no_claw_upright": 12,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 122
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 453,
+        "proximal_leg_contact": 36,
+        "tarsal_only": 341
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 74,
+        "tarsal_only": 48
+      },
+      "high_median_abs_COM_vz_mm_s": 1.450974507746346
+    },
+    {
+      "case_id": "control-1006-10011",
+      "bank": "control",
+      "training_seed": 1006,
+      "probe_seed": 10011,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9555555555555556,
+      "longest_tarsal_only_sample_run_seconds": 0.385,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.385,
+      "reason_counts": {
+        "standing": 946,
+        "upright_failure": 0,
+        "no_claw_upright": 22,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 22
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 409,
+        "proximal_leg_contact": 85,
+        "tarsal_only": 452
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 12,
+        "tarsal_only": 10
+      },
+      "high_median_abs_COM_vz_mm_s": 0.42008089671243043
+    },
+    {
+      "case_id": "candidate-1006-1006",
+      "bank": "candidate",
+      "training_seed": 1006,
+      "probe_seed": 1006,
+      "own_seed": true,
+      "legacy_standing_fraction": 0.8777777777777778,
+      "longest_tarsal_only_sample_run_seconds": 0.17500000000000002,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.17500000000000002,
+      "reason_counts": {
+        "standing": 869,
+        "upright_failure": 26,
+        "no_claw_upright": 8,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 87
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 564,
+        "proximal_leg_contact": 47,
+        "tarsal_only": 258
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 60,
+        "tarsal_only": 27
+      },
+      "high_median_abs_COM_vz_mm_s": 0.6618420181522426
+    },
+    {
+      "case_id": "candidate-1006-10006",
+      "bank": "candidate",
+      "training_seed": 1006,
+      "probe_seed": 10006,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9434343434343434,
+      "longest_tarsal_only_sample_run_seconds": 0.48,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.28,
+      "reason_counts": {
+        "standing": 934,
+        "upright_failure": 0,
+        "no_claw_upright": 5,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 51
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 372,
+        "proximal_leg_contact": 93,
+        "tarsal_only": 469
+      },
+      "high_contact_mode_counts": {
+        "tarsal_only": 51
+      },
+      "high_median_abs_COM_vz_mm_s": 2.3075500899453507
+    },
+    {
+      "case_id": "candidate-1006-10007",
+      "bank": "candidate",
+      "training_seed": 1006,
+      "probe_seed": 10007,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9151515151515152,
+      "longest_tarsal_only_sample_run_seconds": 0.325,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.325,
+      "reason_counts": {
+        "standing": 906,
+        "upright_failure": 0,
+        "no_claw_upright": 7,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 77
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 433,
+        "proximal_leg_contact": 76,
+        "tarsal_only": 397
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 25,
+        "tarsal_only": 52
+      },
+      "high_median_abs_COM_vz_mm_s": 1.015762067808154
+    },
+    {
+      "case_id": "candidate-1006-10010",
+      "bank": "candidate",
+      "training_seed": 1006,
+      "probe_seed": 10010,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9474747474747475,
+      "longest_tarsal_only_sample_run_seconds": 0.33,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.33,
+      "reason_counts": {
+        "standing": 938,
+        "upright_failure": 0,
+        "no_claw_upright": 1,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 51
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 485,
+        "proximal_leg_contact": 32,
+        "tarsal_only": 421
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 24,
+        "tarsal_only": 27
+      },
+      "high_median_abs_COM_vz_mm_s": 1.5183076800707214
+    },
+    {
+      "case_id": "candidate-1006-10011",
+      "bank": "candidate",
+      "training_seed": 1006,
+      "probe_seed": 10011,
+      "own_seed": false,
+      "legacy_standing_fraction": 0.9131313131313131,
+      "longest_tarsal_only_sample_run_seconds": 0.39,
+      "longest_legacy_standing_AND_tarsal_sample_run_seconds": 0.39,
+      "reason_counts": {
+        "standing": 904,
+        "upright_failure": 0,
+        "no_claw_upright": 8,
+        "low_height_upright_claw": 0,
+        "high_height_upright_claw": 78
+      },
+      "accepted_contact_mode_counts": {
+        "central_body_contact": 409,
+        "proximal_leg_contact": 34,
+        "tarsal_only": 461
+      },
+      "high_contact_mode_counts": {
+        "central_body_contact": 40,
+        "tarsal_only": 38
+      },
+      "high_median_abs_COM_vz_mm_s": 2.178675684070488
+    }
+  ]
+}

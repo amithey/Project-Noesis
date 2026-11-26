@@ -1,0 +1,205 @@
+{
+  "status": "completed_audited_H2B",
+  "code_commit": "90e41b03846a493aa1a6559f46b8cb8c8ce9a70d",
+  "seconds": 178.84400000050664,
+  "all_native_body_pad_spike_replays_exact": true,
+  "all_mass_root_upstream_raw_contact_force_checks_passed": true,
+  "source_prior_checkpoints_data_unchanged": true,
+  "all_jobs_exit0_empty": true,
+  "lease_released": true,
+  "thresholds_changed": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "limits": [
+    "Three known failure types selected for diagnosis, not representative validation or checkpoint selection.",
+    "5ms samples and geometric COM projection do not certify continuous/static balance; adhesion can support moments outside a claw-contact polygon.",
+    "Contact+root-actuator force is a recorded contribution, not a fully audited Newton residual including every possible passive/aerodynamic term.",
+    "Configured +/-0.7rad active ranges are pilot assumptions, not biologically validated extension limits.",
+    "No threshold/reward/body/model changes, promotion, learned walking or retained-standing success claim."
+  ],
+  "cases": [
+    {
+      "name": "parent-10007",
+      "standing_fraction": 0.9444444444444444,
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "groups": {
+        "all_measured": {
+          "samples": 990,
+          "COM_abs_vertical_velocity_median_mm_s": 0.8729501278435583,
+          "contact_Fz_over_weight_median": 1.1171708470306816,
+          "contact_plus_actuator_Fz_over_weight_median": 1.04339611653588,
+          "polygon_defined_count": 533,
+          "COM_projection_inside_polygon_fraction": 0.551594746716698,
+          "central_body_ground_contact_fraction": 0.5464646464646464,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.2833496483296351,
+            "claw_tarsus5": 0.6624352098486079,
+            "other_tarsal": 0.02248265484106215,
+            "proximal_leg_or_other": 0.031732486980694814
+          }
+        },
+        "standing": {
+          "samples": 935,
+          "COM_abs_vertical_velocity_median_mm_s": 0.8979162041184527,
+          "contact_Fz_over_weight_median": 1.123469572928949,
+          "contact_plus_actuator_Fz_over_weight_median": 1.0487421655372295,
+          "polygon_defined_count": 531,
+          "COM_projection_inside_polygon_fraction": 0.5536723163841808,
+          "central_body_ground_contact_fraction": 0.5401069518716578,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.2770027267180469,
+            "claw_tarsus5": 0.6743706730934623,
+            "other_tarsal": 0.021938349776505,
+            "proximal_leg_or_other": 0.02668825041198583
+          }
+        },
+        "high_only": {
+          "samples": 39,
+          "COM_abs_vertical_velocity_median_mm_s": 0.5793103489125176,
+          "contact_Fz_over_weight_median": 1.0058800901172258,
+          "contact_plus_actuator_Fz_over_weight_median": 0.9453063625912209,
+          "polygon_defined_count": 2,
+          "COM_projection_inside_polygon_fraction": 0.0,
+          "central_body_ground_contact_fraction": 0.717948717948718,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.46004857077404565,
+            "claw_tarsus5": 0.5399514292259541
+          }
+        },
+        "upright_failure": {
+          "samples": 0,
+          "COM_abs_vertical_velocity_median_mm_s": null,
+          "contact_Fz_over_weight_median": null,
+          "contact_plus_actuator_Fz_over_weight_median": null,
+          "polygon_defined_count": 0,
+          "COM_projection_inside_polygon_fraction": null,
+          "central_body_ground_contact_fraction": null,
+          "sampled_vertical_reaction_share_by_region": null
+        }
+      }
+    },
+    {
+      "name": "child1005-10007",
+      "standing_fraction": 0.8767676767676768,
+      "locomotion_regime": "STEPPING_IN_PLACE",
+      "groups": {
+        "all_measured": {
+          "samples": 990,
+          "COM_abs_vertical_velocity_median_mm_s": 1.2539353558889337,
+          "contact_Fz_over_weight_median": 1.1343399556604652,
+          "contact_plus_actuator_Fz_over_weight_median": 1.044667968838867,
+          "polygon_defined_count": 562,
+          "COM_projection_inside_polygon_fraction": 0.6903914590747331,
+          "central_body_ground_contact_fraction": 0.3707070707070707,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.15642350129413837,
+            "claw_tarsus5": 0.7377098713099296,
+            "other_tarsal": 0.06844862520146118,
+            "proximal_leg_or_other": 0.03741800219447076
+          }
+        },
+        "standing": {
+          "samples": 868,
+          "COM_abs_vertical_velocity_median_mm_s": 1.1786381207432868,
+          "contact_Fz_over_weight_median": 1.1384344595786793,
+          "contact_plus_actuator_Fz_over_weight_median": 1.0514446897661964,
+          "polygon_defined_count": 487,
+          "COM_projection_inside_polygon_fraction": 0.6447638603696099,
+          "central_body_ground_contact_fraction": 0.41244239631336405,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.17220581713621685,
+            "claw_tarsus5": 0.7125777561600184,
+            "other_tarsal": 0.07453644832071678,
+            "proximal_leg_or_other": 0.04067997838304798
+          }
+        },
+        "high_only": {
+          "samples": 110,
+          "COM_abs_vertical_velocity_median_mm_s": 2.0822449133282213,
+          "contact_Fz_over_weight_median": 1.158068829606432,
+          "contact_plus_actuator_Fz_over_weight_median": 0.9915435072842187,
+          "polygon_defined_count": 75,
+          "COM_projection_inside_polygon_fraction": 0.9866666666666667,
+          "central_body_ground_contact_fraction": 0.0,
+          "sampled_vertical_reaction_share_by_region": {
+            "claw_tarsus5": 1.0
+          }
+        },
+        "upright_failure": {
+          "samples": 0,
+          "COM_abs_vertical_velocity_median_mm_s": null,
+          "contact_Fz_over_weight_median": null,
+          "contact_plus_actuator_Fz_over_weight_median": null,
+          "polygon_defined_count": 0,
+          "COM_projection_inside_polygon_fraction": null,
+          "central_body_ground_contact_fraction": null,
+          "sampled_vertical_reaction_share_by_region": null
+        }
+      }
+    },
+    {
+      "name": "child1004-10006",
+      "standing_fraction": 0.4090909090909091,
+      "locomotion_regime": "FALL",
+      "groups": {
+        "all_measured": {
+          "samples": 990,
+          "COM_abs_vertical_velocity_median_mm_s": 0.2377890284675163,
+          "contact_Fz_over_weight_median": 1.005897993896696,
+          "contact_plus_actuator_Fz_over_weight_median": 0.9994257917307603,
+          "polygon_defined_count": 294,
+          "COM_projection_inside_polygon_fraction": 0.7040816326530612,
+          "central_body_ground_contact_fraction": 0.7767676767676768,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.6181582909225944,
+            "claw_tarsus5": 0.3633593946944877,
+            "other_tarsal": 0.014781566867022498,
+            "proximal_leg_or_other": 0.0037007475158953684
+          }
+        },
+        "standing": {
+          "samples": 405,
+          "COM_abs_vertical_velocity_median_mm_s": 1.022613799337417,
+          "contact_Fz_over_weight_median": 1.134320175220419,
+          "contact_plus_actuator_Fz_over_weight_median": 1.0473462384460555,
+          "polygon_defined_count": 286,
+          "COM_projection_inside_polygon_fraction": 0.7167832167832168,
+          "central_body_ground_contact_fraction": 0.528395061728395,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.26514162244400374,
+            "claw_tarsus5": 0.694355859867043,
+            "other_tarsal": 0.034971405757210174,
+            "proximal_leg_or_other": 0.00553111193174313
+          }
+        },
+        "high_only": {
+          "samples": 40,
+          "COM_abs_vertical_velocity_median_mm_s": 0.7641357095226866,
+          "contact_Fz_over_weight_median": 1.008041187435432,
+          "contact_plus_actuator_Fz_over_weight_median": 1.004536992436769,
+          "polygon_defined_count": 4,
+          "COM_projection_inside_polygon_fraction": 0.0,
+          "central_body_ground_contact_fraction": 0.925,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.5405670913252852,
+            "claw_tarsus5": 0.4594329086747147
+          }
+        },
+        "upright_failure": {
+          "samples": 544,
+          "COM_abs_vertical_velocity_median_mm_s": 0.0841376042360926,
+          "contact_Fz_over_weight_median": 0.9996220723242281,
+          "contact_plus_actuator_Fz_over_weight_median": 0.9990399009813427,
+          "polygon_defined_count": 4,
+          "COM_projection_inside_polygon_fraction": 0.5,
+          "central_body_ground_contact_fraction": 0.9503676470588235,
+          "sampled_vertical_reaction_share_by_region": {
+            "central_body_including_fused_head": 0.9004894344771806,
+            "claw_tarsus5": 0.09697966563059049,
+            "proximal_leg_or_other": 0.0025308998922289657
+          }
+        }
+      }
+    }
+  ]
+}

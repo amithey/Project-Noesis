@@ -1,0 +1,24 @@
+{
+  "experiment": "AF1",
+  "registration": 6954762053,
+  "seeds": [
+    1010,
+    1011
+  ],
+  "maximum_workers": 2,
+  "simulated_seconds": 5,
+  "worker_seconds": 300,
+  "aggregate_seconds": 900,
+  "physics_samples": 50000,
+  "physics_timestep": 0.0001,
+  "warmup_seconds": 0.05,
+  "force_bound_tolerance": "1e-8*max(1,abs(bound))",
+  "required_checks": [
+    "pinned42actualjoint-transmissionactuators",
+    "native step observation only",
+    "exact baseline observation/adhesion/anatomy/spike replay",
+    "sealed source/data and created artifacts",
+    "canonicallease awake watchdog and full horizon"
+  ],
+  "limits": "Frozen force observation only; no intervention or learning efficacy test."
+}

@@ -1,0 +1,426 @@
+{
+  "pilot": [
+    {
+      "path": "noesis_gpu/__init__.py",
+      "sha256": "5f3b5274f121030ab649e89f2c9ddf20e4053a3ab8f9b8dbc8e55525f608adb8",
+      "bytes": 89,
+      "crlf_lines": 1,
+      "lf_git_blob": "f2b57d50d30cc65f48cf9f3cef9f71e5d9b249cd"
+    },
+    {
+      "path": "noesis_gpu/backend.py",
+      "sha256": "2d4f5d9691dba9806bf329df0144789dc8408b4dc2018c28a89fa3c4fa38c63d",
+      "bytes": 9988,
+      "crlf_lines": 193,
+      "lf_git_blob": "4304caea8396fa8fbebc2ceadb443d1d9009fad4"
+    },
+    {
+      "path": "noesis_gpu/bridge.py",
+      "sha256": "7316ee07685b9706d18d02b9fd6ca707d0ad9170015c056574ee16ddaa6361da",
+      "bytes": 4137,
+      "crlf_lines": 88,
+      "lf_git_blob": "8a322563ca5f5470e7c59d15c8ea5e380d7c36fa"
+    },
+    {
+      "path": "noesis_gpu/compare.py",
+      "sha256": "404c876294a722f6d72416ac4519586eb67773db7874385534210d9df9ef5360",
+      "bytes": 3734,
+      "crlf_lines": 70,
+      "lf_git_blob": "0784cee74c6bbeaa34a84a291ad96387c6238839"
+    },
+    {
+      "path": "noesis_gpu/controller.py",
+      "sha256": "92c5ec5f26926d50f66fefa891bed268efdd1b222d410dbd22fb52591cd0fc75",
+      "bytes": 7519,
+      "crlf_lines": 0,
+      "lf_git_blob": "c348367fead405d6db3d53bfba330b8b24fab827"
+    },
+    {
+      "path": "noesis_gpu/evaluate.py",
+      "sha256": "e1ec76f92a2211a85abd0a68833172189fc2c943f59b37920a48f5af917a9816",
+      "bytes": 8097,
+      "crlf_lines": 149,
+      "lf_git_blob": "3c5a2815cccfd0774db48f272abbd0ee7f854c5b"
+    },
+    {
+      "path": "noesis_gpu/external_senses.py",
+      "sha256": "09432e413d3cf3ff408990b0a3d4880870d7afa437f81afa680f4876ca1250f4",
+      "bytes": 37001,
+      "crlf_lines": 778,
+      "lf_git_blob": "b6246b9b8a92a2b743530b536228d43ff3761b80"
+    },
+    {
+      "path": "noesis_gpu/gait_metrics.py",
+      "sha256": "02629c8cc12797c788b8978c7e6ac1ac736c57b75f71ec6f61f8f5526f584175",
+      "bytes": 21005,
+      "crlf_lines": 540,
+      "lf_git_blob": "01ab228f526294546e062c2945aa0be5c8cbae87"
+    },
+    {
+      "path": "noesis_gpu/learning.py",
+      "sha256": "0807d38a316cc02d31b99313a8ae677a6fff89c537ce4f3300c8ffb4b4839dd4",
+      "bytes": 10057,
+      "crlf_lines": 183,
+      "lf_git_blob": "e6649a4b1d15686d0b8334153f1f67b2621e4aac"
+    },
+    {
+      "path": "noesis_gpu/process_watchdog.py",
+      "sha256": "a0ae98c6ff45cc5c6569a091011291e4dbb789ab53c630d4e89cf2fc0b0e2f45",
+      "bytes": 5659,
+      "crlf_lines": 0,
+      "lf_git_blob": "0f540c12f92981543bfa459be662078a9267e9fd"
+    },
+    {
+      "path": "noesis_gpu/profile_run.py",
+      "sha256": "22d44c1a69c43c615c33c58fb4e7ed34745f4a8b83fd075d4c845342f479f199",
+      "bytes": 7750,
+      "crlf_lines": 157,
+      "lf_git_blob": "4073b6792dec5224ccaa7b281921130549923049"
+    },
+    {
+      "path": "noesis_gpu/retention_audit.py",
+      "sha256": "93b5fb07efa585fefaea70bd08bec07f809a95ef774888882aac1ffe4a69279f",
+      "bytes": 33135,
+      "crlf_lines": 683,
+      "lf_git_blob": "4e4697086b4f2fe8242c19437641e94b7150d087"
+    },
+    {
+      "path": "noesis_gpu/reward_profiles.py",
+      "sha256": "8149610ae498abc2bd0d5669d8228d6229a2c19e0751e8a0df2eed8ffa80663e",
+      "bytes": 1142,
+      "crlf_lines": 30,
+      "lf_git_blob": "a85467f7aef94e221db9f1dd91761a7f5de7b5fb"
+    },
+    {
+      "path": "noesis_gpu/run.py",
+      "sha256": "1793fe7e9622ccd616cb0a3eed25a300cb83b01b3d56c53e3c265f0fdd208c73",
+      "bytes": 9925,
+      "crlf_lines": 195,
+      "lf_git_blob": "01dd0d8e4843743482a3fe5b5d23cdbcbbd7f81c"
+    },
+    {
+      "path": "noesis_gpu/sensed_brain.py",
+      "sha256": "767dd3c6815b251f0ca018685508482a4e10e7ed52828fbb806dda6da2c96288",
+      "bytes": 3897,
+      "crlf_lines": 0,
+      "lf_git_blob": "3dd8ebbd4765399795c3871ca651d310be9100c7"
+    },
+    {
+      "path": "noesis_gpu/senses_bridge.py",
+      "sha256": "ccf6c594e076fd73dfeb26327d8f09513beb42a22ddbef7838e123d453e9a4cb",
+      "bytes": 3136,
+      "crlf_lines": 0,
+      "lf_git_blob": "121805a57bec622b71cf91c563a989e99296c55c"
+    },
+    {
+      "path": "noesis_gpu/sensory_probe.py",
+      "sha256": "acc4ae064acf481c09e1a137c2cd0ae74effb24c13f9623afb653e608a9374d1",
+      "bytes": 5280,
+      "crlf_lines": 0,
+      "lf_git_blob": "c68f6694d24eb5b6cd478a0cf6330a9365814e04"
+    },
+    {
+      "path": "noesis_gpu/tp2_probe.py",
+      "sha256": "3ed5cd5179c58545ddc90f66b76e6b2308e8c3f52e0ab328734cc64fa11a0e40",
+      "bytes": 6096,
+      "crlf_lines": 0,
+      "lf_git_blob": "7108def0aa06fd215fde6f0c3bc52762aadefeac"
+    },
+    {
+      "path": "noesis_gpu/tp2_rng.py",
+      "sha256": "79f6a617fa3b6d9df897141ef292a6c6a0fced465092344a17deaf1fb20695cf",
+      "bytes": 742,
+      "crlf_lines": 0,
+      "lf_git_blob": "43e51f27a4dd5e2393e511524a1f456541502512"
+    },
+    {
+      "path": "noesis_gpu/train.py",
+      "sha256": "ff10a42ac69c435026f5e5f8f04e2226af21c5e8eae66731b448ccc631eac5ec",
+      "bytes": 10995,
+      "crlf_lines": 194,
+      "lf_git_blob": "7b201e04ba260fb84ca644a4e6a5f4e47465a3d1"
+    }
+  ],
+  "core": [
+    {
+      "path": "noesis/__init__.py",
+      "sha256": "24b76456f6647a31eec847b39caee9c928823c8d64ab3f867a7af1af15470744",
+      "bytes": 90,
+      "crlf_lines": 3,
+      "lf_git_blob": "93db8db14113896777a0c9e256c7095502754f27"
+    },
+    {
+      "path": "noesis/adhesion.py",
+      "sha256": "c64a9eeed9fb3d5632e50531ec4c2a47bd1bd346eaa0466b592a1ac5890989af",
+      "bytes": 2736,
+      "crlf_lines": 56,
+      "lf_git_blob": "8dc590ba4cb03cef7b63de327a13f783fbd850ee"
+    },
+    {
+      "path": "noesis/balance.py",
+      "sha256": "f7807f270c24417f8b6dda844ccf39147c5f20bed706ef7fb42fd3211ae1b193",
+      "bytes": 2614,
+      "crlf_lines": 55,
+      "lf_git_blob": "3fd2e3494b25733cbaf01841852391c13dc24e7e"
+    },
+    {
+      "path": "noesis/behavior_metrics.py",
+      "sha256": "a2f350ac0ab1846d7ef3276455f2768aad5d23a4cb5ab48923ce8b361202d1bb",
+      "bytes": 2818,
+      "crlf_lines": 57,
+      "lf_git_blob": "40dae94540de78a831c9c9c7be82531102145c19"
+    },
+    {
+      "path": "noesis/body.py",
+      "sha256": "2506507ecdf3822276faf967293552a3fe24cda7de05e72044bcae12da884735",
+      "bytes": 11563,
+      "crlf_lines": 236,
+      "lf_git_blob": "c8f69bbc997c405920c8f82e1c0537107e08a52d"
+    },
+    {
+      "path": "noesis/circuit_learning.py",
+      "sha256": "f3f22bb329a91fec2aac8711a806ce607799a373b28f7ff483471433cda7f9d8",
+      "bytes": 4715,
+      "crlf_lines": 87,
+      "lf_git_blob": "77289bb3ccb857eb1ddf96924155592391ab893a"
+    },
+    {
+      "path": "noesis/connectome.py",
+      "sha256": "306a0313c5d81248ede8807d3fbd34e662b492868184723a18b11e5d113359a8",
+      "bytes": 10889,
+      "crlf_lines": 219,
+      "lf_git_blob": "e82ec9ee82131d24a6f2a80fe847c4f3a826f0c5"
+    },
+    {
+      "path": "noesis/curriculum.py",
+      "sha256": "36406e615e93a32aa8ab08bb95c42b1f2919344b1802942509876deff410eff8",
+      "bytes": 4977,
+      "crlf_lines": 85,
+      "lf_git_blob": "ea73a091bd321a4a6ab6c7ac12de28b535d2f7c6"
+    },
+    {
+      "path": "noesis/embodied_metrics.py",
+      "sha256": "99cc42cdcfd89df213f488ba62d2765b9463b4c1f78d509d39e17dc5f29c7ee1",
+      "bytes": 16899,
+      "crlf_lines": 294,
+      "lf_git_blob": "64f2c1872183073db105364f8b7e162a1c1cae9b"
+    },
+    {
+      "path": "noesis/embodiment.py",
+      "sha256": "31660fef85de790cbbde0ac055f394fcd9f08a7524e6adb36b4fda30cf54825e",
+      "bytes": 6353,
+      "crlf_lines": 136,
+      "lf_git_blob": "37600eb70289c0e2f0c449a20c9babb2df42a19f"
+    },
+    {
+      "path": "noesis/environment_senses.py",
+      "sha256": "9f418073ec360a516a5e398fe5cc8d2273690e21b93ba6bf1f3055adc3f1dd4e",
+      "bytes": 12899,
+      "crlf_lines": 250,
+      "lf_git_blob": "6d80395b4090cede41f63c92410a9ff16a69b763"
+    },
+    {
+      "path": "noesis/experiments/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "crlf_lines": 0,
+      "lf_git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "noesis/experiments/body_check.py",
+      "sha256": "90f4f5c294191d8dab953bd5db67d6cf43a7dc8d483d66aba7180306b7fcb679",
+      "bytes": 7256,
+      "crlf_lines": 161,
+      "lf_git_blob": "02125782bc266616e37f48ec3176c3eb6a4aa672"
+    },
+    {
+      "path": "noesis/experiments/curriculum_training.py",
+      "sha256": "bb5e31a3273ef64e2a6fd98528449041022334de29ac077c601180aab3df4b86",
+      "bytes": 9830,
+      "crlf_lines": 192,
+      "lf_git_blob": "84aec67e052d1d09091afdfe3f851896fe6a1b8a"
+    },
+    {
+      "path": "noesis/experiments/excitatory_screen.py",
+      "sha256": "f69a8aa2eaf1ea3f6bcf9b7dd878d2df233fabf0536b86fbf31c3eed9a88c51a",
+      "bytes": 5951,
+      "crlf_lines": 118,
+      "lf_git_blob": "8a6648ffecfd5857b5dd5e17229422d8424f5e1f"
+    },
+    {
+      "path": "noesis/experiments/feeding.py",
+      "sha256": "0799d70eb3541fa8e41414f1fac086a20a7f81648059291388a6980b15844f17",
+      "bytes": 1450,
+      "crlf_lines": 40,
+      "lf_git_blob": "129be329e652116c23d87cebe42425e59a7bbcd5"
+    },
+    {
+      "path": "noesis/experiments/learning_lab.py",
+      "sha256": "56b4ef45ec1244680b6423800fbd78281b81081e369515f39a3532c688b200bc",
+      "bytes": 35675,
+      "crlf_lines": 592,
+      "lf_git_blob": "c3256b9d3da81d8e1fde790574d553449862b78c"
+    },
+    {
+      "path": "noesis/experiments/learning_prerequisites.py",
+      "sha256": "4805f06be90a137f65dff38eebf61f98582fdf8615c175800cc653f53b58635d",
+      "bytes": 4616,
+      "crlf_lines": 87,
+      "lf_git_blob": "181a033e5a4941528b59acc9942b09616642572c"
+    },
+    {
+      "path": "noesis/experiments/leg_sense_audit.py",
+      "sha256": "4b64608f4f0991b0f1379fe96364dfffd84448f956eb3b3fb0c87e3a76c2c465",
+      "bytes": 8782,
+      "crlf_lines": 183,
+      "lf_git_blob": "f1d784c678f4a41c753717763923f0d818d3e9d2"
+    },
+    {
+      "path": "noesis/experiments/mb_conditioning.py",
+      "sha256": "910e578dade4e192ac884310bbcd4d90f6963c25bac1070a5dde7b78efa20081",
+      "bytes": 6389,
+      "crlf_lines": 128,
+      "lf_git_blob": "827e65e3bdd14cc814aefd8ee13a81e471ad91ba"
+    },
+    {
+      "path": "noesis/experiments/newborn.py",
+      "sha256": "c08fb533701af08c6ebb4a57c2af4a1c283b187bb2adcf29d9f991910f4d15ed",
+      "bytes": 9999,
+      "crlf_lines": 209,
+      "lf_git_blob": "0b1634f90ca74d52b5983692cb2f234596da63f5"
+    },
+    {
+      "path": "noesis/experiments/newborn_muscles.py",
+      "sha256": "d155b155050fd3951517a83dc4068b7b8e5428c5d2c2bd6b801eb19581b5bda1",
+      "bytes": 11555,
+      "crlf_lines": 224,
+      "lf_git_blob": "d54b31ec8cc33e7315b2b8d6b657ca4dbb1b195c"
+    },
+    {
+      "path": "noesis/experiments/response_battery.py",
+      "sha256": "1748b53b4a34a85c48d754318a40db42fd780e9937c382eb50adb982145fa068",
+      "bytes": 7341,
+      "crlf_lines": 135,
+      "lf_git_blob": "3b90af0e1e1a6e4ba9b37c3e964813b9e4561437"
+    },
+    {
+      "path": "noesis/experiments/train_validate.py",
+      "sha256": "9a6048850126f5d773e73a507d89c52d30a3fc1978d5c82c27447db2454b04e4",
+      "bytes": 17994,
+      "crlf_lines": 278,
+      "lf_git_blob": "82ecebab18cf18ed75f231fe8a071cb808d6089e"
+    },
+    {
+      "path": "noesis/gait.py",
+      "sha256": "56bc67e5adada42eff725f599d0fe739329577f396576c07dbf595b30c91ec8f",
+      "bytes": 7689,
+      "crlf_lines": 150,
+      "lf_git_blob": "fc5e5075dca36705c652873dc43d76909caf1349"
+    },
+    {
+      "path": "noesis/ground_contact.py",
+      "sha256": "d36f01d1c31160c716f788fbd393f06627c02a703344b01fb0033a493dff13c8",
+      "bytes": 1742,
+      "crlf_lines": 43,
+      "lf_git_blob": "103e4fde6bfaa40a59f9991bb0da103f4fc5c834"
+    },
+    {
+      "path": "noesis/habitat.py",
+      "sha256": "da9bd9659cb1d10a22b851d285494c9586484de761189d58d35c0b8f90f0d2d4",
+      "bytes": 8974,
+      "crlf_lines": 170,
+      "lf_git_blob": "8369f591cb7f3d80f7ff26ba722c0d73da11856a"
+    },
+    {
+      "path": "noesis/learning_targets.py",
+      "sha256": "dcb792e4a97d668b3ebc96c3deed88555bf24df39c419a55042dd34102fb9176",
+      "bytes": 3219,
+      "crlf_lines": 60,
+      "lf_git_blob": "744f3c6e55401a431a0678a4217bed5b9d2f7c0e"
+    },
+    {
+      "path": "noesis/lif.py",
+      "sha256": "d2998745933d1ad008a37876f4bb6ef0f95fd5b055a2d635ec7b3b40a8839712",
+      "bytes": 9836,
+      "crlf_lines": 220,
+      "lf_git_blob": "43f980647e536af23ba4d01fe23c89b9d2b25ca4"
+    },
+    {
+      "path": "noesis/motor.py",
+      "sha256": "6c227ac1b17f1a6e61ae7906a9f64eb18107c47835f2bac4b1460fe42612d2df",
+      "bytes": 11748,
+      "crlf_lines": 254,
+      "lf_git_blob": "e5643a329484f4f22e5fd87c45ad34eae7952cf8"
+    },
+    {
+      "path": "noesis/mushroom_body.py",
+      "sha256": "d827097f2af03c9efd462ed0bda73d718d9c6250e71ee27b609b0f5a1896ae7d",
+      "bytes": 11141,
+      "crlf_lines": 213,
+      "lf_git_blob": "581c3385f007ec489c257ed039914b9c197cc2b2"
+    },
+    {
+      "path": "noesis/plasticity.py",
+      "sha256": "b6eb0be56f80fd32370782b41269120e9313dd267f4839060a90db9a0d5241cd",
+      "bytes": 18412,
+      "crlf_lines": 293,
+      "lf_git_blob": "71551bfd286758447995651d3c7d316ff8cbf9f0"
+    },
+    {
+      "path": "noesis/proprioception.py",
+      "sha256": "29cd8415edfb253c31f2da860ba14608329c90b0b44a037f2200679428a3697a",
+      "bytes": 5390,
+      "crlf_lines": 102,
+      "lf_git_blob": "050fd912ad60857fc5430b362ecd19de4e3a5fc6"
+    },
+    {
+      "path": "noesis/recording.py",
+      "sha256": "e8e7f04c76269e1f0392a8825f9cee90a90f4584971ce4e44a236c381cdbe333",
+      "bytes": 4481,
+      "crlf_lines": 110,
+      "lf_git_blob": "e30baac6fd4e9a5c774f057c4e8f5bbce51ace8d"
+    },
+    {
+      "path": "noesis/sensory.py",
+      "sha256": "4f7f533ed7483dd7efcde9de82d2cb22c8122adcab588987d982ffca714471d8",
+      "bytes": 3866,
+      "crlf_lines": 86,
+      "lf_git_blob": "2ec197c421a85a3e116f41890bb1655fcd1596db"
+    },
+    {
+      "path": "noesis/training_scene.py",
+      "sha256": "2aea8cc31ddf80c078663c589f413dc6876e8a3c1f8a4372f1202b19b231636a",
+      "bytes": 1240,
+      "crlf_lines": 40,
+      "lf_git_blob": "54ccc2fce3ca109ddb1be817d48ba5b86a540dc0"
+    },
+    {
+      "path": "noesis/viz/__init__.py",
+      "sha256": "a7cd114a7cf4996b76cbecfcc48379a9dc3a594af884e56049c951dce32bc6b8",
+      "bytes": 28,
+      "crlf_lines": 1,
+      "lf_git_blob": "af340d497ca3a28892f6f3cf77728435c936a89c"
+    },
+    {
+      "path": "noesis/viz/brain_map.py",
+      "sha256": "01f6e2e5b2c3360b1b5822db99c488ad6750a92954d3ccaf69b3b375047f3908",
+      "bytes": 17875,
+      "crlf_lines": 337,
+      "lf_git_blob": "fec2d7fa6dba8fee41ba5fbf2501b9baa7a6d8ec"
+    },
+    {
+      "path": "noesis/wall_budget.py",
+      "sha256": "14567fa52c38f87ecdede71a9e4d3024925c48d5e31c0de0aa0fb50d6770a69b",
+      "bytes": 2334,
+      "crlf_lines": 63,
+      "lf_git_blob": "e93a88bd0a63a43f53a04088d8d87b036639742c"
+    },
+    {
+      "path": "noesis/world.py",
+      "sha256": "b489ccc03aef32a6fabcf992387050c66b9ec36b793d380c551ce445c67b359e",
+      "bytes": 5090,
+      "crlf_lines": 119,
+      "lf_git_blob": "678b61ad3be3cf2bcdba91bb6ac626bd29c0881c"
+    }
+  ]
+}

@@ -1,0 +1,469 @@
+{
+  "date": "2026-11-01",
+  "starting_commit": "54ddbd60d86ee02a2a9fe579831e635a3174c2cc",
+  "open_prs_before": [
+    {
+      "number": 25,
+      "title": "Repair credit-timing tool: shared basis, explicit coverage, descriptive null, provenance (#19)",
+      "head": "claude/credit-timing-repair",
+      "head_sha": "77a3fa93ccba1d4d4f488bd8d6f3a4397b945629",
+      "base": "codex/training-pilot-20261028",
+      "draft": false,
+      "body": "Scoped deliverable for #19 requested in TEAM (`5feefa985206`): repair the credit-timing tool. Read-only analysis; **no learning-rule, learning-rate, reward, training-code or simulation change.** Base: `cc7dc83`.\n\n**Files:** `gpu-pilot/src/noesis_gpu/credit_timing.py`, `gpu-pilot/tests/test_credit_timing.py`, `docs/workstreams/claude/credit-timing/` (README + result JSON).\n\n**What changed (vs reviewed `bbbfd776`):** shared predictor basis (pooled unsupervised PCA applied unchanged to every birth) and the full 7-joint response with shared coefficients instead of a per-birth PCA (Codex's `[X,X]` vs `[X,-X]` counterexample reproduced in a test, plus rotation/flip invariance and birth-exchangeability tests); explicit coverage with a reason per neuron (`nerve`, `region`, `non_leg_nerve`, `region_no_consensus` for `.NO_CONS`, `region_ambiguous`, `no_side_or_region`), constant columns counted and excluded, `INSUFFICIENT_COVERAGE` legs skipped; permutation rank named `family_rank` with `rank_is_calibrated_p_value: false` and an interpretation string; provenance (SHA-256 of every log/observation file, neuron table, module, `plasticity.py`; parameters; numpy); per-birth consistency summary.\n\n**Tests:** `NOESIS_SOURCE=<core 42c2076>/src python -m pytest gpu-pilot/tests/test_credit_timing.py` 16 passed (~50 s); full pilot suite 211 passed / 3 skipped; Ruff clean.\n\n**Result on the three existing logs** (D3 `logged` seed 1000, C2 `train-1001`, `train-1002`; parent `9fd7d411`; 2,970 learning-active samples): 372/453 explored neurons mapped to a leg (323 by nerve, 49 by region; 66 non-leg nerves, 15 ambiguous region, 0 constant columns; the previous mapping dropped 236). No leg shows joint-velocity or learning-signal prediction above the permutation null (joint R² 0.014-0.044 vs null p99 0.055; learning signal R² 0.020-0.035 vs null p99 0.074); best lags are scattered across 0-500 ms and unstable across the three births.\n\n**Limits:** three 5 s births; detection floor is about R² 5-7% (the null measured on these logs), so smaller effects are undetectable; descriptive only (no stationarity/exchangeability/calibration, no causal claim, a non-significant rank is not evidence that learning is absent); neuron-to-leg mapping is heuristic; coefficients assumed shared across births.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 24,
+      "title": "[Experimental] Training reliability, retention diagnostics and team integration",
+      "head": "codex/training-pilot-20261028",
+      "head_sha": "54ddbd60d86ee02a2a9fe579831e635a3174c2cc",
+      "base": "codex/github-project-sync",
+      "draft": true,
+      "body": "S1 tests existing standing-v7 acquisition against gripped-v9 at matched parent/duration/rate; it completes reliably but does not retain standing. Codef29a77d/results7a699cd:25s/5000chunks4990updates+ALL12freshfull5sprobes,13exit0,1660.610/3600s.121focused pre-run tests pass. Native16fieldv7schema/exact15PHYSICALprelearning fields/all6exploration arrays, metadata/source/bank invariants andALL8freshcontrolrawreplays verified. All12rawsummaries/decision/telemetry rechecked.\n\nStanding methodFAIL:3/4standing gates,0/4retention vsboth.10010=890/990standing(<.9); no post-result threshold change. Medianheading/net.8001/.8097 gains pass, butoriginal walkingprimary2/4 andretention0/4=>overallwalkingruleFAIL;2INPLACE/2UNCOORDINATED. Completedchild5e91a548 kept separate;C2curatedtraining-last/validated-best=null unchanged. No source/default/heldout/stage/model promotion or new heavy allocation.\n\n[Result](https://github.com/amithey/Project-Noesis/blob/codex/training-pilot-20261028/docs/standing-profile-s1-result.md) / [verified91-file evidence Release](https://github.com/amithey/Project-Noesis/releases/tag/standing-profile-s1-2026-11-01). Next separately register a fixed-weight exploration transport diagnostic with neural/muscle/body observations, matched on/off andzero controls, explicit observer invariance; perturbed diagnostics cannot be ordinary frozen gait validation. No external gait/body command bypass. Claude review corrections andactual sensoryhook remainseparate.\n\nPhysical standing is demonstrated only in documented intermediate probes; stable learned walking and retention across training remain unproven. This draft contains experimental training integration, reproducibility diagnostics and guarded orchestration. It does not promote a model or advance a stage.\n\nCurrent stocktake and team queue: [project-status-20261030.md](https://github.com/amithey/Project-Noesis/blob/codex/training-pilot-20261028/docs/project-status-20261030.md), #17/#18/#19/#20. The README, ownership map and handoffs now point to that entry. Prior team plan is preserved under docs/history.\n\n### Resulting behavior\n\n- Native profile/LR/exploration logging plumbing with matched frozen metrics, strict checkpoint/reference bounds and immutable parents.\n- Bounded experiment scripts with exclusive lease, fresh sustained resource gates, unique output, terminal partial/complete distinction and budgets.\n- Frozen-evaluation continuation only from a verified complete25s T1 bank: exact5s prefix, source/bank/report/observation checks and cumulative budget ledger. No within-episode state resume, no promotion and no unverified independent-weight composition.\n- Shared primary TEAM_CHAT helper and compact negative results/peer-review diagnostics.\n\n### Evidence and limits\n\n- D4M:full5s physical training replay completed1000chunks/990updates; exact known2074b1e2 bank, all19training fields and all6exploration fields vsD3. Inner82.485s; combined active110.656s including prior zero-job refusal, within original420s. Prospective meanCPU31.93/max60.4% window, live1GiB guard; no default/T1/scientific-policy change or model promotion. This is N1known-child reproducibility, not improved learning or25s/retention proof. [Verified evidence](https://github.com/amithey/Project-Noesis/releases/tag/training-parity-d4-2026-10-31), docs/training-resource-d4-result.json.\n\n- R4:two fresh full5s frozen physical repeats,1000chunks each, all10observation fields identical vs each other andD1.95.820/111.814s;231.75s total. No learning/weight changes. Model remains STEPPING_IN_PLACE (96.263%standing,0.022mmnet). This is short frozen feasibility under observed conditions, not training throughput or a validated2GiB/60%policy. T1/scientific gates unchanged. [Verified artifacts](https://github.com/amithey/Project-Noesis/releases/tag/runtime-resource-r4-2026-10-31), compact docs/resource-envelope-r4-result.json.\n\n- E5:9jobs completed;0/3candidates passed paired heading/net rules. Standing fell in5/6matched development comparisons;4lost a primary gate.\n- D3:two complete5s training births gave the exact same checkpoint and all19trace fields. C2 reproduced two additional historical seeds; the fixed positive association did not replicate.\n- Historical original T1:21.18/25s partial,0frozen probes; excluded from training-last. T1B has since completed the full comparison, with the negative result above.\n- Claude normalized signal:exact990values x3logs accepted only for that function. Whole credit-timing tool awaits PCA invariance, .NO_CONS coverage and null/provenance corrections.\n- Gemini4a78e0b source/report delivery reviewed at Codex74cb069:44isolated-import unit tests pass; adapter/tests already match integration after newline normalization. Python manifest entries hashCRLF rather than GitLF; runnable rectified candidate and raw paired audit evidence/protocol repairs remain pending. No physical benefit established.\n\n### Validation\n\nMost recent D4M receipt/admission/prior-budget/monitor suite:22passed; prior R4 suite:20passed; duration-continuation suite:24passed. Two actual full frozen R4 repeats also completed exactly. T1attempt6 stopped at its unchanged prejobgate before training (CPU46.6%,RAM3.944GiB). Includes synthetic child failure/timeout, journal/lease cleanup, partial rejection, modified artifacts and budget carryover. Actual partial T1 CLI rejected before output/lease. Successful full-model evaluation continuation remains untested because no complete25s child exists. Earlier full-suite counts remain historical and are not represented as a fresh full-suite run.\n\nArtifacts with manifests: [runtime diagnostics release](https://github.com/amithey/Project-Noesis/releases/tag/runtime-diagnostic-d1-2026-10-30). Raw data/caches/environments remain outside Git.\n\nRuntime experimental core42c2076 is separate from historical hub41b5fe6; no automatic core/hub merge. Pilot/core source hashes and scientific gates were not changed by the current documentation cleanup. PRs21/22/23 remain separate review items. Full curriculum orchestration, physical retention, sensory integration and final held-out validation remain outstanding."
+    },
+    {
+      "number": 23,
+      "title": "Core: opt-in v9 cycle objective and LegCycleTracker (E2, synthetic only)",
+      "head": "claude/flygym2-core-learning",
+      "head_sha": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+      "base": "codex/brain-body-feedback",
+      "draft": false,
+      "body": "Experiment E2 from `docs/workstreams/claude/experiment-proposal-v8-method.md` (issue #19). Synthetic development only; no training was run.\n\nAdds opt-in objective `curriculum-gripped-cycle-v9` (v8 + `0.1 * cycle_credit * grip`) and a causal `LegCycleTracker` that counts physical lift->touchdown cycles per leg (15 ms debounce, 250 ms window). No leg order, phase or alternation. Gates: standing, mean support >= 3 feet, forward speed >= 0.5 mm/s over a full window.\n\nBase: core pin `41b5fe6` (not changed by this PR; Codex integrates after review). v3-v8 results are bit-identical to the pinned module (1,800 random calls); the default objective is unchanged. Tests: 14 new + full core suite pass, Ruff clean.\n\nOpen: v8 can already saturate the +1 clip, which hides the bonus; \"cycle\" definition needs Gemini's confirmation; assumptions (weight, window, speed gate) are unreviewed. Details: `docs/workstreams/claude/e2-status.md` on `claude/flygym2-learning-rewards`.\n\nRefs #19.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 22,
+      "title": "feat(eval): מדדי הליכה פיזיקליים, סינון רעד מגע ושחזור פרובים (#20)",
+      "head": "gemini/flygym2-gait-validation",
+      "head_sha": "4a78e0be2e7db699574812f5ff318e6ec6c264cb",
+      "base": "codex/github-project-sync",
+      "draft": false,
+      "body": "**Coordinator stocktake,31October2026:** commit4a78e0b was independently tested (44unit tests passed); current sensory candidate/raw evidence/manifest/protocol repairs remain outstanding in #20. Synthetic tests are not physical walking proof. No automatic merge, task closure or simulation allocation. Historical description follows.\n\n## תקציר השינויים (Gemini — סבב ראשון)\n\nסגירת משימה ראשונה ב־#20:\n- **מודול חדש:** `gpu-pilot/src/noesis_gpu/gait_metrics.py` (`gait-metrics-v1.0`):\n  - חישוב התקדמות בכיוון הגוף (`heading_forward_distance_mm`).\n  - סינון רעד מגע (`debounce_contact`) למניעת ספירת שווא של צעדים ממיקרו-תנודות סביב סף הכוח (1e-5).\n  - חילוץ מחזורי צעדים מלאים (`stance -> swing -> stance`) לכל שש הרגליים: `LF`, `LM`, `LH`, `RF`, `RM`, `RH`.\n  - מדד תיאום `tripod_coordination` (alternation index, anti-phase correlation, intra-tripod synchrony).\n  - סיווג רג'ימי תנועה פיזיקליים: `FALL`, `STATIC_STANDING`, `DRAGGING_OR_SLIPPING`, `STEPPING_IN_PLACE`, `STEPPING_UNCOORDINATED`, `COORDINATED_TRIPOD_WALKING`.\n- **הרחבת `evaluate.py`:**\n  - שילוב המדדים בדוחות `summarize` ו־`compare` עם תאימות schema ל־Codex.\n  - שימור מלא ומדויק של `standing_gate` ומדדי הבסיס (`standing_fraction`, `mean_stance_slip_mm_s`).\n- **בדיקות יחידה בנתונים סינתטיים:**\n  - 10 בדיקות ב־`gpu-pilot/tests/test_gait_metrics.py`.\n  - 10 בדיקות ב־`gpu-pilot/tests/test_evaluate.py`.\n  - בדיקת יכולת הפרדה בתרחישים סינתטיים בין עמידה סטטית, גרירה/החלקה ללא צעדים, רעד סף מגע, נפילה ותרחיש tripod סינתטי.\n- **שחזור ואימות פרובי ה־Release (זרעים 10006 ו־10007):**\n  - שחזור מדויק של שער העמידה (`standing_training_gate_passed: True`).\n  - ניתוח המדדים החדשים הוכיח שהמועמד אכן שיפר עמידה והפחית החלקה, אך טרם הגיע להליכה אמיתית (תנועה קדימה זעירה 0.3-1.3 מ\"מ, ללא תיאום tripod, צעדים במקום).\n- **תיעוד מקיף:** `docs/workstreams/gemini/gait_validation_report.md`.\n\nRefs #20. The current sensory delivery remains open and requires the corrections listed in issue #20.\n"
+    },
+    {
+      "number": 21,
+      "title": "Reward profile mapping and weight-integrity tests (#19)",
+      "head": "claude/flygym2-learning-rewards",
+      "head_sha": "9ac3694074838fe29291bc50517f9a6345395e40",
+      "base": "codex/github-project-sync",
+      "draft": false,
+      "body": "Refs #19 (does not close it; later rounds remain).\n\nBase: `0f003b6`. Head: `fd002a4`. Core pin (read-only): `codex/brain-body-feedback` @ `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`.\n\n**What**\n- `reward_profiles.py`: stage name -> core objective (standing -> curriculum-standing-v7 default; gripped-steps -> v8; continuous-walking/obstacles -> standing-gate-smooth-grip-v6).\n- `score_transition` API and result fields unchanged; also accepts a profile name.\n- Tests: profiles, slip/fall/airborne are not steps, 3 load/learn/save cycles keep topology, signs and 0.5-1.5x original bounds, independent weights.\n- Notes: `docs/workstreams/claude/round1-reward-profiles.md`.\n\n**Tests:** gpu-pilot suite with `NOESIS_SOURCE=<core 41b5fe6>/src`, Python 3.11: 35 passed, 3 skipped (skip reasons not checked).\n\n**Not done:** no real checkpoint loaded, no training run, no change to formulas, thresholds, learning rule or core. Needs Gemini review of slip/fall scenarios and Codex runner wiring.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+    },
+    {
+      "number": 16,
+      "title": "Preserve training code, checkpoints handoff and parallel-agent coordination",
+      "head": "codex/github-project-sync",
+      "head_sha": "0f003b6ecefa7809feca1e22c472cdbaba5b8d9a",
+      "base": "main",
+      "draft": true,
+      "body": "Preserve the existing project integration and complete FlyGym 2 pilot in a shared GitHub hub, with AGENTS.md, a workstream inventory, exact training-core/checkpoint references, restore instructions, and a manifest-based artifact archiver. Other agents' uncommitted work is preserved on separate snapshot branches. Existing working branches were not rewritten and alternative experiments were not automatically merged.\n\nThe required training core is published on codex/brain-body-feedback at 41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953. All local branch heads matched GitHub after the scoped publication.\n\nTraining release: https://github.com/amithey/Project-Noesis/releases/tag/training-backup-2026-10-27 — 10 archives, 8,334 files, 1,226,136,980 archive bytes, plus manifest.json and verification.json. Every archived file passed CRC/SHA-256 checks; all uploaded archive digests and sizes matched GitHub. Parent/candidate checkpoint hashes matched. Raw datasets, derived graph caches and runtime packages are excluded; restore instructions explain separate data acquisition.\n\nValidation: hub core 118 passed / 4 failed (three local Matplotlib component incompatibilities and one missing live.npz recording). Pilot test collection is blocked by a local pandas/NumPy ABI mismatch. Archive script passed Ruff, compilation and the full artifact verification. Details: docs/github-sync-validation.md.\n\nThis is a preservation/handoff draft, not a validated training promotion or completed merge into main."
+    },
+    {
+      "number": 15,
+      "title": "Add opt-in synaptic depression and measure recovery without relaxing P8",
+      "head": "codex/synaptic-depression",
+      "head_sha": "24b25d010b9ee06d8d5e50dea07547474e37e13f",
+      "base": "feature/vnc-rescale",
+      "draft": false,
+      "body": "Add opt-in short-term synaptic depression to the stateful LIF kernel and a controlled response battery on PR #13's fully FAFB/MANC-corrected brain. Finite presynaptic resources recover exactly between transmission events; U=0 keeps legacy dynamics unchanged. The first transmission retains the original signed strength and external drive is unaffected.\n\nThe 66-trial screen/replication preserves aggregate P1-P4/P7 at U=.1, tau=300 ms and terminates sustained reverberation in the tested trials. 14/15 stimulated replicates have no spikes in late recovery; the remaining trial's last spike is 537.5 ms after offset with no reactivation through 5 seconds. However, the unchanged full-window P8 still fails and sugar-to-PAM drops from 1.38 to .0285 Hz. This is not an accepted calibrated-brain fix: depression stays disabled by default, and uniform whole-brain application is explicitly a modelling assumption.\n\n`docs/findings-depression.md` contains pre-run predictions, six-candidate seed-0 screen, fixed selection rule, three-seed control/replication, per-seed results and negative findings. Supporting CSV/JSON retains all measurements and the extended recovery trace. NT signs, region factors, body, response_battery predicates, and shared findings.md are unchanged. PR #12's sign correction remains separate to avoid mixing interventions.\n\nValidation: ruff passes; pytest 47 passed (10 new depression tests). Historical U=0 spike times/indices match PR #13 exactly across three recurrent-network seeds with background input. Chunk boundaries preserve resources/delays; extended trace reproduces original recovery counts. All edits and caches are in C:/dev/noesis-codex-depression; main/Claude checkouts untouched.\n\nStacked on feature/vnc-rescale (#13, 19190a9).\n"
+    },
+    {
+      "number": 14,
+      "title": "docs: project brief and agent instructions",
+      "head": "docs/project-brief",
+      "head_sha": "dedf4a5eebdd4e00e68344cd9f0c7cf8395577c4",
+      "base": "feature/vnc-rescale",
+      "draft": false,
+      "body": "Stacked on #13 (base `feature/vnc-rescale`).\n\n- `docs/PROJECT_BRIEF.md` (Hebrew): goal, definition of done (7 milestones with acceptance tests), what exists, what is missing, the root problem, what is needed, and 8 workstreams for parallel AI tools.\n- `AGENTS.md` + `CLAUDE.md`: rules every agent follows (own worktree, own files, findings per workstream), environment, scientific standards, quality gate.\n\nDocs only.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 13,
+      "title": "feat: response battery, live brain demo, nerve cord corrected to MANC",
+      "head": "feature/vnc-rescale",
+      "head_sha": "19190a95cd805d44ef47959b2daadf09325c41b6",
+      "base": "feature/brain-rescale",
+      "draft": false,
+      "body": "Stacked on #11 (base `feature/brain-rescale`). Three steps:\n\n1. **Live brain-only demo** (`live_brain`, `Watch-Brain.ps1`): sugar switches on/off, the brain map shows a status line (MN9, responding PAM).\n2. **Response battery** (`response_battery`): 8 predictions fixed in advance. Brain corrected to FAFB passes 7/8 (raw BANC 2/8); P8 (return to rest) fails. `newborn_muscles --scaled`, `Run-Fly.ps1` now default to the corrected brain.\n3. **Nerve cord corrected to MANC** (`nerve_cord_scale_factors`, `corrected_scale`): BANC's nerve cord has ~1/4 of MANC's synapses; leg motor neurons 5 -> 23 Hz. Cache keys carry a hash of the factors and signs are applied on load (fixes two stale-cache bugs). Monoamine test: silencing DA/5-HT/OA/TA halves the locked state but removes sugar -> PAM.\n\n## Test plan\n- [x] `ruff check`, `pytest tests/test_connectome.py` (nerve-cord name mapping, scaling before the threshold)\n- [x] `response_battery --brains corrected,corrected-silent-monoamines` (results in docs/findings.md)\n- [x] `Run-Fly.ps1` launched: fly + brain map on the corrected brain\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 12,
+      "title": "Audit scaled olfactory specificity and correct verified il3LN6 GABA sign",
+      "head": "codex/olfactory-specificity",
+      "head_sha": "c7a4f571d367d56cd2ada212831afd8ae810d6cf",
+      "base": "feature/brain-rescale",
+      "draft": false,
+      "body": "The FAFB-region-scaled brain still broadcasts synthetic odours across off-target PNs. Add a reproducible layer assay and correct only the source-backed il3LN6 GABA sign error (Salman et al. 2026, Fig. 2I-L; DOI in the code comment). This biological correction is insufficient to restore specificity.\n\nStacked on `feature/brain-rescale` (PR #11, base 493c62e); no KC class-pair scaling. Every measured condition uses five globally disjoint odour pairs and three seeds, with fresh state and frozen no-change controls. Includes spiking APL, seven graded gains before/after the one NT correction, a feedback-timestep convergence test, and a separately labelled positive-LN-output ablation diagnostic. The ablation is not a recommended biological fix.\n\nNew `docs/findings-olfaction.md` records predictions, gain curves, held-out calibration, full AL LN type/NT audit, per-trial spreads, and negative outcomes. Supporting CSV/JSON results preserve both observation windows, inputs, and controls. No tested gain reaches 5-10% KC activity; 980 KCs have no APL input even before thresholding, and all late-active baseline KCs at gain 4096 belong to this uncovered population.\n\nValidation: `ruff check --no-cache .`; `pytest -q` (45 passed). Exact repeated counts, zero-input silence, and post-override frozen-baseline equality passed. Protected source files, `neuropil_scale_factors`, and `docs/findings.md` are unchanged. All work and caches are in the isolated Codex worktree; main data was read-only.\n"
+    },
+    {
+      "number": 11,
+      "title": "feat: scale BANC synapses to FAFB counts per brain region",
+      "head": "feature/brain-rescale",
+      "head_sha": "493c62ecfd847fde6235c86e9ff65737f4bb08b1",
+      "base": "feature/mbon-compartments",
+      "draft": false,
+      "body": "Stacked on #10 (base `feature/mbon-compartments`).\n\n## What\n- `connectome.neuropil_scale_factors`: FAFB/BANC synapse ratio per brain region (both sides pooled, clipped 1-20); the nerve cord, absent from FAFB, stays unscaled.\n- `build_connectome(region_scale=...)` / `load_cached(...)`: multiply each synapse by its region factor before the 5-synapse threshold; cached separately (`W_min5_scaled.npz`).\n- `rescale_check`: same LIF parameters on raw vs corrected BANC.\n\n## Result (docs/findings.md)\n| | BANC as detected | scaled to FAFB |\n|---|---|---|\n| MN9, sugar 100 Hz (Shiu et al.'s regime) | 0 Hz | 14 Hz |\n| neurons reached by sugar | 754 | 14,446 |\n| PAM > 5 Hz under sugar | 0 | 17-21 |\n| no input | silent | silent |\n\nNothing was tuned on this test. Earlier calibrations (background drive, adaptation, APL gain) were made on the weak brain and need redoing.\n\n## Test plan\n- [x] `ruff check`, `pytest tests/test_connectome.py` (region pooling, scaling before the threshold, unmatched regions at 1x)\n- [x] `python -m noesis.experiments.rescale_check --data <data>` (needs `data/fafb/connections_princeton.csv.gz`)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 10,
+      "title": "feat: MBON dendrite/axon compartments",
+      "head": "feature/mbon-compartments",
+      "head_sha": "ebdcc3969b38aaa8b128c4b6116d0a7ad13690fa",
+      "base": "fix/live-brain-map",
+      "draft": false,
+      "body": "Stacked on #9 (base `fix/live-brain-map`).\n\n## What\n- `mbon_input_compartments` / `compartmentalize_mbons`: synapses onto MBONs are re-weighted by location (mushroom body = dendrites x1, elsewhere = axons x `axonal_weight`).\n- `mb_conditioning --mbon-axonal-weight`; fixes a NaN in `mean_weight_fraction` when a plastic synapse starts at zero.\n\n## Finding\nWith dendritic input only, MBONs are essentially silent to odours (0.03 Hz vs 3.5 Hz as point neurons): their earlier odour response came from axonal input. BANC's ~120 KC synapses per MBON give ~0.2 mV of drive against a 7 mV threshold. Either KC synapses are under-counted in BANC or one detected synapse stands for much more than 0.275 mV; the FAFB comparison (#8) decides.\n\n## Test plan\n- [x] `ruff check`, `pytest tests/test_mushroom_body.py` (11 passed: compartment re-weighting, zero-weight fraction)\n- [x] `mb_conditioning` with axonal weight 0 and 0.2, reward and control\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 9,
+      "title": "fix: live brain map robust on Windows; one-command launcher",
+      "head": "fix/live-brain-map",
+      "head_sha": "f2453bec55b1f60e4ad94c84bb200113b09da0e8",
+      "base": "feature/graded-apl",
+      "draft": false,
+      "body": "Stacked on #7 (base `feature/graded-apl`).\n\n## What\n- The live brain map never blocks or crashes on Windows file locks: the viewer releases the activity file right after reading; the simulation skips a frame instead of failing.\n- Frames are published from t=0, marked \"brain still asleep\" before birth, so the map is never silently empty.\n- `Run-Fly.ps1`: opens the brain map and runs the fly with the MuJoCo viewer in one command; the shared activity file lives outside OneDrive.\n\n## Why\nThe earlier instructions pointed at an old folder and used `&&`, which Windows PowerShell 5.1 rejects, so nothing ran; and a viewer holding the file could crash the simulation.\n\n## Test plan\n- [x] simulation and `brain_map --watch` run concurrently without errors; the live file reads back mid-run (12,904 of 158,262 neurons firing)\n- [x] launched with `powershell -ExecutionPolicy Bypass -File .\\Run-Fly.ps1 -Seconds 3`: brain wakes at 0.5 s, ~97k neurons active\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 8,
+      "title": "analysis: mushroom-body synapse coverage",
+      "head": "analysis/mb-coverage",
+      "head_sha": "b4214aa9f9260e7157282c10719642735e88f2e2",
+      "base": "feature/graded-apl",
+      "draft": false,
+      "body": "Stacked on #7 (base `feature/graded-apl`).\n\n## What\n- `compare_mb_coverage`: per dataset, output synapses per Kenyon cell, KC->MBON synapses per KC/MBON, and the KC share of MBON input inside/outside the mushroom body. Finds the tables by their columns, so other datasets (e.g. FAFB) can be dropped in.\n\n## Findings (BANC)\n- Inside the mushroom body, 71% of MBON input comes from Kenyon cells (as expected), but 80% of all MBON synapses lie outside it (axonal regions), which a point-neuron model weighs like dendritic input.\n- ~10 output synapses per Kenyon cell and ~121 KC synapses per MBON look very low; an FAFB comparison is pending.\n\n## Test plan\n- [x] `ruff check`\n- [x] `python -m noesis.experiments.compare_mb_coverage data/raw` reproduces the numbers above\n\nNote: this branch and #9 both append to `docs/findings.md`; expect a small merge conflict there.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 7,
+      "title": "feat: graded APL and live brain map",
+      "head": "feature/graded-apl",
+      "head_sha": "9c48cce9342b6a76a7ddb13186cde23ee10ea7c2",
+      "base": "fix/apl-sign-and-reward-path",
+      "draft": false,
+      "body": "Stacked on #6 (base `fix/apl-sign-and-reward-path`).\n\n## What\n- `LIFNetwork.run(current_idx=..., current_mv_per_ms=...)`: continuous (graded) input.\n- `GradedAPL`: the non-spiking APL as continuous inhibition of every Kenyon cell, proportional to KC activity; `gain` calibrated to KC sparseness.\n- `mb_conditioning --apl-gain`, `newborn_muscles --plasticity` uses graded APL (default 1024).\n- `noesis.viz.brain_map`: every neuron as a dot that lights up when it fires; live via `newborn_muscles --brain-map FILE` + `python -m noesis.viz.brain_map --watch FILE`, or `--snapshot` to PNG. Schematic layout (the tables have no positions); `--coords` uses real ones.\n\n## Findings (docs/findings.md)\n- KCs active per odour 77% -> 21%, overlap 95% -> 76% (floor ~74%: the antennal-lobe input is non-specific).\n- Conditioning still shows no odour-specific learning beyond the no-reward control, even with plastic weights depressed 39%.\n- Reason found in the data: KCs provide only 23% of the synapses onto MBONs (median 6% per MBON).\n\n## Test plan\n- [x] `ruff check`, `pytest` (33 passed incl. current-injection and graded-APL tests)\n- [x] `mb_conditioning --apl-gain 1024` direct / none / higher eta\n- [x] `newborn_muscles --plasticity --brain-map` runs; `brain_map --snapshot` renders; `--watch` loop runs 25 s headless without errors\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 6,
+      "title": "fix: APL is GABAergic; audit learning prerequisites",
+      "head": "fix/apl-sign-and-reward-path",
+      "head_sha": "4e9ffb64cb570cd75c02549f6acc5d0e8573ba5a",
+      "base": "feature/body-physics",
+      "draft": false,
+      "body": "Stacked on #5 (base `feature/body-physics`).\n\n## What\n- `connectome.NT_OVERRIDES`: APL (the mushroom body's feedback interneuron) is GABAergic in the literature but predicted cholinergic in the table; it is now inhibitory everywhere (cached weights re-signed on load). APL joins the mushroom-body pathway edges.\n- `learning_prerequisites`: reproducible audit of the two prerequisites for learning from the world.\n\n## Findings (docs/findings.md)\n- APL fix: Kenyon cells active per odour 77% -> 50-57%, still far from the ~5-10% of real flies; conditioning still not odour-specific.\n- The dense code starts in the antennal lobe: a 5-glomerulus odour drives 68% of the *other* projection neurons (local neurons give PNs slightly more excitatory than inhibitory synapses); the spiking APL saturates at ~390 Hz.\n- Sugar does not reach the reward dopamine neurons: 192/281 PAM have no excitatory path (>= 5 synapses); in the awake brain PAM fire 0.31 Hz without sugar and 0.30 Hz with it, even with every 1-4 synapse pair added.\n\n## Test plan\n- [x] `ruff check`, `pytest` (34 passed incl. new APL override test)\n- [x] `python -m noesis.experiments.feeding` unchanged (MN9 still responds)\n- [x] `python -m noesis.experiments.learning_prerequisites`\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 5,
+      "title": "feat: muscle-driven body physics",
+      "head": "feature/body-physics",
+      "head_sha": "607deb68fc86419a07cbc82852b032f1e9b5f617",
+      "base": "analysis/leg-sense-audit",
+      "draft": false,
+      "body": "Stacked on #4 (base `analysis/leg-sense-audit`).\n\n## What\nThe body's physics, separate from any decision-making (the brain decides):\n- **Standing posture** and **joint limits** derived from the real stepping kinematics shipped with NeuroMechFly (the old `stretch` start pose lay outside the real range for 13/21 joints and left the fly on its belly).\n- **Equilibrium-point muscles**: agonist/antagonist motor-neuron pools (FlyWire muscle annotations) -> activation with a 30 ms time constant -> joint equilibrium angle; no gain / slew formula.\n- `body_check` acceptance script (stance, range of motion per leg, floor penetration), unit tests, and `newborn_muscles` (brain + muscle body).\n\n## Findings (docs/findings.md)\n- Direct torque control is numerically infeasible for this body (tried ~20 strength/stiffness/damping/integrator configurations).\n- Stance passes; 3 of 4 tested leg extremes stay within the limit; a loaded hind leg at full antagonist activation overshoots by 0.10 rad (tolerance 0.05, **FAIL**, known limitation).\n- Brain + muscle body stays upright (+0.99 mean uprightness, one run) and settles into a crouch; no walking.\n\n## Notes\n`newborn_muscles` and `body_check` use `noesis.world` (floor/gravity) when present; that module belongs to another tool's uncommitted work, so they fall back to FlyGym defaults without it.\n\n## Test plan\n- [x] `ruff check`, `pytest tests/test_body.py` (6 passed; skipped automatically if flygym is not installed)\n- [x] `python -m noesis.experiments.body_check`\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 4,
+      "title": "analysis: leg-sense to motor audit",
+      "head": "analysis/leg-sense-audit",
+      "head_sha": "f02ccad4734831fcaca86b2edf13589dbaa056a3",
+      "base": "feature/balance-senses",
+      "draft": false,
+      "body": "Stacked on #3 (base `feature/balance-senses`).\n\n## What\nAudit of the leg-afferent -> leg-motor-neuron pathway (`leg_sense_audit.py`), an organ-class ablation option (`SensoryMap(kinds=...)`, `newborn --leg-kinds`), and findings.\n\n## Result\n- Campaniform (load) sensilla have ~700x the per-neuron influence of bristles, but almost all are on the front legs.\n- Left/right motor asymmetry (~0.31) exists **without** any leg input: brain noise, not the senses.\n- The campaniform-causes-tilt hypothesis is **not supported** (ablation, one run each); multiple seeds are needed.\n\n## Test plan\n- [x] `ruff check`, `pytest` (sensory ablation test)\n- [x] `python -m noesis.experiments.leg_sense_audit`\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 3,
+      "title": "feat: gravity and rotation senses (Johnston's organ, halteres)",
+      "head": "feature/balance-senses",
+      "head_sha": "6442bc37890f675cb1ed8e8f4d28e49079d77824",
+      "base": "feature/lif-adaptation",
+      "draft": false,
+      "body": "Stacked on #2 (base is `feature/lif-adaptation`; retarget to `dev` once #1 and #2 are merged).\n\n## What\n- `noesis.balance.BalanceMap`: Johnston's-organ (gravity) and haltere (rotation) afferents, 1,053 neurons, driven by the body-frame \"up\" vector and angular velocity. Preferred directions are seeded-random (not in the data).\n- `newborn` wires them in; `--no-balance` disables.\n\n## Result (see docs/findings.md)\nNo measurable effect on the embodied outcome (uprightness min +0.30 with vs +0.29 without; one run each). The tilt appears only when leg senses are on, so the leg afferent -> motor loop is the likelier cause.\n\n## Test plan\n- [x] `ruff check`, `pytest` (3 new tests for balance)\n- [x] 3 s runs: leg only / leg+balance / balance only\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 2,
+      "title": "feat: spike-frequency adaptation for motor neurons",
+      "head": "feature/lif-adaptation",
+      "head_sha": "ac3effc1f5e7477ae9c93c40e474fa4c37c62c27",
+      "base": "feature/m1-connectome-sim",
+      "draft": false,
+      "body": "Stacked on #1 (base is `feature/m1-connectome-sim`; retarget to `dev` after #1 merges).\n\n## What\n- Optional spike-frequency adaptation in the LIF kernel (`LIFParams.da`, `tau_a`; off by default so the Shiu validation is unchanged).\n- `newborn --adapt` (default 1.0 mV/spike) and an uprightness metric in the run summary.\n- `docs/findings.md`: calibration table and a correction to an earlier claim (the fly rolls onto its **side**, not its back).\n\n## Result\nAt da=1 the maximum leg motor-neuron rate drops from 272 Hz to 128 Hz, but the embodied fly still tilts when leg senses are on (uprightness min +0.29). Single runs, so only suggestive. The sugar->MN9 response now needs a stronger stimulus.\n\n## Test plan\n- [x] `ruff check src tests`, `pytest` (12 passed)\n- [x] `python -m noesis.experiments.newborn --seconds 3` for blind / senses / da=0\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    },
+    {
+      "number": 1,
+      "title": "feat: whole-CNS connectome simulation and embodied newborn (M1)",
+      "head": "feature/m1-connectome-sim",
+      "head_sha": "4461001f788044d45ef12a20d7647f12f6227fbd",
+      "base": "dev",
+      "draft": false,
+      "body": "## What\nFirst working vertical slice: the FlyWire whole-CNS connectome simulated as a spiking network, validated, and coupled to a physical fly body. Nothing is learned.\n\n- **Connectome -> sparse signed matrix** (158k neurons, 1.5M pairs; pairs <5 synapses dropped, sign from predicted neurotransmitter).\n- **Event-driven LIF simulator** (numba, stateful, active-set kernel) with Shiu et al. 2024 parameters.\n- **Validation:** driving sugar-taste neurons activates the proboscis motor neuron MN9 (needs ~200 Hz drive).\n- **Body:** leg motor neurons -> NeuroMechFly joints via FlyWire muscle annotations; leg afferents driven by joint angle/contact.\n- ADR-0001, `docs/findings.md`, CI (ruff + pytest), 11 tests.\n\n## Honest status\nThe embodied fly does **not** walk: it flips onto its back after the brain \"wakes\". Some motor neurons lock at hundreds of Hz (the simple LIF model has no adaptation). See `docs/findings.md`. Single runs, no statistics yet.\n\n## Assumptions (all configurable)\nACh excitatory; GABA/Glu/histamine inhibitory; monoamines/unknown excitatory. Muscle->joint signs and sensory transfer functions are modelling choices, not data.\n\n## Test plan\n- [x] `ruff check src tests`\n- [x] `pytest` (11 passed locally)\n- [x] `python -m noesis.experiments.feeding` -> MN9 ~33 Hz under sugar drive, 0 active neurons in control\n- [x] `python -m noesis.experiments.newborn --seconds 3` runs without physics errors\n\nData (`data/`) is not in the repo (size, CC-BY-NC licence).\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+    }
+  ],
+  "issue_bodies_before": [
+    {
+      "url": "https://github.com/amithey/Project-Noesis/issues/17",
+      "title": "[Team] מצב הפרויקט ותור העבודה — Codex, Opus, Gemini",
+      "issue_number": 17,
+      "body": "עדכון1בנובמבר2026: S1הושלם — פרופיל העמידהv7מול פרופיל הצעדיםv9, באותו הורה9fd/משך25שניות/קצב0.2. [תוצאה מלאה וחתימות](https://github.com/amithey/Project-Noesis/blob/codex/training-pilot-20261028/docs/standing-profile-s1-result.md), קודf29a77dותוצאות7a699cd, draft PR #24.\n\n**כל5000המקטעים/4990העדכונים וכל12הפרובים הקפואים הושלמו**,13exit0,1660.610שניות מתוך3600. כל8בקרות ההורה/הצעד שוחזרו בדיוק מולT1B. פיני מקור, קונקטום/סימנים/חסמי מקור, מטא־נתוניv7וקידומת פיזיקלית/חקירה נבדקו; חישוב חוזר אישר את12הסיכומים וההכרעה.\n\n**כלל העמידה והשימור נכשל:**3/4ספי עמידה,0/4שימור עמידה+החלקה מול שתי הבקרות.10010הגיע890/990דגימות(89.899%),דורש891לסף90%; לא שונה סף לאחר התוצאה, והשימור נכשל בנפרד. חציוןheading/netעלה ל־0.8001/0.8097מ״מ; כלל עליית החציונים עבר, אך השער הראשי להליכה עבר2/4בלבד והשימור0/4. רגימים2צעדים במקום/2לא מתואמים; אין הליכה יציבה מוכחת.\n\nהמועמד השלם5e91a54875de34c1e7c8f52734e16249ad66ee515d1416b3848e982303825f13 נשמר בנפרד, לא קודם ולא החליף הורה. training-lastהנבחר נשארC2d701, validated-best=null. אין שימוש בזרעי האימות או מיזוג משקולות. ה־leaseשוחרר; אין סימולציה נוספת מוקצית.\n\n[Releaseחתום](https://github.com/amithey/Project-Noesis/releases/tag/standing-profile-s1-2026-11-01):91קבצים+manifestפנימי, ZIP43598494bytes SHA2566548cf9b53258a41a5ab6428002b7a848682f4644a0ac38ee9aa225d7847d168. ZIPCRC/כלחתימותהקבצים ושניdigests/גדליGitHubאומתו.121בדיקות ממוקדות קדמו להקצאה. אין rawconnectome/cache/envs.\n\n### הבא\n\n- Codex #18: אבחון נפרד ללא למידה, במשקולות קבועות, של החקירה הקיימת דרך פעילות עצבית→פקודות שרירים→תגובה פיזיקלית. בקרות חקירה־מופעלת/כבויה ו־zero-intervention, תיעוד שלא השתנו דינמיקת ברירת־המחדל או משקולות. קלט נכנס דרך המוח; אין מחולל הליכה או פקודות גוף חיצוניות. עדיין אין פרוטוקול/הקצאת ריצה חדשה.\n- Claude #19: תיקוני סקירת בקרת הקרדיט,sidecarוניסוחnull/power; דיאגנוסטיקת הקרדיט מתועדת כתיאורית ולא כהוכחת היעדר אות.\n- Claude/Gemini #20: handoffשדווח על העברת החושים, והצעת מקור אות/hookעצבי אמיתי לפני שילוב; בחירת ערוצים בלבד אינה תגובה סביבתית פיזיקלית.\n\nB1/T1B/L2/S1מספקים ראיות ספציפיות, לא כשל אוניברסלי או סיבה מוכחת. אין להמשיך סריקת משך/קצב/תגמול בהנחה שתפתור שימור. סימולציה כבדה אחת תחת leaseאטומי משותף ותקציב רשום. אין עריכה/דריסה בענפי עמיתים או קידום אוטומטי. מקורf52c8d/80556cdושערי הפרויקט נשארו ללא שינוי.\n\nניווט: noesis/current למשימות17–20 ו־PRs16,21–25; noesis/historyל־PRs1–15. התוצאות השליליות והארטיפקטים נשמרים, ללא מיזוג אוטומטי.\n\n<details>\n<summary>הקצאה מקורית והקשר היסטורי — מצב וענפים נוכחיים מוגדרים לעיל</summary>\n\nהמשתמש מינה את Codex לחלק ולרכז את העבודה בין שלושה בוטים. החלוקה פורסמה ונוצרו שלושה ענפי עבודה מאותו בסיס.\n\n## משימות ואחריות\n\n| בוט | אחריות | משימה | ענף |\n| --- | --- | --- | --- |\n| Codex | סביבת שחזור, מנהל אימון, שמירה/המשך, שילוב והרצות משותפות | #18 | `codex/flygym2-training-orchestration` |\n| Claude / Anthropic | מוח, למידה, תגמולים ותקינות המשקולות | #19 | `claude/flygym2-learning-rewards` |\n| Gemini | גוף, מדדי הליכה והערכה קפואה עצמאית | #20 | `gemini/flygym2-gait-validation` |\n\nבסיס הענפים: `0f003b6ecefa7809feca1e22c472cdbaba5b8d9a`. יעד PRs: `codex/github-project-sync`.\n\n## הוראות משותפות והודעות להעברה\n\n- [תוכנית הצוות המלאה](https://github.com/amithey/Project-Noesis/blob/codex/github-project-sync/docs/team-training-plan.md): בעלות על קבצים, ממשקים, סדר השלבים, קריטריוני סיום וניהול ריצות.\n- [הודעה ל־Claude](https://github.com/amithey/Project-Noesis/blob/codex/github-project-sync/docs/handoffs/claude.md).\n- [הודעה ל־Gemini](https://github.com/amithey/Project-Noesis/blob/codex/github-project-sync/docs/handoffs/gemini.md).\n- [מפת אחריות](https://github.com/amithey/Project-Noesis/blob/codex/github-project-sync/docs/team-assignments.json).\n\n## סדר העבודה\n\n1. במקביל: Codex מקים סביבה ומנהל ריצות; Claude מתאים ובודק מטרות למידה; Gemini מפתח מדדים ומשחזר את הפרובים הקיימים.\n2. PRs קטנים + סקירת ממשקים. Codex משלב, Claude סוקר תקינות למידה ו־Gemini מאמת את המדידה.\n3. בדיקת אינטגרציה קצרה והפסקה/המשך; אחריה צעדים עם אחיזה, הליכה רציפה, חושים ומכשולים, ורק לבסוף הבקרות הסופיות.\n\nרק Codex מעדכן את המשקולות הראשיות וקובצי מצב האימון. כל מועמד נשמר בנפרד. על מחשב משותף מתאמים ריצה מלאה אחת בכל רגע עד שנעילת המשאבים נבדקת. בדיקות סינתטיות ופיתוח יכולים להתבצע במקביל. כל הרצה נרשמת כאן עם owner/host/commit/parent hash/seed/output/budget/result; אין להסיק ש־issue הוא מנגנון נעילה אוטומטי.\n\nה־core נשאר בנפרד ב־`codex/brain-body-feedback`, commit `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`. [קובצי האימון והחתימות](https://github.com/amithey/Project-Noesis/releases/tag/training-backup-2026-10-27).\n\n## מצב ההקצאה\n\n- Codex: קיבל את משימת התיאום והכין את החלוקה; מימוש חדש של האימון טרם התחיל במסגרת זו.\n- Claude ו־Gemini: **הוקצו, ממתינים לאישור קבלה** בשיחות ובמשימות שלהם.\n- לא נשלחו הודעות אוטומטיות לשיחות הבוטים ולא הופעל אימון ברקע.\n\nלפני תחילת מימוש: לאשר במשימה האישית את קבלת האחריות ואת SHA הבסיס. לאחר תוצר/ריצה ולפני עצירה: לעדכן commit, בדיקות בפועל, artifacts וחתימות, חסמים והצעד הבא. משימות #1–#16 והניסויים ההיסטוריים נשמרים; אין למזגם אוטומטית.\n\n</details>\n",
+      "state": "open",
+      "user": {
+        "login": "amithey",
+        "name": "amithey",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/105523846?v=4",
+        "id": 105523846
+      },
+      "assignees": null,
+      "labels": [
+        {
+          "name": "noesis/current",
+          "color": "0E8A16",
+          "description": "Current coordinated work; see issue17"
+        }
+      ],
+      "milestone": null,
+      "state_reason": null,
+      "comments": 64,
+      "created_at": "2026-10-27T21:35:48Z",
+      "updated_at": "2026-10-31T23:00:40Z",
+      "closed_at": null,
+      "display_url": "https://github.com/amithey/Project-Noesis/issues/17",
+      "display_title": "[Team] מצב הפרויקט ותור העבודה — Codex, Opus, Gemini"
+    },
+    {
+      "url": "https://github.com/amithey/Project-Noesis/issues/18",
+      "title": "[Codex] עמידה והליכה, אמינות אימון ואינטגרציה",
+      "issue_number": 18,
+      "body": "עדכון1בנובמבר2026: S1הושלם — פרופיל העמידהv7מול פרופיל הצעדיםv9, באותו הורה9fd/משך25שניות/קצב0.2. [תוצאה מלאה וחתימות](https://github.com/amithey/Project-Noesis/blob/codex/training-pilot-20261028/docs/standing-profile-s1-result.md), קודf29a77dותוצאות7a699cd, draft PR #24.\n\n**כל5000המקטעים/4990העדכונים וכל12הפרובים הקפואים הושלמו**,13exit0,1660.610שניות מתוך3600. כל8בקרות ההורה/הצעד שוחזרו בדיוק מולT1B. פיני מקור, קונקטום/סימנים/חסמי מקור, מטא־נתוניv7וקידומת פיזיקלית/חקירה נבדקו; חישוב חוזר אישר את12הסיכומים וההכרעה.\n\n**כלל העמידה והשימור נכשל:**3/4ספי עמידה,0/4שימור עמידה+החלקה מול שתי הבקרות.10010הגיע890/990דגימות(89.899%),דורש891לסף90%; לא שונה סף לאחר התוצאה, והשימור נכשל בנפרד. חציוןheading/netעלה ל־0.8001/0.8097מ״מ; כלל עליית החציונים עבר, אך השער הראשי להליכה עבר2/4בלבד והשימור0/4. רגימים2צעדים במקום/2לא מתואמים; אין הליכה יציבה מוכחת.\n\nהמועמד השלם5e91a54875de34c1e7c8f52734e16249ad66ee515d1416b3848e982303825f13 נשמר בנפרד, לא קודם ולא החליף הורה. training-lastהנבחר נשארC2d701, validated-best=null. אין שימוש בזרעי האימות או מיזוג משקולות. ה־leaseשוחרר; אין סימולציה נוספת מוקצית.\n\n[Releaseחתום](https://github.com/amithey/Project-Noesis/releases/tag/standing-profile-s1-2026-11-01):91קבצים+manifestפנימי, ZIP43598494bytes SHA2566548cf9b53258a41a5ab6428002b7a848682f4644a0ac38ee9aa225d7847d168. ZIPCRC/כלחתימותהקבצים ושניdigests/גדליGitHubאומתו.121בדיקות ממוקדות קדמו להקצאה. אין rawconnectome/cache/envs.\n\n### הבא\n\n- Codex #18: אבחון נפרד ללא למידה, במשקולות קבועות, של החקירה הקיימת דרך פעילות עצבית→פקודות שרירים→תגובה פיזיקלית. בקרות חקירה־מופעלת/כבויה ו־zero-intervention, תיעוד שלא השתנו דינמיקת ברירת־המחדל או משקולות. קלט נכנס דרך המוח; אין מחולל הליכה או פקודות גוף חיצוניות. עדיין אין פרוטוקול/הקצאת ריצה חדשה.\n- Claude #19: תיקוני סקירת בקרת הקרדיט,sidecarוניסוחnull/power; דיאגנוסטיקת הקרדיט מתועדת כתיאורית ולא כהוכחת היעדר אות.\n- Claude/Gemini #20: handoffשדווח על העברת החושים, והצעת מקור אות/hookעצבי אמיתי לפני שילוב; בחירת ערוצים בלבד אינה תגובה סביבתית פיזיקלית.\n\nB1/T1B/L2/S1מספקים ראיות ספציפיות, לא כשל אוניברסלי או סיבה מוכחת. אין להמשיך סריקת משך/קצב/תגמול בהנחה שתפתור שימור. סימולציה כבדה אחת תחת leaseאטומי משותף ותקציב רשום. אין עריכה/דריסה בענפי עמיתים או קידום אוטומטי. מקורf52c8d/80556cdושערי הפרויקט נשארו ללא שינוי.\n\nCodex מחזיק עמידה/הליכה, תוכנית אימון ואינטגרציה. הדיאגנוסטיקה הבאה נפרדת ממדדי אימות הליכה; פרקים עם הפרעה לא יוצגו כהערכה קפואה רגילה.\n\n<details>\n<summary>הקצאה מקורית והקשר היסטורי — מצב וענפים נוכחיים מוגדרים לעיל</summary>\n\n**אחראי: Codex. מצב: accepted_planning; מימוש האימון טרם התחיל במסגרת חלוקה זו.**\n\nענף עבודה: `codex/flygym2-training-orchestration`.\n\nבעלות: `gpu-pilot/src/noesis_gpu/train.py`, `run.py`, מודולים חדשים `curriculum_runner.py`, `curriculum_state.py`; הבדיקות שלהם; קובצי תלויות/CI; `scripts/`; תיעוד התיאום וקובצי מצב האימון. אין לערוך את learning.py או evaluate.py במקום בעליהם.\n\nהמשימה הראשונה:\n- [ ] להקים סביבת Python 3.12 מבודדת וניתנת לשחזור; לפתור את חוסר התאימות pandas/NumPy ולפרסם בדיקת baseline.\n- [ ] לממש מנהל שלבים וריצות עם נעילת עובד, פלט ייחודי, מצבי complete/partial/failed ושמירה אטומית.\n- [ ] להמשיך מהורה שהושלם; פרק שנקטע מתחיל מחדש מאותו הורה. אין להציג זאת כשחזור אמצע פרק.\n- [ ] להפריד training-last, עוגני שלב ו־validated-best; לא לקדם תוצאה חלקית או נכשלת.\n- [ ] לאכוף שני probes קפואים שונים, עד שלושה סבבים לשלב, וזרעי אימות 10,11,200,201,202 מחוץ לאימון.\n- [ ] לחבר את מטרות Claude ואת דוחות Gemini, לאחר סקירת ממשקים ועמידה בבדיקות.\n\nהגדרת סיום לסבב הראשון: התקנה מתועדת, בדיקות של מנהל ההפסקה/המשך והנעילה, ובדיקת אינטגרציה קצרה עם פרוב קפוא. ריצות ארוכות רק לאחר מוכנות מנהל ההמשך ואימות המדדים. התוכנית הזאת אינה מפעילה ריצה ברקע.\n\nתיאום: #17. קראו `AGENTS.md`, `docs/team-training-plan.md`, `docs/coordination.md` ו־`gpu-pilot/training-plan.md` בענף `codex/github-project-sync`. בסיס קוד מתועד: `6a67a5da43897f5b7dd64f0b56e8a11201959b6a`; הוראות התיאום החדשות יתווספו מעליו. המוח בנפרד ב־`codex/brain-body-feedback` / `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`. ה־Release הוא `training-backup-2026-10-27`.\n\nעובדים ב־checkout נפרד, פותחים PR אל `codex/github-project-sync`, מתעדים SHA בסיס, קבצים, בדיקות וחסמים. אין להחליף את הסביבה המשותפת או לכתוב לתיקיית ריצה של בוט אחר. תקציב ריצה על מחשב משותף מתואם עם Codex; פיתוח ובדיקות סינתטיות יכולים להתבצע במקביל. המשקולות הראשיות מעודכנות רק בידי מנהל האימון של Codex לאחר בדיקות Gemini. הקריטריונים המדעיים והזרעים השמורים נשארים לפי התוכנית.\n\nפורמט עדכון: מצב / commit / קבצים / בדיקות ותוצאות / artifacts ו־SHA-256 / חסם / הצעד הבא. לפני תחילת מימוש: לאשר קבלת המשימה כאן ולציין ענף ו־SHA בסיס. `assigned` אינו הוכחה שעובד כבר רץ.\n\n</details>\n",
+      "state": "open",
+      "user": {
+        "login": "amithey",
+        "name": "amithey",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/105523846?v=4",
+        "id": 105523846
+      },
+      "assignees": null,
+      "labels": [
+        {
+          "name": "noesis/current",
+          "color": "0E8A16",
+          "description": "Current coordinated work; see issue17"
+        }
+      ],
+      "milestone": null,
+      "state_reason": null,
+      "comments": 67,
+      "created_at": "2026-10-27T21:37:11Z",
+      "updated_at": "2026-10-31T23:00:46Z",
+      "closed_at": null,
+      "display_url": "https://github.com/amithey/Project-Noesis/issues/18",
+      "display_title": "[Codex] עמידה והליכה, אמינות אימון ואינטגרציה"
+    },
+    {
+      "url": "https://github.com/amithey/Project-Noesis/issues/19",
+      "title": "[Opus / Claude] סקירת בקרת הקרדיט ותיקוני הכרעה ומקור",
+      "issue_number": 19,
+      "body": "עודכן לאחר סקירת מסירות Claude החדשות, 31 באוקטובר 2026. [סקירה מלאה וראיות](https://github.com/amithey/Project-Noesis/blob/codex/training-pilot-20261028/docs/claude-delivery-review-20261031.md), commit350b9fa, draft PR #24.\n\n**התקדמות ממשית:** נבדקו ארבעה מקורות Git בלתי משתנים: PR25/77a3fa93, בקרת קרדיט0f542eb1, חושים05975010 ודוח reward-variance/L1b ב־dc12cad5. עברו79בדיקות בעותקי מקור מבודדים עם אימות ייבוא וחתימות, ועוד3בדיקות נגד של Codex. אין שינוי לפין הפיילוט/הליבה או למשקולות הנבחרות.\n\n**ראיות פיזיקליות שנבדקו מחדש:** שש לידות מלאות של25שניות ו־24פרובים קפואים. ההורה, הטופולוגיה/סימנים/גבולות, ההקשר והבנק נבדקו; כל19שדות טרום־הלמידה וכל6מערכי החקירה זהים בכל זוג, כולל1000שלא נבדק קודם. כל שלוש תוצאות ההכרעה פורסמו ושוחזרו: אף כלל עדיפות לא עבר. ההפרשים החציוניים המאוגמים, אמיתי פחות בקרה: heading−0.2461מ״מ, net−0.2911מ״מ. **אין מכך הוכחת שקילות, היעדר למידה או הליכה אקראית.** יחידת השכפול היא3זוגות אימון, לא12פרובים בלתי תלויים.\n\n**תיקונים שנמסרו ל־Claude:** ספירת שימור באותם פרובים וטיפול סימטרי בשוויון; sidecarעם scorer.steps=0מול5000בדוח הטבעי; ניסוח nullp99כסף ייחוס תיאורי, לא power/גבול לאפקט חסר. התיקון המחמיר אינו משנה את3ההכרעות הנוכחיות.25קבלות תהליך חסרות קוד יציאה: אופק סימולציה מלא נבדק, אך אין אימות רטרואקטיבי של קודי יציאה או telemetryשל Codex. שוני מסלול העטיפה בזוג1000נשאר מתועד.\n\nאין סימולציה חדשה מוקצית של Codex, אין מיזוג משקולות/מקורות או קידום. training-last=C2d701, validated-best=null, מקור80556cd/coref52c8d והזרעים השמורים ללא שינוי. T1B ו־L2 הקודמים הושלמו ונכשלו בשימור.\n\n### תור עבודה עדכני\n\n| אחראי | תוצר הבא |\n|---|---|\n|Codex #18|מעקב תיקוני סקירה, אבחון כניסה לעמידה/תגמול ושימור; ביקורת הצעת מקור אות/hook חישה אמיתי לפני שילוב|\n|Opus / Claude #19|תיקוני הכרעה/sidecar/ניסוח שצוינו; קוד בסיס משותף וכיסוי כבר נמסר ונבדק; אין לקבע lag או מנגנון למידה על בסיס nullלא מכויל|\n|Claude / Gemini #20|Claude מדווח על הוראת משתמש להעברת כל החושים אליו; תיאום בענפים נפרדים, שימור ראיות Gemini ו־handoff, ללא עריכה חופפת|\n\nגשר החושים עבר26בדיקות בחירת ערוצים/מתאם בלבד. מקור אות ב־backend וחיבור לצעד העצבי עדיין חסרים; אין טענת חושים חדשים שפועלים בפיילוט. הודעת מסירה אינה הוכחת פעילות חיה. סימולציה כבדה אחת במחשב, leaseאטומי משותף עם owner; שמות נעילה נפרדים לבדם אינם מונעים מירוץ. אין להפעיל ניסוי נוסף ללא השערה ובקרות רשומות.\n\n<details>\n<summary>הקצאה מקורית והקשר היסטורי — מצב וענפים נוכחיים מוגדרים לעיל</summary>\n\n**אחראי: Claude / Anthropic. מצב: assigned_awaiting_ack.**\n\nענף עבודה: `claude/flygym2-learning-rewards`.\n\nבעלות ראשונית: `gpu-pilot/src/noesis_gpu/learning.py`, מודול חדש `reward_profiles.py`, `gpu-pilot/tests/test_learning.py`, בדיקות תגמול חדשות ותיעוד ב־`docs/workstreams/claude/`. שינוי הכרחי בליבת המוח יבוצע רק בענף חדש `claude/flygym2-core-learning` מה־core pin, בקבצי `circuit_learning.py`, `plasticity.py`, `embodied_metrics.py` ובדיקותיהם, וב־PR נפרד. אין לשנות את ה־core pin בעצמך.\n\nהמשימה הראשונה:\n- [ ] לבדוק שהמשקולות האחרונות נטענות בלי שינוי טופולוגיה, סימני חיבור או משקולות המקור המשמשות לחסמים.\n- [ ] להתאים ולבדוק את מטרות התגמול הקיימות: standing v7, gripped-step v8, continuous-walking v6; לשמר את standing כברירת מחדל.\n- [ ] לשמר את API `score_transition(before, after, dt_ms, objective=...)` ואת שדות התוצאה הנוכחיים; למסור ל־Codex את שמות המטרות והבדיקות לחיבור ל־runner.\n- [ ] לבדוק שהחקירה כבויה במצב frozen, שמשקולות עצמאיות לכל מוח לומד, ושמגבלות המקור נשמרות גם לאחר load/save ומספר מחזורים.\n- [ ] להראות שבתרחישי בדיקה החלקה/נפילה אינן נחשבות צעדים מוצלחים; להעביר ל־Gemini לסקירה עצמאית.\n\nהגדרת סיום לסבב הראשון: PR קטן עם מיפוי מטרות ובדיקות סינתטיות; בלי שינוי סמוי של כלל הלמידה, ספים או דינמיקה. שינוי מדעי חדש דורש הצעת ניסוי נפרדת עם הורה ותקציב תואמים. אין לערוך train.py, evaluate.py, backend.py או קובצי מצב משותפים.\n\nתיאום: #17. קראו `AGENTS.md`, `docs/team-training-plan.md`, `docs/coordination.md` ו־`gpu-pilot/training-plan.md` בענף `codex/github-project-sync`. בסיס קוד מתועד: `6a67a5da43897f5b7dd64f0b56e8a11201959b6a`; הוראות התיאום החדשות יתווספו מעליו. המוח בנפרד ב־`codex/brain-body-feedback` / `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`. ה־Release הוא `training-backup-2026-10-27`.\n\nעובדים ב־checkout נפרד, פותחים PR אל `codex/github-project-sync`, מתעדים SHA בסיס, קבצים, בדיקות וחסמים. אין להחליף את הסביבה המשותפת או לכתוב לתיקיית ריצה של בוט אחר. תקציב ריצה על מחשב משותף מתואם עם Codex; פיתוח ובדיקות סינתטיות יכולים להתבצע במקביל. המשקולות הראשיות מעודכנות רק בידי מנהל האימון של Codex לאחר בדיקות Gemini. הקריטריונים המדעיים והזרעים השמורים נשארים לפי התוכנית.\n\nפורמט עדכון: מצב / commit / קבצים / בדיקות ותוצאות / artifacts ו־SHA-256 / חסם / הצעד הבא. לפני תחילת מימוש: לאשר קבלת המשימה כאן ולציין ענף ו־SHA בסיס. `assigned` אינו הוכחה שעובד כבר רץ.\n\n</details>\n",
+      "state": "open",
+      "user": {
+        "login": "amithey",
+        "name": "amithey",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/105523846?v=4",
+        "id": 105523846
+      },
+      "assignees": null,
+      "labels": [
+        {
+          "name": "noesis/current",
+          "color": "0E8A16",
+          "description": "Current coordinated work; see issue17"
+        },
+        {
+          "name": "noesis/review-needed",
+          "color": "FBCA04",
+          "description": "Experimental work awaiting explicit review; not validated"
+        }
+      ],
+      "milestone": null,
+      "state_reason": null,
+      "comments": 37,
+      "created_at": "2026-10-27T21:37:13Z",
+      "updated_at": "2026-10-31T21:55:12Z",
+      "closed_at": null,
+      "display_url": "https://github.com/amithey/Project-Noesis/issues/19",
+      "display_title": "[Opus / Claude] סקירת בקרת הקרדיט ותיקוני הכרעה ומקור"
+    },
+    {
+      "url": "https://github.com/amithey/Project-Noesis/issues/20",
+      "title": "[Team] חושים: מסירת Gemini ל-Claude ושילוב מבוקר",
+      "issue_number": 20,
+      "body": "עודכן ב־31 באוקטובר 2026. [סקירת המסירה החדשה](https://github.com/amithey/Project-Noesis/blob/codex/training-pilot-20261028/docs/claude-delivery-review-20261031.md).\n\n**תיאום תחום החושים:** Claude מדווח על הוראת משתמש שהעבירה אליו את כל חושי הזבוב (#20תגובה6548732015 ו־TEAM). נשמרת הפרדה בין claude/senses וענף Gemini; נדרש handoffשל המקור, החתימות והמגבלות, ללא דריסה. אין בקשה למימוש חישה חופף חדש של Gemini.\n\nמקור Claude059750103bce98748a6719e8ac12675dfa8f5499 נבדק בעותק Gitמבודד:26בדיקות senses_bridge/external_sensesעברו עם אימות מקור הייבוא. זהו בוחר ערוצים בלבד. backendאינו מפיק אותות אלה ואין hookלצעד העצבי, לכן שום חוש חדש לא שולב התנהגותית.\n\nהבא: Claude מוסר הצעת מקור אות/hook עם no-signal/disabled baseline, מיפוי/חפיפות/יחידות מפורשים ובקרות מזווגות; Codex סוקר לפני שילוב בקבציו. Gemini שומר ומוסר4a78e0b והראיות/הבעיות הפתוחות מסקירת6525598346 (מניפסט Git, קוד מועמד, ארטיפקטים ופרוטוקול). מדידה פיזיקלית עצמאית נשארת תחום נפרד בתיאום. אין הקצאת סימולציה כבדה, קידום או מיזוג.\n\n<details>\n<summary>הקצאה מקורית והקשר היסטורי — מצב וענפים נוכחיים מוגדרים לעיל</summary>\n\n**אחראי: Gemini. מצב: assigned_awaiting_ack.**\n\nענף עבודה: `gemini/flygym2-gait-validation`.\n\nבעלות בסבב הראשון: `gpu-pilot/src/noesis_gpu/evaluate.py`, מודול חדש `gait_metrics.py`, `gpu-pilot/tests/test_evaluate.py`, בדיקות מדדים חדשות ותיעוד ב־`docs/workstreams/gemini/`. בשלב הבא הגוף והחושים: backend.py, bridge.py, controller.py והבדיקות שלהם, תוך שימור הממשקים וחיבור עם Codex. אין לשנות learning.py או train.py.\n\nהמשימה הראשונה:\n- [ ] להפיק מדדי מחזורי תמיכה/הרמה לכל אחת משש הרגליים, התקדמות בכיוון הגוף, החלקה ו־tripod מהתצפיות הפיזיקליות.\n- [ ] לבדוק עם נתונים סינתטיים עמידה סטטית, החלקה, גרירה, רעד סביב סף המגע, נפילה ומחזורי רגל אמיתיים; תנועה לבדה אינה הוכחת הליכה.\n- [ ] להרחיב דוחות frozen בלי לשבור את standing_gate; לדחות פרק חלקי, NaN, שדות חסרים או השוואה שאינה תואמת בתנאים.\n- [ ] לשחזר מדדי standing/slip מקובצי ה־Release עבור הורה ומועמד בזרעים 10006 ו־10007, ולתעד כל הבדל.\n- [ ] לספק ל־Codex דוח versioned עם `heading_forward_distance_mm`, `leg_step_cycles`, `mean_stance_slip_mm_s`, `standing_fraction`, זמני מדידה ומקור/checkpoint hashes.\n\nהגדרת סיום לסבב הראשון: PR עם מדדים, מקרי קצה ודוח שחזור מהקבצים הקיימים. אין לקדם מודל או לשנות ספי הצלחה. חושים/מכשולים ו־CUDA הם שלב המשך; CUDA דורש NVIDIA אמיתי ו־CPU/GPU parity, ואינו חסם למדדי CPU עכשיו.\n\nתיאום: #17. קראו `AGENTS.md`, `docs/team-training-plan.md`, `docs/coordination.md` ו־`gpu-pilot/training-plan.md` בענף `codex/github-project-sync`. בסיס קוד מתועד: `6a67a5da43897f5b7dd64f0b56e8a11201959b6a`; הוראות התיאום החדשות יתווספו מעליו. המוח בנפרד ב־`codex/brain-body-feedback` / `41b5fe6534ed4c8f0c21a2e123c8d518b3bf5953`. ה־Release הוא `training-backup-2026-10-27`.\n\nעובדים ב־checkout נפרד, פותחים PR אל `codex/github-project-sync`, מתעדים SHA בסיס, קבצים, בדיקות וחסמים. אין להחליף את הסביבה המשותפת או לכתוב לתיקיית ריצה של בוט אחר. תקציב ריצה על מחשב משותף מתואם עם Codex; פיתוח ובדיקות סינתטיות יכולים להתבצע במקביל. המשקולות הראשיות מעודכנות רק בידי מנהל האימון של Codex לאחר בדיקות Gemini. הקריטריונים המדעיים והזרעים השמורים נשארים לפי התוכנית.\n\nפורמט עדכון: מצב / commit / קבצים / בדיקות ותוצאות / artifacts ו־SHA-256 / חסם / הצעד הבא. לפני תחילת מימוש: לאשר קבלת המשימה כאן ולציין ענף ו־SHA בסיס. `assigned` אינו הוכחה שעובד כבר רץ.\n\n</details>\n",
+      "state": "open",
+      "user": {
+        "login": "amithey",
+        "name": "amithey",
+        "email": null,
+        "avatar_url": "https://avatars.githubusercontent.com/u/105523846?v=4",
+        "id": 105523846
+      },
+      "assignees": null,
+      "labels": [
+        {
+          "name": "noesis/current",
+          "color": "0E8A16",
+          "description": "Current coordinated work; see issue17"
+        },
+        {
+          "name": "noesis/review-needed",
+          "color": "FBCA04",
+          "description": "Experimental work awaiting explicit review; not validated"
+        }
+      ],
+      "milestone": null,
+      "state_reason": null,
+      "comments": 23,
+      "created_at": "2026-10-27T21:37:15Z",
+      "updated_at": "2026-10-31T21:53:31Z",
+      "closed_at": null,
+      "display_url": "https://github.com/amithey/Project-Noesis/issues/20",
+      "display_title": "[Team] חושים: מסירת Gemini ל-Claude ושילוב מבוקר"
+    }
+  ],
+  "branch_names_observed": [
+    "analysis/fafb-comparison",
+    "analysis/leg-sense-audit",
+    "analysis/mb-coverage",
+    "analysis/response-battery",
+    "claude/credit-noise-control",
+    "claude/credit-timing-repair",
+    "claude/flygym2-core-learning",
+    "claude/flygym2-learning-rewards",
+    "claude/l2-reward-variance",
+    "claude/learning-retention",
+    "claude/locomotion-v25",
+    "claude/senses",
+    "codex/brain-body-feedback",
+    "codex/flygym2-training-orchestration",
+    "codex/github-project-sync",
+    "codex/olfactory-specificity",
+    "codex/snapshot-20261027-feature-fafb-mushroom-body",
+    "codex/snapshot-20261027-gemini-embodied-live-brain-view",
+    "codex/snapshot-20261027-gemini-locomotion-review",
+    "codex/synaptic-depression",
+    "codex/training-pilot-20261028",
+    "dev",
+    "docs/project-brief",
+    "feature/balance-senses",
+    "feature/body-physics",
+    "feature/brain-rescale",
+    "feature/fafb-mushroom-body",
+    "feature/fly-survival-drive",
+    "feature/gait-rhythm",
+    "feature/graded-apl",
+    "feature/habitat-in-view",
+    "feature/kc-rescale",
+    "feature/lif-adaptation",
+    "feature/live-brain-demo",
+    "feature/m1-connectome-sim",
+    "feature/mb-from-fafb",
+    "feature/mbon-compartments",
+    "feature/network-calibration",
+    "feature/vnc-rescale",
+    "fix/apl-sign-and-reward-path",
+    "fix/live-brain-map",
+    "gemini/embodied-live-brain-view",
+    "gemini/flygym2-gait-validation",
+    "gemini/locomotion-review",
+    "gemini/monoamines-recovery",
+    "main"
+  ],
+  "cleanup": [
+    {
+      "number": 1,
+      "head": "feature/m1-connectome-sim",
+      "head_sha": "4461001f788044d45ef12a20d7647f12f6227fbd",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 2,
+      "head": "feature/lif-adaptation",
+      "head_sha": "ac3effc1f5e7477ae9c93c40e474fa4c37c62c27",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 3,
+      "head": "feature/balance-senses",
+      "head_sha": "6442bc37890f675cb1ed8e8f4d28e49079d77824",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 4,
+      "head": "analysis/leg-sense-audit",
+      "head_sha": "f02ccad4734831fcaca86b2edf13589dbaa056a3",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 5,
+      "head": "feature/body-physics",
+      "head_sha": "607deb68fc86419a07cbc82852b032f1e9b5f617",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 6,
+      "head": "fix/apl-sign-and-reward-path",
+      "head_sha": "4e9ffb64cb570cd75c02549f6acc5d0e8573ba5a",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 7,
+      "head": "feature/graded-apl",
+      "head_sha": "9c48cce9342b6a76a7ddb13186cde23ee10ea7c2",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 8,
+      "head": "analysis/mb-coverage",
+      "head_sha": "b4214aa9f9260e7157282c10719642735e88f2e2",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 9,
+      "head": "fix/live-brain-map",
+      "head_sha": "f2453bec55b1f60e4ad94c84bb200113b09da0e8",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 10,
+      "head": "feature/mbon-compartments",
+      "head_sha": "ebdcc3969b38aaa8b128c4b6116d0a7ad13690fa",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 11,
+      "head": "feature/brain-rescale",
+      "head_sha": "493c62ecfd847fde6235c86e9ff65737f4bb08b1",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 12,
+      "head": "codex/olfactory-specificity",
+      "head_sha": "c7a4f571d367d56cd2ada212831afd8ae810d6cf",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 13,
+      "head": "feature/vnc-rescale",
+      "head_sha": "19190a95cd805d44ef47959b2daadf09325c41b6",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 14,
+      "head": "docs/project-brief",
+      "head_sha": "dedf4a5eebdd4e00e68344cd9f0c7cf8395577c4",
+      "action": "closed_without_merge_or_branch_deletion"
+    },
+    {
+      "number": 15,
+      "head": "codex/synaptic-depression",
+      "head_sha": "24b25d010b9ee06d8d5e50dea07547474e37e13f",
+      "action": "closed_without_merge_or_branch_deletion"
+    }
+  ],
+  "no_branch_deleted": true,
+  "no_merge_performed": true
+}

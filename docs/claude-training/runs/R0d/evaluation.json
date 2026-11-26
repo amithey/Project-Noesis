@@ -1,0 +1,449 @@
+{
+  "legs": "native",
+  "muscle_model": "mean",
+  "motor_side_inference": null,
+  "label": "R0d baseline (variant A: native legs, mean muscles)",
+  "gains": "None",
+  "held_out_seeds": [
+    20001,
+    20002,
+    20003
+  ],
+  "seconds": 5.0,
+  "candidate": [
+    {
+      "seed": 20001,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.30652228428652456,
+      "mean_reward_v7_stand": 0.607681259134256,
+      "mean_reward_v8_step": 0.30652228428652456,
+      "standing_fraction": 0.897979797979798,
+      "mean_stance_slip_mm_s": 2.300091406045636,
+      "mean_uprightness": 0.8683424604023913,
+      "mean_height_mm": 1.0749841876637074,
+      "min_height_mm": 0.612891879283621,
+      "mean_supporting_feet": 2.713131313131313,
+      "forward_mm": 1.2238339008165295,
+      "path_mm": 10.643937052994982,
+      "touchdowns_per_leg": [
+        66,
+        29,
+        51,
+        43,
+        40,
+        54
+      ],
+      "debounced_steps_per_leg": [
+        5,
+        5,
+        5,
+        4,
+        8,
+        4
+      ],
+      "extended_support_share_per_leg": [
+        0.8162,
+        0.1434,
+        0.3606,
+        0.3182,
+        0.298,
+        0.7626
+      ],
+      "stride_mm_per_leg": [
+        0.9503,
+        0.7446,
+        1.2571,
+        0.4428,
+        0.6489,
+        0.7395
+      ],
+      "extended_share_per_leg": [
+        0.9828,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_seconds": 135.89635510003427,
+      "total_spikes": 5030115
+    },
+    {
+      "seed": 20002,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.2823594807784916,
+      "mean_reward_v7_stand": 0.6167967244511134,
+      "mean_reward_v8_step": 0.2823594807784916,
+      "standing_fraction": 0.907070707070707,
+      "mean_stance_slip_mm_s": 2.693346424980317,
+      "mean_uprightness": 0.8793011311779116,
+      "mean_height_mm": 1.2557965189058349,
+      "min_height_mm": 0.8750833168250587,
+      "mean_supporting_feet": 2.603030303030303,
+      "forward_mm": 0.29247054546602336,
+      "path_mm": 10.982889867300536,
+      "touchdowns_per_leg": [
+        56,
+        31,
+        55,
+        17,
+        62,
+        28
+      ],
+      "debounced_steps_per_leg": [
+        5,
+        7,
+        8,
+        2,
+        3,
+        4
+      ],
+      "extended_support_share_per_leg": [
+        0.5838,
+        0.3081,
+        0.7051,
+        0.0677,
+        0.6293,
+        0.298
+      ],
+      "stride_mm_per_leg": [
+        0.8227,
+        1.0503,
+        1.7651,
+        0.3932,
+        1.263,
+        0.4937
+      ],
+      "extended_share_per_leg": [
+        1.0,
+        1.0,
+        0.9889,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_seconds": 196.17864850000478,
+      "total_spikes": 7654140
+    },
+    {
+      "seed": 20003,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.28642039529645447,
+      "mean_reward_v7_stand": 0.6264009482097902,
+      "mean_reward_v8_step": 0.28642039529645447,
+      "standing_fraction": 0.9111111111111111,
+      "mean_stance_slip_mm_s": 2.4293002101123666,
+      "mean_uprightness": 0.8754086143931058,
+      "mean_height_mm": 1.1456844932993127,
+      "min_height_mm": 0.7244649080869664,
+      "mean_supporting_feet": 2.6717171717171717,
+      "forward_mm": 1.627034396899946,
+      "path_mm": 11.763887305855537,
+      "touchdowns_per_leg": [
+        73,
+        41,
+        65,
+        12,
+        49,
+        50
+      ],
+      "debounced_steps_per_leg": [
+        1,
+        4,
+        2,
+        2,
+        2,
+        4
+      ],
+      "extended_support_share_per_leg": [
+        0.6778,
+        0.2869,
+        0.5313,
+        0.1495,
+        0.4859,
+        0.5222
+      ],
+      "stride_mm_per_leg": [
+        1.0738,
+        1.0587,
+        1.4551,
+        0.4396,
+        1.2243,
+        0.5602
+      ],
+      "extended_share_per_leg": [
+        0.9768,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_seconds": 139.1152115999721,
+      "total_spikes": 5543515
+    }
+  ],
+  "parent": [
+    {
+      "seed": 20001,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.30652228428652456,
+      "mean_reward_v7_stand": 0.607681259134256,
+      "mean_reward_v8_step": 0.30652228428652456,
+      "standing_fraction": 0.897979797979798,
+      "mean_stance_slip_mm_s": 2.300091406045636,
+      "mean_uprightness": 0.8683424604023913,
+      "mean_height_mm": 1.0749841876637074,
+      "min_height_mm": 0.612891879283621,
+      "mean_supporting_feet": 2.713131313131313,
+      "forward_mm": 1.2238339008165295,
+      "path_mm": 10.643937052994982,
+      "touchdowns_per_leg": [
+        66,
+        29,
+        51,
+        43,
+        40,
+        54
+      ],
+      "debounced_steps_per_leg": [
+        5,
+        5,
+        5,
+        4,
+        8,
+        4
+      ],
+      "extended_support_share_per_leg": [
+        0.8162,
+        0.1434,
+        0.3606,
+        0.3182,
+        0.298,
+        0.7626
+      ],
+      "stride_mm_per_leg": [
+        0.9503,
+        0.7446,
+        1.2571,
+        0.4428,
+        0.6489,
+        0.7395
+      ],
+      "extended_share_per_leg": [
+        0.9828,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_seconds": 88.78600840002764,
+      "total_spikes": 5030115
+    },
+    {
+      "seed": 20002,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.2823594807784916,
+      "mean_reward_v7_stand": 0.6167967244511134,
+      "mean_reward_v8_step": 0.2823594807784916,
+      "standing_fraction": 0.907070707070707,
+      "mean_stance_slip_mm_s": 2.693346424980317,
+      "mean_uprightness": 0.8793011311779116,
+      "mean_height_mm": 1.2557965189058349,
+      "min_height_mm": 0.8750833168250587,
+      "mean_supporting_feet": 2.603030303030303,
+      "forward_mm": 0.29247054546602336,
+      "path_mm": 10.982889867300536,
+      "touchdowns_per_leg": [
+        56,
+        31,
+        55,
+        17,
+        62,
+        28
+      ],
+      "debounced_steps_per_leg": [
+        5,
+        7,
+        8,
+        2,
+        3,
+        4
+      ],
+      "extended_support_share_per_leg": [
+        0.5838,
+        0.3081,
+        0.7051,
+        0.0677,
+        0.6293,
+        0.298
+      ],
+      "stride_mm_per_leg": [
+        0.8227,
+        1.0503,
+        1.7651,
+        0.3932,
+        1.263,
+        0.4937
+      ],
+      "extended_share_per_leg": [
+        1.0,
+        1.0,
+        0.9889,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_seconds": 97.6360827999888,
+      "total_spikes": 7654140
+    },
+    {
+      "seed": 20003,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.28642039529645447,
+      "mean_reward_v7_stand": 0.6264009482097902,
+      "mean_reward_v8_step": 0.28642039529645447,
+      "standing_fraction": 0.9111111111111111,
+      "mean_stance_slip_mm_s": 2.4293002101123666,
+      "mean_uprightness": 0.8754086143931058,
+      "mean_height_mm": 1.1456844932993127,
+      "min_height_mm": 0.7244649080869664,
+      "mean_supporting_feet": 2.6717171717171717,
+      "forward_mm": 1.627034396899946,
+      "path_mm": 11.763887305855537,
+      "touchdowns_per_leg": [
+        73,
+        41,
+        65,
+        12,
+        49,
+        50
+      ],
+      "debounced_steps_per_leg": [
+        1,
+        4,
+        2,
+        2,
+        2,
+        4
+      ],
+      "extended_support_share_per_leg": [
+        0.6778,
+        0.2869,
+        0.5313,
+        0.1495,
+        0.4859,
+        0.5222
+      ],
+      "stride_mm_per_leg": [
+        1.0738,
+        1.0587,
+        1.4551,
+        0.4396,
+        1.2243,
+        0.5602
+      ],
+      "extended_share_per_leg": [
+        0.9768,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "wall_seconds": 69.55871399998432,
+      "total_spikes": 5543515
+    }
+  ],
+  "stand_gate": {
+    "no_physics_errors": true,
+    "standing_ge_0.97_every_seed": false,
+    "uprightness_ge_0.85_every_seed": true,
+    "slip_not_worse_than_parent_mean": true,
+    "every_leg_extended_support_ge_0.3_every_seed": false,
+    "v7_reward_beats_parent_every_seed": false
+  },
+  "walk_gate": {
+    "no_physics_errors": true,
+    "forward_ge_2mm_every_seed": false,
+    "standing_ge_0.90_every_seed": false,
+    "stepping_4plus_legs_3plus_touchdowns": true,
+    "real_steps_4plus_legs_2plus_debounced_steps": true,
+    "all_6_legs_2plus_debounced_steps": false,
+    "every_leg_extended_support_ge_0.2_every_seed": false,
+    "every_leg_stride_ge_0.3mm_every_seed": true,
+    "forward_beats_parent_every_seed": false
+  },
+  "stand_gate_passed": false,
+  "walk_gate_passed": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "video": {
+    "seed": 20001,
+    "seconds": 10.0,
+    "objective": "curriculum-gripped-step-v8",
+    "mean_reward": 0.2883269279934437,
+    "mean_reward_v7_stand": 0.6027670905086531,
+    "mean_reward_v8_step": 0.2883269279934437,
+    "standing_fraction": 0.8964824120603015,
+    "mean_stance_slip_mm_s": 2.5909095233029578,
+    "mean_uprightness": 0.8709908186913489,
+    "mean_height_mm": 1.174669864898878,
+    "min_height_mm": 0.612891879283621,
+    "mean_supporting_feet": 2.644221105527638,
+    "forward_mm": 1.4886541283771948,
+    "path_mm": 22.01084507071676,
+    "touchdowns_per_leg": [
+      133,
+      58,
+      117,
+      58,
+      109,
+      71
+    ],
+    "debounced_steps_per_leg": [
+      10,
+      9,
+      8,
+      6,
+      13,
+      7
+    ],
+    "extended_support_share_per_leg": [
+      0.7196,
+      0.1714,
+      0.5302,
+      0.2146,
+      0.5276,
+      0.4613
+    ],
+    "stride_mm_per_leg": [
+      1.2061,
+      0.943,
+      1.6845,
+      0.5169,
+      1.453,
+      0.7589
+    ],
+    "extended_share_per_leg": [
+      0.9915,
+      1.0,
+      0.9975,
+      1.0,
+      1.0,
+      0.9884
+    ],
+    "wall_seconds": 153.27910869999323,
+    "total_spikes": 12729024,
+    "video": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\claude-es\\R0d-baseline\\fly-10s.mp4",
+    "frames": 301
+  },
+  "wall_seconds": 463.24053597450256
+}

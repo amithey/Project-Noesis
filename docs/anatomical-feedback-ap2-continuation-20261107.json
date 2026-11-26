@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-07",
+  "status": "complete_replication_all_original_rules_failed",
+  "goal_complete": false,
+  "simulation_active": false,
+  "canonical_lease_active": false,
+  "evaluated_source": "7692865891a05a939c983ce8ee1946b9f768fff4",
+  "new_complete_workers": 25,
+  "seconds": 4603.484,
+  "independently_recomputed_native_transitions": 20000,
+  "training_births_reported": [
+    1004,
+    1005,
+    1006
+  ],
+  "combined_rule_passes": 0,
+  "bank_positions": 45,
+  "unique_frozen_cells": 37,
+  "original1005failure_preserved": true,
+  "model_promoted": false,
+  "stage_advanced": false,
+  "validated_best": null,
+  "walking_proven": false,
+  "artifact": {
+    "path": "anatomical-feedback-ap2-20261107-evidence.zip",
+    "bytes": 181327024,
+    "sha256": "42e20e37d1ee95c550d65d2cb491d69895ae75777b4f279788110d1468d1373d",
+    "files": 358,
+    "crc_and_all_hashes_verified": true,
+    "raw_graph_cache_private_lease_excluded": true,
+    "release_uploaded": false
+  },
+  "next_step": "Descriptive failure-type audit on existing37cell raw bank before choosing another training method; no new physics or criterion changes allocated",
+  "publication_scope": "Compact scientific result; extensive private integrity maps retained locally"
+}

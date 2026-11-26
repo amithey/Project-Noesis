@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-07",
+  "goal_status": "active_unachieved",
+  "phase": "ED1_complete_independently_audited",
+  "runtime_source_commit": "5dbdf9637adb862b90ba8b949acfb6025bf93bcf",
+  "result_commit": "23afb434427d685e2626018a53e1ba129691d4c7",
+  "pull_request": "https://github.com/amithey/Project-Noesis/pull/49",
+  "active_workers": false,
+  "host_lease_released": true,
+  "all_planned_workers_completed": true,
+  "independent_technical_audit_passed": true,
+  "declared_scientific_conditions_met": false,
+  "validated_best": null,
+  "model_promoted": false,
+  "physical_balance_validated": false,
+  "walking_proven": false,
+  "minimal_verdict": "outputs/eligibility-delay-ed1-minimal-result-20261107.json",
+  "next": [
+    "Assess fixed-method repeatability across additional independent training births, preserving the original failed birth and unchanged criteria.",
+    "Before another allocation, preregister source, controls, signed inputs, budget and stop rules; no further run is currently allocated.",
+    "Continue Claude learning/Gemini physical review through assigned issues, without inferring activity or approval."
+  ],
+  "publication_limit": "Other specific publication approvals remain pending. No contents of rejected payloads are included here."
+}

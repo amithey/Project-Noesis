@@ -1,0 +1,12 @@
+{
+  "status": "completed_worker",
+  "script_sha256": "a4a8e98db66a7926398dcc0dc07be1e80890db4b54355a2fe0d0fd964d933ece",
+  "exit_code": 0,
+  "timed_out": false,
+  "tree_empty": true,
+  "seconds": 2.921999999321997,
+  "containment": "windows_job_before_resume",
+  "worker_tree_empty_verified": true,
+  "lease_released": true,
+  "script_unchanged": true
+}

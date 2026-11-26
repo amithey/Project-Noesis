@@ -1,0 +1,38 @@
+{
+  "experiment": "WS1 bounded existing-neural-weight sensitivity",
+  "date": "2026-11-10",
+  "common_parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "constructed_variant_sha256": {
+    "minus": "658b104e49ac314c4eb4370c217691cbac42af2e76374dd587e709691db2c1b8",
+    "plus": "b3c35a73d2e9493ab06529ee8322b9fb426208d5fb62d462562d10a849f0c972"
+  },
+  "change": "Existing selected edge weights plus/minus .05*abs(original); no clipping, other checkpoint fields identical, imported weights-only",
+  "constructed_not_trained": true,
+  "learning": false,
+  "seconds_frozen": 5,
+  "maximum_new_jobs": 11,
+  "aggregate_seconds": 3300,
+  "worker_seconds": 300,
+  "seeds": [
+    1004,
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "development_seeds": [
+    10006,
+    10007,
+    10010,
+    10011
+  ],
+  "sequence": "Exact own1004 baseline replay, then minus and plus each own1004 plus four development seeds; no performance-based skipping",
+  "controls": "Signed same-seed parent references; one fresh baseline exact raw observations/pads/anatomy/total spikes; actual full-graph import verification",
+  "primary": "Per seed report exact changed desired-angle and actual joint/body trajectory samples plus max absolute deltas; responsiveness only, no ability threshold or winner",
+  "secondary": "Unchanged native strict retention versus same-seed parent, descriptive only; cannot qualify constructed variants as learned skills",
+  "invariants": "Frozen existing neural-to-muscle execution, unchanged body/senses/RNG/controller/topology/signs/original-reference50%bound; final seeds untouched",
+  "stop": "Any input/source/data/import/hash/horizon/exact replay/resource/timeout/containment failure, or insufficient full worker budget; no retry/retuning/partial science",
+  "model_promoted": false,
+  "standing_proven": false,
+  "walking_proven": false
+}

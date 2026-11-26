@@ -1,0 +1,275 @@
+{
+  "label": "R2b-cma-stand-fixedseeds cma stand",
+  "gains": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\claude-es\\R2b-cma-stand-fixedseeds\\best-gains.npy",
+  "held_out_seeds": [
+    20001,
+    20002,
+    20003
+  ],
+  "seconds": 5.0,
+  "candidate": [
+    {
+      "seed": 20001,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.3440845248973165,
+      "mean_reward_v7_stand": 0.6469360513990845,
+      "mean_reward_v8_step": 0.3440845248973165,
+      "standing_fraction": 0.9222222222222223,
+      "mean_stance_slip_mm_s": 2.1963992405125565,
+      "mean_uprightness": 0.9049040617688134,
+      "mean_height_mm": 1.0455544105114516,
+      "min_height_mm": 0.6573428977330441,
+      "mean_supporting_feet": 2.709090909090909,
+      "forward_mm": 2.0655180326004148,
+      "path_mm": 10.367496723374439,
+      "touchdowns_per_leg": [
+        74,
+        39,
+        61,
+        38,
+        35,
+        56
+      ],
+      "debounced_steps_per_leg": [
+        4,
+        5,
+        7,
+        6,
+        9,
+        1
+      ],
+      "wall_seconds": 98.26201409997884,
+      "total_spikes": 5049535
+    },
+    {
+      "seed": 20002,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": -0.08195084624020424,
+      "mean_reward_v7_stand": 0.10948553280719074,
+      "mean_reward_v8_step": -0.08195084624020424,
+      "standing_fraction": 0.5808080808080808,
+      "mean_stance_slip_mm_s": 1.7783302739902016,
+      "mean_uprightness": 0.21330286492295783,
+      "mean_height_mm": 0.8966304529091871,
+      "min_height_mm": 0.421854174075,
+      "mean_supporting_feet": 1.9656565656565657,
+      "forward_mm": -2.2917335658220415,
+      "path_mm": 9.066582805342833,
+      "touchdowns_per_leg": [
+        40,
+        33,
+        58,
+        17,
+        39,
+        37
+      ],
+      "debounced_steps_per_leg": [
+        2,
+        2,
+        6,
+        0,
+        6,
+        2
+      ],
+      "wall_seconds": 113.61196779998136,
+      "total_spikes": 6648552
+    },
+    {
+      "seed": 20003,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.23109272528119848,
+      "mean_reward_v7_stand": 0.5528025305929408,
+      "mean_reward_v8_step": 0.23109272528119848,
+      "standing_fraction": 0.8646464646464647,
+      "mean_stance_slip_mm_s": 2.979049222251488,
+      "mean_uprightness": 0.8867492377473003,
+      "mean_height_mm": 1.2554314026755473,
+      "min_height_mm": 0.6900309040518859,
+      "mean_supporting_feet": 2.768686868686869,
+      "forward_mm": -0.041470913461306824,
+      "path_mm": 12.344527217849302,
+      "touchdowns_per_leg": [
+        62,
+        38,
+        65,
+        11,
+        72,
+        37
+      ],
+      "debounced_steps_per_leg": [
+        6,
+        6,
+        3,
+        3,
+        2,
+        3
+      ],
+      "wall_seconds": 112.8021406000189,
+      "total_spikes": 7753819
+    }
+  ],
+  "parent": [
+    {
+      "seed": 20001,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.30652228428652456,
+      "mean_reward_v7_stand": 0.607681259134256,
+      "mean_reward_v8_step": 0.30652228428652456,
+      "standing_fraction": 0.897979797979798,
+      "mean_stance_slip_mm_s": 2.300091406045636,
+      "mean_uprightness": 0.8683424604023913,
+      "mean_height_mm": 1.0749841876637074,
+      "min_height_mm": 0.612891879283621,
+      "mean_supporting_feet": 2.713131313131313,
+      "forward_mm": 1.2238339008165295,
+      "path_mm": 10.643937052994982,
+      "touchdowns_per_leg": [
+        66,
+        29,
+        51,
+        43,
+        40,
+        54
+      ],
+      "debounced_steps_per_leg": [
+        5,
+        5,
+        5,
+        4,
+        8,
+        4
+      ],
+      "wall_seconds": 102.09212349998415,
+      "total_spikes": 5030115
+    },
+    {
+      "seed": 20002,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.2823594807784916,
+      "mean_reward_v7_stand": 0.6167967244511134,
+      "mean_reward_v8_step": 0.2823594807784916,
+      "standing_fraction": 0.907070707070707,
+      "mean_stance_slip_mm_s": 2.693346424980317,
+      "mean_uprightness": 0.8793011311779116,
+      "mean_height_mm": 1.2557965189058349,
+      "min_height_mm": 0.8750833168250587,
+      "mean_supporting_feet": 2.603030303030303,
+      "forward_mm": 0.29247054546602336,
+      "path_mm": 10.982889867300536,
+      "touchdowns_per_leg": [
+        56,
+        31,
+        55,
+        17,
+        62,
+        28
+      ],
+      "debounced_steps_per_leg": [
+        5,
+        7,
+        8,
+        2,
+        3,
+        4
+      ],
+      "wall_seconds": 105.79948470002273,
+      "total_spikes": 7654140
+    },
+    {
+      "seed": 20003,
+      "seconds": 5.0,
+      "objective": "curriculum-gripped-step-v8",
+      "mean_reward": 0.28642039529645447,
+      "mean_reward_v7_stand": 0.6264009482097902,
+      "mean_reward_v8_step": 0.28642039529645447,
+      "standing_fraction": 0.9111111111111111,
+      "mean_stance_slip_mm_s": 2.4293002101123666,
+      "mean_uprightness": 0.8754086143931058,
+      "mean_height_mm": 1.1456844932993127,
+      "min_height_mm": 0.7244649080869664,
+      "mean_supporting_feet": 2.6717171717171717,
+      "forward_mm": 1.627034396899946,
+      "path_mm": 11.763887305855537,
+      "touchdowns_per_leg": [
+        73,
+        41,
+        65,
+        12,
+        49,
+        50
+      ],
+      "debounced_steps_per_leg": [
+        1,
+        4,
+        2,
+        2,
+        2,
+        4
+      ],
+      "wall_seconds": 99.56491849999293,
+      "total_spikes": 5543515
+    }
+  ],
+  "stand_gate": {
+    "no_physics_errors": true,
+    "standing_ge_0.97_every_seed": false,
+    "uprightness_ge_0.85_every_seed": false,
+    "slip_not_worse_than_parent_mean": true,
+    "v7_reward_beats_parent_every_seed": false
+  },
+  "walk_gate": {
+    "no_physics_errors": true,
+    "forward_ge_2mm_every_seed": false,
+    "standing_ge_0.90_every_seed": false,
+    "stepping_4plus_legs_3plus_touchdowns": true,
+    "real_steps_4plus_legs_2plus_debounced_steps": true,
+    "all_6_legs_2plus_debounced_steps": false,
+    "forward_beats_parent_every_seed": false
+  },
+  "stand_gate_passed": false,
+  "walk_gate_passed": false,
+  "model_promoted": false,
+  "walking_proven": false,
+  "video": {
+    "seed": 20001,
+    "seconds": 10.0,
+    "objective": "curriculum-gripped-step-v8",
+    "mean_reward": 0.35670378817434195,
+    "mean_reward_v7_stand": 0.6718456961971417,
+    "mean_reward_v8_step": 0.35670378817434195,
+    "standing_fraction": 0.9371859296482412,
+    "mean_stance_slip_mm_s": 2.3902746447036236,
+    "mean_uprightness": 0.8937374599543579,
+    "mean_height_mm": 1.0881671166580777,
+    "min_height_mm": 0.6508650153061075,
+    "mean_supporting_feet": 2.862311557788945,
+    "forward_mm": 3.790356091942025,
+    "path_mm": 19.481717199399046,
+    "touchdowns_per_leg": [
+      136,
+      71,
+      122,
+      68,
+      85,
+      111
+    ],
+    "debounced_steps_per_leg": [
+      7,
+      13,
+      11,
+      10,
+      14,
+      4
+    ],
+    "wall_seconds": 150.25492320000194,
+    "total_spikes": 11234516,
+    "video": "C:\\Users\\heyma\\OneDrive\\Desktop\\\u05de\u05d3\u05e2\u05d9 \u05d4\u05de\u05d7\u05e9\u05d1\\\u05e4\u05e8\u05d5\u05d9\u05d9\u05e7\u05d8\u05d9\u05dd\\Project Noesis\\gpu-pilot\\outputs\\claude-es\\R2b-cma-stand-fixedseeds\\eval\\fly-10s.mp4",
+    "frames": 301
+  },
+  "wall_seconds": 392.4766254425049
+}

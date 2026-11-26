@@ -1,0 +1,42 @@
+{
+  "experiment": "TP1 frozen thermo integration pilot",
+  "date": "2026-11-06",
+  "source_base": "75cdc34aeeacb7684c73b6e91bd39fddf399cc9f",
+  "peer_source": "d2160a9714dfe279d928c28aa323e78dbe700635",
+  "core_commit": "42c20769376bda5694b4c1c66ca75e52cbd9f1f4",
+  "source_hashes": {
+    "pilot": "faa3e6ffaf1771ff4c04f1eb5017b7c4cb3dda42923abb29ab92bcfdddb94d29",
+    "core": "f52c8d90f98ebbacfd5b4e1066aee1f938435455cf0ef9b3cd55778dbcd52888"
+  },
+  "parent_sha256": "9fd7d41177bf2c745809401c3b142a832661d1a18d0b117b30cb02aea63fea3c",
+  "seeds": [
+    10006,
+    10007
+  ],
+  "modes": [
+    "plain",
+    "off",
+    "zero",
+    "constant",
+    "active"
+  ],
+  "seconds_per_job": 5,
+  "control_ms": 5,
+  "process_budget_seconds": 300,
+  "aggregate_budget_seconds": 1800,
+  "field": {
+    "axis": 0,
+    "origin": -1.0,
+    "length": 2.0,
+    "constant_level": 0.5,
+    "gain_hz_per_unit": 50.0
+  },
+  "gate0": "plain exactly replays B2; off and zero exactly match plain in native AND sensory arrays before stimuli",
+  "neural_criterion": "constant and active warm-afferent mean rate exceed matched off by>=5Hz/neuron on BOTH seeds",
+  "retention_criterion": "all constant/active probes standing>=.9, standing>=off and slip<=off; descriptive pilot only",
+  "stop_conditions": "failure, timeout, incomplete/nonfinite evidence, invariance/source/parent mismatch, RAM<2GiB or insufficient remaining300s",
+  "learning": false,
+  "motor_exploration": 0,
+  "model_promoted": false,
+  "walking_proven": false
+}
