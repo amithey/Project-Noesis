@@ -79,3 +79,24 @@ With only 2 training seeds the vector is somewhat overfit. The debounced step co
 a few real steps on most legs. Both parent and candidate fail "all six legs ≥2 steps" on at least one seed.
 
 Files: [`runs/R1b-es-stand-fixedseeds/`](R1b-es-stand-fixedseeds/)
+
+### Re-evaluation 2026-11-26 with the extended-support metric (code `8af745a` + `7958c14`, no video)
+
+Same held-out seeds and the same deterministic episodes, so all earlier numbers are unchanged. New columns: per-leg extended-support share
+(claw on the floor AND leg reach ≥ 70% of settled reach), in leg order LF, LM, LH, RF, RM, RH.
+
+| Seed | who | extended support per leg | debounced steps per leg |
+|---|---|---|---|
+| 20001 | candidate | 0.66, 0.30, 0.51, **0.21**, **0.29**, 0.66 | 8, 11, 3, 1, 4, 4 |
+| 20001 | parent | 0.82, **0.14**, 0.36, 0.32, **0.30**, 0.76 | 5, 5, 5, 4, 8, 4 |
+| 20002 | candidate | 0.67, 0.36, 0.70, **0.11**, 0.64, **0.25** | 4, 4, 4, 5, 2, 2 |
+| 20002 | parent | 0.58, 0.31, 0.71, **0.07**, 0.63, **0.30** | 5, 7, 8, 2, 3, 4 |
+| 20003 | candidate | 0.46, 0.39, 0.60, **0.25**, 0.60, 0.38 | 10, 5, 3, 3, 4, 4 |
+| 20003 | parent | 0.68, **0.29**, 0.53, **0.15**, 0.49, 0.52 | 1, 4, 2, 2, 2, 4 |
+
+New gate criteria: stand `every_leg_extended_support_ge_0.3_every_seed` **FAIL**; walk `every_leg_extended_support_ge_0.2_every_seed` **FAIL**.
+Both overall gate verdicts are unchanged (FAILED).
+
+Reading: by this metric the left hind leg (LH) carries weight while extended 51–70% of the time, so it is not the folded leg.
+The weakest leg is the **right front (RF)** (0.07–0.32 in both parent and R1b), then LM and RH on some seeds.
+File: [`R1b-es-stand-fixedseeds/evaluation-v2-extended-support.json`](R1b-es-stand-fixedseeds/evaluation-v2-extended-support.json)
