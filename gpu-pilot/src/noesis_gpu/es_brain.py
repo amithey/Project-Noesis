@@ -164,6 +164,7 @@ class Evaluator:
         start_pos, heading = before["position"].copy(), before["heading"].copy()
         heading = heading[:2] / max(np.linalg.norm(heading[:2]), 1e-12)
         rewards, stand, slip, up, height, feet_load, speeds = [], [], [], [], [], [], []
+        reach, ref_reach = [], None  # horizontal claw-to-thorax distance per leg
         both = {"curriculum-standing-v7": [], "curriculum-gripped-step-v8": []}
         if frame_cb:
             frame_cb(body, 0.0, before, start_pos, heading)
@@ -182,6 +183,9 @@ class Evaluator:
                 up.append(float(after["up_body"][2]))
                 height.append(float(after["position"][2]))
                 feet_load.append(after["foot_load"] > 1e-5)
+                d = np.linalg.norm(after["feet_position"][:, :2] - after["position"][:2], axis=1)
+                ref_reach = d.copy() if ref_reach is None else ref_reach
+                reach.append(d)
             if record is not None:
                 record.append({k: np.asarray(v).copy() for k, v in after.items()})
             if frame_cb:
@@ -190,6 +194,10 @@ class Evaluator:
         if not rewards:
             raise ValueError("episode shorter than settling interval")
         loads = np.array(feet_load)
+        # a leg "really supports" only with its claw on the floor AND the leg extended
+        # (>= 70% of its settled reach); a leg folded under the body does not count
+        extended = np.array(reach) >= 0.7 * ref_reach
+        support_share = (loads & extended).mean(axis=0)
         touchdowns = (loads[1:] & ~loads[:-1]).sum(axis=0)  # raw contact flicker count
         steps = debounced_steps(loads)
         displacement = (before["position"][:2] - start_pos[:2])
@@ -208,6 +216,8 @@ class Evaluator:
             "path_mm": float(np.sum(np.abs(speeds)) * CONTROL_MS / 1000),
             "touchdowns_per_leg": touchdowns.astype(int).tolist(),
             "debounced_steps_per_leg": steps,
+            "extended_support_share_per_leg": [round(float(x), 4) for x in support_share],
+            "extended_share_per_leg": [round(float(x), 4) for x in extended.mean(axis=0)],
             "wall_seconds": time.perf_counter() - started,
             "total_spikes": int(brain.total_spikes),
         }
@@ -250,18 +260,21 @@ def debounced_steps(loads, min_swing=8, min_stance=8):
 def fitness(result, stage, displacement_weight=0.05):
     """Episode-level scalar to maximise.
 
-    stand: mean curriculum-standing-v7 reward (support, posture, low slip).
+    stand: mean curriculum-standing-v7 reward (support, posture, low slip) plus a bonus
+           for every leg carrying weight while extended (mean and minimum over legs).
     walk : mean curriculum-gripped-step-v8 reward plus net forward displacement
            per simulated second and the share of legs that really step, both
            multiplied by the standing fraction (all six legs must participate).
     """
+    share = np.clip(np.asarray(result.get("extended_support_share_per_leg", [0] * 6)) / 0.5, 0, 1)
+    all_legs = 0.1 * share.mean() + 0.1 * share.min()  # every leg must carry weight, extended
     if stage == "stand":
-        return result["mean_reward"]
+        return result["mean_reward"] + all_legs
     per_second = result["forward_mm"] / result["seconds"]
     # all-leg participation: share of the six legs making >= 1 real (debounced) step per second
     need = max(1, int(round(result["seconds"])))
     legs = sum(n >= need for n in result.get("debounced_steps_per_leg", [])) / 6
-    return result["mean_reward"] + result["standing_fraction"] * (
+    return result["mean_reward"] + all_legs + result["standing_fraction"] * (
         displacement_weight * per_second + 0.15 * legs)
 
 

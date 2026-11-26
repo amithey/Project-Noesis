@@ -46,6 +46,9 @@ def stand_gate(c, p):
         "uprightness_ge_0.85_every_seed": ok and all(r["mean_uprightness"] >= 0.85 for r in c),
         "slip_not_worse_than_parent_mean": ok and np.mean([r["mean_stance_slip_mm_s"] for r in c])
         <= np.mean([r["mean_stance_slip_mm_s"] for r in p]),
+        # added 2026-11-26 after the leg audit (Amit: a hind leg is unused); tightening only
+        "every_leg_extended_support_ge_0.3_every_seed": ok and all(
+            min(r.get("extended_support_share_per_leg", [0])) >= 0.3 for r in c),
         "v7_reward_beats_parent_every_seed": ok and all(
             a["mean_reward_v7_stand"] > b["mean_reward_v7_stand"] + 1e-6 for a, b in zip(c, p)),
     }
@@ -67,6 +70,8 @@ def walk_gate(c, p):
         "all_6_legs_2plus_debounced_steps": ok and all(
             all(t >= 2 for t in r.get("debounced_steps_per_leg", [0])) and
             len(r.get("debounced_steps_per_leg", [])) == 6 for r in c),
+        "every_leg_extended_support_ge_0.2_every_seed": ok and all(
+            min(r.get("extended_support_share_per_leg", [0])) >= 0.2 for r in c),
         "forward_beats_parent_every_seed": ok and all(
             a["forward_mm"] > b["forward_mm"] + 0.5 for a, b in zip(c, p)),
     }

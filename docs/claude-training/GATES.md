@@ -33,3 +33,13 @@ Goal: stable standing and stable walking **using all the legs**. Walking gate
 criterion 7: **every one of the six legs makes >= 2 debounced steps** on every
 held-out seed. The walking fitness also rewards the share of legs that step.
 Training continues round after round until both gates pass.
+
+## Addendum 3 2026-11-26 (leg audit, tightening only)
+The audit (`runs/audit-legs/`) found the left hind leg folded under the body
+while its claw still touches the floor, and the right hind leg unable to rotate
+(coxa-roll / femur-roll pools nearly silent). Contact alone was hiding this.
+New measure: **extended support** = claw on the floor AND horizontal claw-to-thorax
+reach >= 70% of the settled reach.
+- Standing gate criterion 6: every leg has extended support >= 30% of the time, on every seed.
+- Walking gate criterion 8: every leg has extended support >= 20% of the time, on every seed.
+- Both fitness functions add 0.1 x mean + 0.1 x minimum over legs of min(share/0.5, 1).
