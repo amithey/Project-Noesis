@@ -72,6 +72,9 @@ def walk_gate(c, p):
             len(r.get("debounced_steps_per_leg", [])) == 6 for r in c),
         "every_leg_extended_support_ge_0.2_every_seed": ok and all(
             min(r.get("extended_support_share_per_leg", [0])) >= 0.2 for r in c),
+        # added 2026-11-26 (Amit: a hind leg is dragged like a rigid prop)
+        "every_leg_stride_ge_0.3mm_every_seed": ok and all(
+            min(r.get("stride_mm_per_leg", [0])) >= 0.3 for r in c),
         "forward_beats_parent_every_seed": ok and all(
             a["forward_mm"] > b["forward_mm"] + 0.5 for a, b in zip(c, p)),
     }
@@ -147,6 +150,7 @@ def main():
     ap.add_argument("--core", type=Path, default=DEFAULT_CORE)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
     ap.add_argument("--infer-mn-sides", action="store_true")
+    ap.add_argument("--muscle", choices=("mean", "size"), default="mean")
     args = ap.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=True)
@@ -156,12 +160,13 @@ def main():
     import es_train
     from noesis_gpu.es_brain import Evaluator, dump
 
-    es_train._init(args.core, data, cache, args.checkpoint, args.grouping, 1, args.infer_mn_sides)
+    es_train._init(args.core, data, cache, args.checkpoint, args.grouping, 1, args.infer_mn_sides,
+                   args.muscle)
     ev = es_train._EVAL
     gains = (es_train.load_gains(args.gains, ev.groups.names) if args.gains
              else np.ones(ev.groups.n_groups))
     started = time.time()
-    report = {"motor_side_inference": ev.side_audit, "label": args.label, "gains": str(args.gains), "held_out_seeds": HELD_OUT,
+    report = {"muscle_model": args.muscle, "motor_side_inference": ev.side_audit, "label": args.label, "gains": str(args.gains), "held_out_seeds": HELD_OUT,
               "seconds": args.seconds}
     if not args.video_only:
         parent = np.ones(ev.groups.n_groups)
@@ -169,7 +174,7 @@ def main():
         ctx = mp.get_context("spawn")
         with ctx.Pool(min(args.workers, len(jobs)), initializer=_init,
                       initargs=(args.core, data, cache, args.checkpoint, args.grouping, 1,
-                                args.infer_mn_sides)) as pool:
+                                args.infer_mn_sides, args.muscle)) as pool:
             res = pool.map(_eval, jobs, chunksize=1)
         cand, par = res[:3], res[3:]
         sg, wg = stand_gate(cand, par), walk_gate(cand, par)

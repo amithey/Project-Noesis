@@ -43,3 +43,9 @@ reach >= 70% of the settled reach.
 - Standing gate criterion 6: every leg has extended support >= 30% of the time, on every seed.
 - Walking gate criterion 8: every leg has extended support >= 20% of the time, on every seed.
 - Both fitness functions add 0.1 x mean + 0.1 x minimum over legs of min(share/0.5, 1).
+
+## Addendum 4 2026-11-26 (Amit's screenshot: right hind leg dragged like a rigid prop; tightening only)
+Extended support alone counts a stiff, planted leg as "used". New per-leg measure
+**stride** = 5th-95th percentile range of the claw position along the body's heading
+(relative to the thorax). Walking gate criterion 9: **every leg stride >= 0.3 mm on
+every seed**. Walk fitness adds 0.1 x mean + 0.1 x min over legs of min(stride/0.3, 1).

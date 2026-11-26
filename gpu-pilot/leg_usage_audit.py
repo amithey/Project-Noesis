@@ -35,6 +35,7 @@ def main():
     ap.add_argument("--core", type=Path, default=DEFAULT_CORE)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
     ap.add_argument("--infer-mn-sides", action="store_true")
+    ap.add_argument("--muscle", choices=("mean", "size"), default="mean")
     args = ap.parse_args()
     _paths(args.core)
     from noesis_gpu.backend import FlyGymBatch
@@ -46,12 +47,15 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     ev = Evaluator((args.project / "data").resolve(),
                    (args.project / "gpu-pilot/outputs/claude-es/brain-cache").resolve(), args.checkpoint,
-                   infer_sides=args.infer_mn_sides)
+                   infer_sides=args.infer_mn_sides, muscle=args.muscle)
     from es_train import load_gains
     gains = load_gains(args.gains, ev.groups.names) if args.gains else np.ones(ev.groups.n_groups)
     body = FlyGymBatch(1, "cpu")
     brain = FrozenBrain(ev.cn, body.rest, body.lo, body.hi, seed=args.seed,
                         shared_weights=_WeightHolder(ev.indptr, ev.indices, ev.data_for(gains)))
+    if args.muscle == "size":
+        from noesis_gpu.es_brain import size_weight_pools
+        size_weight_pools(brain.muscles)
     from noesis.motor import build_muscle_matrices
     pos, neg = build_muscle_matrices(ev.cn.neurons, list(LEGACY_JOINTS))
     pool_pos, pool_neg = np.diff(pos.tocsr().indptr), np.diff(neg.tocsr().indptr)

@@ -158,6 +158,28 @@ def infer_motor_sides(connectome):
                         "rule": "input-synapse-weighted side majority, |vote| >= 0.2"}
 
 
+def size_weighted_factors(g_pos, g_neg):
+    """Per-pool factors n_pool / mean(n_pos, n_neg), clipped to [0.25, 2].
+
+    The default Muscles model drives each joint from the MEAN rate of its agonist and
+    antagonist pools, so a 2-neuron pool equals an 18-neuron pool. With these factors
+    a pool's drive scales with how many motor neurons it has (more motor units, more
+    force). Joints with a single pool get factor 2 (capped). Connectome unchanged.
+    """
+    n_pos = np.diff(g_pos.tocsr().indptr).astype(float)
+    n_neg = np.diff(g_neg.tocsr().indptr).astype(float)
+    mean = np.maximum((n_pos + n_neg) / 2, 1e-12)
+    return np.clip(n_pos / mean, 0.25, 2.0), np.clip(n_neg / mean, 0.25, 2.0)
+
+
+def size_weight_pools(muscles):
+    from scipy import sparse
+
+    fp, fn = size_weighted_factors(muscles.g_pos, muscles.g_neg)
+    muscles.g_pos = sparse.diags(fp) @ muscles.g_pos.tocsr()
+    muscles.g_neg = sparse.diags(fn) @ muscles.g_neg.tocsr()
+
+
 class _WeightHolder:
     def __init__(self, indptr, indices, data):
         self.indptr, self.indices, self.data = indptr, indices, data
@@ -166,11 +188,14 @@ class _WeightHolder:
 class Evaluator:
     """Per-process cache of the connectome; evaluates gain vectors in fresh bodies."""
 
-    def __init__(self, data, cache, checkpoint, grouping="fine", infer_sides=False):
+    def __init__(self, data, cache, checkpoint, grouping="fine", infer_sides=False, muscle="mean"):
         from noesis.embodiment import load_training_brain
         from noesis.lif import LIFNetwork, LIFParams
 
         self.cn, _ = load_training_brain(Path(data), Path(cache))
+        if muscle not in ("mean", "size"):
+            raise ValueError("muscle must be 'mean' or 'size'")
+        self.muscle = muscle
         self.side_audit = None
         if infer_sides:
             self.cn, self.side_audit = infer_motor_sides(self.cn)
@@ -201,12 +226,15 @@ class Evaluator:
         body = FlyGymBatch(1, "cpu")
         holder = _WeightHolder(self.indptr, self.indices, self.data_for(gains))
         brain = FrozenBrain(self.cn, body.rest, body.lo, body.hi, seed=seed, shared_weights=holder)
+        if self.muscle == "size":
+            size_weight_pools(brain.muscles)
         chunks = int(round(seconds * 1000 / CONTROL_MS))
         before = {k: v[0] for k, v in body.observe().items()}
         start_pos, heading = before["position"].copy(), before["heading"].copy()
         heading = heading[:2] / max(np.linalg.norm(heading[:2]), 1e-12)
         rewards, stand, slip, up, height, feet_load, speeds = [], [], [], [], [], [], []
         reach, ref_reach = [], None  # horizontal claw-to-thorax distance per leg
+        along = []  # claw position along the body's current heading, relative to the thorax
         both = {"curriculum-standing-v7": [], "curriculum-gripped-step-v8": []}
         if frame_cb:
             frame_cb(body, 0.0, before, start_pos, heading)
@@ -228,6 +256,8 @@ class Evaluator:
                 d = np.linalg.norm(after["feet_position"][:, :2] - after["position"][:2], axis=1)
                 ref_reach = d.copy() if ref_reach is None else ref_reach
                 reach.append(d)
+                h = after["heading"][:2] / max(np.linalg.norm(after["heading"][:2]), 1e-12)
+                along.append((after["feet_position"][:, :2] - after["position"][:2]) @ h)
             if record is not None:
                 record.append({k: np.asarray(v).copy() for k, v in after.items()})
             if frame_cb:
@@ -259,6 +289,8 @@ class Evaluator:
             "touchdowns_per_leg": touchdowns.astype(int).tolist(),
             "debounced_steps_per_leg": steps,
             "extended_support_share_per_leg": [round(float(x), 4) for x in support_share],
+            "stride_mm_per_leg": [round(float(x), 4) for x in
+                                  np.subtract(*np.percentile(np.array(along), [95, 5], axis=0))],
             "extended_share_per_leg": [round(float(x), 4) for x in extended.mean(axis=0)],
             "wall_seconds": time.perf_counter() - started,
             "total_spikes": int(brain.total_spikes),
@@ -316,6 +348,8 @@ def fitness(result, stage, displacement_weight=0.05):
     # all-leg participation: share of the six legs making >= 1 real (debounced) step per second
     need = max(1, int(round(result["seconds"])))
     legs = sum(n >= need for n in result.get("debounced_steps_per_leg", [])) / 6
+    stride = np.clip(np.asarray(result.get("stride_mm_per_leg", [0] * 6)) / 0.3, 0, 1)
+    all_legs += 0.1 * stride.mean() + 0.1 * stride.min()  # no rigid prop legs: every claw must travel
     return result["mean_reward"] + all_legs + result["standing_fraction"] * (
         displacement_weight * per_second + 0.15 * legs)
 

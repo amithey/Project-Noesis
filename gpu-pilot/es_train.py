@@ -40,13 +40,13 @@ def _paths(core):
             sys.path.insert(0, p)
 
 
-def _init(core, data, cache, checkpoint, grouping, threads, infer_sides=False):
+def _init(core, data, cache, checkpoint, grouping, threads, infer_sides=False, muscle="mean"):
     global _EVAL
     os.environ.setdefault("NUMBA_NUM_THREADS", str(threads))
     _paths(core)
     from noesis_gpu.es_brain import Evaluator
 
-    _EVAL = Evaluator(data, cache, checkpoint, grouping, infer_sides)
+    _EVAL = Evaluator(data, cache, checkpoint, grouping, infer_sides, muscle)
 
 
 def _job(args):
@@ -172,6 +172,8 @@ def parser():
     ap.add_argument("--core", type=Path, default=DEFAULT_CORE)
     ap.add_argument("--checkpoint", type=Path, default=DEFAULT_PARENT)
     ap.add_argument("--rng-seed", type=int, default=0)
+    ap.add_argument("--muscle", choices=("mean", "size"), default="mean",
+                    help="'size': pool drive scales with motor-neuron count (opt-in body-model change)")
     ap.add_argument("--infer-mn-sides", action="store_true",
                     help="assign leg motor neurons with no annotated side by input-synapse majority")
     return ap
@@ -189,7 +191,7 @@ def main():
     from noesis_gpu.run import file_digest, source_digest
 
     started = time.time()
-    local = Evaluator(data, cache, args.checkpoint, args.grouping, args.infer_mn_sides)  # groups + checkpoints
+    local = Evaluator(data, cache, args.checkpoint, args.grouping, args.infer_mn_sides, args.muscle)  # groups + checkpoints
     n = local.groups.n_groups
     rng = np.random.default_rng(args.rng_seed)
     opt = (OpenAIES(n, args.sigma, args.lr, args.pairs, rng) if args.method == "es"
@@ -206,14 +208,14 @@ def main():
               "noesis_source_sha256": source_digest(args.core),
               "constraints": "existing edges only; signs fixed; |w| within original +-50%; frozen evaluation",
               "groups": local.groups.describe(), "started_unix": started,
-              "motor_side_inference": local.side_audit}
+              "motor_side_inference": local.side_audit, "muscle_model": args.muscle}
     dump(out / "config.json", config)
     print(json.dumps({"event": "config", "n_groups": n, "plastic_edges": config["plastic_edges"]}), flush=True)
 
     ctx = mp.get_context("spawn")
     pool = ctx.Pool(args.workers, initializer=_init,
                     initargs=(args.core, data, cache, args.checkpoint, args.grouping, args.threads_per_worker,
-                              args.infer_mn_sides))
+                              args.infer_mn_sides, args.muscle))
     best, best_gains, status = -np.inf, opt.mean.copy(), "completed"
     log = (out / "generations.jsonl").open("a", encoding="utf-8")
     try:
