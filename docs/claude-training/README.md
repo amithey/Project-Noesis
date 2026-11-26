@@ -56,3 +56,4 @@ See [GATES.md](GATES.md). Fixed before any run; never relaxed after seeing resul
 | [R4](runs/R4-es-stand-4seeds.md) | 2026-11-26 | ES from R1b, `--seeds-per-gen 4` | stand | 7/12 x 13 x 4 seeds x 1.5 s | interrupted; 0.7004 (start 0.6998) | not run | not run | - |
 | [legs-fix](runs/legs-fix.md) | 2026-11-26 | `--legs real` (rest/range from real fly kinematics); A/B/C comparison | - | - | - | A .905 / B .633 / C .336 mean standing | - | - |
 | [R0d](runs/R0d.md) | 2026-11-26 | baseline A: native legs, mean muscles (no training) | - | - | - | FAIL | FAIL (stride ≥0.3 PASS) | [R0d-baseline.mp4](videos/R0d-baseline.mp4) |
+| [R0e](runs/R0e.md) | 2026-11-26 | baseline B: real leg ranges, mean muscles (no training) — **training variant from R5 on** | - | - | - (held-out v7 -0.04/0.47/0.11) | FAIL (standing 0.50/0.81/0.59) | FAIL (stride ≥0.3 PASS) | [R0e-baseline-real-legs.mp4](videos/R0e-baseline-real-legs.mp4) |
